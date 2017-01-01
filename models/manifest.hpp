@@ -19,6 +19,7 @@ public:
     manifest();
     void insert(int src, int dest, int duration);
     int count(int src, int dest);
+    int size();
     multimap< pair<int, int> , int>::iterator begin();
     multimap< pair<int, int> , int>::iterator end();
 private:

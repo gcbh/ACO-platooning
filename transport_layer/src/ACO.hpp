@@ -14,12 +14,16 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+<<<<<<< HEAD
 
 #include "Randoms.h"
 #include "Dijkstra.hpp"
 #include "heuristic_selector.hpp"
 #include "cost_function.hpp"
 
+=======
+#include <vector>
+>>>>>>> ebdde2236be575336c420fb3a16c1f363b543b3e
 #include "../../utils/StringUtils.hpp"
 #include "../../models/config.hpp"
 #include "../../models/t_node.hpp"
@@ -44,6 +48,7 @@ private:
     config                              conf;
     heuristic_selector*                 sel;
     cost_function*                      j;
+    vector<string>**                    output;
     string                              RESULT_LOG_PATH;
     ofstream                            result_log;
     manifest                            manifest_data;

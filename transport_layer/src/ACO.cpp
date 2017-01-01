@@ -19,6 +19,10 @@ ACO::ACO(graph *i_g, manifest i_manifest, config i_conf, heuristic_selector* i_s
     sel = i_sel;
     j = i_j;
     manifest_data = i_manifest;
+    output = new vector<string>*[i_manifest.size()];
+    for (int i = 0; i < i_manifest.size(); ++i) {
+        output[i] = new vector<string>();
+    }
     num_iters = 0;
     RESULT_LOG_PATH = "../results.log";
     result_log.open(RESULT_LOG_PATH);
