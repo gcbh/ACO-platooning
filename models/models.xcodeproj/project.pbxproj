@@ -6,10 +6,33 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXFileReference section */
+		F144016A1EE8776300BBD888 /* base_ant.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = base_ant.cpp; sourceTree = "<group>"; };
+		F144016B1EE8776300BBD888 /* base_ant.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = base_ant.hpp; sourceTree = "<group>"; };
+		F144016C1EE877D500BBD888 /* primer_ant.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = primer_ant.cpp; sourceTree = "<group>"; };
+		F144016D1EE877D500BBD888 /* primer_ant.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = primer_ant.hpp; sourceTree = "<group>"; };
+		F144016E1EE8796A00BBD888 /* ant.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ant.cpp; sourceTree = "<group>"; };
+		F144016F1EE8796A00BBD888 /* ant.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ant.hpp; sourceTree = "<group>"; };
+		F14401731EE89C9600BBD888 /* t_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = t_node.cpp; sourceTree = "<group>"; };
+		F14401741EE89C9600BBD888 /* t_node.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = t_node.hpp; sourceTree = "<group>"; };
+		F14401751EE89CA600BBD888 /* t_edge.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = t_edge.cpp; sourceTree = "<group>"; };
+		F14401761EE89CA600BBD888 /* t_edge.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = t_edge.hpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
 /* Begin PBXGroup section */
 		F195082E1EE872B500C28124 = {
 			isa = PBXGroup;
 			children = (
+				F14401751EE89CA600BBD888 /* t_edge.cpp */,
+				F14401761EE89CA600BBD888 /* t_edge.hpp */,
+				F14401731EE89C9600BBD888 /* t_node.cpp */,
+				F14401741EE89C9600BBD888 /* t_node.hpp */,
+				F144016E1EE8796A00BBD888 /* ant.cpp */,
+				F144016F1EE8796A00BBD888 /* ant.hpp */,
+				F144016C1EE877D500BBD888 /* primer_ant.cpp */,
+				F144016D1EE877D500BBD888 /* primer_ant.hpp */,
+				F144016A1EE8776300BBD888 /* base_ant.cpp */,
+				F144016B1EE8776300BBD888 /* base_ant.hpp */,
 			);
 			sourceTree = "<group>";
 		};
@@ -186,6 +209,7 @@
 				F19508381EE872B500C28124 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

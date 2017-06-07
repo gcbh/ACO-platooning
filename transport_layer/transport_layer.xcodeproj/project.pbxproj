@@ -7,14 +7,50 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		F195081E1EE8615400C28124 /* ACO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACO.h; sourceTree = "<group>"; };
+		F195081F1EE8615400C28124 /* Randoms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Randoms.h; sourceTree = "<group>"; };
+		F19508211EE8615400C28124 /* ACO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ACO.cpp; sourceTree = "<group>"; };
+		F19508221EE8615400C28124 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		F19508231EE8615400C28124 /* Randoms.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Randoms.cpp; sourceTree = "<group>"; };
 		F1E9F7B41EE7A8A6004511FE /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		F1E9F7C41EE7ABF9004511FE /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		F195081D1EE8615400C28124 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				F195081E1EE8615400C28124 /* ACO.h */,
+				F195081F1EE8615400C28124 /* Randoms.h */,
+			);
+			name = include;
+			path = aco/include;
+			sourceTree = "<group>";
+		};
+		F19508201EE8615400C28124 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F19508211EE8615400C28124 /* ACO.cpp */,
+				F19508221EE8615400C28124 /* main.cpp */,
+				F19508231EE8615400C28124 /* Randoms.cpp */,
+			);
+			name = src;
+			path = aco/src;
+			sourceTree = "<group>";
+		};
+		F19508251EE8616300C28124 /* aco */ = {
+			isa = PBXGroup;
+			children = (
+				F195081D1EE8615400C28124 /* include */,
+				F19508201EE8615400C28124 /* src */,
+			);
+			name = aco;
+			sourceTree = "<group>";
+		};
 		F1E9F7901EE7A5E1004511FE = {
 			isa = PBXGroup;
 			children = (
+				F19508251EE8616300C28124 /* aco */,
 				F1E9F7C41EE7ABF9004511FE /* main.cpp */,
 				F1E9F7B41EE7A8A6004511FE /* Makefile */,
 			);
@@ -189,6 +225,7 @@
 				F1E9F7B31EE7A894004511FE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
