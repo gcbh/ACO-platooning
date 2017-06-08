@@ -12,17 +12,20 @@
 #include "t_node.hpp"
 
 #include <stdio.h>
+#include <map>
+
+class t_node;
 
 class t_edge {
     
 public:
-    t_edge(t_node i_dest, int i_distance, int i_speed);
+    t_edge(t_node *i_dest, int i_distance, int i_speed);
     
 private:
-    t_node dest;
+    t_node *dest;
     int distance, speed, max_tick;
     float max_phermone;
-    std::map<float> phermone_at;
+    std::map<int, float> phermone_at;
     
 };
 
