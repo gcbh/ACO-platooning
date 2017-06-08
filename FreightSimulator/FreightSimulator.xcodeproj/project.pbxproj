@@ -1,0 +1,314 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1452D0851EE9CCA200883286 /* Edge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1452D0831EE9CCA200883286 /* Edge.cpp */; };
+		1452D0891EE9CCBB00883286 /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1452D0871EE9CCBB00883286 /* StringUtils.cpp */; };
+		14A232651EE8D5B800FB574F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14A232641EE8D5B800FB574F /* main.cpp */; };
+		14A2326D1EE8D62900FB574F /* libglfw.3.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 14A2326C1EE8D62900FB574F /* libglfw.3.2.dylib */; };
+		14A2326F1EE8D70A00FB574F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14A2326E1EE8D70A00FB574F /* OpenGL.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		14A2325F1EE8D5B800FB574F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		1452D0831EE9CCA200883286 /* Edge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Edge.cpp; sourceTree = "<group>"; };
+		1452D0841EE9CCA200883286 /* Edge.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Edge.hpp; sourceTree = "<group>"; };
+		1452D0871EE9CCBB00883286 /* StringUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtils.cpp; sourceTree = "<group>"; };
+		1452D0881EE9CCBB00883286 /* StringUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StringUtils.hpp; sourceTree = "<group>"; };
+		14A232611EE8D5B800FB574F /* FreightSimulator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FreightSimulator; sourceTree = BUILT_PRODUCTS_DIR; };
+		14A232641EE8D5B800FB574F /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		14A2326C1EE8D62900FB574F /* libglfw.3.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.2.dylib; path = ../../../../../../usr/local/Cellar/glfw/3.2.1/lib/libglfw.3.2.dylib; sourceTree = "<group>"; };
+		14A2326E1EE8D70A00FB574F /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		14A232701EE8D9F600FB574F /* linmath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = linmath.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		14A2325E1EE8D5B800FB574F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				14A2326F1EE8D70A00FB574F /* OpenGL.framework in Frameworks */,
+				14A2326D1EE8D62900FB574F /* libglfw.3.2.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1452D0821EE9CCA200883286 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				1452D0831EE9CCA200883286 /* Edge.cpp */,
+				1452D0841EE9CCA200883286 /* Edge.hpp */,
+			);
+			name = model;
+			path = ../../model;
+			sourceTree = "<group>";
+		};
+		1452D0861EE9CCBB00883286 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				1452D0871EE9CCBB00883286 /* StringUtils.cpp */,
+				1452D0881EE9CCBB00883286 /* StringUtils.hpp */,
+			);
+			name = utils;
+			path = ../../utils;
+			sourceTree = "<group>";
+		};
+		14A232581EE8D5B800FB574F = {
+			isa = PBXGroup;
+			children = (
+				14A232631EE8D5B800FB574F /* FreightSimulator */,
+				14A232621EE8D5B800FB574F /* Products */,
+				14A2326B1EE8D62900FB574F /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		14A232621EE8D5B800FB574F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				14A232611EE8D5B800FB574F /* FreightSimulator */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		14A232631EE8D5B800FB574F /* FreightSimulator */ = {
+			isa = PBXGroup;
+			children = (
+				1452D0861EE9CCBB00883286 /* utils */,
+				1452D0821EE9CCA200883286 /* model */,
+				14A232641EE8D5B800FB574F /* main.cpp */,
+				14A232701EE8D9F600FB574F /* linmath.h */,
+			);
+			path = FreightSimulator;
+			sourceTree = "<group>";
+		};
+		14A2326B1EE8D62900FB574F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				14A2326E1EE8D70A00FB574F /* OpenGL.framework */,
+				14A2326C1EE8D62900FB574F /* libglfw.3.2.dylib */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		14A232601EE8D5B800FB574F /* FreightSimulator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 14A232681EE8D5B800FB574F /* Build configuration list for PBXNativeTarget "FreightSimulator" */;
+			buildPhases = (
+				14A2325D1EE8D5B800FB574F /* Sources */,
+				14A2325E1EE8D5B800FB574F /* Frameworks */,
+				14A2325F1EE8D5B800FB574F /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FreightSimulator;
+			productName = FreightSimulator;
+			productReference = 14A232611EE8D5B800FB574F /* FreightSimulator */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		14A232591EE8D5B800FB574F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = FYDP;
+				TargetAttributes = {
+					14A232601EE8D5B800FB574F = {
+						CreatedOnToolsVersion = 8.3.2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 14A2325C1EE8D5B800FB574F /* Build configuration list for PBXProject "FreightSimulator" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 14A232581EE8D5B800FB574F;
+			productRefGroup = 14A232621EE8D5B800FB574F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				14A232601EE8D5B800FB574F /* FreightSimulator */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		14A2325D1EE8D5B800FB574F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1452D0891EE9CCBB00883286 /* StringUtils.cpp in Sources */,
+				1452D0851EE9CCA200883286 /* Edge.cpp in Sources */,
+				14A232651EE8D5B800FB574F /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		14A232661EE8D5B800FB574F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		14A232671EE8D5B800FB574F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		14A232691EE8D5B800FB574F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = /usr/local/Cellar/glfw/3.2.1/include;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/glfw/3.2.1/lib,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		14A2326A1EE8D5B800FB574F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = /usr/local/Cellar/glfw/3.2.1/include;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/glfw/3.2.1/lib,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		14A2325C1EE8D5B800FB574F /* Build configuration list for PBXProject "FreightSimulator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				14A232661EE8D5B800FB574F /* Debug */,
+				14A232671EE8D5B800FB574F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		14A232681EE8D5B800FB574F /* Build configuration list for PBXNativeTarget "FreightSimulator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				14A232691EE8D5B800FB574F /* Debug */,
+				14A2326A1EE8D5B800FB574F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 14A232591EE8D5B800FB574F /* Project object */;
+}
