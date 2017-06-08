@@ -14,5 +14,5 @@ t_edge::t_edge(t_node i_dest, int i_distance, int i_speed) {
     speed = i_speed;
     max_tick = 0;
     max_phermone = 0.0;
-    phermone_at = new std::map<float>();
+    phermone_at = new std::map<int, float>();
 }

@@ -13,13 +13,15 @@
 
 #include <stdio.h>
 
+class t_edge;
+
 class t_node {
 public:
     t_node(int i_id);
     
 private:
     int id;
-    t_edge[] edges;
+    t_edge *edges[];
 };
 
 #endif /* t_node_hpp */
