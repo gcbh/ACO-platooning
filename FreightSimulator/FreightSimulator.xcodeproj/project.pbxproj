@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1452D0851EE9CCA200883286 /* Edge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1452D0831EE9CCA200883286 /* Edge.cpp */; };
 		1452D0891EE9CCBB00883286 /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1452D0871EE9CCBB00883286 /* StringUtils.cpp */; };
+		1452D0901EE9D08100883286 /* Edge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1452D08B1EE9D08100883286 /* Edge.cpp */; };
 		14A232651EE8D5B800FB574F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14A232641EE8D5B800FB574F /* main.cpp */; };
 		14A2326D1EE8D62900FB574F /* libglfw.3.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 14A2326C1EE8D62900FB574F /* libglfw.3.2.dylib */; };
 		14A2326F1EE8D70A00FB574F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14A2326E1EE8D70A00FB574F /* OpenGL.framework */; };
@@ -27,10 +27,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1452D0831EE9CCA200883286 /* Edge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Edge.cpp; sourceTree = "<group>"; };
-		1452D0841EE9CCA200883286 /* Edge.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Edge.hpp; sourceTree = "<group>"; };
 		1452D0871EE9CCBB00883286 /* StringUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtils.cpp; sourceTree = "<group>"; };
 		1452D0881EE9CCBB00883286 /* StringUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StringUtils.hpp; sourceTree = "<group>"; };
+		1452D08B1EE9D08100883286 /* Edge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Edge.cpp; sourceTree = "<group>"; };
+		1452D08C1EE9D08100883286 /* Edge.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Edge.hpp; sourceTree = "<group>"; };
 		14A232611EE8D5B800FB574F /* FreightSimulator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FreightSimulator; sourceTree = BUILT_PRODUCTS_DIR; };
 		14A232641EE8D5B800FB574F /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		14A2326C1EE8D62900FB574F /* libglfw.3.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.2.dylib; path = ../../../../../../usr/local/Cellar/glfw/3.2.1/lib/libglfw.3.2.dylib; sourceTree = "<group>"; };
@@ -51,16 +51,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1452D0821EE9CCA200883286 /* model */ = {
-			isa = PBXGroup;
-			children = (
-				1452D0831EE9CCA200883286 /* Edge.cpp */,
-				1452D0841EE9CCA200883286 /* Edge.hpp */,
-			);
-			name = model;
-			path = ../../model;
-			sourceTree = "<group>";
-		};
 		1452D0861EE9CCBB00883286 /* utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -69,6 +59,16 @@
 			);
 			name = utils;
 			path = ../../utils;
+			sourceTree = "<group>";
+		};
+		1452D08A1EE9D08100883286 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				1452D08B1EE9D08100883286 /* Edge.cpp */,
+				1452D08C1EE9D08100883286 /* Edge.hpp */,
+			);
+			name = models;
+			path = ../../models;
 			sourceTree = "<group>";
 		};
 		14A232581EE8D5B800FB574F = {
@@ -91,8 +91,8 @@
 		14A232631EE8D5B800FB574F /* FreightSimulator */ = {
 			isa = PBXGroup;
 			children = (
+				1452D08A1EE9D08100883286 /* models */,
 				1452D0861EE9CCBB00883286 /* utils */,
-				1452D0821EE9CCA200883286 /* model */,
 				14A232641EE8D5B800FB574F /* main.cpp */,
 				14A232701EE8D9F600FB574F /* linmath.h */,
 			);
@@ -165,8 +165,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1452D0901EE9D08100883286 /* Edge.cpp in Sources */,
 				1452D0891EE9CCBB00883286 /* StringUtils.cpp in Sources */,
-				1452D0851EE9CCA200883286 /* Edge.cpp in Sources */,
 				14A232651EE8D5B800FB574F /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
