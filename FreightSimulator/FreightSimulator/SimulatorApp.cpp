@@ -9,6 +9,7 @@
 #include "SimulatorApp.hpp"
 #include <GLFW/glfw3.h>
 #include <OpenGL/gl3.h>
+#include "ShaderUtils.hpp"
 #include "linmath.h"
 
 // An array of 3 vectors which represents 3 vertices
@@ -48,18 +49,8 @@ void SimulatorApp::setup() {
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-
-    GLuint vs = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vs, 1, &vertex_shader, NULL);
-    glCompileShader(vs);
-    GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fs, 1, &fragment_shader, NULL);
-    glCompileShader(fs);
-
-    m_program = glCreateProgram();
-    glAttachShader(m_program, fs);
-    glAttachShader(m_program, vs);
-    glLinkProgram(m_program);
+    
+    m_program = LoadShaders("basic_vs.glsl", "basic_fs.glsl");
 }
 
 void SimulatorApp::cleanup() {

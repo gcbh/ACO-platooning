@@ -14,17 +14,24 @@
 		14A2326F1EE8D70A00FB574F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14A2326E1EE8D70A00FB574F /* OpenGL.framework */; };
 		14D214351EEA254C00D568A8 /* SimulatorApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14D214331EEA254C00D568A8 /* SimulatorApp.cpp */; };
 		14ED4D6B1EEE3F7A009A6A35 /* GLFWEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14D214301EEA246900D568A8 /* GLFWEngine.cpp */; };
+		14ED4D701EEE4D0A009A6A35 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ED4D6E1EEE4D0A009A6A35 /* Scene.cpp */; };
+		14ED4D731EEE4D42009A6A35 /* SceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ED4D711EEE4D42009A6A35 /* SceneNode.cpp */; };
+		14ED4D771EEE4DB8009A6A35 /* ShaderUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ED4D751EEE4DB8009A6A35 /* ShaderUtils.cpp */; };
+		14ED4D7B1EEE5470009A6A35 /* basic_vs.glsl in CopyFiles */ = {isa = PBXBuildFile; fileRef = 14ED4D791EEE500E009A6A35 /* basic_vs.glsl */; };
+		14ED4D7C1EEE5470009A6A35 /* basic_fs.glsl in CopyFiles */ = {isa = PBXBuildFile; fileRef = 14ED4D7A1EEE501E009A6A35 /* basic_fs.glsl */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		14A2325F1EE8D5B800FB574F /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 16;
 			files = (
+				14ED4D7B1EEE5470009A6A35 /* basic_vs.glsl in CopyFiles */,
+				14ED4D7C1EEE5470009A6A35 /* basic_fs.glsl in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -43,6 +50,14 @@
 		14D214331EEA254C00D568A8 /* SimulatorApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimulatorApp.cpp; sourceTree = "<group>"; };
 		14D214341EEA254C00D568A8 /* App.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = App.hpp; sourceTree = "<group>"; };
 		14D214361EEA29B900D568A8 /* SimulatorApp.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SimulatorApp.hpp; sourceTree = "<group>"; };
+		14ED4D6E1EEE4D0A009A6A35 /* Scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
+		14ED4D6F1EEE4D0A009A6A35 /* Scene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Scene.hpp; sourceTree = "<group>"; };
+		14ED4D711EEE4D42009A6A35 /* SceneNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneNode.cpp; sourceTree = "<group>"; };
+		14ED4D721EEE4D42009A6A35 /* SceneNode.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SceneNode.hpp; sourceTree = "<group>"; };
+		14ED4D751EEE4DB8009A6A35 /* ShaderUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderUtils.cpp; sourceTree = "<group>"; };
+		14ED4D761EEE4DB8009A6A35 /* ShaderUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShaderUtils.hpp; sourceTree = "<group>"; };
+		14ED4D791EEE500E009A6A35 /* basic_vs.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = basic_vs.glsl; path = shaders/basic_vs.glsl; sourceTree = "<group>"; };
+		14ED4D7A1EEE501E009A6A35 /* basic_fs.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = basic_fs.glsl; path = shaders/basic_fs.glsl; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,7 +113,8 @@
 		14A232631EE8D5B800FB574F /* FreightSimulator */ = {
 			isa = PBXGroup;
 			children = (
-				14D2142F1EEA242800D568A8 /* Engine */,
+				14ED4D6D1EEE4CC4009A6A35 /* app */,
+				14D2142F1EEA242800D568A8 /* engine */,
 				1452D08A1EE9D08100883286 /* models */,
 				1452D0861EE9CCBB00883286 /* utils */,
 				14A232641EE8D5B800FB574F /* main.cpp */,
@@ -116,16 +132,55 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		14D2142F1EEA242800D568A8 /* Engine */ = {
+		14D2142F1EEA242800D568A8 /* engine */ = {
 			isa = PBXGroup;
 			children = (
+				14ED4D741EEE4D96009A6A35 /* utils */,
+				14ED4D6C1EEE4CAA009A6A35 /* scene */,
 				14D214301EEA246900D568A8 /* GLFWEngine.cpp */,
 				14D214311EEA246900D568A8 /* GLFWEngine.hpp */,
-				14D214331EEA254C00D568A8 /* SimulatorApp.cpp */,
 				14D214341EEA254C00D568A8 /* App.hpp */,
-				14D214361EEA29B900D568A8 /* SimulatorApp.hpp */,
 			);
-			name = Engine;
+			name = engine;
+			sourceTree = "<group>";
+		};
+		14ED4D6C1EEE4CAA009A6A35 /* scene */ = {
+			isa = PBXGroup;
+			children = (
+				14ED4D6E1EEE4D0A009A6A35 /* Scene.cpp */,
+				14ED4D6F1EEE4D0A009A6A35 /* Scene.hpp */,
+				14ED4D711EEE4D42009A6A35 /* SceneNode.cpp */,
+				14ED4D721EEE4D42009A6A35 /* SceneNode.hpp */,
+			);
+			name = scene;
+			sourceTree = "<group>";
+		};
+		14ED4D6D1EEE4CC4009A6A35 /* app */ = {
+			isa = PBXGroup;
+			children = (
+				14D214331EEA254C00D568A8 /* SimulatorApp.cpp */,
+				14D214361EEA29B900D568A8 /* SimulatorApp.hpp */,
+				14ED4D781EEE4FF1009A6A35 /* shaders */,
+			);
+			name = app;
+			sourceTree = "<group>";
+		};
+		14ED4D741EEE4D96009A6A35 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				14ED4D751EEE4DB8009A6A35 /* ShaderUtils.cpp */,
+				14ED4D761EEE4DB8009A6A35 /* ShaderUtils.hpp */,
+			);
+			name = utils;
+			sourceTree = "<group>";
+		};
+		14ED4D781EEE4FF1009A6A35 /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				14ED4D791EEE500E009A6A35 /* basic_vs.glsl */,
+				14ED4D7A1EEE501E009A6A35 /* basic_fs.glsl */,
+			);
+			name = shaders;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -185,9 +240,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14ED4D771EEE4DB8009A6A35 /* ShaderUtils.cpp in Sources */,
+				14ED4D701EEE4D0A009A6A35 /* Scene.cpp in Sources */,
 				1452D0901EE9D08100883286 /* Edge.cpp in Sources */,
 				1452D0891EE9CCBB00883286 /* StringUtils.cpp in Sources */,
 				14A232651EE8D5B800FB574F /* main.cpp in Sources */,
+				14ED4D731EEE4D42009A6A35 /* SceneNode.cpp in Sources */,
 				14D214351EEA254C00D568A8 /* SimulatorApp.cpp in Sources */,
 				14ED4D6B1EEE3F7A009A6A35 /* GLFWEngine.cpp in Sources */,
 			);
