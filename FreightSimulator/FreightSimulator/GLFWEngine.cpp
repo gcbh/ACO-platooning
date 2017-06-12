@@ -36,7 +36,7 @@ void GLFWEngine::setup(bool fullScreenEnable)
     }
 
     //Set GLFW window parameters
-    glfwWindowHint(GLFW_SAMPLES, 64);
+    glfwWindowHint(GLFW_SAMPLES, 1);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, m_glMajorVersion);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, m_glMinorVersion);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);

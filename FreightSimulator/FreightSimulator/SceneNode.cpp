@@ -7,3 +7,24 @@
 //
 
 #include "SceneNode.hpp"
+
+SceneNode::SceneNode() {
+}
+
+SceneNode::~SceneNode() { }
+
+void SceneNode::setup() {
+
+}
+
+void SceneNode::input() {
+
+}
+
+void SceneNode::update() {
+
+}
+
+void SceneNode::render() {
+
+}

@@ -14,24 +14,13 @@
 
 // An array of 3 vectors which represents 3 vertices
 static const GLfloat points[] = {
-    0.0f,  0.5f,  0.0f,
+    0.5f,  0.5f,  0.0f,
     0.5f, -0.5f,  0.0f,
+    -0.5f, -0.5f,  0.0f,
+    0.5f,  0.5f,  0.0f,
+    -0.5f, 0.5f,  0.0f,
     -0.5f, -0.5f,  0.0f
 };
-
-static const char* vertex_shader =
- "#version 400\n"
- "in vec3 vp;"
- "void main() {"
- "  gl_Position = vec4(vp, 1.0);"
- "}";
-
-static const char* fragment_shader =
-"#version 400\n"
-"out vec4 frag_colour;"
-"void main() {"
-"  frag_colour = vec4(0.5, 0.0, 0.5, 1.0);"
-"}";
 
 std::string SimulatorApp::getName(){
     return "Automated Freight Transport Simulator";
@@ -41,7 +30,7 @@ void SimulatorApp::setup() {
     m_vbo = 0;
     glGenBuffers(1, &m_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), points, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 18 * sizeof(float), points, GL_STATIC_DRAW);
 
     m_vao = 0;
     glGenVertexArrays(1, &m_vao);
@@ -51,6 +40,8 @@ void SimulatorApp::setup() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
     
     m_program = LoadShaders("basic_vs.glsl", "basic_fs.glsl");
+
+    glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 }
 
 void SimulatorApp::cleanup() {
@@ -73,7 +64,7 @@ void SimulatorApp::render(GLFWwindow *window) {
     glUseProgram(m_program);
     glBindVertexArray(m_vao);
     // draw points 0-3 from the currently bound VAO with current in-use shader
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
 

@@ -10,6 +10,7 @@
 #define SceneNode_hpp
 
 #include <stdio.h>
+#include "linmath.h"
 
 class SceneNode
 {
@@ -17,10 +18,13 @@ public:
     SceneNode();
     ~SceneNode();
 
-private:
+    void setup();
     void input();
     void update();
     void render();
+
+private:
+    mat4x4 m_model;
 };
 
 #endif /* SceneNode_hpp */
