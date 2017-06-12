@@ -6,63 +6,35 @@
 //  Copyright © 2017 FYDP. All rights reserved.
 //
 
-#include <iostream>
 #include <GLFW/glfw3.h>
 
 #include "linmath.h"
-
 #include <stdlib.h>
 #include <stdio.h>
+#include <iostream>
 
+#include "GLFWEngine.hpp"
 #include "Edge.hpp"
+#include "SimulatorApp.hpp"
 
-static const struct
-{
-    float x, y;
-    float r, g, b;
-} vertices[3] =
-{
-    { -0.6f, -0.4f, 1.f, 0.f, 0.f },
-    {  0.6f, -0.4f, 0.f, 1.f, 0.f },
-    {   0.f,  0.6f, 0.f, 0.f, 1.f }
-};
-
-static const char* vertex_shader_text =
-"uniform mat4 MVP;\n"
-"attribute vec3 vCol;\n"
-"attribute vec2 vPos;\n"
-"varying vec3 color;\n"
-"void main()\n"
-"{\n"
-"    gl_Position = MVP * vec4(vPos, 0.0, 1.0);\n"
-"    color = vCol;\n"
-"}\n";
-
-static const char* fragment_shader_text =
-"varying vec3 color;\n"
-"void main()\n"
-"{\n"
-"    gl_FragColor = vec4(color, 1.0);\n"
-"}\n";
-
-static void error_callback(int error, const char* description)
-{
-    fprintf(stderr, "Error: %s\n", description);
-}
-
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
-}
 
 int main ( int argc, char *argv[] )
 {
-    Edge* edge = new Edge("1,2,3,4");
-    std::cout << edge->getString() << std::endl;
+    SimulatorApp* app = new SimulatorApp();
+    GLFWEngine* engine = new GLFWEngine(800,600,3,2,app->getName());
 
+    engine->attachDemo(app);
+    engine->setup(false);
+    engine->run();
 
-    GLFWwindow* window;
+    delete app;
+    app = NULL;
+
+    delete engine;
+    engine = NULL;
+}
+
+    /*GLFWwindow* window;
     GLuint vertex_buffer, vertex_shader, fragment_shader, program;
     GLint mvp_location, vpos_location, vcol_location;
 
@@ -145,51 +117,4 @@ int main ( int argc, char *argv[] )
     
     glfwTerminate();
     exit(EXIT_SUCCESS);
-}
-
-//! [code]
-
-
-//int main(int argc, const char * argv[]) {
-//    // insert code here...
-//
-//    if (!glfwInit()) {
-//        return -1;
-//    }
-//
-//    GLFWwindow* window;
-//    /* Create a windowed mode window and its OpenGL context */
-//    window = glfwCreateWindow(640, 480, "Freight Simulator", NULL, NULL);
-//    if (!window) {
-//        glfwTerminate();
-//        return -1;
-//    }
-//
-//    /* Make the window's context current */
-//    glfwMakeContextCurrent(window);
-//
-//    /* Loop until the user closes the window */
-//    while (!glfwWindowShouldClose(window))
-//    {
-//        /* Render here */
-//        glClear(GL_COLOR_BUFFER_BIT);//Clear the buffer
-//        glColor3d(1,0,0);//Set the color for this polygon
-//        glBegin(GL_POLYGON);//Let us begin drawing some points
-//        //Specify the points
-//        glVertex2i(100,50);
-//        glVertex2i(100,130);
-//        glVertex2i(150, 130);
-//        glVertex2i(100,50);
-//        glEnd();//Ok we are done specifying points
-//        glFlush();//Write this out to the screen
-//
-//        /* Swap front and back buffers */
-//        glfwSwapBuffers(window);
-//
-//        /* Poll for and process events */
-//        glfwPollEvents();
-//    }
-//
-//    glfwTerminate();
-//    return 0;
-//}
+}*/

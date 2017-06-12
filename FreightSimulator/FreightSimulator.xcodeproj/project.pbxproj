@@ -12,6 +12,8 @@
 		14A232651EE8D5B800FB574F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14A232641EE8D5B800FB574F /* main.cpp */; };
 		14A2326D1EE8D62900FB574F /* libglfw.3.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 14A2326C1EE8D62900FB574F /* libglfw.3.2.dylib */; };
 		14A2326F1EE8D70A00FB574F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14A2326E1EE8D70A00FB574F /* OpenGL.framework */; };
+		14D214351EEA254C00D568A8 /* SimulatorApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14D214331EEA254C00D568A8 /* SimulatorApp.cpp */; };
+		14ED4D6B1EEE3F7A009A6A35 /* GLFWEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14D214301EEA246900D568A8 /* GLFWEngine.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,6 +38,11 @@
 		14A2326C1EE8D62900FB574F /* libglfw.3.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.2.dylib; path = ../../../../../../usr/local/Cellar/glfw/3.2.1/lib/libglfw.3.2.dylib; sourceTree = "<group>"; };
 		14A2326E1EE8D70A00FB574F /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		14A232701EE8D9F600FB574F /* linmath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = linmath.h; sourceTree = "<group>"; };
+		14D214301EEA246900D568A8 /* GLFWEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLFWEngine.cpp; sourceTree = "<group>"; };
+		14D214311EEA246900D568A8 /* GLFWEngine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GLFWEngine.hpp; sourceTree = "<group>"; };
+		14D214331EEA254C00D568A8 /* SimulatorApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimulatorApp.cpp; sourceTree = "<group>"; };
+		14D214341EEA254C00D568A8 /* App.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = App.hpp; sourceTree = "<group>"; };
+		14D214361EEA29B900D568A8 /* SimulatorApp.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SimulatorApp.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +98,7 @@
 		14A232631EE8D5B800FB574F /* FreightSimulator */ = {
 			isa = PBXGroup;
 			children = (
+				14D2142F1EEA242800D568A8 /* Engine */,
 				1452D08A1EE9D08100883286 /* models */,
 				1452D0861EE9CCBB00883286 /* utils */,
 				14A232641EE8D5B800FB574F /* main.cpp */,
@@ -106,6 +114,18 @@
 				14A2326C1EE8D62900FB574F /* libglfw.3.2.dylib */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		14D2142F1EEA242800D568A8 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				14D214301EEA246900D568A8 /* GLFWEngine.cpp */,
+				14D214311EEA246900D568A8 /* GLFWEngine.hpp */,
+				14D214331EEA254C00D568A8 /* SimulatorApp.cpp */,
+				14D214341EEA254C00D568A8 /* App.hpp */,
+				14D214361EEA29B900D568A8 /* SimulatorApp.hpp */,
+			);
+			name = Engine;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -168,6 +188,8 @@
 				1452D0901EE9D08100883286 /* Edge.cpp in Sources */,
 				1452D0891EE9CCBB00883286 /* StringUtils.cpp in Sources */,
 				14A232651EE8D5B800FB574F /* main.cpp in Sources */,
+				14D214351EEA254C00D568A8 /* SimulatorApp.cpp in Sources */,
+				14ED4D6B1EEE3F7A009A6A35 /* GLFWEngine.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
