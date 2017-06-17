@@ -10,7 +10,7 @@
 
 using namespace std;
 
-t_edge::t_edge(t_node *i_dest, int i_distance, int i_speed) {
+t_edge::t_edge(t_node *i_dest, double i_distance, int i_speed) {
     dest = i_dest;
     distance = i_distance;
     speed = i_speed;
