@@ -17,10 +17,12 @@ class t_edge;
 
 class t_node {
 public:
-    t_node(int i_id);
+    t_node(int i_id, int n_edges);
+    ~t_node();
+    int edge_number();
     
 private:
-    int id;
+    int id, NUMBEROFEDGES;
     t_edge *edges[];
 };
 

@@ -10,10 +10,13 @@
 
 using namespace std;
 
-ant::ant(std::queue<int> i_nodes) :base_ant(i_nodes){
-    
+ant::ant(t_node *first, int i_dest) {
+    dest = i_dest;
+    counter = 0;
+    ordered_path = new queue<int>();
+    past_nodes = new set<int>();
 }
 
-void ant::traverse_path() {
+void ant::next_node(int time) {
     
 }

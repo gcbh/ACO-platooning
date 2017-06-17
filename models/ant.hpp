@@ -10,16 +10,20 @@
 #define ant_hpp
 
 #include <stdio.h>
+#include <queue>
+#include <set>
 
+using
 class ant : base_ant {
 public:
     // TODO: must pass in destination node
     
     // TODO: must decide if queue or set is best option
-    ant(std::queue<int> i_nodes);
+    ant(t_node *first, int i_dest);
 private:
-    // TODO: must hold destination nodes
-    // Node dest;
-    int counter;
+    t_node *current;
+    int dest, counter;
+    
+    set<int> past_nodes;
 };
 #endif /* ant_hpp */

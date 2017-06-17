@@ -10,6 +10,17 @@
 
 using namespace std;
 
-t_node::t_node(int i_id) {
+t_node::t_node(int i_id, int n_edges) {
     id = i_id;
+    NUMBEROFEDGES = n_edges;
+}
+
+t_node::~t_node() {
+    for (int i = 0; i < NUMBEROFEDGES; i++) {
+        delete edges[i];
+    }
+}
+
+int edge_number() {
+    return NUMBEROFEDGES;
 }

@@ -13,12 +13,12 @@
 
 class base_ant {
 public:
-    base_ant(std::queue<int> i_nodes);
-    void traverse_path();
+    base_ant();
+    void next_node(int time);
     
 protected:
-    std::queue<int> nodes;
-    
+    std::queue<int> ordered_path;
+    t_node *current;
 };
 
 #endif /* base_ant_hpp */

@@ -14,7 +14,7 @@
 class primer_ant : base_ant {
 public:
     //TODO: constructor must take in destination node
-    primer_ant(std::queue<int> i_nodes);
+    primer_ant(std::queue<int> i_nodes, t_node *first);
 };
 
 #endif /* primer_ant_hpp */

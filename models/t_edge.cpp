@@ -8,11 +8,15 @@
 
 #include "t_edge.hpp"
 
-t_edge::t_edge(t_node i_dest, int i_distance, int i_speed) {
+using namespace std;
+
+t_edge::t_edge(t_node *i_dest, int i_distance, int i_speed) {
     dest = i_dest;
     distance = i_distance;
     speed = i_speed;
-    max_tick = 0;
-    max_phermone = 0.0;
-    phermone_at = new std::map<int, float>();
+    phermone_at = new map<int, phermone>();
+}
+
+t_edge::~t_edge() {
+    delete phermone_at;
 }
