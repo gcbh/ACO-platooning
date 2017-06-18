@@ -13,4 +13,8 @@ using namespace std;
 base_ant::base_ant() {
 }
 
-void base_ant::next_node() {    }
+base_ant::~base_ant() {
+    delete ordered_path;
+}
+
+void base_ant::next_node(int time) {    }

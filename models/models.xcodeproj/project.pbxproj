@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		187FD0921EEA51B00028001A /* graph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = graph.cpp; sourceTree = "<group>"; };
+		187FD0931EEA51B00028001A /* graph.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = graph.hpp; sourceTree = "<group>"; };
 		F144016A1EE8776300BBD888 /* base_ant.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = base_ant.cpp; sourceTree = "<group>"; };
 		F144016B1EE8776300BBD888 /* base_ant.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = base_ant.hpp; sourceTree = "<group>"; };
 		F144016C1EE877D500BBD888 /* primer_ant.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = primer_ant.cpp; sourceTree = "<group>"; };
@@ -23,6 +25,8 @@
 		F195082E1EE872B500C28124 = {
 			isa = PBXGroup;
 			children = (
+				187FD0921EEA51B00028001A /* graph.cpp */,
+				187FD0931EEA51B00028001A /* graph.hpp */,
 				F14401751EE89CA600BBD888 /* t_edge.cpp */,
 				F14401761EE89CA600BBD888 /* t_edge.hpp */,
 				F14401731EE89C9600BBD888 /* t_node.cpp */,

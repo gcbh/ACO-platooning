@@ -10,14 +10,20 @@
 #define base_ant_hpp
 
 #include <stdio.h>
+#include <queue>
+
+#include "t_node.hpp"
+
+using namespace std;
 
 class base_ant {
 public:
     base_ant();
-    void next_node(int time);
+    virtual ~base_ant();
+    virtual void next_node(int time);
     
 protected:
-    std::queue<int> ordered_path;
+    queue<int> *ordered_path;
     t_node *current;
 };
 

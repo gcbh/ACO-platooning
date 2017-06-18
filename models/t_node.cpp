@@ -10,17 +10,30 @@
 
 using namespace std;
 
-t_node::t_node(int i_id, int n_edges) {
+t_node::t_node(int i_id) {
     id = i_id;
-    NUMBEROFEDGES = n_edges;
+    edges = new vector<t_edge*>();
+}
+
+int t_node::get_id() {
+    return id;
+}
+
+int t_node::edge_number() {
+    return edges->size();
 }
 
 t_node::~t_node() {
-    for (int i = 0; i < NUMBEROFEDGES; i++) {
-        delete edges[i];
+    for(vector<t_edge*>::iterator itr = edges->begin(); itr != edges->end(); ++itr) {
+        delete *itr;
     }
+    delete edges;
 }
 
-int edge_number() {
-    return NUMBEROFEDGES;
+void t_node::add_edge(t_edge *edge) {
+    edges->push_back(edge);
+}
+
+t_edge* t_node::operator[](int i) {
+    return (*edges)[i];
 }

@@ -13,17 +13,23 @@
 #include <queue>
 #include <set>
 
-using
+#include "base_ant.hpp"
+#include "t_node.hpp"
+
+using namespace std;
+
 class ant : base_ant {
 public:
     // TODO: must pass in destination node
     
     // TODO: must decide if queue or set is best option
     ant(t_node *first, int i_dest);
+    ~ant();
+    void next_node(int time);
 private:
     t_node *current;
     int dest, counter;
     
-    set<int> past_nodes;
+    set<int> *past_nodes;
 };
 #endif /* ant_hpp */

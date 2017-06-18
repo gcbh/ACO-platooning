@@ -10,20 +10,27 @@
 #define t_node_hpp
 
 #include "t_edge.hpp"
-
+#include <vector>
+#include <iterator>
 #include <stdio.h>
+#include <exception>
+
+using namespace std;
 
 class t_edge;
 
 class t_node {
 public:
-    t_node(int i_id, int n_edges);
+    t_node(int i_id);
     ~t_node();
+    int get_id();
     int edge_number();
+    void add_edge(t_edge *edge);
+    t_edge* operator[](int i);
     
 private:
-    int id, NUMBEROFEDGES;
-    t_edge *edges[];
+    int id;
+    vector<t_edge*> *edges;
 };
 
 #endif /* t_node_hpp */

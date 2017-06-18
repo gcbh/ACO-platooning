@@ -26,8 +26,11 @@ struct phermone {
 class t_edge {
     
 public:
-    t_edge(t_node *i_dest, int i_distance, int i_speed);
+    t_edge(t_node *i_dest, double i_distance, int i_speed);
     ~t_edge();
+    t_node* get_dest();
+    phermone get_phermone(int time);
+    void update_phermone(int time, int value);
 private:
     t_node *dest;
     int distance, speed, max_tick;
