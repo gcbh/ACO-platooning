@@ -13,6 +13,7 @@
 
 #include <stdio.h>
 #include <map>
+#include <cmath>
 
 using namespace std;
 
@@ -31,12 +32,12 @@ public:
     t_node* get_dest();
     phermone get_phermone(int time);
     void update_phermone(int time, int value);
+    int get_time_to_cross();
 private:
     t_node *dest;
-    int distance, speed, max_tick;
+    int distance, speed, max_tick, time_to_cross;
     float max_phermone;
     map<int, phermone> *phermone_at;
-    
 };
 
 #endif /* t_edge_hpp */

@@ -16,7 +16,7 @@
 
 #include "../../models/graph.hpp"
 #include "Dijkstra.hpp"
-
+#include "ACO_new.hpp"
 
 using namespace std;
 
@@ -76,6 +76,7 @@ int main() {
 
     graph *g = new graph();
     g->construct_graph(pre_opt_graph); 
-    //t_node *node = (*g)[11];
+    
+    ACO_new *ACO = new ACO_new(g, 10);
     return 0;
 }

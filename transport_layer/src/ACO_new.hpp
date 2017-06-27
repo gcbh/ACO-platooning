@@ -12,14 +12,19 @@
 #include "../aco/include/Randoms.h"
 #include <map>
 #include "../../models/t_node.hpp"
+#include "../../models/graph.hpp"
+#include "../../models/t_edge.hpp"
 
 class ACO_new {
 public:
-    std::map<int, t_node> *graph;
-    ACO_new ();
+    ACO_new (graph *i_g, int i_num_iterations);
     virtual ~ACO_new ();
 private:
-    
+    graph *g;
+    int num_iterations;
+    void iteration();
+    void delta_pheromone(int time, t_edge *edge);
+    void evaporation();
 };
 
 #endif /* ACO_new_hpp */

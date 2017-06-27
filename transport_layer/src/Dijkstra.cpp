@@ -28,21 +28,20 @@ using namespace std;
 typedef pair<double, int> iPair;
 
 
-Dijkstra::Dijkstra () {
+Dijkstra::Dijkstra() {
     edg = new list<iPair> [200];
 }
 
 Dijkstra::~Dijkstra() {
     
 }
-
-void Dijkstra:: add_edge(int src, int dest, double weight) {
+void Dijkstra::add_edge(int src, int dest, double weight) {
     edg[src].push_back(make_pair(weight, dest));
     edg[dest].push_back(make_pair(weight, src));
+    test();
 }
 
-
-void Dijkstra:: init(list<graph_data> edge_list) {
+void Dijkstra::init(list<graph_data> edge_list) {
 
     for (list<graph_data>:: iterator itr = edge_list.begin(); itr != edge_list.end(); itr++) {
         nodes.insert(itr->src);
@@ -56,8 +55,14 @@ void Dijkstra:: init(list<graph_data> edge_list) {
 
 }
 
+void Dijkstra::populate_weight(string file_name) {
+    cout << "hello";
+}
 
-void Dijkstra:: shortest_route (int src) {
+void Dijkstra::test() {
+    cout << "IN TEST";
+}
+void Dijkstra::shortest_route (int src) {
     
     priority_queue< iPair, vector <iPair> , greater<iPair> > pq;
     
@@ -101,7 +106,7 @@ void Dijkstra:: shortest_route (int src) {
     
 }
 
-void Dijkstra:: print_src_data(int src, vector<double> wght, int route[]) {
+void Dijkstra::print_src_data(int src, vector<double> wght, int route[]) {
     
     for (int i = 0; i < nodes.size(); i++)
     {
@@ -110,7 +115,7 @@ void Dijkstra:: print_src_data(int src, vector<double> wght, int route[]) {
     }
 }
 
-void Dijkstra:: print_path(int route[], int j)
+void Dijkstra::print_path(int route[], int j)
 {
     if (route[j] == -1)
         return;

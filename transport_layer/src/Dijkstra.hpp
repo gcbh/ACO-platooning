@@ -29,6 +29,8 @@ public:
     Dijkstra();
     virtual ~Dijkstra();
     void init(list<graph_data> list);
+    void populate_weight(string file_name);
+    void test();
 private:
     list< pair<double, int> > *edg;
     set<int> nodes;
