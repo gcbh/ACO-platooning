@@ -37,3 +37,7 @@ void t_node::add_edge(t_edge *edge) {
 t_edge* t_node::operator[](int i) {
     return (*edges)[i];
 }
+
+vector<t_edge*> t_node::get_edges() {
+    return *edges;
+}

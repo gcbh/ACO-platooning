@@ -15,7 +15,7 @@ t_edge::t_edge(t_node *i_dest, double i_distance, int i_speed) {
     distance = i_distance;
     speed = i_speed;
     phermone_at = new map<int, phermone>();
-    time_to_cross = round(distance/speed);
+    time_to_cross = round(i_distance/speed);
 }
 
 t_edge::~t_edge() {
@@ -35,4 +35,8 @@ phermone t_edge::get_phermone(int time) {
 
 void t_edge::update_phermone(int time, int value) {
     
+}
+
+int t_edge::get_time_to_cross() {
+    return time_to_cross;
 }

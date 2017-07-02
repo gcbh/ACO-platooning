@@ -56,3 +56,7 @@ void graph::construct_graph(list<graph_data> i_edges) {
 t_node* graph::operator[](int i_node_id) {
     return (*g_graph)[i_node_id];
 }
+
+int graph::get_num_nodes() {
+    return g_graph->size();
+}

@@ -22,6 +22,7 @@ public:
 private:
     graph *g;
     int num_iterations;
+    double RHO;
     void iteration();
     void delta_pheromone(int time, t_edge *edge);
     void evaporation();

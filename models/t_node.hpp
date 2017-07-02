@@ -27,7 +27,7 @@ public:
     int edge_number();
     void add_edge(t_edge *edge);
     t_edge* operator[](int i);
-    
+    vector<t_edge*> get_edges();
 private:
     int id;
     vector<t_edge*> *edges;

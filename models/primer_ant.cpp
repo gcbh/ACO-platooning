@@ -19,12 +19,12 @@ void primer_ant::next_node(int time) {
     int next = ordered_path->front();
     ordered_path->pop();
     for (int i = 0; i < current->edge_number(); i++) {
-        t_edge cur_edge = (*current)[i];
-        t_node next_n = cur_edge.get_dest();
-        if (next_n.get_id() == next) {
+        t_edge *cur_edge = (*current)[i];
+        t_node *next_n = cur_edge->get_dest();
+        if (next_n->get_id() == next) {
             // TODO: set value to increase to
-            cur_edge.update_phermone(time, 1);
-            current = &next_n;
+            cur_edge->update_phermone(time, 1);
+            current = next_n;
             break;
         }
     }
