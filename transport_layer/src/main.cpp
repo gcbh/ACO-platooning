@@ -33,6 +33,7 @@ int main() {
     
     Dijkstra *dijkstra = new Dijkstra();
     list<graph_data> pre_opt_graph;
+    set<int> nodes;
 
     while(getline(file, line))
     {
@@ -52,6 +53,9 @@ int main() {
         edge.dest = dest;
         edge.weight = distance;
         
+        nodes.insert(src);
+        nodes.insert(dest);
+        
         pre_opt_graph.push_back(edge);
     }
     
@@ -69,11 +73,12 @@ int main() {
 
         // freopen to be able to write output to file directly
         freopen(dijkstra_file_path.c_str(), "w", stdout);
-        dijkstra->init(pre_opt_graph);
+        dijkstra->init(pre_opt_graph, nodes.size());
         fclose(stdout);
 
     } 
-
+    dijkstra->populate_weight(out_file_name);
+    
     graph *g = new graph();
     g->construct_graph(pre_opt_graph); 
     
