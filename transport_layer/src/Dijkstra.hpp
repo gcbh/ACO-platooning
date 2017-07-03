@@ -9,8 +9,6 @@
 #ifndef Dijkstra_hpp
 #define Dijkstra_hpp
 
-#include "../../utils/StringUtils.hpp"
-
 #include <map>
 #include <stdio.h>
 #include <list>
@@ -44,7 +42,6 @@ private:
     void add_edge(int src, int dest, double weight);
     void print_src_data(int src, vector<double> wght, int route[]);
     void print_path(int route[], int j);
-    vector<string> split(const string &s, char delim);
 };
 
 #endif 

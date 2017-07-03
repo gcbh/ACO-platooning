@@ -22,7 +22,7 @@
 #include <fstream>
 #include <sstream>
 #include "Dijkstra.hpp"
-
+#include "../../utils/StringUtils.hpp"
 
 using namespace std;
 # define INF 0x3f3f3f3f
@@ -140,16 +140,17 @@ void Dijkstra:: populate_from_dijkstra_file(string file_name, set< pair<int, int
     for (int i = 0; i < node_count; i++)
         edge_weight[i] = new double[node_count];
 
+    StringUtils *s; // To Do: Figure out a way to use functions without instantiating a class
     
     while(getline(file, line))
     {
         vector<string> columns;
         vector<string> edge;
         
-
+        
         if (!line.empty()) {
-            columns = split(line, ';');
-            edge = split(columns[0], ',');
+            columns = s->split(line, ';');
+            edge = s->split(columns[0], ',');
             int src = stoi(edge[0]);
             int dest = stoi(edge[1]);
             double distance = stod(columns[1]);
@@ -167,18 +168,6 @@ void Dijkstra:: populate_from_dijkstra_file(string file_name, set< pair<int, int
         }
         
     }
-}
-
-vector<string> Dijkstra:: split(const string &s, char delim)
-{
-    stringstream ss(s);
-    string item;
-    vector<string> elems;
-    
-    while (getline(ss, item, delim)) {
-            elems.push_back(item);
-    }
-    return elems;
 }
 
 double Dijkstra:: get_edge_weight(int src, int dest) {

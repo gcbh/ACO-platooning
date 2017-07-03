@@ -1,6 +1,5 @@
 //
 //  StringUtils.hpp
-//  transport_layer
 //
 //  Created by Aditi Lath on 2017-07-03.
 //
