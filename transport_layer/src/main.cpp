@@ -32,7 +32,7 @@ int main() {
     ifstream file("../../" + file_name);
     string   line;
 
-    int speed = 100; //fixed speed on every edge for now.
+    int speed = 75; //fixed nominal average speed on every edge 
     
     Dijkstra *dijkstra = new Dijkstra();
     list<graph_data> pre_opt_graph;
@@ -87,6 +87,7 @@ int main() {
     g->construct_graph(pre_opt_graph); 
     
     ACO_new *ACO = new ACO_new(g, 10);
+    ACO->init(dijkstra);
     return 0;
 }
 

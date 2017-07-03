@@ -9,6 +9,8 @@
 #ifndef Dijkstra_hpp
 #define Dijkstra_hpp
 
+#include "../../utils/StringUtils.hpp"
+
 #include <map>
 #include <stdio.h>
 #include <list>
@@ -37,7 +39,6 @@ private:
     set<int> nodes;
     double **edge_weight;
     map<pair<int, int>, string> manifest_route;
-    //list<pair<pair<int,int>, string>> *manifest_route;
     int num_of_nodes;
     void shortest_route( int src);
     void add_edge(int src, int dest, double weight);

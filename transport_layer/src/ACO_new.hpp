@@ -19,10 +19,12 @@ class ACO_new {
 public:
     ACO_new (graph *i_g, int i_num_iterations);
     virtual ~ACO_new ();
+    void init(Dijkstra *dijkstra);
 private:
     graph *g;
     int num_iterations;
     double RHO;
+    void set_prime_ant(map<pair<int, int>, string> manifest_route);
     void iteration();
     void delta_pheromone(int time, t_edge *edge);
     void evaporation();

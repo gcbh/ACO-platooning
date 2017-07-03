@@ -17,6 +17,20 @@ ACO_new::ACO_new(graph *i_g, int i_num_iterations) {
 ACO_new::~ACO_new() {
 }
 
+void ACO_new:: init(Dijkstra *dijkstra) {
+    set_prime_ant(dijkstra->get_manifest_routes());
+}
+
+void ACO_new:: set_prime_ant(map<pair<int, int>, string> manifest_route) {
+    
+    map<pair<int, int>, string>:: iterator it;
+    for (it = manifest_route.begin(); it != manifest_route.end(); it++) {
+        long tick = 0;
+        string route = it->second;
+        
+    }
+}
+
 void ACO_new::iteration() {
 
 }
