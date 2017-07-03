@@ -58,7 +58,7 @@ void Dijkstra::init(list<graph_data> edge_list, int node_count) {
     }
 
     num_of_nodes = nodes.size();
-    printf("%d ", num_of_nodes);
+    
     for (set<int>:: iterator it = nodes.begin(); it != nodes.end(); it++) {
         shortest_route(*it);
     }
@@ -128,17 +128,18 @@ void Dijkstra::print_path(int route[], int j)
     printf("%d ", j);
 }
 
-void Dijkstra:: populate_weight(string file_name) {
+void Dijkstra:: populate_from_dijkstra_file(string file_name, set< pair<int, int> > manifest_set) {
     ifstream file("../../" + file_name);
     string   line;
 
+    // get number of unique nodes and intialize 2D array size
     getline(file, line);
     const int node_count =  stoi(line);
     edge_weight = new double*[node_count];
     for (int i = 0; i < node_count; i++)
         edge_weight[i] = new double[node_count];
 
-
+    
     while(getline(file, line))
     {
         vector<string> columns;
@@ -151,45 +152,21 @@ void Dijkstra:: populate_weight(string file_name) {
             int src = stoi(edge[0]);
             int dest = stoi(edge[1]);
             double distance = stod(columns[1]);
+            string route = columns[2];
 
+            // populate 2D array for an edge with weight
             edge_weight[src][dest] = distance;
             edge_weight[dest][src] = distance;
-            // vec.push_back(dest);
-            // if (src < dest) {
-            //     set_vector(src,dest);
-                
-            //     edge_weight.at(src).at(dest) = 10;
-            // } else {
-            //     set_vector(dest,src);
-            //     // edge_weight.at(dest).push_back(src);
-            //     edge_weight.at(dest).at(src) = 11;
-            // }
-            
+
+            // populate manifest routes from dijkstra's
+            if (manifest_set.count(make_pair(src, dest))) {
+                pair<int, int> key = make_pair(src, dest);
+                manifest_route.insert(make_pair(key, route));
+            }
         }
         
     }
 }
-
-//void Dijkstra:: set_vector(int position, int next_pos) {
-    // try{
-    //     // check if index exists in vector else throw error
-    //     bool exists = edge_weight.at(position).empty();
-        
-    //     try {
-    //         // check if next_post exists in vector, if not throws exception
-    //         int value = edge_weight.at(position).at(next_pos);
-    //     } catch (const out_of_range& oor) {
-    //         edge_weight.at(position).push_back(next_pos);
-    //     }
-            
-    // } 
-    // catch (const out_of_range& oor) {
-    //     // index doesn't exist, add it to 2D vector
-    //     vector<int> vec; 
-    //     edge_weight.push_back(vec);
-    //     edge_weight.at(position).push_back(next_pos);
-    // }
-//}
 
 vector<string> Dijkstra:: split(const string &s, char delim)
 {
@@ -205,6 +182,10 @@ vector<string> Dijkstra:: split(const string &s, char delim)
 
 double Dijkstra:: get_edge_weight(int src, int dest) {
     return edge_weight[src][dest];
+}
+
+map<pair<int, int>, string> Dijkstra:: get_manifest_routes() {
+    return manifest_route;
 }
 
 

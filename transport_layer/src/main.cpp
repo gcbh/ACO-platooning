@@ -20,10 +20,13 @@
 
 using namespace std;
 
+set< pair<int, int> > get_manifest(string file_name);
+
 int main() {
     cout << "hello world" << endl;
 
-    string file_name = "cities_p.txt";
+    string file_name = "small_graph.txt";
+    string manifest_file_name = "manifest_small_graph.txt";
     
     // open graph file, read and pass data to Dijkstra to calculate shortest path
     ifstream file("../../" + file_name);
@@ -77,11 +80,33 @@ int main() {
         fclose(stdout);
 
     } 
-    dijkstra->populate_weight(out_file_name);
+    set< pair<int, int> > manifest_set = get_manifest(manifest_file_name);
+    dijkstra->populate_from_dijkstra_file(out_file_name, manifest_set);
     
     graph *g = new graph();
     g->construct_graph(pre_opt_graph); 
     
     ACO_new *ACO = new ACO_new(g, 10);
     return 0;
+}
+
+set< pair<int, int> > get_manifest(string file_name) {
+    ifstream file("../../" + file_name);
+    string line;
+    set< pair<int, int> > manifest_data;
+
+    while(getline(file, line))
+    {
+        stringstream   linestream(line);
+        string         data;
+        int            src;
+        int            dest;
+        int            duration;
+        
+        linestream >> src >> dest >> duration;
+
+        manifest_data.insert(make_pair(src, dest));
+        
+    }
+    return manifest_data;
 }
