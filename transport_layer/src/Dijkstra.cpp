@@ -139,8 +139,6 @@ void Dijkstra:: populate_from_dijkstra_file(string file_name, set< pair<int, int
     edge_weight = new double*[node_count];
     for (int i = 0; i < node_count; i++)
         edge_weight[i] = new double[node_count];
-
-    StringUtils *s; // To Do: Figure out a way to use functions without instantiating a class
     
     while(getline(file, line))
     {
@@ -149,8 +147,8 @@ void Dijkstra:: populate_from_dijkstra_file(string file_name, set< pair<int, int
         
         
         if (!line.empty()) {
-            columns = s->split(line, ';');
-            edge = s->split(columns[0], ',');
+            columns = split(line, ';');
+            edge = split(columns[0], ',');
             int src = stoi(edge[0]);
             int dest = stoi(edge[1]);
             double distance = stod(columns[1]);

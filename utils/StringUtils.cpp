@@ -13,7 +13,7 @@
 
 using namespace std;
 
-vector<string> StringUtils:: split(const string &s, char delim)
+vector<string> split(const string &s, char delim)
 {
     stringstream ss(s);
     string item;

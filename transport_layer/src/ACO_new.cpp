@@ -26,11 +26,10 @@ void ACO_new:: init(Dijkstra *dijkstra) {
 void ACO_new:: set_prime_ant(map<pair<int, int>, string> manifest_route) {
     
     map<pair<int, int>, string>:: iterator it;
-    StringUtils *s; // To Do: Figure out a way to use functions without instantiating a class
     for (it = manifest_route.begin(); it != manifest_route.end(); it++) {
         long tick = 0;
         string route = it->second;
-        vector<string> columns = s->split(route, ' ');
+        vector<string> columns = split(route, ' ');
     }
 }
 
