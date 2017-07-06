@@ -40,6 +40,7 @@ private:
     std::string m_windowTitle;
     App* m_appInstance;
     GLFWwindow* m_window;
+    double lastTime;
 };
 
 #endif /* Engine_hpp */

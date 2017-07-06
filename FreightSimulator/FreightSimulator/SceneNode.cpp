@@ -63,7 +63,7 @@ void SceneNode::_render(RenderState rs) {
         //Render self
         glUseProgram(m_program);
         glBindVertexArray(m_vertex_array);
-        //glUniformMatrix4fv(m_mvp_id, 1, GL_FALSE, &rs.mvp[0][0]);
+        glUniformMatrix4fv(m_mvp_id, 1, GL_FALSE, &rs.mvp[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 6);
         fprintf(stdout, "Node Private Render %d %d %d\n", m_program, m_vertex_array, m_mvp_id);
     }

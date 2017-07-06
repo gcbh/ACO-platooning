@@ -28,17 +28,17 @@ GLuint SimScene::mvp_id = 0;
 
 void SimScene::setup() {
     // Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
-    //m_projection_matrix = glm::perspective(glm::radians(45.0f), (float) (800.0 / 600.0), 0.1f, 100.0f);
+    m_projection_matrix = glm::perspective(glm::radians(45.0f), (float) (800.0 / 600.0), 0.1f, 100.0f);
 
     // Or, for an ortho camera :
     //m_projection_matrix = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f); // In world coordinates
 
     // Camera matrix
-    /*m_view_matrix = glm::lookAt(
+    m_view_matrix = glm::lookAt(
         glm::vec3(4,3,3), // Camera is at (4,3,3), in World Space
         glm::vec3(0,0,0), // and looks at the origin
         glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
-    );*/
+    );
 
     //Quad VBO
     glGenBuffers(1, &SimScene::vbo);
@@ -58,17 +58,20 @@ void SimScene::setup() {
     //Get MVP ID
     SimScene::mvp_id = glGetUniformLocation(SimScene::program, "MVP");
 
-    CityNode* city = new CityNode();
-    m_root_node->addChildNode(city);
-
-    fprintf(stdout, "SimScene User Setup.\n");
+    /*CityNode* city = new CityNode();
+    m_root_node->addChildNode(city);*/
 }
 
 void SimScene::input() {
 }
 
 void SimScene::update(double deltaTime) {
+    fprintf(stdout, "SimScene User Setup. %f \n", deltaTime);
 }
 
 void SimScene::render(RenderState rs) {
+    glUseProgram(SimScene::program);
+    glBindVertexArray(SimScene::vao);
+    glUniformMatrix4fv(SimScene::mvp_id, 1, GL_FALSE, &rs.mvp[0][0]);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 }

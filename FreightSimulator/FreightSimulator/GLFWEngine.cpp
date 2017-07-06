@@ -18,6 +18,7 @@ GLFWEngine::GLFWEngine(unsigned int window_width, unsigned int window_height, un
     m_glMajorVersion = glMajorVersion;
     m_glMinorVersion = glMinorVersion;
     m_windowTitle = windowTitle;
+    lastTime = glfwGetTime();
 }
 
 GLFWEngine::~GLFWEngine() { }
@@ -84,7 +85,9 @@ void GLFWEngine::input() {
 
 void GLFWEngine::update() {
     //Calculate delta time
-    double deltaTime = 0.0;
+    double currentTime = glfwGetTime();
+    double deltaTime = double(currentTime - lastTime);
+    lastTime = currentTime;
 
     //Update app
     m_appInstance->update(deltaTime);
