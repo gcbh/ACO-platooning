@@ -13,6 +13,7 @@
 #include "SceneNode.hpp"
 #include "State.hpp"
 #include "glm.hpp"
+#include "Camera.hpp"
 
 class Scene
 {
@@ -21,24 +22,22 @@ public:
     ~Scene();
 
     virtual void setup() = 0;
-    virtual void input() = 0;
-    virtual void update(double deltaTime) = 0;
+    virtual void input(InputState is) = 0;
+    virtual void update(UpdateState us) = 0;
     virtual void render(RenderState rs) = 0;
 
-    SceneNode* m_root_node;
-    glm::mat4 m_projection_matrix;
-    glm::mat4 m_view_matrix;
-
     void _setup();
-    void _input();
-    void _update(double deltaTime);
+    void _input(InputState is);
+    void _update(UpdateState us);
     void _render(RenderState rs);
 
+    void attachSceneCamera(Camera* camera);
+
+    SceneNode* m_root_node;
+
+
 private:
-    /*void _setup();
-    void _input();
-    void _update(double deltaTime);
-    void _render(RenderState rs);*/
+    Camera* m_scene_camera;
 };
 
 #endif /* Scene_hpp */

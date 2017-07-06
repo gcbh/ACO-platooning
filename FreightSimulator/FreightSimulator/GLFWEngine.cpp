@@ -19,6 +19,7 @@ GLFWEngine::GLFWEngine(unsigned int window_width, unsigned int window_height, un
     m_glMinorVersion = glMinorVersion;
     m_windowTitle = windowTitle;
     lastTime = glfwGetTime();
+    deltaTime = 0.0;
 }
 
 GLFWEngine::~GLFWEngine() { }
@@ -79,18 +80,22 @@ void GLFWEngine::run() {
 }
 
 void GLFWEngine::input() {
+    //Calculate delta time
+    double currentTime = glfwGetTime();
+    deltaTime = double(currentTime - lastTime);
+    lastTime = currentTime;
+
     //Handle app input
-    m_appInstance->input(m_window);
+    InputState is = {m_window, deltaTime};
+    m_appInstance->input(is);
 }
 
 void GLFWEngine::update() {
-    //Calculate delta time
-    double currentTime = glfwGetTime();
-    double deltaTime = double(currentTime - lastTime);
-    lastTime = currentTime;
+
 
     //Update app
-    m_appInstance->update(deltaTime);
+    UpdateState us = {deltaTime};
+    m_appInstance->update(us);
 }
 
 void GLFWEngine::render() {
@@ -100,7 +105,8 @@ void GLFWEngine::render() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     //Render app
-    m_appInstance->render(m_window);
+    RenderState rs = {m_window, glm::mat4(1.0f)};
+    m_appInstance->render(rs);
 }
 
 void GLFWEngine::cleanup() {

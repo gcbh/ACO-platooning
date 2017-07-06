@@ -14,9 +14,6 @@ Scene::Scene() {
 Scene::~Scene() { }
 
 void Scene::_setup() {
-    //Init with identity matrix by default
-    m_projection_matrix = glm::mat4(1.0f);
-    m_view_matrix = glm::mat4(1.0f);
 
     m_root_node = new SceneNode();
     m_root_node->_setup();
@@ -25,31 +22,41 @@ void Scene::_setup() {
     setup();
 }
 
-void Scene::_input() {
-    input();
-    m_root_node->_input();
+void Scene::_input(InputState is) {
+    input(is);
+    if (m_scene_camera != nullptr) {
+        m_scene_camera->_input(is);
+    }
+    m_root_node->_input(is);
 }
 
-void Scene::_update(double deltaTime) {
+void Scene::_update(UpdateState us) {
     //Update camera
-
+    if (m_scene_camera != nullptr) {
+        m_scene_camera->_update(us);
+    }
 
     //User update
-    update(deltaTime);
+    update(us);
 
-    UpdateState us = {deltaTime};
     //Update root node
     m_root_node->_update(us);
 }
 
 void Scene::_render(RenderState rs) {
     //MVP setup
-    glm::mat4 vp_matrix = m_projection_matrix * m_view_matrix;
-    rs.mvp = vp_matrix;
+    if (m_scene_camera != nullptr) {
+        rs.mvp = rs.mvp * m_scene_camera->vp_matrix;
+    }
 
     //User render
     render(rs);
 
     //Render root node
     m_root_node->_render(rs);
+}
+
+void Scene::attachSceneCamera(Camera* camera) {
+    m_scene_camera = camera;
+    m_scene_camera->_setup();
 }

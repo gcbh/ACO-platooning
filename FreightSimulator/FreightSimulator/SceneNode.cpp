@@ -8,36 +8,40 @@
 
 #include "SceneNode.hpp"
 
-SceneNode::SceneNode() {
-    _setup();
-}
+SceneNode::SceneNode() { }
 
 SceneNode::~SceneNode() { }
 
 void SceneNode::_setup() {
-    fprintf(stdout, "Node Private Setup.\n");
-
     m_model_matrix = glm::mat4(1.0);
+    m_position = glm::vec3(0.0);
+    m_velocity = glm::vec3(0.0);
+
+    m_program = -1;
+    m_vertex_array = -1;
+    m_mvp_id = -1;
     willRender = true;
 
     setup();
 }
 
-void SceneNode::_input() {
+void SceneNode::_input(InputState is) {
     //User input
-    input();
+    input(is);
 
     //Input children
     std::vector<SceneNode*>::iterator itr = child_nodes.begin();
     while( itr != child_nodes.end()) {
         SceneNode* node = *itr;
-        node->_input();
+        node->_input(is);
         itr++;
     }
 }
 
 void SceneNode::_update(UpdateState us) {
     //Update self
+    m_position = m_position + (m_velocity * (float)us.deltaTime);
+    m_model_matrix = glm::translate(glm::mat4(1.0), m_position);
 
     //User update
     update(us);
@@ -65,7 +69,6 @@ void SceneNode::_render(RenderState rs) {
         glBindVertexArray(m_vertex_array);
         glUniformMatrix4fv(m_mvp_id, 1, GL_FALSE, &rs.mvp[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 6);
-        fprintf(stdout, "Node Private Render %d %d %d\n", m_program, m_vertex_array, m_mvp_id);
     }
 
     //Render children
@@ -78,5 +81,6 @@ void SceneNode::_render(RenderState rs) {
 }
 
 void SceneNode::addChildNode(SceneNode* node) {
+    node->_setup();
     child_nodes.push_back(node);
 }

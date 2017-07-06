@@ -41,6 +41,7 @@ private:
     App* m_appInstance;
     GLFWwindow* m_window;
     double lastTime;
+    double deltaTime;
 };
 
 #endif /* Engine_hpp */

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1400DB9C1F0DE7A9002FA9B1 /* SimScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1400DB9A1F0DE7A9002FA9B1 /* SimScene.cpp */; };
 		1400DCAE1F0DFB72002FA9B1 /* CityNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1400DCAC1F0DFB72002FA9B1 /* CityNode.cpp */; };
+		1400DCB11F0E09F4002FA9B1 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1400DCAF1F0E09F4002FA9B1 /* Camera.cpp */; };
+		1400DCB41F0E0D15002FA9B1 /* SimCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1400DCB21F0E0D15002FA9B1 /* SimCamera.cpp */; };
 		1452D0891EE9CCBB00883286 /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1452D0871EE9CCBB00883286 /* StringUtils.cpp */; };
 		1452D0901EE9D08100883286 /* Edge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1452D08B1EE9D08100883286 /* Edge.cpp */; };
 		14A232651EE8D5B800FB574F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14A232641EE8D5B800FB574F /* main.cpp */; };
@@ -305,6 +307,10 @@
 		1400DCA91F0DEAC0002FA9B1 /* vector_relational.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = vector_relational.hpp; sourceTree = "<group>"; };
 		1400DCAC1F0DFB72002FA9B1 /* CityNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CityNode.cpp; sourceTree = "<group>"; };
 		1400DCAD1F0DFB72002FA9B1 /* CityNode.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CityNode.hpp; sourceTree = "<group>"; };
+		1400DCAF1F0E09F4002FA9B1 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		1400DCB01F0E09F4002FA9B1 /* Camera.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
+		1400DCB21F0E0D15002FA9B1 /* SimCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimCamera.cpp; sourceTree = "<group>"; };
+		1400DCB31F0E0D15002FA9B1 /* SimCamera.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SimCamera.hpp; sourceTree = "<group>"; };
 		1452D0871EE9CCBB00883286 /* StringUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtils.cpp; sourceTree = "<group>"; };
 		1452D0881EE9CCBB00883286 /* StringUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StringUtils.hpp; sourceTree = "<group>"; };
 		1452D08B1EE9D08100883286 /* Edge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Edge.cpp; sourceTree = "<group>"; };
@@ -721,6 +727,8 @@
 				14ED4D711EEE4D42009A6A35 /* SceneNode.cpp */,
 				14ED4D721EEE4D42009A6A35 /* SceneNode.hpp */,
 				1400DB981F0DE2D3002FA9B1 /* State.hpp */,
+				1400DCAF1F0E09F4002FA9B1 /* Camera.cpp */,
+				1400DCB01F0E09F4002FA9B1 /* Camera.hpp */,
 			);
 			name = scene;
 			sourceTree = "<group>";
@@ -735,6 +743,8 @@
 				1400DB9B1F0DE7A9002FA9B1 /* SimScene.hpp */,
 				1400DCAC1F0DFB72002FA9B1 /* CityNode.cpp */,
 				1400DCAD1F0DFB72002FA9B1 /* CityNode.hpp */,
+				1400DCB21F0E0D15002FA9B1 /* SimCamera.cpp */,
+				1400DCB31F0E0D15002FA9B1 /* SimCamera.hpp */,
 			);
 			name = app;
 			sourceTree = "<group>";
@@ -818,9 +828,11 @@
 				14ED4D701EEE4D0A009A6A35 /* Scene.cpp in Sources */,
 				1400DCAE1F0DFB72002FA9B1 /* CityNode.cpp in Sources */,
 				1452D0901EE9D08100883286 /* Edge.cpp in Sources */,
+				1400DCB11F0E09F4002FA9B1 /* Camera.cpp in Sources */,
 				1452D0891EE9CCBB00883286 /* StringUtils.cpp in Sources */,
 				1400DB9C1F0DE7A9002FA9B1 /* SimScene.cpp in Sources */,
 				14A232651EE8D5B800FB574F /* main.cpp in Sources */,
+				1400DCB41F0E0D15002FA9B1 /* SimCamera.cpp in Sources */,
 				14ED4D731EEE4D42009A6A35 /* SceneNode.cpp in Sources */,
 				14D214351EEA254C00D568A8 /* SimulatorApp.cpp in Sources */,
 				14ED4D6B1EEE3F7A009A6A35 /* GLFWEngine.cpp in Sources */,

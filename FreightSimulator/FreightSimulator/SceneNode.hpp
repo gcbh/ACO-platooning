@@ -22,18 +22,20 @@ public:
     SceneNode();
     ~SceneNode();
 
-    void setup() {};
-    void input() {};
-    void update(UpdateState us) {};
-    void render(RenderState rs) {};
+    virtual void setup() {};
+    virtual void input(InputState is) {};
+    virtual void update(UpdateState us) {};
+    virtual void render(RenderState rs) {};
 
     void _setup();
-    void _input();
+    void _input(InputState is);
     void _update(UpdateState us);
     void _render(RenderState rs);
 
     void addChildNode(SceneNode* node);
 
+    glm::vec3 m_position;
+    glm::vec3 m_velocity;
     glm::mat4 m_model_matrix;
     GLuint m_program, m_vertex_array, m_mvp_id;
     bool willRender;

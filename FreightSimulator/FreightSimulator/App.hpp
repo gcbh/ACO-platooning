@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <string>
 #include <GLFW/glfw3.h>
+#include "State.hpp"
 
 class App
 {
@@ -22,9 +23,9 @@ public:
     virtual std::string getName() = 0;
     virtual void setup() = 0;
     virtual void cleanup() = 0;
-    virtual void input(GLFWwindow *window) = 0;
-    virtual void update(double deltaTime) = 0;
-    virtual void render(GLFWwindow *window) = 0;
+    virtual void input(InputState is) = 0;
+    virtual void update(UpdateState us) = 0;
+    virtual void render(RenderState rs) = 0;
 };
 
 #endif /* App_hpp */

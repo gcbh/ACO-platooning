@@ -13,6 +13,10 @@
 #include <GLFW/glfw3.h>
 #include "glm.hpp"
 
+struct InputState {
+    GLFWwindow *window;
+    double deltaTime;
+};
 
 struct UpdateState {
     double deltaTime;

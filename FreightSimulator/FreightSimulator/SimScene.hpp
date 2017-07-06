@@ -20,13 +20,15 @@ public:
     SimScene() : Scene() {}
 
     void setup();
-    void input();
-    void update(double deltaTime);
+    void input(InputState is);
+    void update(UpdateState is);
     void render(RenderState rs);
 
     static GLuint program, vbo, vao, mvp_id;
 
 private:
+
+    glm::vec3 camera_position;
 };
 
 #endif /* SimScene_hpp */

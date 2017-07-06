@@ -24,24 +24,22 @@ void SimulatorApp::cleanup() {
     fprintf(stdout, "App Cleanup.\n");
 }
 
-void SimulatorApp::input(GLFWwindow *window) {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS){
+void SimulatorApp::input(InputState is) {
+    if (glfwGetKey(is.window, GLFW_KEY_ESCAPE) == GLFW_PRESS){
         //Cleanup and exit
         cleanup();
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
+        glfwSetWindowShouldClose(is.window, GLFW_TRUE);
     }
-
-    m_scene->_input();
+    
+    m_scene->_input(is);
 }
 
-void SimulatorApp::update(double deltaTime) {
+void SimulatorApp::update(UpdateState us) {
     //Calculate delta time
-    m_scene->_update(deltaTime);
+    m_scene->_update(us);
 }
 
-void SimulatorApp::render(GLFWwindow *window) {
-
-    RenderState rs = {window, glm::mat4(1.0f)};
+void SimulatorApp::render(RenderState rs) {
     m_scene->_render(rs);
 }
 

@@ -22,9 +22,9 @@ public:
     std::string getName();
     void setup();
     void cleanup();
-    void input(GLFWwindow *window);
-    void update(double deltaTime);
-    void render(GLFWwindow *window);
+    void input(InputState is);
+    void update(UpdateState is);
+    void render(RenderState is);
 
 private:
     SimScene* m_scene;
