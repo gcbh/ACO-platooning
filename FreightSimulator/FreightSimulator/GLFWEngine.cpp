@@ -9,7 +9,7 @@
 //
 
 #include "GLFWEngine.hpp"
-#include "linmath.h"
+#include "glm.hpp"
 #include <stdlib.h>
 
 GLFWEngine::GLFWEngine(unsigned int window_width, unsigned int window_height, unsigned int glMajorVersion, unsigned int glMinorVersion, std::string windowTitle) {
@@ -98,8 +98,6 @@ void GLFWEngine::render() {
 
     //Render app
     m_appInstance->render(m_window);
-
-    glfwSwapBuffers(m_window);
 }
 
 void GLFWEngine::cleanup() {

@@ -12,6 +12,7 @@
 #include "App.hpp"
 #include <string>
 #include <GLFW/glfw3.h>
+#include "SimScene.hpp"
 
 class SimulatorApp : public App
 {
@@ -26,7 +27,7 @@ public:
     void render(GLFWwindow *window);
 
 private:
-    GLuint m_program, m_vbo, m_vao;
+    SimScene* m_scene;
 };
 
 #endif /* SimulatorApp_h */

@@ -9,39 +9,15 @@
 #include "SimulatorApp.hpp"
 #include <GLFW/glfw3.h>
 #include <OpenGL/gl3.h>
-#include "ShaderUtils.hpp"
-#include "linmath.h"
-
-// An array of 3 vectors which represents 3 vertices
-static const GLfloat points[] = {
-    0.5f,  0.5f,  0.0f,
-    0.5f, -0.5f,  0.0f,
-    -0.5f, -0.5f,  0.0f,
-    0.5f,  0.5f,  0.0f,
-    -0.5f, 0.5f,  0.0f,
-    -0.5f, -0.5f,  0.0f
-};
+#include "glm.hpp"
 
 std::string SimulatorApp::getName(){
     return "Automated Freight Transport Simulator";
 }
 
 void SimulatorApp::setup() {
-    m_vbo = 0;
-    glGenBuffers(1, &m_vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glBufferData(GL_ARRAY_BUFFER, 18 * sizeof(float), points, GL_STATIC_DRAW);
-
-    m_vao = 0;
-    glGenVertexArrays(1, &m_vao);
-    glBindVertexArray(m_vao);
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-    
-    m_program = LoadShaders("basic_vs.glsl", "basic_fs.glsl");
-
-    glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+    m_scene = new SimScene();
+    m_scene->_setup();
 }
 
 void SimulatorApp::cleanup() {
@@ -54,17 +30,19 @@ void SimulatorApp::input(GLFWwindow *window) {
         cleanup();
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
+
+    m_scene->_input();
 }
 
 void SimulatorApp::update(double deltaTime) {
-
+    //Calculate delta time
+    m_scene->_update(deltaTime);
 }
 
 void SimulatorApp::render(GLFWwindow *window) {
-    glUseProgram(m_program);
-    glBindVertexArray(m_vao);
-    // draw points 0-3 from the currently bound VAO with current in-use shader
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    RenderState rs = {window, glm::mat4(1.0f)};
+    m_scene->_render(rs);
 }
 
 

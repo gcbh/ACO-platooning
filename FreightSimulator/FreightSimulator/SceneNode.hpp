@@ -10,7 +10,11 @@
 #define SceneNode_hpp
 
 #include <stdio.h>
-#include "linmath.h"
+#include <vector>
+#include "glm.hpp"
+#include <GLFW/glfw3.h>
+#include <OpenGL/gl3.h>
+#include "State.hpp"
 
 class SceneNode
 {
@@ -18,13 +22,25 @@ public:
     SceneNode();
     ~SceneNode();
 
-    void setup();
-    void input();
-    void update();
-    void render();
+    void setup() {};
+    void input() {};
+    void update(UpdateState us) {};
+    void render(RenderState rs) {};
+
+    void _setup();
+    void _input();
+    void _update(UpdateState us);
+    void _render(RenderState rs);
+
+    void addChildNode(SceneNode* node);
+
+    glm::mat4 m_model_matrix;
+    GLuint m_program, m_vertex_array, m_mvp_id;
+    bool willRender;
 
 private:
-    mat4x4 m_model;
+
+    std::vector<SceneNode*> child_nodes;
 };
 
 #endif /* SceneNode_hpp */
