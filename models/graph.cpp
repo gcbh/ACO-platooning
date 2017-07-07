@@ -22,7 +22,7 @@ graph::~graph() {
 }
 
 void graph::construct_graph(list<graph_data> i_edges) {
-    int speed = 100; //fixed speed for now
+    int speed = 75; //fixed nominal average speed on every edge 
     for (list<graph_data>::iterator it = i_edges.begin(); it != i_edges.end(); ++it) {
         t_node *src_node; //= new t_node(it->src);
         t_node *dest_node; //= new t_node(it->dest);
