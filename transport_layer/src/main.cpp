@@ -20,7 +20,7 @@
 
 using namespace std;
 
-set< pair<int, int> > get_manifest(string file_name);
+list<graph_data> get_manifest(string file_name);
 
 int main() {
     cout << "hello world" << endl;
@@ -80,21 +80,21 @@ int main() {
         fclose(stdout);
 
     } 
-    set< pair<int, int> > manifest_set = get_manifest(manifest_file_name);
-    dijkstra->populate_from_dijkstra_file(out_file_name, manifest_set);
+    list<graph_data> manifest_list = get_manifest(manifest_file_name);
+    // dijkstra->populate_from_dijkstra_file(out_file_name, manifest_set);
     
     graph *g = new graph();
     g->construct_graph(pre_opt_graph); 
     
     ACO_new *ACO = new ACO_new(g, 10);
-    ACO->init(dijkstra);
+    // ACO->init(dijkstra);
     return 0;
 }
 
-set< pair<int, int> > get_manifest(string file_name) {
+list<graph_data> get_manifest(string file_name) {
     ifstream file("../../" + file_name);
     string line;
-    set< pair<int, int> > manifest_data;
+    list<graph_data> manifest_data;
 
     while(getline(file, line))
     {
@@ -106,7 +106,12 @@ set< pair<int, int> > get_manifest(string file_name) {
         
         linestream >> src >> dest >> duration;
 
-        manifest_data.insert(make_pair(src, dest));
+        struct graph_data edge;
+        edge.src = src;
+        edge.dest = dest;
+        edge.weight = duration;
+
+        manifest_data.push_back(edge);
         
     }
     return manifest_data;

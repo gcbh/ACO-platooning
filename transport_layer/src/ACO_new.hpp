@@ -24,7 +24,7 @@ private:
     graph *g;
     int num_iterations;
     double RHO;
-    void set_prime_ant(map<pair<int, int>, string> manifest_route);
+    void set_prime_ant(list< pair<int, string> > manifest_route);
     void iteration();
     void delta_pheromone(int time, t_edge *edge);
     void evaporation();

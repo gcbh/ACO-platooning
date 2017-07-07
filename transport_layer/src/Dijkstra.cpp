@@ -145,7 +145,6 @@ void Dijkstra:: populate_from_dijkstra_file(string file_name, set< pair<int, int
         vector<string> columns;
         vector<string> edge;
         
-        
         if (!line.empty()) {
             columns = split(line, ';');
             edge = split(columns[0], ',');
@@ -160,8 +159,10 @@ void Dijkstra:: populate_from_dijkstra_file(string file_name, set< pair<int, int
 
             // populate manifest routes from dijkstra's
             if (manifest_set.count(make_pair(src, dest))) {
-                pair<int, int> key = make_pair(src, dest);
-                manifest_route.insert(make_pair(key, route));
+                // pair<int, int> key = make_pair(src, dest);
+                // manifest_route.insert(make_pair(key, route));
+                //manifest_route(make_pair(src, route));
+                manifest_route.push_back(make_pair(src, route));
             }
         }
         
@@ -172,9 +173,12 @@ double Dijkstra:: get_edge_weight(int src, int dest) {
     return edge_weight[src][dest];
 }
 
-map<pair<int, int>, string> Dijkstra:: get_manifest_routes() {
+list< pair<int, string> > Dijkstra:: get_manifest_routes() {
     return manifest_route;
 }
+// map<pair<int, int>, string> Dijkstra:: get_manifest_routes() {
+//     return manifest_route;
+// }
 
 
 
