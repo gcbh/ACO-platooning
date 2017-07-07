@@ -20,7 +20,7 @@
 
 using namespace std;
 
-list<graph_data> get_manifest(string file_name);
+multimap< pair<int, int> , int>  get_manifest(string file_name);
 
 int main() {
     cout << "hello world" << endl;
@@ -80,8 +80,7 @@ int main() {
         fclose(stdout);
 
     } 
-    list<graph_data> manifest_list = get_manifest(manifest_file_name);
-    // dijkstra->populate_from_dijkstra_file(out_file_name, manifest_set);
+    multimap< pair<int, int> , int>  manifest_map = get_manifest(manifest_file_name);
     
     graph *g = new graph();
     g->construct_graph(pre_opt_graph); 
@@ -91,10 +90,10 @@ int main() {
     return 0;
 }
 
-list<graph_data> get_manifest(string file_name) {
+multimap< pair<int, int> , int> get_manifest(string file_name) {
     ifstream file("../../" + file_name);
     string line;
-    list<graph_data> manifest_data;
+    multimap< pair<int, int>, int> manifest_data;
 
     while(getline(file, line))
     {
@@ -111,8 +110,8 @@ list<graph_data> get_manifest(string file_name) {
         edge.dest = dest;
         edge.weight = duration;
 
-        manifest_data.push_back(edge);
-        
+        pair<int, int> key = make_pair(src, dest);
+        manifest_data.insert(make_pair(key, duration));
     }
     return manifest_data;
 }
