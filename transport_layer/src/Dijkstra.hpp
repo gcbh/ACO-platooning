@@ -29,7 +29,7 @@ public:
     Dijkstra();
     virtual ~Dijkstra();
     void init(list<graph_data> list, int node_count);
-    void populate_from_dijkstra_file(string file_name, set< pair<int, int> > manifest_set);
+    void populate_from_dijkstra_file(string file_name, multimap< pair<int, int>, int> manifest_map);
     double get_edge_weight(int src, int dest);
     // map<pair<int, int>, string> get_manifest_routes();
     list< pair<int, string> > get_manifest_routes();
@@ -37,7 +37,6 @@ private:
     list< pair<double, int> > *edg;
     set<int> nodes;
     double **edge_weight;
-    // map<pair<int, int>, string> manifest_route;
     list< pair<int, string> > manifest_route;
     int num_of_nodes;
     void shortest_route( int src);

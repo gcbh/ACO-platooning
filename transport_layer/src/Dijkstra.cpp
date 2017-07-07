@@ -129,7 +129,7 @@ void Dijkstra::print_path(int route[], int j)
     printf("%d ", j);
 }
 
-void Dijkstra:: populate_from_dijkstra_file(string file_name, set< pair<int, int> > manifest_set) {
+void Dijkstra:: populate_from_dijkstra_file(string file_name, multimap< pair<int, int>, int> manifest_map) {
     ifstream file("../../" + file_name);
     string   line;
 
@@ -158,11 +158,10 @@ void Dijkstra:: populate_from_dijkstra_file(string file_name, set< pair<int, int
             edge_weight[dest][src] = distance;
 
             // populate manifest routes from dijkstra's
-            if (manifest_set.count(make_pair(src, dest))) {
-                // pair<int, int> key = make_pair(src, dest);
-                // manifest_route.insert(make_pair(key, route));
-                //manifest_route(make_pair(src, route));
+            int key_count = manifest_map.count(make_pair(src, dest));
+            while (key_count > 0) {
                 manifest_route.push_back(make_pair(src, route));
+                --key_count;
             }
         }
         
@@ -176,9 +175,7 @@ double Dijkstra:: get_edge_weight(int src, int dest) {
 list< pair<int, string> > Dijkstra:: get_manifest_routes() {
     return manifest_route;
 }
-// map<pair<int, int>, string> Dijkstra:: get_manifest_routes() {
-//     return manifest_route;
-// }
+
 
 
 
