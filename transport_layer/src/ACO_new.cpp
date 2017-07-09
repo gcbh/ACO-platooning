@@ -23,16 +23,18 @@ void ACO_new:: init(Dijkstra *dijkstra) {
     set_prime_ant(dijkstra->get_manifest_routes());
 }
 
-void ACO_new:: set_prime_ant(list<pair< int, string> > manifest_route) {
+void ACO_new:: set_prime_ant(list<string> manifest_route) {
     
-    // map<pair<int, int>, string>:: iterator it;
-    // for (it = manifest_route.begin(); it != manifest_route.end(); it++) {
-    //     long tick = 0;
-    //     string route = it->second;
-    //     pair<int, int> edge_nodes = it->first;
-    //     t_node src = (*g)[edge_nodes.first];
-    //     vector<string> nodes = split(route, ' ');
-    // }
+    list<string>:: iterator it;
+    for (it = manifest_route.begin(); it != manifest_route.end(); it++) {
+        string route = *it;
+        vector<string> nodes = split(route, ' ');
+        t_node *start_from = (*g) [stoi(nodes[0])];
+        
+        primer_ant *ant = new primer_ant(start_from, nodes);
+
+        ant->set_ant_path();
+    }
 }
 
 void ACO_new::iteration() {

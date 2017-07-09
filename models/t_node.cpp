@@ -41,3 +41,13 @@ t_edge* t_node::operator[](int i) {
 vector<t_edge*> t_node::get_edges() {
     return *edges;
 }
+
+t_edge* t_node:: get_edge(int dest_id) {
+    vector<t_edge*> v_edges = get_edges();
+    for (int i = 0; i < v_edges.size(); i++) {
+        if (dest_id == v_edges[i]->get_dest()->get_id()) {
+            return v_edges[i];
+        }
+    }
+    return NULL;
+}

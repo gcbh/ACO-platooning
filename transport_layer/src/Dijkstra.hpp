@@ -32,12 +32,12 @@ public:
     void populate_from_dijkstra_file(string file_name, multimap< pair<int, int>, int> manifest_map);
     double get_edge_weight(int src, int dest);
     // map<pair<int, int>, string> get_manifest_routes();
-    list< pair<int, string> > get_manifest_routes();
+    list<string> get_manifest_routes();
 private:
     list< pair<double, int> > *edg;
     set<int> nodes;
     double **edge_weight;
-    list< pair<int, string> > manifest_route;
+    list<string> manifest_route;
     int num_of_nodes;
     void shortest_route( int src);
     void add_edge(int src, int dest, double weight);

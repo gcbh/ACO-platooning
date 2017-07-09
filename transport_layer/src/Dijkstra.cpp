@@ -52,6 +52,7 @@ void Dijkstra::add_edge(int src, int dest, double weight) {
 void Dijkstra::init(list<graph_data> edge_list, int node_count) {
 
     edg = new list<iPair> [node_count];
+    printf("%d", node_count);
     for (list<graph_data>:: iterator itr = edge_list.begin(); itr != edge_list.end(); itr++) {
         nodes.insert(itr->src);
         nodes.insert(itr->dest);
@@ -160,7 +161,7 @@ void Dijkstra:: populate_from_dijkstra_file(string file_name, multimap< pair<int
             // populate manifest routes from dijkstra's
             int key_count = manifest_map.count(make_pair(src, dest));
             while (key_count > 0) {
-                manifest_route.push_back(make_pair(src, route));
+                manifest_route.push_back(route);
                 --key_count;
             }
         }
@@ -172,7 +173,7 @@ double Dijkstra:: get_edge_weight(int src, int dest) {
     return edge_weight[src][dest];
 }
 
-list< pair<int, string> > Dijkstra:: get_manifest_routes() {
+list<string> Dijkstra:: get_manifest_routes() {
     return manifest_route;
 }
 

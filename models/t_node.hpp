@@ -28,6 +28,7 @@ public:
     void add_edge(t_edge *edge);
     t_edge* operator[](int i);
     vector<t_edge*> get_edges();
+    t_edge* get_edge(int dest_id); 
 private:
     int id;
     vector<t_edge*> *edges;
