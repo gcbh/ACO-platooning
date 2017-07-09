@@ -40,8 +40,7 @@ void graph::construct_graph(list<graph_data> i_edges) {
             dest_node = new t_node(it->dest);
             g_graph->insert(make_pair(it->dest, dest_node));
         } else {
-            t_node *node = (*this)[it->dest];
-            
+            dest_node = (*this)[it->dest];
         }
         
         //create two way edges
