@@ -33,6 +33,7 @@ private:
     void iteration();
     void delta_pheromone(int time, t_edge *edge);
     void evaporation();
+    double cost_evaluation(int max_duration);
 };
 
 #endif /* ACO_new_hpp */

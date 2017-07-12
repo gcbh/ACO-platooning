@@ -81,3 +81,8 @@ void ACO_new::evaporation() {
         edges.clear();
     }
 }
+
+double ACO_new::cost_evaluation(int max_duration) {
+    list<ant> final_ant_list = *ants;
+    return 0;
+}
