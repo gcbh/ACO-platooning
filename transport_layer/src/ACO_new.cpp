@@ -46,25 +46,24 @@ void ACO_new::iteration() {
     }
     int tick = 0;
     int max_tick = 0;
-    for(int i = 0; i < num_iterations; i++) {
+    for(int i = 1; i == num_iterations; i++) {
         for (list<ant>::iterator it = ants->begin(); it != ants->end(); ++it) {
             //while not reached destination call nextnode
             while(!it->hasReachedDestination()) {
                 it->next_node(tick);
                 tick++;
             }
-            if (i == num_iterations - 1) { //this is the last iteration
-                max_tick < tick ? max_tick = tick : max_tick;  //needed for cost evaluation
-            }
+
+            max_tick < tick ? max_tick = tick : max_tick; //needed for cost evaluation            
             tick = 0;
         }
 
         //TODO: loop through each ant and print their ordered path?
         evaporation();
+        cost = cost_evaluation(max_tick);
+        max_tick = 0;
     }
 
-    cost = cost_evaluation(max_tick);
-    //TODO: print cost?
 }
 
 void ACO_new::delta_pheromone(int time, t_edge *edge) {
