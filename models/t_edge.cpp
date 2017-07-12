@@ -10,7 +10,8 @@
 
 using namespace std;
 
-t_edge::t_edge(t_node *i_dest, double i_distance, int i_speed) {
+t_edge::t_edge(int i_id, t_node *i_dest, double i_distance, int i_speed) {
+    id = i_id;
     dest = i_dest;
     distance = i_distance;
     speed = i_speed;
@@ -23,6 +24,10 @@ t_edge::~t_edge() {
 //    if (dest != nullptr) {
 //        delete dest;
 //    }
+}
+
+int t_edge::get_id() {
+    return id;
 }
 
 t_node* t_edge::get_dest() {

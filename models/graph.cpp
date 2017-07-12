@@ -23,6 +23,7 @@ graph::~graph() {
 
 void graph::construct_graph(list<graph_data> i_edges) {
     int speed = 75; //fixed nominal average speed on every edge 
+    int edge_id = 0;
     for (list<graph_data>::iterator it = i_edges.begin(); it != i_edges.end(); ++it) {
         t_node *src_node; //= new t_node(it->src);
         t_node *dest_node; //= new t_node(it->dest);
@@ -44,8 +45,10 @@ void graph::construct_graph(list<graph_data> i_edges) {
         }
         
         //create two way edges
-        t_edge *edge_sd = new t_edge(dest_node, it->weight, speed);
-        t_edge *edge_ds = new t_edge(src_node, it->weight, speed);
+        t_edge *edge_sd = new t_edge(edge_id, dest_node, it->weight, speed);
+        edge_id++;
+        t_edge *edge_ds = new t_edge(edge_id, src_node, it->weight, speed);
+        edge_id++;
         
         src_node->add_edge(edge_sd);
         dest_node->add_edge(edge_ds);
