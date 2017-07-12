@@ -9,6 +9,9 @@
 #include "ACO_new.hpp"
 #include <map>
 
+const float avg_prcnt_fuel_saving_by_middle = 4.1;
+const float avg_prcnt_fuel_saving_by_last = 6.1;
+
 ACO_new::ACO_new(graph *i_g, int i_num_iterations, multimap< pair<int, int> , int> i_manifest) {
     g = i_g;
     num_iterations = i_num_iterations;
@@ -90,6 +93,8 @@ double ACO_new::cost_evaluation(int max_duration) {
     list<ant> final_ant_list = *ants;
     vector<int> *ants_previous_node = new vector<int>[final_ant_list.size()];
     int count = 0;
+    double total_cost = 0;
+
     for (list<ant>::iterator it = final_ant_list.begin(); it != final_ant_list.end(); ++it) {
         ants_previous_node[count].push_back(it->get_ordered_path().front());
         it->get_ordered_path().pop();
@@ -97,7 +102,7 @@ double ACO_new::cost_evaluation(int max_duration) {
     }
 
     for (int i = 0; i < max_duration; i++) {
-        map< int, set<int> > *ant_count = new map< int, set<int> >();
+        map< int, set<int> > *map_ant_count = new map< int, set<int> >();
         count = 0;
         for (list<ant>::iterator it = final_ant_list.begin(); it != final_ant_list.end(); ++it) {
             if (it->get_ordered_path().size() != 0 ) {
@@ -107,24 +112,42 @@ double ACO_new::cost_evaluation(int max_duration) {
                 t_edge *cur_edge = previous->get_edge(it->get_ordered_path().front());
 
                 // if edge in map update the set of ants to append new ant
-                if (ant_count->count(cur_edge->get_id())) {
-                    set<int> cur_edge_set = ant_count->find(cur_edge->get_id())->second;
+                if (map_ant_count->count(cur_edge->get_id())) {
+                    set<int> cur_edge_set = map_ant_count->find(cur_edge->get_id())->second;
                     cur_edge_set.insert(count);
-                    ant_count->insert(make_pair(cur_edge->get_id(), cur_edge_set));
+                    map_ant_count->insert(make_pair(cur_edge->get_id(), cur_edge_set));
                 }
 
                 ants_previous_node[count].push_back(it->get_ordered_path().front());
                 it->get_ordered_path().pop();
-                count++;
             }
+            count++;
         }
 
         // cost calculation per tick
-        map< int, set<int> >::iterator itm;
-        for (itm = ant_count->begin(); itm != ant_count->end(); ++itm) {
-            set<int> value_set = itm->second;
-            int num_of_ants = value_set.size();
-        }
+        total_cost += cost_per_tick(map_ant_count);
+
+        // TO DO : Modify total cost to take distance into consideration
     }
-    return 0;
+    return total_cost;
+}
+
+double ACO_new::cost_per_tick(map< int, set<int> > *edge_with_ants) {
+    map< int, set<int> >::iterator itm;
+    double cost_per_tick = 0;
+    for (itm = edge_with_ants->begin(); itm != edge_with_ants->end(); ++itm) {
+        set<int> value_set = itm->second;
+        int num_of_ants = value_set.size();
+        cost_per_tick += cost_based_num_ants(num_of_ants);
+    }
+    return cost_per_tick;
+}
+
+double ACO_new::cost_based_num_ants(int num_of_ants) {
+
+    int num_at_middle = num_of_ants - 2;
+    double cost_for_middle = num_at_middle * (1 - (avg_prcnt_fuel_saving_by_middle/100));
+    double cost_for_last = (1 - (avg_prcnt_fuel_saving_by_last/100));
+
+    return 1 + cost_for_middle + cost_for_last;
 }

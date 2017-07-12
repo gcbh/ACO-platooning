@@ -32,7 +32,6 @@ public:
     void init(list<graph_data> list, int node_count);
     void populate_from_dijkstra_file(string file_name, multimap< pair<int, int>, int> manifest_map);
     double get_edge_weight(int src, int dest);
-    // map<pair<int, int>, string> get_manifest_routes();
     list<string> get_manifest_routes();
 private:
     list< pair<double, int> > *edg;

@@ -34,6 +34,8 @@ private:
     void delta_pheromone(int time, t_edge *edge);
     void evaporation();
     double cost_evaluation(int max_duration);
+    double cost_based_num_ants(int num_of_ants);
+    double cost_per_tick(map< int, set<int> > *edge_with_ants);
 };
 
 #endif /* ACO_new_hpp */
