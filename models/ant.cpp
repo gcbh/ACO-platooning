@@ -25,3 +25,11 @@ ant::~ant() {
 void ant::next_node(int time) {
     
 }
+
+bool ant::hasReachedDestination() {
+    return current->get_id() == dest;
+}
+
+queue<int> ant::get_ordered_path() {
+    return *ordered_path;
+}

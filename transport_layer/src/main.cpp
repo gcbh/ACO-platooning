@@ -17,6 +17,7 @@
 #include "../../models/graph.hpp"
 #include "Dijkstra.hpp"
 #include "ACO_new.hpp"
+#include "../../utils/StringUtils.hpp"
 
 using namespace std;
 
@@ -84,7 +85,7 @@ int main() {
     graph *g = new graph();
     g->construct_graph(pre_opt_graph); 
     
-    ACO_new *ACO = new ACO_new(g, 10);
+    ACO_new *ACO = new ACO_new(g, 10, manifest_map);
     ACO->init(dijkstra);
     return 0;
 }
