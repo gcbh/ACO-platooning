@@ -38,6 +38,7 @@ private:
     int distance, speed, max_tick, time_to_cross;
     float max_phermone;
     map<int, phermone> *phermone_at;
+    void update_future_pheromone(int time, int value);
 };
 
 #endif /* t_edge_hpp */

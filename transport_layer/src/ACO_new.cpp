@@ -9,8 +9,6 @@
 #include "ACO_new.hpp"
 #include <map>
 
-#include "../../utils/StringUtils.hpp"
-
 ACO_new::ACO_new(graph *i_g, int i_num_iterations, multimap< pair<int, int> , int> i_manifest) {
     g = i_g;
     num_iterations = i_num_iterations;
@@ -39,27 +37,34 @@ void ACO_new:: set_prime_ant(list<string> manifest_route) {
 }
 
 void ACO_new::iteration() {
+    double cost;
     for (multimap< pair<int, int> , int>::iterator it = manifest.begin(); it != manifest.end(); ++it) {
         int src = it->first.first;
         int dest = it->first.second;
         //ant *a = new ant((*g)[src], dest);
         ants->push_back(*(new ant((*g)[src], dest)));
     }
+    int tick = 0;
+    int max_tick = 0;
     for(int i = 0; i < num_iterations; i++) {
-        int tick = 0;
         for (list<ant>::iterator it = ants->begin(); it != ants->end(); ++it) {
             //while not reached destination call nextnode
             while(!it->hasReachedDestination()) {
                 it->next_node(tick);
+                tick++;
             }
-            tick++;
+            if (i == num_iterations - 1) { //this is the last iteration
+                max_tick < tick ? max_tick = tick : max_tick;  //needed for cost evaluation
+            }
+            tick = 0;
         }
 
         //TODO: loop through each ant and print their ordered path?
-
-        //updateFuturePheromones(*ants);
         evaporation();
     }
+
+    cost = cost_evaluation(max_tick);
+    //TODO: print cost?
 }
 
 void ACO_new::delta_pheromone(int time, t_edge *edge) {
