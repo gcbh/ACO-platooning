@@ -89,5 +89,43 @@ void ACO_new::evaporation() {
 
 double ACO_new::cost_evaluation(int max_duration) {
     list<ant> final_ant_list = *ants;
+    vector<int> *ants_previous_node = new vector<int>[final_ant_list.size()];
+    int count = 0;
+    for (list<ant>::iterator it = final_ant_list.begin(); it != final_ant_list.end(); ++it) {
+        ants_previous_node[count].push_back(it->get_ordered_path().front());
+        it->get_ordered_path().pop();
+        count++;
+    }
+
+    for (int i = 0; i < max_duration; i++) {
+        map< int, set<int> > *ant_count = new map< int, set<int> >();
+        count = 0;
+        for (list<ant>::iterator it = final_ant_list.begin(); it != final_ant_list.end(); ++it) {
+            if (it->get_ordered_path().size() != 0 ) {
+                if (it->get_ordered_path().front() == (*ants_previous_node)[count])
+                    break;
+                t_node *previous = (*g) [(*ants_previous_node)[count]];
+                t_edge *cur_edge = previous->get_edge(it->get_ordered_path().front());
+
+                // if edge in map update the set of ants to append new ant
+                if (ant_count->count(cur_edge->get_id())) {
+                    set<int> cur_edge_set = ant_count->find(cur_edge->get_id())->second;
+                    cur_edge_set.insert(count);
+                    ant_count->insert(make_pair(cur_edge->get_id(), cur_edge_set));
+                }
+
+                ants_previous_node[count].push_back(it->get_ordered_path().front());
+                it->get_ordered_path().pop();
+                count++;
+            }
+        }
+
+        // cost calculation per tick
+        map< int, set<int> >::iterator itm;
+        for (itm = ant_count->begin(); itm != ant_count->end(); ++itm) {
+            set<int> value_set = itm->second;
+            int num_of_ants = value_set.size();
+        }
+    }
     return 0;
 }
