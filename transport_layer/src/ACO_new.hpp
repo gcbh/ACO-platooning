@@ -43,7 +43,6 @@ private:
     double cost_evaluation(int max_duration);
     double cost_based_num_ants(int num_of_ants);
     double cost_per_tick(map< int, set<int> > *edge_with_ants);
-    void pretty_print(int max_tick, int iteration_num, int ant_num);
     void reset_ants();
 };
 

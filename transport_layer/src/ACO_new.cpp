@@ -93,31 +93,6 @@ void ACO_new::iteration() {
 
 }
 
-// void ACO_new::pretty_print(int max_tick, int iteration_num, int ant_num) {
-//     result_log.open(RESULT_LOG_PATH); 
-//     result_log << "***ITERATION " << iteration_num <<"***\n";
-    
-//     result_log << "\n\n\n";
-//     result_log << setw(50)<<"ANT PATHS\n";
-//     result_log << "\n";
-
-//     for (int i = 1; i == iteration_num; i++) {
-//         result_log << setw(5)<<"Ant" <<setw(5) << "Tick Number";
-        
-//     }
-    
-//     line();
-//     for(int i=0;i<5;i++)
-//     {
-//     cout<<setw(15)<<rec[i].name<<setw(15)<<rec[i].runs<<setw(12)<<rec[i].innings
-//         <<setw(18)<<rec[i].tno<<setw(16)<<rec[i].avg<<endl;
-//     }
-//     line();
-//     cout<<endl<<endl<<endl;
-    
-//     result_log.close(); 
-// }
-
 void ACO_new::delta_pheromone(int time, t_edge *edge) {
     int new_value = edge->get_phermone(time).current + 1;
     edge->update_phermone(time, new_value);
