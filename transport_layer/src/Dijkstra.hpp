@@ -14,6 +14,9 @@
 #include <list>
 #include <set>
 #include <vector>
+#include <queue>
+#include <fstream>
+#include <sstream>
 #include <iostream>
 #include "../../utils/StringUtils.hpp"
 

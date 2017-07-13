@@ -26,7 +26,7 @@ public:
 private:
     graph *g;
     int num_iterations;
-    double RHO;
+    float RHO, ALPHA, BETA;
     multimap< pair<int, int> , int> manifest;
     list<ant> *ants;
     void set_prime_ant(list<string> manifest_route);

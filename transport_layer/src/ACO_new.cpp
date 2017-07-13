@@ -17,6 +17,8 @@ ACO_new::ACO_new(graph *i_g, int i_num_iterations, multimap< pair<int, int> , in
     g = i_g;
     num_iterations = i_num_iterations;
     RHO = 0.2;
+    ALPHA = 0.5;
+    BETA = 0.5;
     list<ant> *ants = new list<ant>();
     manifest = i_manifest;
 }
@@ -46,7 +48,7 @@ void ACO_new::iteration() {
         int src = it->first.first;
         int dest = it->first.second;
         //ant *a = new ant((*g)[src], dest);
-        ants->push_back(*(new ant((*g)[src], dest)));
+        ants->push_back(*(new ant((*g)[src], dest, ALPHA, BETA)));
     }
     int tick = 0;
     int max_tick = 0;

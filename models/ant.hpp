@@ -15,7 +15,7 @@
 
 #include "base_ant.hpp"
 #include "t_node.hpp"
-#include "../aco/include/Randoms.h"
+#include "../transport_layer/aco/include/Randoms.h"
 
 using namespace std;
 
@@ -24,7 +24,7 @@ public:
     // TODO: must pass in destination node
     
     // TODO: must decide if queue or set is best option
-    ant(t_node *first, int i_dest);
+    ant(t_node *first, int i_dest, float i_alpha, float i_beta);
     ~ant();
     void next_node(int time);
     bool hasReachedDestination();
