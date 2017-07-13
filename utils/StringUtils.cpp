@@ -1,15 +1,12 @@
 //
 //  StringUtils.cpp
+//  
 //
-//  Created by Aditi Lath on 2017-07-03.
+//  Created by Sean Amadio on 2017-06-06.
 //
 //
 
 #include "StringUtils.hpp"
-
-#include <stdio.h>
-#include <fstream>
-#include <sstream>
 
 using namespace std;
 
@@ -24,4 +21,11 @@ vector<string> split(const string &s, char delim)
             elems.push_back(item);
     }
     return elems;
+}
+
+std::string readFile(const std::string file_path) {
+    std::ifstream file_stream(file_path);
+    std::string str((std::istreambuf_iterator<char>(file_stream)),
+                    std::istreambuf_iterator<char>());
+    return str;
 }
