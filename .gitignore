@@ -2,6 +2,7 @@
 *.swp
 */bin/*
 maps/d_maps/*
+*.log
 
 build/
 *.pbxuser
