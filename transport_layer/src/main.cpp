@@ -17,6 +17,11 @@
 #include "ACO_new.hpp"
 #include "../../utils/StringUtils.hpp"
 
+#define MAPS "../../maps/"
+#define DJ_MAPS "../../maps/d_maps/"
+#define MANIFESTS "../../manifests/"
+
+
 using namespace std;
 
 multimap< pair<int, int> , int>  get_manifest(string file_name);
@@ -28,7 +33,7 @@ int main() {
     string manifest_file_name = "manifest_small_graph.txt";
     
     // open graph file, read and pass data to Dijkstra to calculate shortest path
-    ifstream file("../../" + file_name);
+    ifstream file(MAPS + file_name);
     string   line;
     
     Dijkstra *dijkstra = new Dijkstra();
@@ -59,15 +64,14 @@ int main() {
         pre_opt_graph.push_back(edge);
     }
     
-    string out_file_name = "dj_" + file_name;
-    ifstream djfile("../../" + out_file_name);
+    string dijkstra_file_path = DJ_MAPS + ("dj_" + file_name);
+    ifstream djfile(dijkstra_file_path);
 
     // check if dijkstra file exists, if not create one
     if (djfile.fail()) {
 
         // create file to output from dijkstra algorithm
         ofstream dijkstra_file;
-        string dijkstra_file_path = "../../" + out_file_name;
         dijkstra_file.open(dijkstra_file_path, ios_base::out);
         
 
@@ -78,7 +82,7 @@ int main() {
 
     } 
     multimap< pair<int, int> , int>  manifest_map = get_manifest(manifest_file_name);
-    dijkstra->populate_from_dijkstra_file(out_file_name, manifest_map);
+    dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map);
 
     graph *g = new graph();
     g->construct_graph(pre_opt_graph); 
@@ -89,7 +93,7 @@ int main() {
 }
 
 multimap< pair<int, int> , int> get_manifest(string file_name) {
-    ifstream file("../../" + file_name);
+    ifstream file(MANIFESTS+ file_name);
     string line;
     multimap< pair<int, int>, int> manifest_data;
 

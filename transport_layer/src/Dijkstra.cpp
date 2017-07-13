@@ -121,7 +121,7 @@ void Dijkstra::print_path(int route[], int j)
 }
 
 void Dijkstra:: populate_from_dijkstra_file(string file_name, multimap< pair<int, int>, int> manifest_map) {
-    ifstream file("../../" + file_name);
+    ifstream file(file_name);
     string   line;
 
     // get number of unique nodes and intialize 2D array size
