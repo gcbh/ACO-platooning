@@ -8,23 +8,26 @@
 
 #include "SimScene.hpp"
 #include "ShaderUtils.hpp"
+#include "TextureUtils.hpp"
 #include "glm.hpp"
 #include "CityNode.hpp"
 #include "SimCamera.hpp"
+#include "lodepng.h"
 
 //Basic quad
 static const GLfloat points[] = {
-    0.5f,  0.5f,  0.0f,
-    0.5f, -0.5f,  0.0f,
-    -0.5f, -0.5f,  0.0f,
-    0.5f,  0.5f,  0.0f,
-    -0.5f, 0.5f,  0.0f,
-    -0.5f, -0.5f,  0.0f
+    0.5f,  0.5f,  0.0f, 1.0f, 0.0f,
+    0.5f, -0.5f,  0.0f, 1.0f, 1.0f,
+    -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,
+    0.5f,  0.5f,  0.0f, 1.0f, 0.0f,
+    -0.5f, 0.5f,  0.0f, 0.0f, 0.0f,
+    -0.5f, -0.5f,  0.0f, 0.0f, 1.0f
 };
 
 GLuint SimScene::vbo = 0;
 GLuint SimScene::vao = 0;
 GLuint SimScene::program = 0;
+GLuint SimScene::tex = 0;
 GLuint SimScene::mvp_id = 0;
 
 void SimScene::setup() {
@@ -41,17 +44,24 @@ void SimScene::setup() {
     glBindVertexArray(SimScene::vao);
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, SimScene::vbo);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+    glVertexAttribPointer(0, 3, GL_FLOAT, false, 5*sizeof(GL_FLOAT), (void*)0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, false, 5*sizeof(GL_FLOAT), (void*)(3*sizeof(GL_FLOAT)));
+    glEnableVertexAttribArray(1);
+    //glVertexAttribPointer(1, 2, GL_FLOAT, false, 6*sizeof(GL_FLOAT), 3*sizeof(GL_FLOAT));
 
     //Basic Shaders
     SimScene::program = LoadShaders("basic_vs.glsl", "basic_fs.glsl");
+
+    //Textures
+    SimScene::tex = LoadTexture("circle.png");
 
     //Get MVP ID
     SimScene::mvp_id = glGetUniformLocation(SimScene::program, "MVP");
 
     CityNode* city = new CityNode();
     m_root_node->addChildNode(city);
-    city->m_position.x = 10.0;
+    //city->m_position.x = 10.0;
 
     CityNode* city2 = new CityNode();
     m_root_node->addChildNode(city2);

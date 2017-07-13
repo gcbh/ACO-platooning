@@ -24,7 +24,7 @@ public:
     void update(UpdateState is);
     void render(RenderState rs);
 
-    static GLuint program, vbo, vao, mvp_id;
+    static GLuint program, vbo, vao, tex, mvp_id;
 
 private:
 
