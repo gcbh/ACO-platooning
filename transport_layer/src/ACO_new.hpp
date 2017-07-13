@@ -11,6 +11,9 @@
 
 #include "Randoms.h"
 #include <map>
+#include <iostream>
+#include <fstream>
+#include <sstream>
 #include "../../utils/StringUtils.hpp"
 #include "../../models/t_node.hpp"
 #include "../../models/graph.hpp"
@@ -27,7 +30,10 @@ private:
     graph *g;
     Randoms *r;
     int num_iterations;
-    double RHO, ALPHA, BETA;
+    ofstream result_log;
+    string RESULT_LOG_PATH;
+    float RHO, ALPHA, BETA;
+
     multimap< pair<int, int> , int> manifest;
     list<ant> *ants;
     void set_prime_ant(list<string> manifest_route);
@@ -37,6 +43,7 @@ private:
     double cost_evaluation(int max_duration);
     double cost_based_num_ants(int num_of_ants);
     double cost_per_tick(map< int, set<int> > *edge_with_ants);
+    void pretty_print(int max_tick, int iteration_num, int ant_num);
 };
 
 #endif /* ACO_new_hpp */

@@ -22,12 +22,26 @@ ACO_new::ACO_new(graph *i_g, int i_num_iterations, multimap< pair<int, int> , in
     BETA = 0.5;
     list<ant> *ants = new list<ant>();
     manifest = i_manifest;
+
+    RESULT_LOG_PATH = "../results.log";
+    result_log.open(RESULT_LOG_PATH); 
+    result_log << "***BEGIN ANT COLONY OPTIMIZATION***\n";
+    result_log.close();
 }
+
 ACO_new::~ACO_new() {
 }
 
 void ACO_new:: init(Dijkstra *dijkstra) {
     set_prime_ant(dijkstra->get_manifest_routes());
+
+    for (multimap< pair<int, int> , int>::iterator it = manifest.begin(); it != manifest.end(); ++it) {
+        int src = it->first.first;
+        int dest = it->first.second;
+        //ant *a = new ant((*g)[src], dest);
+        ant a((*g)[src], dest, ALPHA, BETA);
+        ants->push_back(a);
+    }
 }
 
 void ACO_new:: set_prime_ant(list<string> manifest_route) {
@@ -45,13 +59,7 @@ void ACO_new:: set_prime_ant(list<string> manifest_route) {
 
 void ACO_new::iteration() {
     double cost;
-    for (multimap< pair<int, int> , int>::iterator it = manifest.begin(); it != manifest.end(); ++it) {
-        int src = it->first.first;
-        int dest = it->first.second;
-        //ant *a = new ant((*g)[src], dest);
-        ant a((*g)[src], dest, ALPHA, BETA, r);
-        ants->push_back(a);
-    }
+
     int tick = 0;
     int max_tick = 0;
     for(int i = 1; i == num_iterations; i++) {
@@ -73,6 +81,31 @@ void ACO_new::iteration() {
     }
 
 }
+
+// void ACO_new::pretty_print(int max_tick, int iteration_num, int ant_num) {
+//     // result_log.open(RESULT_LOG_PATH); 
+//     // result_log << "***ITERATION " << iteration_num <<"***\n";
+    
+//     // result_log << "\n\n\n";
+//     // result_log << setw(50)<<"ANT PATHS\n";
+//     // result_log << "\n";
+
+//     // for (int i = 1; i == iteration_num; i++) {
+//     //     result_log << setw(5)<<"Ant" <<setw(5) << "Tick Number";
+        
+//     // }
+    
+//     // line();
+//     // for(int i=0;i<5;i++)
+//     // {
+//     // cout<<setw(15)<<rec[i].name<<setw(15)<<rec[i].runs<<setw(12)<<rec[i].innings
+//     //     <<setw(18)<<rec[i].tno<<setw(16)<<rec[i].avg<<endl;
+//     // }
+//     // line();
+//     // cout<<endl<<endl<<endl;
+    
+//     // result_log.close(); 
+// }
 
 void ACO_new::delta_pheromone(int time, t_edge *edge) {
     int new_value = edge->get_phermone(time).current + 1;
