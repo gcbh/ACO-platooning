@@ -1,6 +1,6 @@
 *.DS_Store
 *.swp
-bin/*
+*/bin/*
 maps/d_maps/*
 
 build/
