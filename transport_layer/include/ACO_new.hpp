@@ -10,8 +10,8 @@
 #define ACO_new_hpp
 
 #include "../aco/include/Randoms.h"
-#include <map>
 #include "../../models/t_node.hpp"
+#include <map>
 
 class ACO_new {
 public:

@@ -9,9 +9,9 @@
 /* Begin PBXFileReference section */
 		187D97AF1EE9DF880061B301 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = "<group>"; };
 		187D97B01EE9E0890061B301 /* ACO_new.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ACO_new.cpp; path = src/ACO_new.cpp; sourceTree = "<group>"; };
-		187D97B11EE9E0890061B301 /* ACO_new.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ACO_new.hpp; path = src/ACO_new.hpp; sourceTree = "<group>"; };
 		C05DF7AA1EE9F4C90085DE9D /* Dijkstra.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Dijkstra.cpp; path = src/Dijkstra.cpp; sourceTree = "<group>"; };
-		C05DF7AB1EE9F4C90085DE9D /* Dijkstra.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Dijkstra.hpp; path = src/Dijkstra.hpp; sourceTree = "<group>"; };
+		F13A178E1EF4E45600A64D60 /* ACO_new.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ACO_new.hpp; sourceTree = "<group>"; };
+		F13A178F1EF4E45600A64D60 /* Dijkstra.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Dijkstra.hpp; sourceTree = "<group>"; };
 		F195081E1EE8615400C28124 /* ACO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACO.h; sourceTree = "<group>"; };
 		F195081F1EE8615400C28124 /* Randoms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Randoms.h; sourceTree = "<group>"; };
 		F19508211EE8615400C28124 /* ACO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ACO.cpp; sourceTree = "<group>"; };
@@ -25,12 +25,19 @@
 			isa = PBXGroup;
 			children = (
 				187D97B01EE9E0890061B301 /* ACO_new.cpp */,
-				187D97B11EE9E0890061B301 /* ACO_new.hpp */,
-				187D97AF1EE9DF880061B301 /* main.cpp */,
 				C05DF7AA1EE9F4C90085DE9D /* Dijkstra.cpp */,
-				C05DF7AB1EE9F4C90085DE9D /* Dijkstra.hpp */,
+				187D97AF1EE9DF880061B301 /* main.cpp */,
 			);
 			name = src;
+			sourceTree = "<group>";
+		};
+		F13A178D1EF4E45600A64D60 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				F13A178E1EF4E45600A64D60 /* ACO_new.hpp */,
+				F13A178F1EF4E45600A64D60 /* Dijkstra.hpp */,
+			);
+			path = include;
 			sourceTree = "<group>";
 		};
 		F195081D1EE8615400C28124 /* include */ = {
@@ -66,6 +73,7 @@
 		F1E9F7901EE7A5E1004511FE = {
 			isa = PBXGroup;
 			children = (
+				F13A178D1EF4E45600A64D60 /* include */,
 				187D97AD1EE9DEA50061B301 /* src */,
 				F19508251EE8616300C28124 /* aco */,
 				F1E9F7B41EE7A8A6004511FE /* Makefile */,

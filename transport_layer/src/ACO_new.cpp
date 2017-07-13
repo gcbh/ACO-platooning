@@ -7,7 +7,8 @@
 //
 
 #include "ACO_new.hpp"
-#include <map>
+
+using namespace std;
 
 const float avg_prcnt_fuel_saving_by_middle = 4.1;
 const float avg_prcnt_fuel_saving_by_last = 6.1;

@@ -12,15 +12,6 @@
 //
 //  Add license http://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-using-priority_queue-stl/
 
-
-
-#include <stdio.h>
-#include <iostream>
-#include <queue>
-#include <list>
-#include <set>
-#include <fstream>
-#include <sstream>
 #include "Dijkstra.hpp"
 
 using namespace std;

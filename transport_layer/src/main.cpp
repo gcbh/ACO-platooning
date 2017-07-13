@@ -13,11 +13,14 @@
 #include <fstream>
 #include <sstream>
 
-
 #include "../../models/graph.hpp"
+<<<<<<< Updated upstream
 #include "Dijkstra.hpp"
 #include "ACO_new.hpp"
 #include "../../utils/StringUtils.hpp"
+=======
+#include "../include/Dijkstra.hpp"
+>>>>>>> Stashed changes
 
 using namespace std;
 
@@ -78,10 +81,15 @@ int main() {
         dijkstra->init(pre_opt_graph, nodes.size());
         fclose(stdout);
 
+<<<<<<< Updated upstream
     } 
     multimap< pair<int, int> , int>  manifest_map = get_manifest(manifest_file_name);
     dijkstra->populate_from_dijkstra_file(out_file_name, manifest_map);
 
+=======
+    }
+    
+>>>>>>> Stashed changes
     graph *g = new graph();
     g->construct_graph(pre_opt_graph); 
     

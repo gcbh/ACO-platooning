@@ -15,6 +15,7 @@
 
 #include "base_ant.hpp"
 #include "t_node.hpp"
+#include "../aco/include/randoms.hpp"
 
 using namespace std;
 
@@ -29,9 +30,11 @@ public:
     bool hasReachedDestination();
     queue<int> get_ordered_path();
 private:
+    
     t_node *current;
     int dest, counter;
-    
+    float alpha, beta;
+    Randoms r(21);
     set<int> *past_nodes;
 };
 #endif /* ant_hpp */
