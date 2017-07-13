@@ -15,11 +15,8 @@
 
 #include "base_ant.hpp"
 #include "t_node.hpp"
-<<<<<<< HEAD
 #include "../transport_layer/src/Randoms.h"
-=======
-#include "../transport_layer/aco/include/Randoms.h"
->>>>>>> 80d8ac7d6659712507eeabb96bb5b9e24c10fdf4
+
 
 using namespace std;
 
@@ -30,16 +27,14 @@ public:
     // TODO: must pass in destination node
     
     // TODO: must decide if queue or set is best option
-<<<<<<< HEAD
-    ant(t_node *first, int i_dest, float i_alpha, float i_beta, Randoms *i_r);
-=======
-    ant(t_node *first, int i_dest, float i_alpha, float i_beta);
->>>>>>> 80d8ac7d6659712507eeabb96bb5b9e24c10fdf4
+
+    ant(t_node* first, int i_dest, float i_alpha, float i_beta, Randoms* i_r);
     ~ant();
     void next_node(int time);
     iPair cost_node(int time);
-    bool hasReachedDestination();
     vector<int> get_ordered_path();
+    bool has_reached_destination();
+
 private:
     
     t_node *current;

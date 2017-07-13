@@ -1,7 +1,7 @@
 *.DS_Store
 *.swp
 bin/*
-dj*.txt
+maps/d_maps/*
 
 build/
 *.pbxuser

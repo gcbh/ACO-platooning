@@ -13,9 +13,8 @@ using namespace std;
 const float avg_prcnt_fuel_saving_by_middle = 4.1;
 const float avg_prcnt_fuel_saving_by_last = 6.1;
 
-ACO_new::ACO_new(graph *i_g, int i_num_iterations, multimap< pair<int, int> , int> i_manifest) {
+ACO_new::ACO_new(graph *i_g, int i_num_iterations, multimap< pair<int, int> , int> i_manifest) : r(21) {
     g = i_g;
-    r = new Randoms(21);
     num_iterations = i_num_iterations;
     RHO = 0.2;
     ALPHA = 0.5;
@@ -38,8 +37,7 @@ void ACO_new:: init(Dijkstra *dijkstra) {
     for (multimap< pair<int, int> , int>::iterator it = manifest.begin(); it != manifest.end(); ++it) {
         int src = it->first.first;
         int dest = it->first.second;
-        //ant *a = new ant((*g)[src], dest);
-        ant a((*g)[src], dest, ALPHA, BETA);
+        ant a((*g)[src], dest, ALPHA, BETA, &r);
         ants->push_back(a);
     }
 }
@@ -58,23 +56,27 @@ void ACO_new:: set_prime_ant(list<string> manifest_route) {
 }
 
 void ACO_new::iteration() {
-    double cost;
 
-    int tick = 0;
+    double cost = 0;
+    int tick = -1;
+
     int max_tick = 0;
+    bool endIteration = true;
     for(int i = 1; i == num_iterations; i++) {
-        for (list<ant>::iterator it = ants->begin(); it != ants->end(); ++it) {
-            //while not reached destination call nextnode
-            while(!it->hasReachedDestination()) {
-                it->next_node(tick);
-                tick++;
+        do {
+            endIteration = true;
+            tick++;
+            for (list<ant>::iterator it = ants->begin(); it != ants->end(); ++it) {
+                //if ant has not reached destination call nextnode
+                if (!it->has_reached_destination()) {
+                    it->next_node(tick);   
+                    endIteration = false;   
+                }
             }
+        } while(!endIteration);
+        
+        max_tick < tick ? max_tick = tick : max_tick; //needed for cost evaluation            
 
-            max_tick < tick ? max_tick = tick : max_tick; //needed for cost evaluation            
-            tick = 0;
-        }
-
-        //TODO: loop through each ant and print their ordered path?
         evaporation();
         cost = cost_evaluation(max_tick);
         max_tick = 0;

@@ -10,20 +10,16 @@
 
 using namespace std;
 
-ant::ant(t_node *first, int i_dest, float i_alpha, float i_beta, Randoms *i_r) {
+ant::ant(t_node* first, int i_dest, float i_alpha, float i_beta, Randoms* i_r) {
     probability = i_r;
     dest = i_dest;
     counter = 0;
     current = first;
-    //ordered_path();
-    //past_nodes();
     alpha = i_alpha;
     beta = i_beta;
 }
 
-ant::~ant() {
-    //delete past_nodes;
-}
+ant::~ant() {   }
 
 void ant::next_node(int time) {
     // need to incorporate dijkstra data into decision
@@ -80,13 +76,15 @@ void ant::next_node(int time) {
     counter--;
 }
 
+
 iPair ant::cost_node(int time) {
     if (counter <= 0) {
         
     }
 }
 
-bool ant::hasReachedDestination() {
+
+bool ant::has_reached_destination() {
     return current->get_id() == dest;
 }
 

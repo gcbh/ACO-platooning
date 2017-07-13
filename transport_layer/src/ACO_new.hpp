@@ -28,7 +28,7 @@ public:
     void init(Dijkstra *dijkstra);
 private:
     graph *g;
-    Randoms *r;
+    Randoms r;
     int num_iterations;
     ofstream result_log;
     string RESULT_LOG_PATH;
