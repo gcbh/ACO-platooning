@@ -15,12 +15,12 @@ t_edge::t_edge(int i_id, t_node *i_dest, double i_distance, int i_speed) {
     dest = i_dest;
     distance = i_distance;
     speed = i_speed;
-    phermone_at = new map<int, phermone>();
+    //phermone_at = new map<int, phermone>();
     time_to_cross = round(i_distance/speed);
 }
 
 t_edge::~t_edge() {
-    delete phermone_at;
+//    delete phermone_at;
 //    if (dest != nullptr) {
 //        delete dest;
 //    }
@@ -35,7 +35,7 @@ t_node* t_edge::get_dest() {
 }
 
 phermone t_edge::get_phermone(int time) {
-    return (*phermone_at)[time];
+    return phermone_at[time];
 }
 
 void t_edge::update_phermone(int time, int value) {
@@ -45,7 +45,7 @@ void t_edge::update_phermone(int time, int value) {
     new_p.current = value;
     new_p.future = old_p.future;
 
-    phermone_at->insert(make_pair(time, new_p));
+    phermone_at.insert(make_pair(time, new_p));
 
     update_future_pheromone(time, value); 
 }

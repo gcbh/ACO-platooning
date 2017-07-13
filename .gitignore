@@ -1,5 +1,7 @@
 *.DS_Store
 *.swp
+bin/*
+dj*.txt
 
 build/
 *.pbxuser

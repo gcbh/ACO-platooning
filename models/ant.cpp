@@ -10,30 +10,30 @@
 
 using namespace std;
 
-ant::ant(t_node *first, int i_dest, float i_alpha, float i_beta) {
+ant::ant(t_node *first, int i_dest, float i_alpha, float i_beta, Randoms *i_r) {
+    probability = i_r;
     dest = i_dest;
     counter = 0;
     current = first;
-    ordered_path = new queue<int>();
-    past_nodes = new set<int>();
-    //r = new Randoms(21);
+    //ordered_path();
+    //past_nodes();
     alpha = i_alpha;
     beta = i_beta;
 }
 
 ant::~ant() {
-    delete past_nodes;
+    //delete past_nodes;
 }
 
 void ant::next_node(int time) {
     // need to incorporate dijkstra data into decision
-    if (counter > 0) {
+    if (counter <= 0) {
         double total = 0;
         double total_prob = 0;
         int best_wait = 0;
         for (int i = 0; i < current->edge_number(); i++) {
-            t_edge* e = (current*)[i];
-            if (past_nodes->find(e->get_dest()->get_id()) == past_nodes->end()) {
+            t_edge* e = (*current)[i];
+            if (past_nodes.find(e->get_dest()->get_id()) == past_nodes.end()) {
                 phermone p = e->get_phermone(time);
                 
                 // TODO: include Dijkstra
@@ -49,10 +49,10 @@ void ant::next_node(int time) {
         // 'alpha' is the weighting of staying, may need new weight
         total += (double)best_wait * alpha;
         
-        double prob = r.uniforme();
+        double prob = probability->Uniforme();
         for (int i = 0; i < current->edge_number(); i++) {
-            t_edge* e = (current*)[i];
-            if (past_nodes->find(e->get_dest()->get_id()) == past_nodes->end()) {
+            t_edge* e = (*current)[i];
+            if (past_nodes.find(e->get_dest()->get_id()) == past_nodes.end()) {
                 phermone p = e->get_phermone(time);
                 
                 // sums to find position of random variable between 0 and 1
@@ -62,28 +62,34 @@ void ant::next_node(int time) {
                 if (total_prob >= prob) {
                     int d = e->get_dest()->get_id();
                     // ensure node travelling from cannot be reached again
-                    past_nodes->insert(ordered_path->top());
-                    // upcoming node included in up-to-date path
-                    ordered_path->push(d);
+                    past_nodes.insert(ordered_path.back());
+                    // current node included in up-to-date path
+                    ordered_path.push_back(current->get_id());
                     
                     // update 'current'
                     current = e->get_dest();
                     // update 'counter' for timing
-                    counter = e->get_time_to_cross();
+                    counter = e->get_time_to_cross() - 1;
                     return;
                 }
             }
         }
-        ordered_path->push(current->get_id());
+        ordered_path.push_back(current->get_id());
         return;
     }
     counter--;
+}
+
+iPair ant::cost_node(int time) {
+    if (counter <= 0) {
+        
+    }
 }
 
 bool ant::hasReachedDestination() {
     return current->get_id() == dest;
 }
 
-queue<int> ant::get_ordered_path() {
-    return *ordered_path;
+vector<int> ant::get_ordered_path() {
+    return ordered_path;
 }

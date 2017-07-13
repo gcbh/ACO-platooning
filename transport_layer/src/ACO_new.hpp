@@ -9,7 +9,7 @@
 #ifndef ACO_new_hpp
 #define ACO_new_hpp
 
-#include "../aco/include/Randoms.h"
+#include "Randoms.h"
 #include <map>
 #include "../../utils/StringUtils.hpp"
 #include "../../models/t_node.hpp"
@@ -25,8 +25,9 @@ public:
     void init(Dijkstra *dijkstra);
 private:
     graph *g;
+    Randoms *r;
     int num_iterations;
-    double RHO;
+    double RHO, ALPHA, BETA;
     multimap< pair<int, int> , int> manifest;
     list<ant> *ants;
     void set_prime_ant(list<string> manifest_route);

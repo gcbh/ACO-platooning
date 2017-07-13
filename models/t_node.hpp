@@ -31,7 +31,7 @@ public:
     t_edge* get_edge(int dest_id); 
 private:
     int id;
-    vector<t_edge*> *edges;
+    vector<t_edge*> edges;
 };
 
 #endif /* t_node_hpp */
