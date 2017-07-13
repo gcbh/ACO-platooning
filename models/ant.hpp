@@ -27,7 +27,7 @@ public:
     ant(t_node *first, int i_dest, float i_alpha, float i_beta);
     ~ant();
     void next_node(int time);
-    bool hasReachedDestination();
+    bool has_reached_destination();
     queue<int> get_ordered_path();
 private:
     

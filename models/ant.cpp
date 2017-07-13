@@ -80,7 +80,7 @@ void ant::next_node(int time) {
     counter--;
 }
 
-bool ant::hasReachedDestination() {
+bool ant::has_reached_destination() {
     return current->get_id() == dest;
 }
 
