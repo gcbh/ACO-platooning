@@ -15,7 +15,6 @@
 #include <vector>
 #include <iterator>
 
-std::vector<std::string> split(const std::string &s, char delim);
 std::string readFile(const std::string file_path);
 
 #endif /* StringUtils_hpp */

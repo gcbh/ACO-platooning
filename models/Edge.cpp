@@ -20,11 +20,11 @@ Edge::Edge(int id_1, int id_2, int distance, int speed_limit)
 
 Edge::Edge(std::string s)
 {
-    std::vector<std::string> args = split(s, ',');
+    /*std::vector<std::string> args = split(s, ',');
     id_1 = std::stoi(args[0]);
     id_2 = std::stoi(args[1]);
     distance = std::stoi(args[2]);
-    speed_limit = std::stoi(args[3]);
+    speed_limit = std::stoi(args[3]);*/
 }
 
 std::string Edge::getString()
