@@ -15,7 +15,7 @@
 
 #include "base_ant.hpp"
 #include "t_node.hpp"
-#include "../aco/include/randoms.hpp"
+#include "../aco/include/Randoms.h"
 
 using namespace std;
 
