@@ -21,9 +21,6 @@ UTILS := $(patsubst $(UTILDIR)/%,$(BUILDDIR)/%,$(UTILSRCS:.$(SRCEXT)=.o))
 
 INC := -I include
 
-$(TARGET): $(OBJECTS) $(MODELS) $(UTILS)
-	@echo " $(CC) $^ -o $(TARGET)"; $(CC) $^ -o $(TARGET)
-
 # Build source files
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(BUILDDIR)
@@ -39,10 +36,10 @@ $(BUILDDIR)/%.o: $(UTILDIR)/%.$(SRCEXT)
 	@mkdir -p $(BUILDDIR)
 	@echo " $(CC) $(CFLAGS) -c -o $@ $<"; $(CC) $(CFLAGS) -c -o $@ $<
 
-maketransport:
+maketransport: $(OBJECTS) $(MODELS) $(UTILS)
 	@mkdir -p $(TARGETDIR)
 	@echo " $(CC) $(OBJECTS) $(MODELS) -o $(TARGET)";
-	$(CC) $(OBJECTS) $(MODELS) -o $(TARGET)
+	$(CC) $^ -o $(TARGET)
 
 clean:
 	@echo " Cleaning...";
