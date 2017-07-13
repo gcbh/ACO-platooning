@@ -1,3 +1,4 @@
 [submodule "transport_layer/aco"]
 	path = transport_layer/aco
 	url = https://git.uwaterloo.ca/gheath/aco.git
+	ignore = untracked
