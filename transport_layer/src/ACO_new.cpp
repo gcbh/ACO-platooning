@@ -19,27 +19,26 @@ ACO_new::ACO_new(graph *i_g, int i_num_iterations, multimap< pair<int, int> , in
     RHO = 0.2;
     ALPHA = 0.5;
     BETA = 0.5;
-    list<ant> *ants = new list<ant>();
+
+    ant *ants[i_manifest.size()];
     manifest = i_manifest;
 
     RESULT_LOG_PATH = "../results.log";
     result_log.open(RESULT_LOG_PATH); 
-    result_log << "***BEGIN ANT COLONY OPTIMIZATION***\n";
-    result_log.close();
+    freopen(RESULT_LOG_PATH.c_str(), "w", stdout);
 }
 
 ACO_new::~ACO_new() {
+    fclose(stdout);
+    result_log.close();
+    delete [] ants;
+    delete g;
 }
 
 void ACO_new:: init(Dijkstra *dijkstra) {
+    printf("***BEGINNING ANT COLONY OPTIMIZATION***");
     set_prime_ant(dijkstra->get_manifest_routes());
-
-    for (multimap< pair<int, int> , int>::iterator it = manifest.begin(); it != manifest.end(); ++it) {
-        int src = it->first.first;
-        int dest = it->first.second;
-        ant a((*g)[src], dest, ALPHA, BETA, &r);
-        ants->push_back(a);
-    }
+    reset_ants();
 }
 
 void ACO_new:: set_prime_ant(list<string> manifest_route) {
@@ -55,21 +54,30 @@ void ACO_new:: set_prime_ant(list<string> manifest_route) {
     }
 }
 
-void ACO_new::iteration() {
+void ACO_new::reset_ants() {
+    int index = 0;
+    for (multimap< pair<int, int> , int>::iterator it = manifest.begin(); it != manifest.end(); ++it) {
+        int src = it->first.first;
+        int dest = it->first.second;
+        ant a((*g)[src], dest, ALPHA, BETA, &r);
+        ants[index] = a;
+    }
+}
 
+void ACO_new::iteration() {
     double cost = 0;
     int tick = -1;
-
     int max_tick = 0;
     bool endIteration = true;
+
     for(int i = 1; i == num_iterations; i++) {
         do {
             endIteration = true;
             tick++;
-            for (list<ant>::iterator it = ants->begin(); it != ants->end(); ++it) {
+            for (int a = 0; a < sizeof(ants); a++) {
                 //if ant has not reached destination call nextnode
-                if (!it->has_reached_destination()) {
-                    it->next_node(tick);   
+                if (!ants[a].has_reached_destination()) {
+                    ants[a].next_node(tick);   
                     endIteration = false;   
                 }
             }
@@ -79,34 +87,35 @@ void ACO_new::iteration() {
 
         evaporation();
         cost = cost_evaluation(max_tick);
+        reset_ants();
         max_tick = 0;
     }
 
 }
 
 // void ACO_new::pretty_print(int max_tick, int iteration_num, int ant_num) {
-//     // result_log.open(RESULT_LOG_PATH); 
-//     // result_log << "***ITERATION " << iteration_num <<"***\n";
+//     result_log.open(RESULT_LOG_PATH); 
+//     result_log << "***ITERATION " << iteration_num <<"***\n";
     
-//     // result_log << "\n\n\n";
-//     // result_log << setw(50)<<"ANT PATHS\n";
-//     // result_log << "\n";
+//     result_log << "\n\n\n";
+//     result_log << setw(50)<<"ANT PATHS\n";
+//     result_log << "\n";
 
-//     // for (int i = 1; i == iteration_num; i++) {
-//     //     result_log << setw(5)<<"Ant" <<setw(5) << "Tick Number";
+//     for (int i = 1; i == iteration_num; i++) {
+//         result_log << setw(5)<<"Ant" <<setw(5) << "Tick Number";
         
-//     // }
+//     }
     
-//     // line();
-//     // for(int i=0;i<5;i++)
-//     // {
-//     // cout<<setw(15)<<rec[i].name<<setw(15)<<rec[i].runs<<setw(12)<<rec[i].innings
-//     //     <<setw(18)<<rec[i].tno<<setw(16)<<rec[i].avg<<endl;
-//     // }
-//     // line();
-//     // cout<<endl<<endl<<endl;
+//     line();
+//     for(int i=0;i<5;i++)
+//     {
+//     cout<<setw(15)<<rec[i].name<<setw(15)<<rec[i].runs<<setw(12)<<rec[i].innings
+//         <<setw(18)<<rec[i].tno<<setw(16)<<rec[i].avg<<endl;
+//     }
+//     line();
+//     cout<<endl<<endl<<endl;
     
-//     // result_log.close(); 
+//     result_log.close(); 
 // }
 
 void ACO_new::delta_pheromone(int time, t_edge *edge) {

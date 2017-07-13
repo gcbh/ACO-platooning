@@ -35,7 +35,7 @@ private:
     float RHO, ALPHA, BETA;
 
     multimap< pair<int, int> , int> manifest;
-    list<ant> *ants;
+    ant *ants;
     void set_prime_ant(list<string> manifest_route);
     void iteration();
     void delta_pheromone(int time, t_edge *edge);
@@ -44,6 +44,7 @@ private:
     double cost_based_num_ants(int num_of_ants);
     double cost_per_tick(map< int, set<int> > *edge_with_ants);
     void pretty_print(int max_tick, int iteration_num, int ant_num);
+    void reset_ants();
 };
 
 #endif /* ACO_new_hpp */
