@@ -9,8 +9,11 @@
 #ifndef ACO_new_hpp
 #define ACO_new_hpp
 
-#include "../aco/include/Randoms.h"
 #include <map>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include "../aco/include/Randoms.h"
 #include "../../utils/StringUtils.hpp"
 #include "../../models/t_node.hpp"
 #include "../../models/graph.hpp"
@@ -26,6 +29,8 @@ public:
 private:
     graph *g;
     int num_iterations;
+    ofstream result_log;
+    string RESULT_LOG_PATH;
     float RHO, ALPHA, BETA;
     multimap< pair<int, int> , int> manifest;
     list<ant> *ants;
@@ -36,6 +41,7 @@ private:
     double cost_evaluation(int max_duration);
     double cost_based_num_ants(int num_of_ants);
     double cost_per_tick(map< int, set<int> > *edge_with_ants);
+    void pretty_print(int max_tick, int iteration_num, int ant_num);
 };
 
 #endif /* ACO_new_hpp */
