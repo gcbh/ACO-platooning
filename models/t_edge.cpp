@@ -47,7 +47,7 @@ void t_edge::update_pheromone(int time, int value) {
     pheromone old_p = get_pheromone(time);
     pheromone new_p;
 
-    new_p.current = value;
+    new_p.current = old_p.current + value;
     new_p.future = old_p.future;
 
     //pheromone_at.insert(make_pair(time, new_p));

@@ -98,11 +98,6 @@ void ACO_new::iteration() {
 
 }
 
-void ACO_new::delta_pheromone(int time, t_edge *edge) {
-    int new_value = edge->get_pheromone(time).current + 1;
-    edge->update_pheromone(time, new_value);
-}
-
 void ACO_new::evaporation() {
     int new_value = 0;
     vector<t_edge*> edges;
@@ -110,7 +105,7 @@ void ACO_new::evaporation() {
         edges = (*g)[i]->get_edges();
         for (int j = 0; j < edges.size(); j++) {
             for (int k = 0; k < edges[j]->get_time_to_cross(); k++) {
-                new_value = (1-RHO)*edges[j]->get_pheromone(k).current;
+                new_value = -RHO*edges[j]->get_pheromone(k).current;
                 edges[j]->update_pheromone(k, new_value);
             }
         }

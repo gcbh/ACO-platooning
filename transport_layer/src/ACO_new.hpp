@@ -42,7 +42,6 @@ private:
     list<ant*> ants;
     void set_prime_ant(list<string> manifest_route);
     void iteration();
-    void delta_pheromone(int time, t_edge *edge);
     void evaporation();
     double cost_evaluation(int max_duration);
     double cost_based_num_ants(int num_of_ants);
