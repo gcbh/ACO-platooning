@@ -40,6 +40,9 @@ int main() {
     list<graph_data> pre_opt_graph;
     set<int> nodes;
 
+    // Creates d_maps folder if it doesn't exist
+    system(("mkdir -p " + string(DJ_MAPS)).c_str());
+
     while(getline(file, line))
     {
         stringstream   linestream(line);
@@ -88,7 +91,7 @@ int main() {
     g->construct_graph(pre_opt_graph); 
     
     ACO_new *ACO = new ACO_new(g, 10, manifest_map);
-    //ACO->init(dijkstra);
+    ACO->init(dijkstra);
     return 0;
 }
 
