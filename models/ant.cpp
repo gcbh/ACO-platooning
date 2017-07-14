@@ -149,6 +149,14 @@ iPair ant::cost_node(int time) {
                 }
             }
         }
+        if (ordered_path.front()->get_id() == dest) {
+            t_node* prev = current;
+            current = ordered_path.front();
+            ordered_path.pop_front();
+            counter = 0;
+            return make_pair(prev->get_id(), current->get_id());
+        }
+
         return make_pair(current->get_id(), ordered_path.front()->get_id());
     }
     counter--;

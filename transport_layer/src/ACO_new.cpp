@@ -90,7 +90,7 @@ void ACO_new::iteration() {
         
         max_tick < tick ? max_tick = tick : max_tick; //needed for cost evaluation            
 
-        evaporation();
+        //evaporation();
         cost = cost_evaluation(max_tick);
         reset_ants();
         max_tick = 0;
@@ -109,7 +109,7 @@ void ACO_new::evaporation() {
                 edges[j]->update_pheromone(k, new_value);
             }
         }
-        edges.clear();
+//        edges.clear();
     }
 }
 
@@ -120,20 +120,21 @@ double ACO_new::cost_evaluation(int max_duration) {
         map< iPair, int > map_ant_count;
 
         for (list<ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
+            if (!(*it)->has_reached_destination()) {
+                iPair nodes_pair = (*it)->cost_node(tick);
+                int pair_elem1 = get<0> (nodes_pair);
+                int pair_elem2 = get<1> (nodes_pair);
 
-            iPair nodes_pair = (*it)->cost_node(tick);
-            int pair_elem1 = get<0> (nodes_pair);
-            int pair_elem2 = get<1> (nodes_pair);
+                if (pair_elem1 == INF || pair_elem1 == pair_elem2) 
+                    continue;
+                
+                int ant_count = 0;
+                if (map_ant_count.count(nodes_pair)) 
+                    int ant_count = map_ant_count.find(nodes_pair)->second;
 
-            if (pair_elem1 == INF || pair_elem1 == pair_elem2) 
-                continue;
-            
-            int ant_count = 0;
-            if (map_ant_count.count(nodes_pair)) 
-                int ant_count = map_ant_count.find(nodes_pair)->second;
+                map_ant_count.insert(make_pair(nodes_pair, ant_count+1));
 
-            map_ant_count.insert(make_pair(nodes_pair, ant_count+1));
-
+            }
         }
         // cost calculation per tick
         total_cost += cost_per_tick(map_ant_count);
@@ -149,10 +150,10 @@ double ACO_new::cost_per_tick(map< iPair, int > map_ant_count) {
         int num_of_ants = itm->second;
 
         iPair nodes_pair = itm->first;
-        t_node src = *((*g) [get<0> (nodes_pair)]);
-        t_node dest = *((*g) [get<1> (nodes_pair)]);
-        t_edge edg = *(src.get_edge(dest.get_id()));
-        int edge_cost = edg.get_distance();
+        t_node* src = (*g) [get<0> (nodes_pair)];
+        t_node* dest = (*g) [get<1> (nodes_pair)];
+        t_edge* edg = src->get_edge(dest->get_id());
+        int edge_cost = edg->get_distance();
         cost_per_tick += (edge_cost/cost_based_num_ants(num_of_ants));
     }
     return cost_per_tick;
