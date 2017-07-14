@@ -36,7 +36,7 @@ void ant::next_node(int time) {
             t_edge* e = (*current)[i];
             
             int n_nodeid = e->get_dest()->get_id();
-            if (past_nodes.find(n_nodeid) == past_nodes.end()) {
+            //if (past_nodes.find(n_nodeid) == past_nodes.end()) {
                 if (e->pheromone_exists(time)) {
                     pheromone p = e->get_pheromone(time);
                     
@@ -49,18 +49,24 @@ void ant::next_node(int time) {
                 } else {
                     untravelled++;
                 }
-            }
+            //}
         }
         
-        total += calculate_heuristic(current->get_id(), best_wait);
+        float wait_val = calculate_heuristic(current->get_id(), best_wait);
+        total += wait_val;
         
         // proportion of total for any untravelled path
         // generate weighted PHI (explore) value
         float prob_phi = total * PHI;
         
         if (untravelled != 0) {
-            total += prob_phi;
-            prob_phi /= untravelled;
+            if (total <= wait_val) {
+                prob_phi = 1.0f / untravelled;
+                total = 1;
+            } else {
+                total += prob_phi;
+                prob_phi /= untravelled;
+            }
         }
         
         // random value between 0 and 1
@@ -69,7 +75,7 @@ void ant::next_node(int time) {
         for (int i = 0; i < current->edge_number(); i++) {
             t_edge* e = (*current)[i];
             int n_nodeid = e->get_dest()->get_id();
-            if (past_nodes.find(n_nodeid) == past_nodes.end()) {
+            //if (past_nodes.find(n_nodeid) == past_nodes.end()) {
                 
                 if (e->pheromone_exists(time)) {
                     pheromone p = e->get_pheromone(time);
@@ -83,7 +89,7 @@ void ant::next_node(int time) {
                 if (total_prob/total >= prob) {
                     e->update_pheromone(time, 1.0f);
                     // ensure node travelling from cannot be reached again
-                    past_nodes.insert(current->get_id());
+                    //past_nodes.insert(current->get_id());
                     // current node included in up-to-date path
                     ordered_path.push_back(current);
                     // update 'current'
@@ -92,12 +98,12 @@ void ant::next_node(int time) {
                     counter = e->get_time_to_cross() - 1;
                     return;
                 }
-            }
+            //}
         }
         // portion of spectrum for 'WAIT' option
         total_prob += calculate_heuristic(current->get_id(), best_wait);
         
-        if (total_prob >= prob) {
+        if (total_prob / total >= prob) {
             ordered_path.push_back(current);
         } else {
             string e = "Issue with pathfinding. Should not get past final probability. Total: "
@@ -119,7 +125,13 @@ double ant::calculate_heuristic(int node_id, float ph) {
     float p, d;
     
     p = tanh(ph);
-    d = 1 / d_map->get_edge_weight(node_id, dest);
+    int distance = d_map->get_edge_weight(node_id, dest);
+    if (distance == 0) {
+        d = 1.0f;
+    } else {
+        d = 1 / distance;
+    }
+    
     
     return ALPHA*p + BETA*d;
 }
