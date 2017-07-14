@@ -8,6 +8,8 @@
 
 #include "ant.hpp"
 
+# define INF 0x3f3f3f3f
+
 using namespace std;
 
 ant::ant(t_node* first, Dijkstra* i_d_map, int i_dest, float i_alpha, float i_beta, float i_phi, Randoms* i_r) {
@@ -80,13 +82,13 @@ void ant::next_node(int time) {
                 // if in range of current edge
                 if (total_prob >= prob) {
                     // ensure node travelling from cannot be reached again
-                    past_nodes.insert(ordered_path.back());
+                    past_nodes.insert(ordered_path.back()->get_id());
                     // current node included in up-to-date path
-                    ordered_path.push_back(current->get_id());
+                    ordered_path.push_back(current);
                     // update 'current'
                     current = e->get_dest();
                     // update 'counter' for timing
-                    counter = e->get_time_to_cross();
+                    counter = e->get_time_to_cross() - 1;
                     return;
                 }
             }
@@ -95,9 +97,12 @@ void ant::next_node(int time) {
         total_prob += calculate_heuristic(current->get_id(), best_wait);
         
         if (total_prob >= prob) {
-            ordered_path.push_back(current->get_id());
+            ordered_path.push_back(current);
         } else {
-            string e = "Issue with pathfinding. Should not get past final probability. Total: " + to_string(total_prob) + " Current: " + to_string(prob);
+            string e = "Issue with pathfinding. Should not get past final probability. Total: "
+                + to_string(total_prob)
+                + " Current: "
+                + to_string(prob);
             throw e;
         }
         return;
@@ -118,13 +123,11 @@ iPair ant::cost_node(int time) {
     if (counter <= 0) {
         
     }
+    counter--;
+    return make_pair(INF, INF);
 }
 
 
 bool ant::has_reached_destination() {
     return current->get_id() == dest;
-}
-
-vector<int> ant::get_ordered_path() {
-    return ordered_path;
 }
