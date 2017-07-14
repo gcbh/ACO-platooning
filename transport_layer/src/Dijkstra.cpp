@@ -29,8 +29,7 @@ Dijkstra::~Dijkstra() {
 
     // deallocate edge_weight
     for (int i = 0; i < num_of_nodes; i++)
-        delete [] edge_weight[i];
-    
+        delete edge_weight[i];
     delete [] edge_weight;
 }
 

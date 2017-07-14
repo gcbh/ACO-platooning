@@ -31,6 +31,7 @@ public:
     iPair cost_node(int time);
     bool has_reached_destination();
     void init_cost();
+    bool void_route();
     queue<t_node*> get_ordered_path();
 
 private:
@@ -41,6 +42,7 @@ private:
     Randoms *probability;
     set<int> past_nodes;
     queue<t_node*> ordered_path;
+    bool v_route;
     
     double calculate_heuristic(int node_id, float ph);
 };

@@ -82,6 +82,7 @@ void ACO_new::iteration() {
     for(int i = 1; i <= num_iterations; i++) {
         cout << "ITERATION NUMBER " << i << "\n";
         tick = -1;
+        bool ant_void = false;
         do {
             endIteration = true;
             tick++;
@@ -91,17 +92,30 @@ void ACO_new::iteration() {
                     (*it)->next_node(tick);   
                     endIteration = false;   
                 }
+                
+                if ((*it)->void_route()) {
+                    endIteration = true;
+                    ant_void = true;
+                }
             }
         } while(!endIteration);
 
+        if (ant_void) {
+            reset_ants();
+            continue;
+        }
+        
         evaporation();
         for (list<ant*>::iterator itr = ants.begin(); itr != ants.end(); ++itr) {
             (*itr)->init_cost();
         }
         cost = cost_evaluation(tick);
         cout<<setw(20);
-        for (int j = 0; j < num_ants; j++) {
-            cout << "Ant" << j << setw(20);;
+        list<string> r = d_map->get_manifest_routes();
+        int ant_num = 0;
+        for (list<string>::iterator it = r.begin(); it != r.end(); ++it) {
+            cout << "Ant" << ant_num << " " << *it << setw(10);;
+            ant_num++;
         }
         
         for (int i = 0; i < tick; i++) {
