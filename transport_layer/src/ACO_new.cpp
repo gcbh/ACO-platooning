@@ -32,6 +32,7 @@ ACO_new::~ACO_new() {
     fclose(stdout);
     result_log.close();
     delete g;
+    delete d_map;
 
     for (int i = 0; i < num_ants; i++)
         delete [] print_route[i];
@@ -75,12 +76,12 @@ void ACO_new::reset_ants() {
 
 void ACO_new::iteration() {
     double cost = 0;
-    int tick = -1;
-    int max_tick = 0;
+    int tick;
     bool endIteration = true;
 
     for(int i = 1; i <= num_iterations; i++) {
         cout << "ITERATION NUMBER " << i << "\n";
+        tick = -1;
         do {
             endIteration = true;
             tick++;
@@ -92,27 +93,24 @@ void ACO_new::iteration() {
                 }
             }
         } while(!endIteration);
-        
-        max_tick < tick ? max_tick = tick : max_tick; //needed for cost evaluation            
 
         evaporation();
         for (list<ant*>::iterator itr = ants.begin(); itr != ants.end(); ++itr) {
             (*itr)->init_cost();
         }
-        cost = cost_evaluation(max_tick);
+        cost = cost_evaluation(tick);
         cout<<setw(20);
         for (int j = 0; j < num_ants; j++) {
             cout << "Ant" << j << setw(20);;
         }
         
-        for (int i = 0; i < max_tick; i++) {
+        for (int i = 0; i < tick; i++) {
             cout<< "\n" << "tick" << i << setw(20);
             for (int j = 0; j < num_ants; j++) {
                 cout << print_route[j][i] << setw(20);
             }
         }
         reset_ants();
-        max_tick = 0;
         
         cout << "Cost: " << cost << "\n";
     }
