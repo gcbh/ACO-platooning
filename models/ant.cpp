@@ -80,7 +80,7 @@ void ant::next_node(int time) {
                 }
                 
                 // if in range of current edge
-                if (total_prob >= prob) {
+                if (total_prob/total >= prob) {
                     e->update_pheromone(time, 1.0f);
                     // ensure node travelling from cannot be reached again
                     past_nodes.insert(current->get_id());
