@@ -15,12 +15,12 @@ t_edge::t_edge(int i_id, t_node *i_dest, double i_distance, int i_speed) {
     dest = i_dest;
     distance = i_distance;
     speed = i_speed;
-    //phermone_at = new map<int, phermone>();
+    //pheromone_at = new map<int, phermone>();
     time_to_cross = round(i_distance/speed);
 }
 
 t_edge::~t_edge() {
-//    delete phermone_at;
+//    delete pheromone_at;
 //    if (dest != nullptr) {
 //        delete dest;
 //    }
@@ -34,18 +34,25 @@ t_node* t_edge::get_dest() {
     return dest;
 }
 
-phermone t_edge::get_phermone(int time) {
-    return phermone_at[time];
+pheromone t_edge::get_pheromone(int time) {
+    return pheromone_at[time];
 }
 
-void t_edge::update_phermone(int time, int value) {
-    phermone old_p = get_phermone(time);
-    phermone new_p;
+bool t_edge::pheromone_exists(int time) {
+    if (pheromone_at.find(time) == pheromone_at.end()) {
+        return false;
+    }
+    return true;
+}
+
+void t_edge::update_pheromone(int time, int value) {
+    pheromone old_p = get_pheromone(time);
+    pheromone new_p;
 
     new_p.current = value;
     new_p.future = old_p.future;
 
-    phermone_at.insert(make_pair(time, new_p));
+    pheromone_at.insert(make_pair(time, new_p));
 
     update_future_pheromone(time, value); 
 }
@@ -59,9 +66,9 @@ int t_edge::get_time_to_cross() {
 //  future values of pheromones at time 0 and 1 should update if 3 is greater 
 //  than their current future projections.
 void t_edge::update_future_pheromone(int time, int value) {
-    phermone p;
+    pheromone p;
     for (int i = 0; i < time; i++) {
-        p = get_phermone(i);
+        p = get_pheromone(i);
         if (p.future < value) {
             p.future = value;
         }

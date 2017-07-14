@@ -19,6 +19,7 @@ ACO_new::ACO_new(graph *i_g, int i_num_iterations, multimap< pair<int, int> , in
     RHO = 0.2;
     ALPHA = 0.5;
     BETA = 0.5;
+    PHI = 0.2;
 
     ant *ants[i_manifest.size()];
     manifest = i_manifest;
@@ -37,6 +38,7 @@ ACO_new::~ACO_new() {
 
 void ACO_new:: init(Dijkstra *dijkstra) {
     printf("***BEGINNING ANT COLONY OPTIMIZATION***");
+    d_map = dijkstra;
     set_prime_ant(dijkstra->get_manifest_routes());
     reset_ants();
 }
@@ -59,7 +61,7 @@ void ACO_new::reset_ants() {
     for (multimap< pair<int, int> , int>::iterator it = manifest.begin(); it != manifest.end(); ++it) {
         int src = it->first.first;
         int dest = it->first.second;
-        ant a((*g)[src], dest, ALPHA, BETA, &r);
+        ant a((*g)[src], d_map, dest, ALPHA, BETA, PHI, &r);
         ants[index] = a;
     }
 }
@@ -94,8 +96,8 @@ void ACO_new::iteration() {
 }
 
 void ACO_new::delta_pheromone(int time, t_edge *edge) {
-    int new_value = edge->get_phermone(time).current + 1;
-    edge->update_phermone(time, new_value);
+    int new_value = edge->get_pheromone(time).current + 1;
+    edge->update_pheromone(time, new_value);
 }
 
 void ACO_new::evaporation() {
@@ -105,8 +107,8 @@ void ACO_new::evaporation() {
         edges = (*g)[i]->get_edges();
         for (int j = 0; j < edges.size(); j++) {
             for (int k = 0; k < edges[j]->get_time_to_cross(); k++) {
-                new_value = (1-RHO)*edges[j]->get_phermone(k).current;
-                edges[j]->update_phermone(k, new_value);
+                new_value = (1-RHO)*edges[j]->get_pheromone(k).current;
+                edges[j]->update_pheromone(k, new_value);
             }
         }
         edges.clear();

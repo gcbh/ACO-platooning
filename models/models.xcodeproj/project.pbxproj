@@ -22,21 +22,37 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		F195082E1EE872B500C28124 = {
+		F1053E3E1F182C2D00967DC0 /* src */ = {
 			isa = PBXGroup;
 			children = (
 				187FD0921EEA51B00028001A /* graph.cpp */,
-				187FD0931EEA51B00028001A /* graph.hpp */,
 				F14401751EE89CA600BBD888 /* t_edge.cpp */,
-				F14401761EE89CA600BBD888 /* t_edge.hpp */,
 				F14401731EE89C9600BBD888 /* t_node.cpp */,
-				F14401741EE89C9600BBD888 /* t_node.hpp */,
 				F144016E1EE8796A00BBD888 /* ant.cpp */,
-				F144016F1EE8796A00BBD888 /* ant.hpp */,
 				F144016C1EE877D500BBD888 /* primer_ant.cpp */,
-				F144016D1EE877D500BBD888 /* primer_ant.hpp */,
 				F144016A1EE8776300BBD888 /* base_ant.cpp */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		F1053E3F1F182C3300967DC0 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				187FD0931EEA51B00028001A /* graph.hpp */,
+				F14401761EE89CA600BBD888 /* t_edge.hpp */,
+				F14401741EE89C9600BBD888 /* t_node.hpp */,
+				F144016F1EE8796A00BBD888 /* ant.hpp */,
+				F144016D1EE877D500BBD888 /* primer_ant.hpp */,
 				F144016B1EE8776300BBD888 /* base_ant.hpp */,
+			);
+			name = include;
+			sourceTree = "<group>";
+		};
+		F195082E1EE872B500C28124 = {
+			isa = PBXGroup;
+			children = (
+				F1053E3F1F182C3300967DC0 /* include */,
+				F1053E3E1F182C2D00967DC0 /* src */,
 			);
 			sourceTree = "<group>";
 		};

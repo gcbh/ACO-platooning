@@ -9,9 +9,9 @@
 #ifndef Dijkstra_hpp
 #define Dijkstra_hpp
 
-#include <map>
 #include <stdio.h>
 #include <list>
+#include <map>
 #include <set>
 #include <vector>
 #include <queue>

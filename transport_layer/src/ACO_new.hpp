@@ -27,12 +27,13 @@ public:
     virtual ~ACO_new ();
     void init(Dijkstra *dijkstra);
 private:
-    graph *g;
+    graph* g;
+    Dijkstra* d_map;
     Randoms r;
     int num_iterations;
     ofstream result_log;
     string RESULT_LOG_PATH;
-    float RHO, ALPHA, BETA;
+    float RHO, ALPHA, BETA, PHI;
 
     multimap< pair<int, int> , int> manifest;
     ant *ants;
