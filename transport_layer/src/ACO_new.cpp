@@ -109,7 +109,6 @@ void ACO_new::evaporation() {
                 edges[j]->update_pheromone(k, new_value);
             }
         }
-//        edges.clear();
     }
 }
 
