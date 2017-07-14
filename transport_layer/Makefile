@@ -1,5 +1,5 @@
-CC:=g++ -g
-CFLAGS := -c
+CC:=g++
+CFLAGS := -g -c
 
 MODELDIR := ../models
 SRCDIR := src
