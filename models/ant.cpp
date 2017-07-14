@@ -91,11 +91,14 @@ void ant::next_node(int time) {
                     // ensure node travelling from cannot be reached again
                     //past_nodes.insert(current->get_id());
                     // current node included in up-to-date path
-                    ordered_path.push_back(current);
+                    ordered_path.push(current);
                     // update 'current'
                     current = e->get_dest();
                     // update 'counter' for timing
                     counter = e->get_time_to_cross() - 1;
+                    if (has_reached_destination()) {
+                        ordered_path.push(current);
+                    }
                     return;
                 }
             //}
@@ -104,7 +107,7 @@ void ant::next_node(int time) {
         total_prob += calculate_heuristic(current->get_id(), best_wait);
         
         if (total_prob / total >= prob) {
-            ordered_path.push_back(current);
+            ordered_path.push(current);
         } else {
             string e = "Issue with pathfinding. Should not get past final probability. Total: "
                 + to_string(total_prob)
@@ -117,7 +120,7 @@ void ant::next_node(int time) {
     counter--;
     
     if (has_reached_destination()) {
-        ordered_path.push_back(current);
+        ordered_path.push(current);
     }
 }
 
@@ -139,7 +142,16 @@ double ant::calculate_heuristic(int node_id, float ph) {
 iPair ant::cost_node(int time) {
     if (counter <= 0) {
         current = ordered_path.front();
-        ordered_path.pop_front();
+        ordered_path.pop();
+        
+        if (ordered_path.front()->get_id() == dest) {
+            t_node* prev = current;
+            current = ordered_path.front();
+            ordered_path.pop();
+            counter = 0;
+            return make_pair(prev->get_id(), current->get_id());
+        }
+        
         if (current != ordered_path.front()) {
             int n_nodeid = ordered_path.front()->get_id();
             for (int i = 0; i < current->edge_number(); i++) {
@@ -149,20 +161,20 @@ iPair ant::cost_node(int time) {
                 }
             }
         }
-        if (ordered_path.front()->get_id() == dest) {
-            t_node* prev = current;
-            current = ordered_path.front();
-            ordered_path.pop_front();
-            counter = 0;
-            return make_pair(prev->get_id(), current->get_id());
-        }
-
+        
         return make_pair(current->get_id(), ordered_path.front()->get_id());
     }
     counter--;
     return make_pair(INF, INF);
 }
 
+queue<t_node*> ant::get_ordered_path() {
+    return ordered_path;
+}
+
+void ant::init_cost() {
+    current = ordered_path.front();
+}
 
 bool ant::has_reached_destination() {
     if (counter > 0) {

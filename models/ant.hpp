@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <string>
 #include <math.h>
-#include <list>
+#include <queue>
 #include <set>
 
 #include "t_node.hpp"
@@ -30,6 +30,8 @@ public:
     void next_node(int time);
     iPair cost_node(int time);
     bool has_reached_destination();
+    void init_cost();
+    queue<t_node*> get_ordered_path();
 
 private:
     t_node *current;
@@ -38,7 +40,7 @@ private:
     float ALPHA, BETA, PHI;
     Randoms *probability;
     set<int> past_nodes;
-    list<t_node*> ordered_path;
+    queue<t_node*> ordered_path;
     
     double calculate_heuristic(int node_id, float ph);
 };

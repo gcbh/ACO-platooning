@@ -19,9 +19,9 @@ ACO_new::ACO_new(graph *i_g, int i_num_iterations, multimap< pair<int, int> , in
     g = i_g;
     num_iterations = i_num_iterations;
     RHO = 0.2;
-    ALPHA = 0.5;
-    BETA = 0.5;
-    PHI = 0.2;
+    ALPHA = 0.2;
+    BETA = 0.8;
+    PHI = 0.1;
     manifest = i_manifest;
     RESULT_LOG_PATH = "../results.log";
     result_log.open(RESULT_LOG_PATH); 
@@ -75,7 +75,7 @@ void ACO_new::iteration() {
     bool endIteration = true;
 
     for(int i = 1; i <= num_iterations; i++) {
-        cout << "ITERATION NUMBER " << i;
+        cout << "ITERATION NUMBER " << i << "\n";
         do {
             endIteration = true;
             tick++;
@@ -90,10 +90,21 @@ void ACO_new::iteration() {
         
         max_tick < tick ? max_tick = tick : max_tick; //needed for cost evaluation            
 
-        //evaporation();
+        evaporation();
+        for (list<ant*>::iterator itr = ants.begin(); itr != ants.end(); ++itr) {
+            (*itr)->init_cost();
+//            queue<t_node*> l = (*itr)->get_ordered_path();
+//            string path = "";
+//            for (queue<t_node*>::iterator it = l.begin(); it != l.end(); ++it) {
+//                path += to_string((*it)->get_id()) + " ";
+//            }
+//            cout << path << "\n";
+        }
         cost = cost_evaluation(max_tick);
         reset_ants();
         max_tick = 0;
+        
+        cout << "Cost: " << cost << "\n";
     }
 
 }
