@@ -28,8 +28,10 @@ void graph::construct_graph(list<graph_data> i_edges) {
         t_node *src_node; //= new t_node(it->src);
         t_node *dest_node; //= new t_node(it->dest);
 
+        int src = it->src;
+        int dest = it->dest;
         //src node is not yet in the graph
-        if (g_graph->count(it->src) == 0) {
+        if (g_graph->count(src) == 0) {
             src_node = new t_node(it->src);
             g_graph->insert(make_pair(it->src, src_node));
         } else {
@@ -37,7 +39,7 @@ void graph::construct_graph(list<graph_data> i_edges) {
         }
 
         //dest node is not yet in the graph
-        if (g_graph->count(it->dest) == 0) {
+        if (g_graph->count(dest) == 0) {
             dest_node = new t_node(it->dest);
             g_graph->insert(make_pair(it->dest, dest_node));
         } else {
