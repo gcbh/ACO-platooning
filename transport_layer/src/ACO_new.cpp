@@ -164,17 +164,27 @@ double ACO_new::cost_per_tick(map< iPair, int > map_ant_count) {
         t_node* dest = (*g) [get<1> (nodes_pair)];
         t_edge* edg = src->get_edge(dest->get_id());
         int edge_cost = edg->get_distance();
-        cost_per_tick += (edge_cost/cost_based_num_ants(num_of_ants));
+        cost_per_tick += (edge_cost*cost_based_num_ants(num_of_ants));
     }
     return cost_per_tick;
 }
 
 double ACO_new::cost_based_num_ants(int num_of_ants) {
 
-    int num_at_middle = num_of_ants - 2;
-    double cost_for_middle = num_at_middle * (avg_prcnt_fuel_saving_by_middle/100);
-    double cost_for_last = (avg_prcnt_fuel_saving_by_last/100);
+    double avg_cost = 1;
+    if (num_of_ants == 1)
+        return avg_cost;
 
-    double avg_cost = 1 - ((cost_for_middle + cost_for_last)/num_of_ants);
+    int num_at_middle = num_of_ants - 2;
+    double cost_for_middle = 0;
+    double cost_for_last = 0;
+
+    if (num_at_middle > 0)
+        cost_for_middle = num_at_middle * (avg_prcnt_fuel_saving_by_middle/100);
+
+    cost_for_last = (avg_prcnt_fuel_saving_by_last/100);
+
+    avg_cost = 1 - ((cost_for_middle + cost_for_last)/num_of_ants);
+
     return avg_cost;
 }
