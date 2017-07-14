@@ -32,6 +32,11 @@ ACO_new::~ACO_new() {
     fclose(stdout);
     result_log.close();
     delete g;
+
+    for (int i = 0; i < num_ants; i++)
+        delete [] print_route[i];
+    
+    delete [] print_route;
 }
 
 void ACO_new:: init(Dijkstra *dijkstra) {
@@ -101,6 +106,17 @@ void ACO_new::iteration() {
 //            cout << path << "\n";
         }
         cost = cost_evaluation(max_tick);
+        cout<<setw(20);
+        for (int j = 0; j < num_ants; j++) {
+            cout << "Ant" << j << setw(20);;
+        }
+        
+        for (int i = 0; i < max_tick; i++) {
+            cout<< "\n" << "tick" << i << setw(20);
+            for (int j = 0; j < num_ants; j++) {
+                cout << print_route[j][i] << setw(20);
+            }
+        }
         reset_ants();
         max_tick = 0;
         
@@ -125,26 +141,45 @@ void ACO_new::evaporation() {
 
 double ACO_new::cost_evaluation(int max_duration) {
     double total_cost = 0;
+    
+    num_ants = ants.size();
+    print_route = new string*[num_ants];
+    for (int i = 0; i < num_ants; i++)
+        print_route[i] = new string[max_duration];
 
     for (int tick = 0; tick < max_duration; tick++) {
         map< iPair, int > map_ant_count;
-
+        int ant_index = 0;
         for (list<ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
+            
             if (!(*it)->has_reached_destination()) {
                 iPair nodes_pair = (*it)->cost_node(tick);
                 int pair_elem1 = get<0> (nodes_pair);
                 int pair_elem2 = get<1> (nodes_pair);
 
-                if (pair_elem1 == INF || pair_elem1 == pair_elem2) 
+                string route = to_string(pair_elem1) + "->" + to_string(pair_elem2);
+
+                if (pair_elem1 == INF) {
+                    route = "Transit";
+                    print_route[ant_index][tick] = route;
                     continue;
+                }
                 
+                if (pair_elem1 == pair_elem2) {
+                    print_route[ant_index][tick] = route;
+                    continue;
+                }
+                
+                print_route[ant_index][tick] = route;
+
                 int ant_count = 0;
                 if (map_ant_count.count(nodes_pair)) 
                     int ant_count = map_ant_count.find(nodes_pair)->second;
 
                 map_ant_count.insert(make_pair(nodes_pair, ant_count+1));
-
+                
             }
+            ant_index++;
         }
         // cost calculation per tick
         total_cost += cost_per_tick(map_ant_count);

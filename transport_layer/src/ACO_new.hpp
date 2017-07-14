@@ -40,6 +40,8 @@ private:
 
     multimap< pair<int, int> , int> manifest;
     list<ant*> ants;
+    string **print_route;
+    int num_ants;
     void set_prime_ant(list<string> manifest_route);
     void iteration();
     void evaporation();
