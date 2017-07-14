@@ -149,9 +149,9 @@ double ACO_new::cost_evaluation(int max_duration) {
 
     for (int tick = 0; tick < max_duration; tick++) {
         map< iPair, int > map_ant_count;
-        int ant_index = 0;
+        int ant_index = -1;
         for (list<ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
-            
+            ant_index++;
             if (!(*it)->has_reached_destination()) {
                 iPair nodes_pair = (*it)->cost_node(tick);
                 int pair_elem1 = get<0> (nodes_pair);
@@ -179,7 +179,7 @@ double ACO_new::cost_evaluation(int max_duration) {
                 map_ant_count.insert(make_pair(nodes_pair, ant_count+1));
                 
             }
-            ant_index++;
+            
         }
         // cost calculation per tick
         total_cost += cost_per_tick(map_ant_count);
