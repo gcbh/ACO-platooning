@@ -92,6 +92,8 @@ int main() {
     
     ACO_new *ACO = new ACO_new(g, 10, manifest_map);
     ACO->init(dijkstra);
+
+    delete ACO;
     return 0;
 }
 

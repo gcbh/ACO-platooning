@@ -14,6 +14,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <iomanip>
 #include "../../utils/StringUtils.hpp"
 #include "../../models/t_node.hpp"
 #include "../../models/graph.hpp"
@@ -36,7 +37,7 @@ private:
     float RHO, ALPHA, BETA, PHI;
 
     multimap< pair<int, int> , int> manifest;
-    ant *ants;
+    list<ant*> ants;
     void set_prime_ant(list<string> manifest_route);
     void iteration();
     void delta_pheromone(int time, t_edge *edge);

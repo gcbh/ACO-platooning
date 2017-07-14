@@ -20,10 +20,7 @@ ACO_new::ACO_new(graph *i_g, int i_num_iterations, multimap< pair<int, int> , in
     ALPHA = 0.5;
     BETA = 0.5;
     PHI = 0.2;
-
-    ant *ants[i_manifest.size()];
     manifest = i_manifest;
-
     RESULT_LOG_PATH = "../results.log";
     result_log.open(RESULT_LOG_PATH); 
     freopen(RESULT_LOG_PATH.c_str(), "w", stdout);
@@ -32,15 +29,17 @@ ACO_new::ACO_new(graph *i_g, int i_num_iterations, multimap< pair<int, int> , in
 ACO_new::~ACO_new() {
     fclose(stdout);
     result_log.close();
-    delete [] ants;
     delete g;
 }
 
 void ACO_new:: init(Dijkstra *dijkstra) {
-    printf("***BEGINNING ANT COLONY OPTIMIZATION***");
+    cout << setw(50) << "***BEGINNING ANT COLONY OPTIMIZATION***\n\n";
+    cout << setw(50) << "------------------------------------------------------------\n\n";
+    cout << setw(50) << "ANT PATHS" << endl;
     d_map = dijkstra;
     set_prime_ant(dijkstra->get_manifest_routes());
     reset_ants();
+    iteration();
 }
 
 void ACO_new:: set_prime_ant(list<string> manifest_route) {
@@ -57,12 +56,13 @@ void ACO_new:: set_prime_ant(list<string> manifest_route) {
 }
 
 void ACO_new::reset_ants() {
-    int index = 0;
+    ants.clear();
+    int src, dest;
     for (multimap< pair<int, int> , int>::iterator it = manifest.begin(); it != manifest.end(); ++it) {
-        int src = it->first.first;
-        int dest = it->first.second;
-        ant a((*g)[src], d_map, dest, ALPHA, BETA, PHI, &r);
-        ants[index] = a;
+        src = it->first.first;
+        dest = it->first.second;
+        ant *a = new ant((*g)[src], d_map, dest, ALPHA, BETA, PHI, &r);
+        ants.push_back(a);
     }
 }
 
@@ -72,14 +72,15 @@ void ACO_new::iteration() {
     int max_tick = 0;
     bool endIteration = true;
 
-    for(int i = 1; i == num_iterations; i++) {
+    for(int i = 1; i <= num_iterations; i++) {
+        cout << "ITERATION NUMBER " << i;
         do {
             endIteration = true;
             tick++;
-            for (int a = 0; a < sizeof(ants); a++) {
+            for (list<ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
                 //if ant has not reached destination call nextnode
-                if (!ants[a].has_reached_destination()) {
-                    ants[a].next_node(tick);   
+                if (!(*it)->has_reached_destination()) {
+                    (*it)->next_node(tick);   
                     endIteration = false;   
                 }
             }
