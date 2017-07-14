@@ -26,7 +26,6 @@ ant::ant(t_node* first, Dijkstra* i_d_map, int i_dest, float i_alpha, float i_be
 ant::~ant() {   }
 
 void ant::next_node(int time) {
-    // need to incorporate dijkstra data into decision
     if (counter <= 0) {
         double total = 0;
         double total_prob = 0;
@@ -55,13 +54,13 @@ void ant::next_node(int time) {
         
         total += calculate_heuristic(current->get_id(), best_wait);
         
-        // generate weighted PHI (explore) value
-        float prob_phi = total * PHI;
-        
-        total += prob_phi;
-        
         // proportion of total for any untravelled path
-        prob_phi /= untravelled;
+        if (untravelled != 0) {
+            // generate weighted PHI (explore) value
+            float prob_phi = total * PHI;
+            total += prob_phi;
+            prob_phi /= untravelled;
+        }
         
         // random value between 0 and 1
         double prob = probability->Uniforme();
@@ -81,8 +80,9 @@ void ant::next_node(int time) {
                 
                 // if in range of current edge
                 if (total_prob >= prob) {
+                    e->update_pheromone(time, 1.0f);
                     // ensure node travelling from cannot be reached again
-                    past_nodes.insert(ordered_path.back()->get_id());
+                    past_nodes.insert(current->get_id());
                     // current node included in up-to-date path
                     ordered_path.push_back(current);
                     // update 'current'
@@ -108,6 +108,10 @@ void ant::next_node(int time) {
         return;
     }
     counter--;
+    
+    if (has_reached_destination()) {
+        ordered_path.push_back(current);
+    }
 }
 
 double ant::calculate_heuristic(int node_id, float ph) {
@@ -140,5 +144,8 @@ iPair ant::cost_node(int time) {
 
 
 bool ant::has_reached_destination() {
+    if (counter > 0) {
+        return false;
+    }
     return current->get_id() == dest;
 }

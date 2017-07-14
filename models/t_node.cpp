@@ -12,7 +12,6 @@ using namespace std;
 
 t_node::t_node(int i_id) {
     id = i_id;
-    //edges = new vector<t_edge*>();
 }
 
 int t_node::get_id() {

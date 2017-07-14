@@ -38,8 +38,7 @@ $(BUILDDIR)/%.o: $(UTILDIR)/%.$(SRCEXT)
 
 maketransport: $(OBJECTS) $(MODELS) $(UTILS)
 	@mkdir -p $(TARGETDIR)
-	@echo " $(CC) $^ -o $(TARGET)";
-	$(CC) $^ -o $(TARGET)
+	@echo " $(CC) $^ -o $(TARGET)"; $(CC) $^ -o $(TARGET)
 
 clean:
 	@echo " Cleaning...";
