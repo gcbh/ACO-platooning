@@ -55,9 +55,10 @@ void ant::next_node(int time) {
         total += calculate_heuristic(current->get_id(), best_wait);
         
         // proportion of total for any untravelled path
+        // generate weighted PHI (explore) value
+        float prob_phi = total * PHI;
+        
         if (untravelled != 0) {
-            // generate weighted PHI (explore) value
-            float prob_phi = total * PHI;
             total += prob_phi;
             prob_phi /= untravelled;
         }
