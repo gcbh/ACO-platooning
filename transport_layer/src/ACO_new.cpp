@@ -123,9 +123,10 @@ double ACO_new::cost_evaluation(int max_duration) {
 
     for (int tick = 0; tick < max_duration; tick++) {
         map< iPair, int > map_ant_count;
-        for (int a = 0; a < sizeof(ants); a++) {
 
-            iPair nodes_pair = ants[a].cost_node(tick);
+        for (list<ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
+
+            iPair nodes_pair = (*it)->cost_node(tick);
             int pair_elem1 = get<0> (nodes_pair);
             int pair_elem2 = get<1> (nodes_pair);
 
