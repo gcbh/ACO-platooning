@@ -21,6 +21,8 @@
 #include "../../models/t_edge.hpp"
 #include "../../models/primer_ant.hpp"
 #include "../../models/ant.hpp"
+#include "Dijkstra.hpp"
+
 
 class ACO_new {
 public:
@@ -44,7 +46,7 @@ private:
     void evaporation();
     double cost_evaluation(int max_duration);
     double cost_based_num_ants(int num_of_ants);
-    double cost_per_tick(map< int, set<int> > *edge_with_ants);
+    double cost_per_tick(map< iPair, int > map_ant_count);
     void reset_ants();
 };
 

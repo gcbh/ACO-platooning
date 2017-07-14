@@ -10,7 +10,7 @@
 
 using namespace std;
 
-t_edge::t_edge(int i_id, t_node *i_dest, double i_distance, int i_speed) {
+t_edge::t_edge(int i_id, t_node *i_dest, int i_distance, int i_speed) {
     id = i_id;
     dest = i_dest;
     distance = i_distance;
@@ -36,6 +36,10 @@ t_node* t_edge::get_dest() {
 
 pheromone t_edge::get_pheromone(int time) {
     return pheromone_at[time];
+}
+
+int t_edge::get_distance() {
+    return distance;
 }
 
 bool t_edge::pheromone_exists(int time) {

@@ -16,11 +16,11 @@
 
 using namespace std;
 # define INF 0x3f3f3f3f
-typedef pair<double, int> iPair;
+typedef pair<int, int> iPair;
 
 
 Dijkstra::Dijkstra() {
-    // edg = new list<iPair> [200];
+    
 }
 
 Dijkstra::~Dijkstra() {
@@ -34,7 +34,7 @@ Dijkstra::~Dijkstra() {
     delete [] edge_weight;
 }
 
-void Dijkstra::add_edge(int src, int dest, double weight) {
+void Dijkstra::add_edge(int src, int dest, int weight) {
     edg[src].push_back(make_pair(weight, dest));
     edg[dest].push_back(make_pair(weight, src));
 }
@@ -62,7 +62,7 @@ void Dijkstra::shortest_route (int src) {
     priority_queue< iPair, vector <iPair> , greater<iPair> > pq;
     
     // vector for distances, initialized as infinite
-    vector<double> wght(nodes.size(), INF);
+    vector<int> wght(nodes.size(), INF);
     
     // Array to store shortest path route
     int route[nodes.size()];
@@ -80,7 +80,7 @@ void Dijkstra::shortest_route (int src) {
         int vertex = pq.top().second;
         pq.pop();
         
-        for (list< pair<double, int> >::iterator itr = edg[vertex].begin(); itr != edg[vertex].end(); itr++)
+        for (list< pair<int, int> >::iterator itr = edg[vertex].begin(); itr != edg[vertex].end(); itr++)
         {
             int adj = itr->second;
             int weight = itr->first;
@@ -101,11 +101,11 @@ void Dijkstra::shortest_route (int src) {
     
 }
 
-void Dijkstra::print_src_data(int src, vector<double> wght, int route[]) {
+void Dijkstra::print_src_data(int src, vector<int> wght, int route[]) {
     
     for (int i = 0; i < nodes.size(); i++)
     {
-        printf("\n %d,%d; %f; %d ", src, i, wght[i], src);
+        printf("\n %d,%d; %d; %d ", src, i, wght[i], src);
         print_path(route, i);
     }
 }
@@ -127,9 +127,9 @@ void Dijkstra:: populate_from_dijkstra_file(string file_name, multimap< pair<int
     // get number of unique nodes and intialize 2D array size
     getline(file, line);
     const int node_count =  stoi(line);
-    edge_weight = new double*[node_count];
+    edge_weight = new int*[node_count];
     for (int i = 0; i < node_count; i++)
-        edge_weight[i] = new double[node_count];
+        edge_weight[i] = new int[node_count];
     
     while(getline(file, line))
     {
@@ -141,7 +141,7 @@ void Dijkstra:: populate_from_dijkstra_file(string file_name, multimap< pair<int
             edge = split(columns[0], ',');
             int src = stoi(edge[0]);
             int dest = stoi(edge[1]);
-            double distance = stod(columns[1]);
+            int distance = stod(columns[1]);
             string route = columns[2];
 
             // populate 2D array for an edge with weight
@@ -159,7 +159,7 @@ void Dijkstra:: populate_from_dijkstra_file(string file_name, multimap< pair<int
     }
 }
 
-double Dijkstra:: get_edge_weight(int src, int dest) {
+int Dijkstra:: get_edge_weight(int src, int dest) {
     return edge_weight[src][dest];
 }
 

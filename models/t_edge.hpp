@@ -27,7 +27,7 @@ struct pheromone {
 class t_edge {
     
 public:
-    t_edge(int i_id, t_node *i_dest, double i_distance, int i_speed);
+    t_edge(int i_id, t_node *i_dest, int i_distance, int i_speed);
     ~t_edge();
     t_node* get_dest();
     int get_id();
@@ -35,6 +35,7 @@ public:
     bool pheromone_exists(int time);
     void update_pheromone(int time, int value);
     int get_time_to_cross();
+    int get_distance();
 private:
     t_node *dest;
     int id;

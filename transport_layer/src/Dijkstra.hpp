@@ -19,13 +19,14 @@
 #include <fstream>
 #include <sstream>
 #include "../../utils/StringUtils.hpp"
+#include "../../models/graph.hpp"
 
 using namespace std;
 
-struct graph_data {
+struct manifest_data {
     int src;
     int dest;
-    double weight;
+    int duration;
 };
 
 class Dijkstra {
@@ -34,17 +35,17 @@ public:
     virtual ~Dijkstra();
     void init(list<graph_data> list, int node_count);
     void populate_from_dijkstra_file(string file_name, multimap< pair<int, int>, int> manifest_map);
-    double get_edge_weight(int src, int dest);
+    int get_edge_weight(int src, int dest);
     list<string> get_manifest_routes();
 private:
-    list< pair<double, int> > *edg;
+    list< pair<int, int> > *edg;
     set<int> nodes;
-    double **edge_weight;
+    int **edge_weight;
     list<string> manifest_route;
     int num_of_nodes;
-    void shortest_route( int src);
-    void add_edge(int src, int dest, double weight);
-    void print_src_data(int src, vector<double> wght, int route[]);
+    void shortest_route(int src);
+    void add_edge(int src, int dest, int weight);
+    void print_src_data(int src, vector<int> wght, int route[]);
     void print_path(int route[], int j);
 };
 

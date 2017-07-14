@@ -12,9 +12,9 @@
 #include <map>
 #include <fstream>
 #include <sstream>
-#include "../../models/graph.hpp"
 #include "Dijkstra.hpp"
 #include "ACO_new.hpp"
+#include "../../models/graph.hpp"
 #include "../../utils/StringUtils.hpp"
 
 #define MAPS "../../maps/"
@@ -51,7 +51,7 @@ int main() {
         int            dest;
         string         src_name;
         string         dest_name;
-        double         distance;
+        int            distance;
 
         
         linestream >> src >> src_name >> dest >> dest_name >> distance;
@@ -112,10 +112,10 @@ multimap< pair<int, int> , int> get_manifest(string file_name) {
         
         linestream >> src >> dest >> duration;
 
-        struct graph_data edge;
+        struct manifest_data edge;
         edge.src = src;
         edge.dest = dest;
-        edge.weight = duration;
+        edge.duration = duration;
 
         pair<int, int> key = make_pair(src, dest);
         manifest_data.insert(make_pair(key, duration));

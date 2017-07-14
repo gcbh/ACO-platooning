@@ -13,9 +13,14 @@
 #include <iostream>
 #include <list>
 #include <map>
-#include "../transport_layer/src/Dijkstra.hpp"
 #include "t_node.hpp"
 #include "t_edge.hpp"
+
+struct graph_data {
+    int src;
+    int dest;
+    int weight;
+};
 
 class graph {
 public:
