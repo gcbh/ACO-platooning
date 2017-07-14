@@ -121,7 +121,18 @@ double ant::calculate_heuristic(int node_id, float ph) {
 
 iPair ant::cost_node(int time) {
     if (counter <= 0) {
-        
+        current = ordered_path.front();
+        ordered_path.pop_front();
+        if (current != ordered_path.front()) {
+            int n_nodeid = ordered_path.front()->get_id();
+            for (int i = 0; i < current->edge_number(); i++) {
+                t_edge* e = (*current)[i];
+                if (n_nodeid == e->get_dest()->get_id()) {
+                    counter = e->get_time_to_cross();
+                }
+            }
+        }
+        return make_pair(current->get_id(), ordered_path.front()->get_id());
     }
     counter--;
     return make_pair(INF, INF);

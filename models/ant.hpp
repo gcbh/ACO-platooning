@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <string>
 #include <math.h>
-#include <vector>
+#include <list>
 #include <set>
 
 #include "t_node.hpp"
@@ -38,9 +38,8 @@ private:
     float ALPHA, BETA, PHI;
     Randoms *probability;
     set<int> past_nodes;
-    vector<t_node*> ordered_path;
+    list<t_node*> ordered_path;
     
     double calculate_heuristic(int node_id, float ph);
-    void set_node(t_edge* e);
 };
 #endif /* ant_hpp */
