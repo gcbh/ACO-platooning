@@ -98,12 +98,6 @@ void ACO_new::iteration() {
         evaporation();
         for (list<ant*>::iterator itr = ants.begin(); itr != ants.end(); ++itr) {
             (*itr)->init_cost();
-//            queue<t_node*> l = (*itr)->get_ordered_path();
-//            string path = "";
-//            for (queue<t_node*>::iterator it = l.begin(); it != l.end(); ++it) {
-//                path += to_string((*it)->get_id()) + " ";
-//            }
-//            cout << path << "\n";
         }
         cost = cost_evaluation(max_tick);
         cout<<setw(20);
