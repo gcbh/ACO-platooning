@@ -6,6 +6,9 @@
 //  Copyright © 2017 FYDP. All rights reserved.
 //
 
+#include <fstream>
+#include <sstream>
+#include <iostream>
 #include "SimScene.hpp"
 #include "ShaderUtils.hpp"
 #include "TextureUtils.hpp"
@@ -59,18 +62,27 @@ void SimScene::setup() {
     //Get MVP ID
     SimScene::mvp_id = glGetUniformLocation(SimScene::program, "MVP");
 
-    CityNode* city = new CityNode();
-    m_root_node->addChildNode(city);
-    //city->m_position.x = 10.0;
+    //Load cities
+    std::ifstream file("cities_ids_coords.txt");
+    std::string   line;
 
-    CityNode* city2 = new CityNode();
-    m_root_node->addChildNode(city2);
-    city2->m_position.y = 10.0;
+    while(getline(file, line)) {
+        std::stringstream   linestream(line);
+        int            city_id;
+        std::string    city_name;
+        float          latitude;
+        float          longitude;
 
-    CityNode* city3 = new CityNode();
-    m_root_node->addChildNode(city3);
-    city3->m_position.x = 10.0;
-    city3->m_position.y = 10.0;
+
+        linestream >> city_id >> city_name >> latitude >> longitude;
+
+        CityNode* city = new CityNode();
+        m_root_node->addChildNode(city);
+        city->m_id = city_id;
+        city->m_name = city_name;
+        city->m_position.x = longitude;
+        city->m_position.y = latitude;
+    }
 }
 
 void SimScene::input(InputState is) {

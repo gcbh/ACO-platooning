@@ -10,6 +10,7 @@
 #define CityNode_hpp
 
 #include <stdio.h>
+#include <string>
 #include "SceneNode.hpp"
 
 class CityNode : public SceneNode
@@ -22,6 +23,9 @@ public:
     void input();
     void update(double deltaTime);
     void render(RenderState rs);
+
+    int m_id;
+    std::string m_name;
     
 private:
 };

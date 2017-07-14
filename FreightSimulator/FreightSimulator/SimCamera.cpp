@@ -10,8 +10,8 @@
 #define CAMERA_SPEED 50.0
 
 void SimCamera::setup() {
-    m_position = glm::vec3(0,0,75);
-    m_focal_point = glm::vec3(0.0f);
+    m_position = glm::vec3(-98.5795,39.8283,75);
+    m_focal_point = glm::vec3(m_position.x,m_position.y,0.0f);
     m_fov = 45.0;
 }
 

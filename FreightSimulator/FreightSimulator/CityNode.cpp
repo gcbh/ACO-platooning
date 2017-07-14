@@ -8,8 +8,11 @@
 
 #include "CityNode.hpp"
 #include "SimScene.hpp"
+#include "glm.hpp"
+#include "matrix_transform.hpp"
 
 void CityNode::setup() {
+    m_scale = glm::vec3(1.0f, 1.0f, 1.0f);
     m_program = SimScene::program;
     m_vertex_array = SimScene::vao;
     m_mvp_id = SimScene::mvp_id;
