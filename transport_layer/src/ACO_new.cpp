@@ -118,7 +118,7 @@ void ACO_new::iteration() {
             ant_num++;
         }
         
-        for (int i = 0; i < tick; i++) {
+        for (int i = 0; i <= tick; i++) {
             cout<< "\n" << "tick" << i << setw(20);
             for (int j = 0; j < num_ants; j++) {
                 cout << print_route[j][i] << setw(20);
@@ -151,9 +151,9 @@ double ACO_new::cost_evaluation(int max_duration) {
     num_ants = ants.size();
     print_route = new string*[num_ants];
     for (int i = 0; i < num_ants; i++)
-        print_route[i] = new string[max_duration];
+        print_route[i] = new string[max_duration+1];
 
-    for (int tick = 0; tick < max_duration; tick++) {
+    for (int tick = 0; tick <= max_duration; tick++) {
         map< iPair, int > map_ant_count;
         int ant_index = -1;
         for (list<ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
@@ -184,6 +184,8 @@ double ACO_new::cost_evaluation(int max_duration) {
 
                 map_ant_count.insert(make_pair(nodes_pair, ant_count+1));
                 
+            } else {
+                string f = "finished";
             }
             
         }

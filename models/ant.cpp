@@ -39,18 +39,14 @@ void ant::next_node(int time) {
             
             int n_nodeid = e->get_dest()->get_id();
             if (past_nodes.find(n_nodeid) == past_nodes.end()) {
-//                if (e->pheromone_exists(time)) {
-                    pheromone p = e->get_pheromone(time);
-                    
-                    total += calculate_heuristic(n_nodeid, p.current);
-                    
-                    // determines largest future pheromone
-                    if (p.future > best_wait) {
-                        best_wait = p.future;
-                    }
-//                } else {
-//                    untravelled++;
-//                }
+                pheromone p = e->get_pheromone(time);
+                
+                total += calculate_heuristic(n_nodeid, p.current);
+                
+                // determines largest future pheromone
+                if (p.future > best_wait) {
+                    best_wait = p.future;
+                }
             } else {
                 past_travelled++;
             }
@@ -63,35 +59,17 @@ void ant::next_node(int time) {
         
         total += calculate_heuristic(current->get_id(), best_wait);
         
-        // proportion of total for any untravelled path
-        // generate weighted PHI (explore) value
-//        float prob_phi = total * PHI;
-//        
-//        if (untravelled != 0) {
-//            if (total <= wait_val) {
-//                prob_phi = 1.0f / untravelled;
-//                total = 1;
-//            } else {
-//                total += prob_phi;
-//                prob_phi /= untravelled;
-//            }
-//        }
-        
         // random value between 0 and 1
         double prob = probability->Uniforme();
         
         for (int i = 0; i < current->edge_number(); i++) {
             t_edge* e = (*current)[i];
             int n_nodeid = e->get_dest()->get_id();
-            if (past_nodes.find(n_nodeid) == past_nodes.end()) {    
-//                if (e->pheromone_exists(time)) {
-                    pheromone p = e->get_pheromone(time);
-                    // sums to find position of random variable between 0 and 1
-                    total_prob += calculate_heuristic(n_nodeid, p.current);
-//                } else {
-//                    total_prob += prob_phi;
-//                }
-//                
+            if (past_nodes.find(n_nodeid) == past_nodes.end()) {
+                pheromone p = e->get_pheromone(time);
+                // sums to find position of random variable between 0 and 1
+                total_prob += calculate_heuristic(n_nodeid, p.current);
+            
                 // if in range of current edge
                 if (total_prob/total >= prob) {
                     e->update_pheromone(time, 1.0f);
@@ -103,9 +81,6 @@ void ant::next_node(int time) {
                     current = e->get_dest();
                     // update 'counter' for timing
                     counter = e->get_time_to_cross() - 1;
-                    if (has_reached_destination()) {
-                        ordered_path.push(current);
-                    }
                     return;
                 }
             }
@@ -131,6 +106,13 @@ void ant::next_node(int time) {
     }
 }
 
+void ant::roll_back(int time) {
+    if (counter <= 0) {
+        
+    }
+    counter--;
+}
+
 double ant::calculate_heuristic(int node_id, float ph) {
     float p, d;
     
@@ -142,7 +124,6 @@ double ant::calculate_heuristic(int node_id, float ph) {
     }
     
     if (!ph) {
-        p = 0.0f;
         return PHI*d;
     } else {
         p = tanh(ph);
@@ -169,7 +150,7 @@ iPair ant::cost_node(int time) {
             for (int i = 0; i < current->edge_number(); i++) {
                 t_edge* e = (*current)[i];
                 if (n_nodeid == e->get_dest()->get_id()) {
-                    counter = e->get_time_to_cross();
+                    counter = e->get_time_to_cross() - 1;
                 }
             }
         }
