@@ -90,7 +90,7 @@ int main() {
     graph *g = new graph();
     g->construct_graph(pre_opt_graph); 
     
-    ACO_new *ACO = new ACO_new(g, 100, manifest_map);
+    ACO_new *ACO = new ACO_new(g, 200, manifest_map);
     ACO->init(dijkstra);
 
 //    delete ACO;

@@ -101,6 +101,12 @@ void ACO_new::iteration() {
         } while(!endIteration);
 
         if (ant_void) {
+            cout << "ROLLBACK\n";
+            for (int t = 0; t <= tick; ++t) {
+                for (list<ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
+                    (*it)->roll_back(t);
+                }
+            }
             reset_ants();
             continue;
         }

@@ -107,8 +107,15 @@ void ant::next_node(int time) {
 }
 
 void ant::roll_back(int time) {
-    if (counter <= 0) {
-        
+    if (counter <= 0 && ordered_path.size() > 1) {
+        current = ordered_path.front();
+        ordered_path.pop();
+        for (int i = 0; i < current->edge_number(); i++) {
+            if ((*current)[i]->get_dest()->get_id() == ordered_path.front()->get_id()) {
+                counter = (*current)[i]->get_time_to_cross() - 1;
+                (*current)[i]->update_pheromone(time, -1.0f);
+            }
+        }
     }
     counter--;
 }
