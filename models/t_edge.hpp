@@ -33,16 +33,17 @@ public:
     int get_id();
     pheromone get_pheromone(int time);
     bool pheromone_exists(int time);
-    void update_pheromone(int time, int value);
+    void update_pheromone(int time, float value);
     int get_time_to_cross();
     int get_distance();
+    void evaporate(int time, float rho);
 private:
     t_node *dest;
     int id;
     int distance, speed, max_tick, time_to_cross;
     float max_pheromone;
     map<int, pheromone> pheromone_at;
-    void update_future_pheromone(int time, int value);
+    void update_future_pheromone(int time, float value);
 };
 
 #endif /* t_edge_hpp */

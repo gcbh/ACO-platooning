@@ -132,14 +132,12 @@ void ACO_new::iteration() {
 }
 
 void ACO_new::evaporation() {
-    int new_value = 0;
     vector<t_edge*> edges;
     for (int i = 0; i < g->get_num_nodes(); i++) {
         edges = (*g)[i]->get_edges();
         for (int j = 0; j < edges.size(); j++) {
             for (int k = 0; k < edges[j]->get_time_to_cross(); k++) {
-                new_value = -RHO*edges[j]->get_pheromone(k).current;
-                edges[j]->update_pheromone(k, new_value);
+                edges[j]->evaporate(k, RHO);
             }
         }
     }
