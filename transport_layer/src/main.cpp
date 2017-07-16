@@ -29,8 +29,8 @@ multimap< pair<int, int> , int>  get_manifest(string file_name);
 int main() {
     cout << "hello world" << endl;
 
-    string file_name = "small_graph.txt";
-    string manifest_file_name = "manifest_small_graph.txt";
+    string file_name = "triangular_graph.txt";
+    string manifest_file_name = "manifest_tirangular_graph.txt";
     
     // open graph file, read and pass data to Dijkstra to calculate shortest path
     ifstream file(MAPS + file_name);
