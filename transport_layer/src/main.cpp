@@ -36,6 +36,7 @@ int main() {
     float PHI = 1.2;
     float RHO = 0.5;
     int num_iterations = 200;
+    bool DEBUG = true;
     
 //    string file_name = "small_graph.txt";
 //    string manifest_file_name = "manifest_small_graph.txt";
@@ -101,7 +102,7 @@ int main() {
     g->construct_graph(pre_opt_graph); 
     
 //    time_t rand = (long)time(nullptr);
-    ACO_new *ACO = new ACO_new(g, manifest_map, ALPHA, BETA, PHI, RHO);
+    ACO_new *ACO = new ACO_new(g, manifest_map, ALPHA, BETA, PHI, RHO, DEBUG);
 
     ACO->init(dijkstra);
     

@@ -15,14 +15,14 @@ typedef pair<int, int> iPair;
 const float avg_prcnt_fuel_saving_by_middle = 4.1;
 const float avg_prcnt_fuel_saving_by_last = 6.1;
 
-ACO_new::ACO_new(graph *i_g, multimap< pair<int, int> , int> i_manifest, float i_alpha, float i_beta, float i_phi, float i_rho) : r(21) {
+ACO_new::ACO_new(graph *i_g, multimap< pair<int, int> , int> i_manifest, float i_alpha, float i_beta, float i_phi, float i_rho, bool i_debug) : r(21) {
     g = i_g;
 
     RHO = i_rho;
     ALPHA = i_alpha;
     BETA = i_beta;
     PHI = i_phi;
-    LOG = true;
+    DEBUG = i_debug;
     manifest = i_manifest;
     num_iters = 0;
     RESULT_LOG_PATH = "../results.log";
@@ -98,7 +98,7 @@ int ACO_new::iteration() {
     } while(!endIteration);
 
     if (ant_void) {
-        if (LOG) log_rollback();
+        if (DEBUG) log_rollback();
         for (int t = 0; t <= tick; ++t) {
             for (list<ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
                 (*it)->roll_back(t);
@@ -178,7 +178,7 @@ double ACO_new::cost_evaluation(int max_duration) {
         total_cost += cost_per_tick(map_ant_count);
     }
     
-    if (LOG) {
+    if (DEBUG) {
         log_results(max_duration, total_cost);
     }
 

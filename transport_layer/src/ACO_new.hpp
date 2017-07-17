@@ -26,7 +26,7 @@
 
 class ACO_new {
 public:
-    ACO_new (graph *i_g, multimap< pair<int, int> , int> i_manifest, float i_alpha, float i_beta, float i_phi, float i_rho);
+    ACO_new (graph *i_g, multimap< pair<int, int> , int> i_manifest, float i_alpha, float i_beta, float i_phi, float i_rho, bool i_debug);
     virtual ~ACO_new ();
     void    init(Dijkstra *dijkstra);
     int     iteration();
@@ -42,7 +42,7 @@ private:
     list<ant*>                          ants;
     string**                            print_route;
     int                                 num_ants, num_iters;
-    bool                                LOG;
+    bool                                DEBUG;
     
     void    set_prime_ant(list<string> manifest_route);
     void    evaporation();
