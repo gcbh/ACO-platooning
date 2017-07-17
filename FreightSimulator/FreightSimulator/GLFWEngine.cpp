@@ -102,7 +102,6 @@ void GLFWEngine::render() {
     int width, height;
     glfwGetFramebufferSize(m_window, &width, &height);
     glViewport(0, 0, width, height);
-    glClear(GL_COLOR_BUFFER_BIT);
 
     //Render app
     RenderState rs = {m_window, glm::mat4(1.0f)};

@@ -15,6 +15,7 @@ SceneNode::~SceneNode() { }
 void SceneNode::_setup() {
 
     m_model_matrix = glm::mat4(1.0);
+    m_rotation = 0.0f;
     m_position = glm::vec3(0.0);
     m_scale = glm::vec3(1.0f);
     m_velocity = glm::vec3(0.0);
@@ -44,12 +45,10 @@ void SceneNode::_update(UpdateState us) {
     //Update self
     m_position = m_position + (m_velocity * (float)us.deltaTime);
 
-
     m_model_matrix = glm::mat4(1.0);
     m_model_matrix = glm::translate(m_model_matrix, m_position);
-    //m_model_matrix = glm::rotate(m_model_matrix, (glm::mediump_float)0.0, glm::vec3(0.0f));
+    m_model_matrix = glm::rotate(m_model_matrix, (glm::mediump_float)m_rotation, glm::vec3(0.0f, 0.0f, 1.0f));
     m_model_matrix = glm::scale(m_model_matrix, m_scale);
-    //m_model_matrix = translate;
 
     //User update
     update(us);

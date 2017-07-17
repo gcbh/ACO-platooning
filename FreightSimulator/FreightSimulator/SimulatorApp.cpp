@@ -16,9 +16,6 @@ std::string SimulatorApp::getName(){
 }
 
 void SimulatorApp::setup() {
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
     m_scene = new SimScene();
     m_scene->_setup();
 }
@@ -43,7 +40,19 @@ void SimulatorApp::update(UpdateState us) {
 }
 
 void SimulatorApp::render(RenderState rs) {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(0.0,0.0,0.0,0.0);
+
     m_scene->_render(rs);
+
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_BLEND);
 }
 
 

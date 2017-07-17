@@ -10,7 +10,7 @@
 #define CAMERA_SPEED 50.0
 
 void SimCamera::setup() {
-    m_position = glm::vec3(-98.5795,39.8283,75);
+    m_position = glm::vec3(0.0f,0.0f,75.0f);
     m_focal_point = glm::vec3(m_position.x,m_position.y,0.0f);
     m_fov = 45.0;
 }
@@ -43,6 +43,6 @@ void SimCamera::input(InputState is) {
 
 void SimCamera::update(UpdateState us) {
     //Lock direction
-    //m_focal_point.x = m_position.x;
-    //m_focal_point.y = m_position.y;
+    m_focal_point.x = m_position.x;
+    m_focal_point.y = m_position.y;
 }

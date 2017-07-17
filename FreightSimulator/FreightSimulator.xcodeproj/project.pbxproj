@@ -17,6 +17,10 @@
 		14304B681F181418007AEBC6 /* test.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 14304B671F18140C007AEBC6 /* test.png */; };
 		1452D0891EE9CCBB00883286 /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1452D0871EE9CCBB00883286 /* StringUtils.cpp */; };
 		1452D0901EE9D08100883286 /* Edge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1452D08B1EE9D08100883286 /* Edge.cpp */; };
+		1460A2411F1C8381002D7C30 /* EdgeNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1460A23F1F1C8381002D7C30 /* EdgeNode.cpp */; };
+		1460A2441F1C919E002D7C30 /* sim_test_edges.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1460A2431F1C9196002D7C30 /* sim_test_edges.txt */; };
+		1460A2451F1C91A5002D7C30 /* sim_test_cities.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1460A2421F1C9188002D7C30 /* sim_test_cities.txt */; };
+		1460A2471F1C99B4002D7C30 /* edge_fs.glsl in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1460A2461F1C9808002D7C30 /* edge_fs.glsl */; };
 		14A232651EE8D5B800FB574F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14A232641EE8D5B800FB574F /* main.cpp */; };
 		14A2326D1EE8D62900FB574F /* libglfw.3.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 14A2326C1EE8D62900FB574F /* libglfw.3.2.dylib */; };
 		14A2326F1EE8D70A00FB574F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14A2326E1EE8D70A00FB574F /* OpenGL.framework */; };
@@ -38,6 +42,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				1460A2471F1C99B4002D7C30 /* edge_fs.glsl in CopyFiles */,
+				1460A2451F1C91A5002D7C30 /* sim_test_cities.txt in CopyFiles */,
+				1460A2441F1C919E002D7C30 /* sim_test_edges.txt in CopyFiles */,
 				14FF6EC91F18942B0048CA80 /* cities_p.txt in CopyFiles */,
 				14FF6EC81F1894260048CA80 /* cities_ids_coords.txt in CopyFiles */,
 				14304B681F181418007AEBC6 /* test.png in CopyFiles */,
@@ -331,6 +338,11 @@
 		1452D0881EE9CCBB00883286 /* StringUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StringUtils.hpp; sourceTree = "<group>"; };
 		1452D08B1EE9D08100883286 /* Edge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Edge.cpp; sourceTree = "<group>"; };
 		1452D08C1EE9D08100883286 /* Edge.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Edge.hpp; sourceTree = "<group>"; };
+		1460A23F1F1C8381002D7C30 /* EdgeNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeNode.cpp; sourceTree = "<group>"; };
+		1460A2401F1C8381002D7C30 /* EdgeNode.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EdgeNode.hpp; sourceTree = "<group>"; };
+		1460A2421F1C9188002D7C30 /* sim_test_cities.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = sim_test_cities.txt; path = ../../maps/simulator_test_graphs/sim_test_cities.txt; sourceTree = "<group>"; };
+		1460A2431F1C9196002D7C30 /* sim_test_edges.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = sim_test_edges.txt; path = ../../maps/simulator_test_graphs/sim_test_edges.txt; sourceTree = "<group>"; };
+		1460A2461F1C9808002D7C30 /* edge_fs.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = edge_fs.glsl; path = shaders/edge_fs.glsl; sourceTree = "<group>"; };
 		14A232611EE8D5B800FB574F /* FreightSimulator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FreightSimulator; sourceTree = BUILT_PRODUCTS_DIR; };
 		14A232641EE8D5B800FB574F /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		14A2326C1EE8D62900FB574F /* libglfw.3.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.2.dylib; path = ../../../../../../usr/local/Cellar/glfw/3.2.1/lib/libglfw.3.2.dylib; sourceTree = "<group>"; };
@@ -783,6 +795,8 @@
 				1400DCAD1F0DFB72002FA9B1 /* CityNode.hpp */,
 				1400DCB21F0E0D15002FA9B1 /* SimCamera.cpp */,
 				1400DCB31F0E0D15002FA9B1 /* SimCamera.hpp */,
+				1460A23F1F1C8381002D7C30 /* EdgeNode.cpp */,
+				1460A2401F1C8381002D7C30 /* EdgeNode.hpp */,
 			);
 			name = app;
 			sourceTree = "<group>";
@@ -804,6 +818,7 @@
 			children = (
 				14ED4D791EEE500E009A6A35 /* basic_vs.glsl */,
 				14ED4D7A1EEE501E009A6A35 /* basic_fs.glsl */,
+				1460A2461F1C9808002D7C30 /* edge_fs.glsl */,
 			);
 			name = shaders;
 			sourceTree = "<group>";
@@ -811,6 +826,8 @@
 		14FF6EC51F1893E30048CA80 /* inputs */ = {
 			isa = PBXGroup;
 			children = (
+				1460A2431F1C9196002D7C30 /* sim_test_edges.txt */,
+				1460A2421F1C9188002D7C30 /* sim_test_cities.txt */,
 				14FF6EC61F1894160048CA80 /* cities_ids_coords.txt */,
 				14FF6EC71F1894160048CA80 /* cities_p.txt */,
 			);
@@ -882,6 +899,7 @@
 				1452D0891EE9CCBB00883286 /* StringUtils.cpp in Sources */,
 				1400DB9C1F0DE7A9002FA9B1 /* SimScene.cpp in Sources */,
 				14A232651EE8D5B800FB574F /* main.cpp in Sources */,
+				1460A2411F1C8381002D7C30 /* EdgeNode.cpp in Sources */,
 				1400DCB41F0E0D15002FA9B1 /* SimCamera.cpp in Sources */,
 				14304B661F16D55A007AEBC6 /* TextureUtils.cpp in Sources */,
 				14304B601F16D3DF007AEBC6 /* lodepng.cpp in Sources */,
