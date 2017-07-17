@@ -15,12 +15,13 @@ typedef pair<int, int> iPair;
 const float avg_prcnt_fuel_saving_by_middle = 4.1;
 const float avg_prcnt_fuel_saving_by_last = 6.1;
 
-ACO_new::ACO_new(graph *i_g, multimap< pair<int, int> , int> i_manifest, float i_alpha, float i_beta, float i_phi, float i_rho, bool i_debug, long seed) : r(seed) {
+ACO_new::ACO_new(graph *i_g, multimap< pair<int, int> , int> i_manifest, float i_alpha, float i_beta, float i_delta, float i_phi, float i_rho, bool i_debug, long seed) : r(seed) {
     g = i_g;
 
     RHO = i_rho;
     ALPHA = i_alpha;
     BETA = i_beta;
+    DELTA = i_delta;
     PHI = i_phi;
     DEBUG = i_debug;
     manifest = i_manifest;
@@ -46,7 +47,7 @@ void ACO_new:: init(Dijkstra *dijkstra) {
     cout << setw(50) << "------------------------------------------------------------\n\n";
     cout << setw(50) << "ANT PATHS" << endl;
     d_map = dijkstra;
-    set_prime_ant(dijkstra->get_manifest_routes());
+//    set_prime_ant(dijkstra->get_manifest_routes());
     reset_ants();
 }
 
@@ -69,7 +70,7 @@ void ACO_new::reset_ants() {
     for (multimap< pair<int, int> , int>::iterator it = manifest.begin(); it != manifest.end(); ++it) {
         src = it->first.first;
         dest = it->first.second;
-        ant *a = new ant((*g)[src], d_map, dest, ALPHA, BETA, PHI, &r);
+        ant *a = new ant((*g)[src], d_map, dest, ALPHA, BETA, DELTA, PHI, &r);
         ants.push_back(a);
     }
 }
@@ -92,18 +93,14 @@ int ACO_new::iteration() {
             }
             
             if ((*it)->void_route()) {
-                endIteration = true;
-                ant_void = true;
+                if (DEBUG) log_rollback((*it)->get_ordered_path().front()->get_id());
+                rollback_evaporation(tick, 1.0f);
+                reset_ants();
+                return -1;
+                break;
             }
         }
     } while(!endIteration);
-
-    if (ant_void) {
-        if (DEBUG) log_rollback();
-        rollback_evaporation(tick, 1.0f);
-        reset_ants();
-        return -1;
-    }
     
     for (list<ant*>::iterator itr = ants.begin(); itr != ants.end(); ++itr) {
         (*itr)->init_cost();
@@ -217,9 +214,9 @@ void ACO_new::log_results(int tick, int cost) {
     cout << "Cost: " << cost << "\n";
 }
 
-void ACO_new::log_rollback() {
+void ACO_new::log_rollback(int node_id) {
     cout << "ITERATION NUMBER " << num_iters << "\n";
-    cout << "ROLLBACK\n";
+    cout << "ROLLBACK at: " << node_id << endl;
 }
 
 double ACO_new::cost_per_tick(map< iPair, int > map_ant_count) {

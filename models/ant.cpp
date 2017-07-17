@@ -12,7 +12,7 @@
 
 using namespace std;
 
-ant::ant(t_node* first, Dijkstra* i_d_map, int i_dest, float i_alpha, float i_beta, float i_phi, Randoms* i_r) {
+ant::ant(t_node* first, Dijkstra* i_d_map, int i_dest, float i_alpha, float i_beta, float i_delta, float i_phi, Randoms* i_r) {
     d_map = i_d_map;
     probability = i_r;
     dest = i_dest;
@@ -20,6 +20,7 @@ ant::ant(t_node* first, Dijkstra* i_d_map, int i_dest, float i_alpha, float i_be
     current = first;
     ALPHA = i_alpha;
     BETA = i_beta;
+    DELTA = i_delta;
     PHI = i_phi;
     v_route = false;
 }
@@ -31,17 +32,22 @@ void ant::next_node(int time) {
         double total = 0;
         double total_prob = 0;
         float best_wait = 0;
-        int untravelled = 0;
         int past_travelled = 0;
         for (int i = 0; i < current->edge_number(); i++) {
             
             t_edge* e = (*current)[i];
             
             int n_nodeid = e->get_dest()->get_id();
+            int e_id = e->get_id();
+            
             if (past_nodes.find(n_nodeid) == past_nodes.end()) {
                 pheromone p = e->get_pheromone(time);
                 
-                total += calculate_heuristic(n_nodeid, e->get_distance(), p.current);
+                double test = calculate_heuristic(n_nodeid, e->get_distance(), p.current);
+                if (!test) {
+                    string a = "";
+                }
+                total += test;
                 
                 // determines largest future pheromone
                 if (p.future > best_wait) {
@@ -64,7 +70,10 @@ void ant::next_node(int time) {
         
         for (int i = 0; i < current->edge_number(); i++) {
             t_edge* e = (*current)[i];
+            
             int n_nodeid = e->get_dest()->get_id();
+            int e_id = e->get_id();
+            
             if (past_nodes.find(n_nodeid) == past_nodes.end()) {
                 pheromone p = e->get_pheromone(time);
                 // sums to find position of random variable between 0 and 1
@@ -74,7 +83,7 @@ void ant::next_node(int time) {
                 if (total_prob/total >= prob) {
                     e->update_pheromone(time, 1.0f);
                     // ensure node travelling from cannot be reached again
-                    past_nodes.insert(current->get_id());
+                    past_nodes.insert(n_nodeid);
                     // current node included in up-to-date path
                     ordered_path.push(current);
                     // update 'current'
@@ -134,11 +143,9 @@ double ant::calculate_heuristic(int node_id, int e_dist, float ph) {
     
     if (!ph) {
         return PHI*d;
-    } else {
-        p = tanh(ph);
     }
     
-    return ALPHA*p + BETA*d;
+    return pow(ph, ALPHA) * pow(d, BETA);
 }
 
 iPair ant::cost_node(int time) {

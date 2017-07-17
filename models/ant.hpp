@@ -13,7 +13,7 @@
 #include <string>
 #include <math.h>
 #include <queue>
-#include <set>
+#include <unordered_set>
 
 #include "t_node.hpp"
 #include "../transport_layer/src/Randoms.h"
@@ -25,7 +25,7 @@ typedef pair<int, int> iPair;
 
 class ant {
 public:
-    ant(t_node* first, Dijkstra* i_d_map, int i_dest, float i_alpha, float i_beta, float i_phi, Randoms* i_r);
+    ant(t_node* first, Dijkstra* i_d_map, int i_dest, float i_alpha, float i_beta, float i_delta, float i_phi, Randoms* i_r);
     ~ant();
     void            next_node(int time);
     void            roll_back(int time, float magnitude);
@@ -39,9 +39,9 @@ private:
     t_node*         current;
     Dijkstra*       d_map;
     int             dest, counter;
-    float           ALPHA, BETA, PHI;
+    float           ALPHA, BETA, DELTA, PHI;
     Randoms*        probability;
-    set<int>        past_nodes;
+    unordered_set<int>        past_nodes;
     queue<t_node*>  ordered_path;
     bool            v_route;
     

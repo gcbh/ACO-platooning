@@ -26,7 +26,7 @@
 
 class ACO_new {
 public:
-    ACO_new (graph *i_g, multimap< pair<int, int> , int> i_manifest, float i_alpha, float i_beta, float i_phi, float i_rho, bool i_debug, long seed);
+    ACO_new (graph *i_g, multimap< pair<int, int> , int> i_manifest, float i_alpha, float i_beta, float i_delta, float i_phi, float i_rho, bool i_debug, long seed);
     virtual ~ACO_new ();
     void    init(Dijkstra *dijkstra);
     int     iteration();
@@ -37,7 +37,7 @@ private:
     Randoms                             r;
     string                              RESULT_LOG_PATH;
     ofstream                            result_log;
-    float                               RHO, ALPHA, BETA, PHI;
+    float                               RHO, ALPHA, BETA, DELTA, PHI;
     multimap< pair<int, int> , int >    manifest;
     list<ant*>                          ants;
     string**                            print_route;
@@ -53,7 +53,7 @@ private:
     double  cost_per_tick(map< iPair, int > map_ant_count);
     void    reset_ants();
     void    log_results(int tick, int cost);
-    void    log_rollback();
+    void    log_rollback(int node_id);
     
 };
 
