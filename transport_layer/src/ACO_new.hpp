@@ -47,6 +47,7 @@ private:
     
     void    set_prime_ant(list<string> manifest_route);
     void    evaporation(float rho);
+    void    rollback_evaporation(int tick, float value);
     double  cost_evaluation(int max_duration);
     double  cost_based_num_ants(int num_of_ants);
     double  cost_per_tick(map< iPair, int > map_ant_count);

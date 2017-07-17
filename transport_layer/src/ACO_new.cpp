@@ -46,7 +46,7 @@ void ACO_new:: init(Dijkstra *dijkstra) {
     cout << setw(50) << "------------------------------------------------------------\n\n";
     cout << setw(50) << "ANT PATHS" << endl;
     d_map = dijkstra;
-//    set_prime_ant(dijkstra->get_manifest_routes());
+    set_prime_ant(dijkstra->get_manifest_routes());
     reset_ants();
 }
 
@@ -100,35 +100,36 @@ int ACO_new::iteration() {
 
     if (ant_void) {
         if (DEBUG) log_rollback();
-        for (int t = 0; t <= tick; ++t) {
-            for (list<ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
-                (*it)->roll_back(t);
-            }
-        }
+        rollback_evaporation(tick, 1.0f);
         reset_ants();
         return -1;
     }
-    
-    
     
     for (list<ant*>::iterator itr = ants.begin(); itr != ants.end(); ++itr) {
         (*itr)->init_cost();
     }
     cost = cost_evaluation(tick);
 
-    if (prev_cost == INF) 
-        evaporation(RHO);
-
-    if (cost < prev_cost)
-        evaporation(RHO*(1/3));
-    else 
-        evaporation(RHO);
-
+    if (cost < prev_cost) {
+        rollback_evaporation(tick, -3.0f * prev_cost / cost);
+    } else if (cost > prev_cost) {
+        rollback_evaporation(tick, 2.0f * cost / prev_cost);
+    }
+    
+    evaporation(RHO);
     prev_cost = cost;
     
     reset_ants();
     
     return cost;
+}
+
+void ACO_new::rollback_evaporation(int tick, float value) {
+    for (int t = 0; t <= tick; ++t) {
+        for (list<ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
+            (*it)->roll_back(t, value);
+        }
+    }
 }
 
 void ACO_new::evaporation(float rho) {

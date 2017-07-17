@@ -28,7 +28,7 @@ public:
     ant(t_node* first, Dijkstra* i_d_map, int i_dest, float i_alpha, float i_beta, float i_phi, Randoms* i_r);
     ~ant();
     void            next_node(int time);
-    void            roll_back(int time);
+    void            roll_back(int time, float magnitude);
     iPair           cost_node(int time);
     bool            has_reached_destination();
     void            init_cost();

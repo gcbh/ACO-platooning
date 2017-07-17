@@ -31,18 +31,18 @@ int main() {
     cout << "Begin optimization" << endl;
 
     // algorithm optimization values
-    float ALPHA = 0.2;
-    float BETA = 0.8;
-    float PHI = 15.3;
-    float RHO = 5.8;
-    int num_iterations = 500;
+    float ALPHA = 0.99;
+    float BETA = 0.01;
+    float PHI = 0.01;
+    float RHO = 0.4;
+    int num_iterations = 10000;
     bool DEBUG = true;
     time_t seed = (long)time(nullptr);
     
-//    string file_name = "small_graph.txt";
-//    string manifest_file_name = "manifest_small_graph.txt";
-    string file_name = "triangular_graph.txt";
-    string manifest_file_name = "manifest_triangular_graph.txt";
+    string file_name = "small_graph.txt";
+    string manifest_file_name = "manifest_small_graph.txt";
+//    string file_name = "triangular_graph.txt";
+//    string manifest_file_name = "manifest_triangular_graph.txt";
     
     // open graph file, read and pass data to Dijkstra to calculate shortest path
     ifstream file(MAPS + file_name);

@@ -111,14 +111,14 @@ void ant::next_node(int time) {
     }
 }
 
-void ant::roll_back(int time) {
+void ant::roll_back(int time, float magnitude) {
     if (counter <= 0 && ordered_path.size() > 1) {
         current = ordered_path.front();
         ordered_path.pop();
         for (int i = 0; i < current->edge_number(); i++) {
             if ((*current)[i]->get_dest()->get_id() == ordered_path.front()->get_id()) {
                 counter = (*current)[i]->get_time_to_cross() - 1;
-                (*current)[i]->update_pheromone(time, -1.0f);
+                (*current)[i]->update_pheromone(time, -1.0f * magnitude);
             }
         }
     }
@@ -145,6 +145,7 @@ iPair ant::cost_node(int time) {
     if (counter <= 0) {
         current = ordered_path.front();
         ordered_path.pop();
+        ordered_path.push(current);
         
         if (ordered_path.front()->get_id() == dest) {
             t_node* prev = current;
