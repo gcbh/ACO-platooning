@@ -23,6 +23,7 @@ public:
     base_ant();
     virtual         ~base_ant();
     iPair           cost_node(int time);
+    bool            has_reached_destination();
 protected:
     int             counter, dest;
     t_node*         current;

@@ -14,7 +14,7 @@ using namespace std;
 # define INF 0x3f3f3f3f
 
 base_ant::base_ant() {
-    counter = 0;
+    // counter = 0;
 }
 
 base_ant::~base_ant() { }
@@ -47,4 +47,11 @@ iPair base_ant::cost_node(int time) {
     }
     counter--;
     return make_pair(INF, INF);
+}
+
+bool base_ant::has_reached_destination() {
+    if (counter > 0) {
+        return false;
+    }
+    return current->get_id() == dest;
 }

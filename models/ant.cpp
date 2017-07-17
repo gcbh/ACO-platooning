@@ -159,10 +159,7 @@ void ant::init_cost() {
 }
 
 bool ant::has_reached_destination() {
-    if (counter > 0) {
-        return false;
-    }
-    return current->get_id() == dest;
+    return base_ant::has_reached_destination();
 }
 
 bool ant::void_route() {
