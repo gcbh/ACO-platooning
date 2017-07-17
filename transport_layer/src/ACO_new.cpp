@@ -27,6 +27,7 @@ ACO_new::ACO_new(graph *i_g, multimap< pair<int, int> , int> i_manifest, float i
     num_iters = 0;
     RESULT_LOG_PATH = "../results.log";
     result_log.open(RESULT_LOG_PATH);
+    prev_cost = INF;
     freopen(RESULT_LOG_PATH.c_str(), "w", stdout);
 }
 
@@ -108,26 +109,36 @@ int ACO_new::iteration() {
         return -1;
     }
     
-    evaporation();
+    
     
     for (list<ant*>::iterator itr = ants.begin(); itr != ants.end(); ++itr) {
         (*itr)->init_cost();
     }
     cost = cost_evaluation(tick);
+
+    if (prev_cost == INF) 
+        evaporation(RHO);
+
+    if (cost < prev_cost)
+        evaporation(RHO*(1/3));
+    else 
+        evaporation(RHO);
+
+    prev_cost = cost;
     
     reset_ants();
     
     return cost;
 }
 
-void ACO_new::evaporation() {
+void ACO_new::evaporation(float rho) {
     vector<t_edge*> edges;
 
     for (int i = 0; i < g->get_num_nodes(); i++) {
         edges = (*g)[i]->get_edges();
         for (int j = 0; j < edges.size(); j++) {
             for (int k = 0; k < edges[j]->get_time_to_cross(); k++) {
-                edges[j]->evaporate(k, RHO);
+                edges[j]->evaporate(k, rho);
             }
         }
     }

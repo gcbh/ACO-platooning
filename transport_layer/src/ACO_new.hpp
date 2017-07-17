@@ -43,9 +43,10 @@ private:
     string**                            print_route;
     int                                 num_ants, num_iters;
     bool                                DEBUG;
+    double                              prev_cost;
     
     void    set_prime_ant(list<string> manifest_route);
-    void    evaporation();
+    void    evaporation(float rho);
     double  cost_evaluation(int max_duration);
     double  cost_based_num_ants(int num_of_ants);
     double  cost_per_tick(map< iPair, int > map_ant_count);
