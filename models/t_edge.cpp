@@ -54,28 +54,20 @@ void t_edge::update_pheromone(int time, float value) {
     new_p.future = old_p.future;
 
     pheromone_at[time] = new_p;
-
-    update_future_pheromone(time, value); 
 }
 
 int t_edge::get_time_to_cross() {
     return time_to_cross;
 }
 
-//  update all previous times' future values to reflect new changes for current time.
-//  eg. if time = 2 was updated in update_phermone to hold a value of 3
-//  future values of pheromones at time 0 and 1 should update if 3 is greater 
-//  than their current future projections.
 void t_edge::update_future_pheromone(int time, float value) {
     pheromone p;
     for (int i = 0; i < time; i++) {
         p = get_pheromone(i);
-        if (p.future < value) {
-            pheromone new_p;
-            new_p.current = p.current;
-            new_p.future = value;
-            pheromone_at[i] = new_p;
-        }
+        pheromone new_p;
+        new_p.current = p.current;
+        new_p.future = value;
+        pheromone_at[i] = new_p;
     }
 }
 
@@ -84,7 +76,7 @@ void t_edge::evaporate(int time, float rho) {
     pheromone new_p;
     
     new_p.current = (1-rho)*old_p.current;
-    new_p.future = (1-rho)*old_p.future;
+    new_p.future = old_p.future;
     
     pheromone_at[time] = new_p;
 }
