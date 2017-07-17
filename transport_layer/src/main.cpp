@@ -31,13 +31,16 @@ int main() {
     cout << "Begin optimization" << endl;
 
     // algorithm optimization values
-    float ALPHA = 0.8f; // pheromone portion of heuristic
-    float BETA = 0.5f;  // dijkstra portion of heuristic
-    float DELTA = 1.0f; // pheromone incremental value
-    float PHI = 0.5f;   // exploration coefficient
-    float RHO = 0.5f;   // pheromone evaporation value
-    int num_iterations = 10000;
-    bool DEBUG = true;
+    float   ALPHA = 0.9f;     // pheromone exponent of heuristic
+    float   BETA = 0.2f;      // dijkstra exponent of heuristic
+    float   DELTA = 1.5f;     // pheromone incremental value
+    float   LAMBDA = 4.0f;    // reinforcement pheromone value
+    float   PHI = 1.0f;       // exploration coefficient
+    float   RHO = 0.6f;       // pheromone evaporation value
+    int     num_iterations = 100000;
+    
+    bool    DEBUG = true;
+    
     time_t seed = (long)time(nullptr);
     
     string file_name = "small_graph.txt";
@@ -103,7 +106,7 @@ int main() {
     graph *g = new graph();
     g->construct_graph(pre_opt_graph); 
     
-    ACO_new *ACO = new ACO_new(g, manifest_map, ALPHA, BETA, DELTA, PHI, RHO, DEBUG, seed);
+    ACO_new *ACO = new ACO_new(g, manifest_map, ALPHA, BETA, DELTA, LAMBDA, PHI, RHO, DEBUG, seed);
 
     ACO->init(dijkstra);
     

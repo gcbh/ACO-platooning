@@ -15,13 +15,14 @@ typedef pair<int, int> iPair;
 const float avg_prcnt_fuel_saving_by_middle = 4.1;
 const float avg_prcnt_fuel_saving_by_last = 6.1;
 
-ACO_new::ACO_new(graph *i_g, multimap< pair<int, int> , int> i_manifest, float i_alpha, float i_beta, float i_delta, float i_phi, float i_rho, bool i_debug, long seed) : r(seed) {
+ACO_new::ACO_new(graph *i_g, multimap< pair<int, int> , int> i_manifest, float i_alpha, float i_beta, float i_delta, float i_lambda, float i_phi, float i_rho, bool i_debug, long seed) : r(seed) {
     g = i_g;
 
     RHO = i_rho;
     ALPHA = i_alpha;
     BETA = i_beta;
     DELTA = i_delta;
+    LAMBDA = i_lambda;
     PHI = i_phi;
     DEBUG = i_debug;
     manifest = i_manifest;
@@ -47,7 +48,7 @@ void ACO_new:: init(Dijkstra *dijkstra) {
     cout << setw(50) << "------------------------------------------------------------\n\n";
     cout << setw(50) << "ANT PATHS" << endl;
     d_map = dijkstra;
-//    set_prime_ant(dijkstra->get_manifest_routes());
+    set_prime_ant(dijkstra->get_manifest_routes());
     reset_ants();
 }
 
@@ -105,15 +106,19 @@ int ACO_new::iteration() {
     for (list<ant*>::iterator itr = ants.begin(); itr != ants.end(); ++itr) {
         (*itr)->init_cost();
     }
+    
     cost = cost_evaluation(tick);
-
+    
+    if (prev_cost == INF) {
+        prev_cost = cost;
+    }
     if (cost < prev_cost) {
-        rollback_evaporation(tick, -3.0f * prev_cost / cost);
+        rollback_evaporation(tick, -1.0f * LAMBDA * prev_cost / cost);
     } else if (cost > prev_cost) {
-        rollback_evaporation(tick, 2.0f * cost / prev_cost);
+        rollback_evaporation(tick, 5.0f * cost / prev_cost);
     }
     
-    evaporation(RHO);
+    evaporate_update_future_pheromones(tick);
     prev_cost = cost;
     
     reset_ants();
@@ -129,14 +134,21 @@ void ACO_new::rollback_evaporation(int tick, float value) {
     }
 }
 
-void ACO_new::evaporation(float rho) {
+void ACO_new::evaporate_update_future_pheromones(int ticks) {
     vector<t_edge*> edges;
-
+    float max = 0.0f;
+    float current = 0.0f;
     for (int i = 0; i < g->get_num_nodes(); i++) {
         edges = (*g)[i]->get_edges();
         for (int j = 0; j < edges.size(); j++) {
-            for (int k = 0; k < edges[j]->get_time_to_cross(); k++) {
-                edges[j]->evaporate(k, rho);
+            for (int k = ticks; k >= 0; k--) {
+                edges[j]->evaporate(k, RHO);
+                
+                current = edges[j]->get_pheromone(k).current;
+                if (current > max) {
+                    max = current;
+                    edges[j]->update_future_pheromone(k, max);
+                }
             }
         }
     }

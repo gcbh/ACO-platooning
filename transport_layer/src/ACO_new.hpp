@@ -26,7 +26,7 @@
 
 class ACO_new {
 public:
-    ACO_new (graph *i_g, multimap< pair<int, int> , int> i_manifest, float i_alpha, float i_beta, float i_delta, float i_phi, float i_rho, bool i_debug, long seed);
+    ACO_new (graph *i_g, multimap< pair<int, int> , int> i_manifest, float i_alpha, float i_beta, float i_delta, float i_lambda, float i_phi, float i_rho, bool i_debug, long seed);
     virtual ~ACO_new ();
     void    init(Dijkstra *dijkstra);
     int     iteration();
@@ -37,7 +37,7 @@ private:
     Randoms                             r;
     string                              RESULT_LOG_PATH;
     ofstream                            result_log;
-    float                               RHO, ALPHA, BETA, DELTA, PHI;
+    float                               RHO, ALPHA, BETA, DELTA, LAMBDA, PHI;
     multimap< pair<int, int> , int >    manifest;
     list<ant*>                          ants;
     string**                            print_route;
@@ -46,7 +46,7 @@ private:
     double                              prev_cost;
     
     void    set_prime_ant(list<string> manifest_route);
-    void    evaporation(float rho);
+    void    evaporate_update_future_pheromones(int ticks);
     void    rollback_evaporation(int tick, float value);
     double  cost_evaluation(int max_duration);
     double  cost_based_num_ants(int num_of_ants);
