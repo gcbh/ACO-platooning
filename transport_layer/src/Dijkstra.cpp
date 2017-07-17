@@ -129,6 +129,8 @@ void Dijkstra:: populate_from_dijkstra_file(string file_name, multimap< pair<int
     edge_weight = new int*[node_count];
     for (int i = 0; i < node_count; i++)
         edge_weight[i] = new int[node_count];
+
+    num_of_nodes = node_count;
     
     while(getline(file, line))
     {
