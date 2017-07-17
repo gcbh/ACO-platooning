@@ -15,8 +15,8 @@ public:
     double Normal(double avg, double sigma);
     double Uniforme ();
     double sorte (int m);
-    float ran1(long *idum);
-    float gaussdev(long *idum);
+    float  ran1(long *idum);
+    float  gaussdev(long *idum);
 private:
     long xpto;
     

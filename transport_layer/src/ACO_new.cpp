@@ -15,24 +15,24 @@ typedef pair<int, int> iPair;
 const float avg_prcnt_fuel_saving_by_middle = 4.1;
 const float avg_prcnt_fuel_saving_by_last = 6.1;
 
-ACO_new::ACO_new(graph *i_g, int i_num_iterations, multimap< pair<int, int> , int> i_manifest) : r(21) {
+ACO_new::ACO_new(graph *i_g, multimap< pair<int, int> , int> i_manifest, float i_alpha, float i_beta, float i_phi, float i_rho) : r(21) {
     g = i_g;
-    num_iterations = i_num_iterations;
-    RHO = 0.2;
-    ALPHA = 0.8;
-    BETA = 0.2;
-    PHI = 5.8;
+
+    RHO = i_rho;
+    ALPHA = i_alpha;
+    BETA = i_beta;
+    PHI = i_phi;
+    LOG = true;
     manifest = i_manifest;
-    //RESULT_LOG_PATH = "../results.log";
-    //result_log.open(RESULT_LOG_PATH);
-    //freopen(RESULT_LOG_PATH.c_str(), "w", stdout);
+    num_iters = 0;
+    RESULT_LOG_PATH = "../results.log";
+    result_log.open(RESULT_LOG_PATH);
+    freopen(RESULT_LOG_PATH.c_str(), "w", stdout);
 }
 
 ACO_new::~ACO_new() {
     fclose(stdout);
     result_log.close();
-    delete g;
-    delete d_map;
 
     for (int i = 0; i < num_ants; i++)
         delete [] print_route[i];
@@ -47,7 +47,6 @@ void ACO_new:: init(Dijkstra *dijkstra) {
     d_map = dijkstra;
     set_prime_ant(dijkstra->get_manifest_routes());
     reset_ants();
-    iteration();
 }
 
 void ACO_new:: set_prime_ant(list<string> manifest_route) {
@@ -74,71 +73,56 @@ void ACO_new::reset_ants() {
     }
 }
 
-void ACO_new::iteration() {
-    double cost = 0;
-    int tick;
-    bool endIteration = true;
+int ACO_new::iteration() {
+    double  cost = 0;
+    int     tick = -1;
+    bool    ant_void = false;
+    bool    endIteration;
+    num_iters++;
+    
+    do {
+        endIteration = true;
+        tick++;
+        for (list<ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
+            //if ant has not reached destination call nextnode
+            if (!(*it)->has_reached_destination()) {
+                (*it)->next_node(tick);   
+                endIteration = false;   
+            }
+            
+            if ((*it)->void_route()) {
+                endIteration = true;
+                ant_void = true;
+            }
+        }
+    } while(!endIteration);
 
-    for(int i = 1; i <= num_iterations; i++) {
-        cout << "ITERATION NUMBER " << i << "\n";
-        tick = -1;
-        bool ant_void = false;
-        do {
-            endIteration = true;
-            tick++;
+    if (ant_void) {
+        if (LOG) log_rollback();
+        for (int t = 0; t <= tick; ++t) {
             for (list<ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
-                //if ant has not reached destination call nextnode
-                if (!(*it)->has_reached_destination()) {
-                    (*it)->next_node(tick);   
-                    endIteration = false;   
-                }
-                
-                if ((*it)->void_route()) {
-                    endIteration = true;
-                    ant_void = true;
-                }
-            }
-        } while(!endIteration);
-
-        if (ant_void) {
-            cout << "ROLLBACK\n";
-            for (int t = 0; t <= tick; ++t) {
-                for (list<ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
-                    (*it)->roll_back(t);
-                }
-            }
-            reset_ants();
-            continue;
-        }
-        
-        evaporation();
-        for (list<ant*>::iterator itr = ants.begin(); itr != ants.end(); ++itr) {
-            (*itr)->init_cost();
-        }
-        cost = cost_evaluation(tick);
-        cout<<setw(20);
-        list<string> r = d_map->get_manifest_routes();
-        int ant_num = 0;
-        for (list<string>::iterator it = r.begin(); it != r.end(); ++it) {
-            cout << "Ant" << ant_num << " " << *it << setw(10);;
-            ant_num++;
-        }
-        
-        for (int i = 0; i <= tick; i++) {
-            cout<< "\n" << "tick" << i << setw(20);
-            for (int j = 0; j < num_ants; j++) {
-                cout << print_route[j][i] << setw(20);
+                (*it)->roll_back(t);
             }
         }
         reset_ants();
-        
-        cout << "Cost: " << cost << "\n";
+        return -1;
     }
-
+    
+    evaporation();
+    
+    for (list<ant*>::iterator itr = ants.begin(); itr != ants.end(); ++itr) {
+        (*itr)->init_cost();
+    }
+    cost = cost_evaluation(tick);
+    
+    reset_ants();
+    
+    return cost;
 }
 
 void ACO_new::evaporation() {
     vector<t_edge*> edges;
+
     for (int i = 0; i < g->get_num_nodes(); i++) {
         edges = (*g)[i]->get_edges();
         for (int j = 0; j < edges.size(); j++) {
@@ -188,21 +172,48 @@ double ACO_new::cost_evaluation(int max_duration) {
 
                 map_ant_count.insert(make_pair(nodes_pair, ant_count+1));
                 
-            } else {
-                string f = "finished";
             }
-            
         }
         // cost calculation per tick
         total_cost += cost_per_tick(map_ant_count);
+    }
+    
+    if (LOG) {
+        log_results(max_duration, total_cost);
     }
 
     return total_cost;
 }
 
+void ACO_new::log_results(int tick, int cost) {
+    
+    cout << "ITERATION NUMBER " << num_iters << "\n";
+    cout<<setw(20);
+    list<string> r = d_map->get_manifest_routes();
+    int ant_num = 0;
+    for (list<string>::iterator it = r.begin(); it != r.end(); ++it) {
+        cout << "Ant" << ant_num << " " << *it << setw(10);;
+        ant_num++;
+    }
+    
+    for (int i = 0; i <= tick; i++) {
+        cout<< "\n" << "tick" << i << setw(20);
+        for (int j = 0; j < num_ants; j++) {
+            cout << print_route[j][i] << setw(20);
+        }
+    }
+    cout << "Cost: " << cost << "\n";
+}
+
+void ACO_new::log_rollback() {
+    cout << "ITERATION NUMBER " << num_iters << "\n";
+    cout << "ROLLBACK\n";
+}
+
 double ACO_new::cost_per_tick(map< iPair, int > map_ant_count) {
     map< iPair, int >::iterator itm;
-    double cost_per_tick = 0;
+    double                      cost_per_tick = 0;
+    
     for (itm = map_ant_count.begin(); itm != map_ant_count.end(); ++itm) {
         int num_of_ants = itm->second;
 
@@ -217,14 +228,13 @@ double ACO_new::cost_per_tick(map< iPair, int > map_ant_count) {
 }
 
 double ACO_new::cost_based_num_ants(int num_of_ants) {
-
-    double avg_cost = 1;
+    int     num_at_middle = num_of_ants - 2;
+    double  cost_for_middle = 0;
+    double  cost_for_last = 0;
+    double  avg_cost = 1;
+    
     if (num_of_ants == 1)
         return avg_cost;
-
-    int num_at_middle = num_of_ants - 2;
-    double cost_for_middle = 0;
-    double cost_for_last = 0;
 
     if (num_at_middle > 0)
         cost_for_middle = num_at_middle * (avg_prcnt_fuel_saving_by_middle/100);

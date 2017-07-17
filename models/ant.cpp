@@ -81,6 +81,11 @@ void ant::next_node(int time) {
                     current = e->get_dest();
                     // update 'counter' for timing
                     counter = e->get_time_to_cross() - 1;
+                    
+                    if (has_reached_destination()) {
+                        ordered_path.push(current);
+                    }
+                    
                     return;
                 }
             }

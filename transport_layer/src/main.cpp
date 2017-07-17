@@ -28,8 +28,17 @@ using namespace std;
 multimap< pair<int, int> , int>  get_manifest(string file_name);
 
 int main() {
-    cout << "hello world" << endl;
+    cout << "Begin optimization" << endl;
 
+    // algorithm optimization values
+    float ALPHA = 0.2;
+    float BETA = 0.8;
+    float PHI = 1.2;
+    float RHO = 0.5;
+    int num_iterations = 200;
+    
+//    string file_name = "small_graph.txt";
+//    string manifest_file_name = "manifest_small_graph.txt";
     string file_name = "triangular_graph.txt";
     string manifest_file_name = "manifest_triangular_graph.txt";
     
@@ -54,7 +63,6 @@ int main() {
         string         dest_name;
         int            distance;
 
-        
         linestream >> src >> src_name >> dest >> dest_name >> distance;
         
         struct graph_data edge;
@@ -83,8 +91,9 @@ int main() {
         freopen(dijkstra_file_path.c_str(), "w", stdout);
         dijkstra->init(pre_opt_graph, nodes.size());
         fclose(stdout);
-
-    } 
+        dijkstra_file.close();
+    }
+    
     multimap< pair<int, int> , int>  manifest_map = get_manifest(manifest_file_name);
     dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map);
 
@@ -92,10 +101,18 @@ int main() {
     g->construct_graph(pre_opt_graph); 
     
 //    time_t rand = (long)time(nullptr);
-    ACO_new *ACO = new ACO_new(g, 500, manifest_map);
-    ACO->init(dijkstra);
+    ACO_new *ACO = new ACO_new(g, manifest_map, ALPHA, BETA, PHI, RHO);
 
-//    delete ACO;
+    ACO->init(dijkstra);
+    
+    for(int i = 1; i <= num_iterations; i++) {
+        int cost = ACO->iteration();
+        if (cost < 0) continue;
+    }
+
+    delete g;
+    delete dijkstra;
+    delete ACO;
     return 0;
 }
 

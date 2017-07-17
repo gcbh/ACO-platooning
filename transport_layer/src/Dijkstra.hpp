@@ -33,16 +33,18 @@ class Dijkstra {
 public:
     Dijkstra();
     virtual ~Dijkstra();
-    void init(list<graph_data> list, int node_count);
-    void populate_from_dijkstra_file(string file_name, multimap< pair<int, int>, int> manifest_map);
-    int get_edge_weight(int src, int dest);
-    list<string> get_manifest_routes();
+    void            init(list<graph_data> list, int node_count);
+    void            populate_from_dijkstra_file(string file_name, multimap< pair<int, int>, int> manifest_map);
+    int             get_edge_weight(int src, int dest);
+    list<string>    get_manifest_routes();
+    
 private:
-    list< pair<int, int> > *edg;
-    set<int> nodes;
-    int **edge_weight;
-    list<string> manifest_route;
-    int num_of_nodes;
+    list< pair<int, int> >* edg;
+    set<int>                nodes;
+    int**                   edge_weight;
+    list<string>            manifest_route;
+    int                     num_of_nodes;
+    
     void shortest_route(int src);
     void add_edge(int src, int dest, int weight);
     void print_src_data(int src, vector<int> wght, int route[]);

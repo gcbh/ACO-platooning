@@ -28,7 +28,7 @@ void primer_ant:: set_ant_path() {
             t_node *next_n = cur_edge->get_dest();
             if (next_n->get_id() == stoi(route[i])) {
                 // TODO: set value to increase to
-                cur_edge->update_pheromone(tick, 1);
+                cur_edge->update_pheromone(tick, 1.0f);
                 int time_to_cross = cur_edge->get_time_to_cross();
                 tick = tick + time_to_cross;
                 current = next_n;

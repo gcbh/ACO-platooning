@@ -26,29 +26,33 @@
 
 class ACO_new {
 public:
-    ACO_new (graph *i_g, int i_num_iterations, multimap< pair<int, int> , int> i_manifest);
+    ACO_new (graph *i_g, multimap< pair<int, int> , int> i_manifest, float i_alpha, float i_beta, float i_phi, float i_rho);
     virtual ~ACO_new ();
-    void init(Dijkstra *dijkstra);
+    void    init(Dijkstra *dijkstra);
+    int     iteration();
+    
 private:
-    graph* g;
-    Dijkstra* d_map;
-    Randoms r;
-    int num_iterations;
-    ofstream result_log;
-    string RESULT_LOG_PATH;
-    float RHO, ALPHA, BETA, PHI;
-
-    multimap< pair<int, int> , int> manifest;
-    list<ant*> ants;
-    string **print_route;
-    int num_ants;
-    void set_prime_ant(list<string> manifest_route);
-    void iteration();
-    void evaporation();
-    double cost_evaluation(int max_duration);
-    double cost_based_num_ants(int num_of_ants);
-    double cost_per_tick(map< iPair, int > map_ant_count);
-    void reset_ants();
+    graph*                              g;
+    Dijkstra*                           d_map;
+    Randoms                             r;
+    string                              RESULT_LOG_PATH;
+    ofstream                            result_log;
+    float                               RHO, ALPHA, BETA, PHI;
+    multimap< pair<int, int> , int >    manifest;
+    list<ant*>                          ants;
+    string**                            print_route;
+    int                                 num_ants, num_iters;
+    bool                                LOG;
+    
+    void    set_prime_ant(list<string> manifest_route);
+    void    evaporation();
+    double  cost_evaluation(int max_duration);
+    double  cost_based_num_ants(int num_of_ants);
+    double  cost_per_tick(map< iPair, int > map_ant_count);
+    void    reset_ants();
+    void    log_results(int tick, int cost);
+    void    log_rollback();
+    
 };
 
 #endif /* ACO_new_hpp */

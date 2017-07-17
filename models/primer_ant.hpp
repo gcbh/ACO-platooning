@@ -23,8 +23,8 @@ public:
     primer_ant(t_node *first, vector<string> route_path);
     void set_ant_path();
 private:
-    t_node *current;
-    vector<string> route;
+    t_node*         current;
+    vector<string>  route;
 };
 
 #endif /* primer_ant_hpp */
