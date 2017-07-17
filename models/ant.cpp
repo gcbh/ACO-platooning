@@ -8,8 +8,6 @@
 
 #include "ant.hpp"
 
-# define INF 0x3f3f3f3f
-
 using namespace std;
 
 ant::ant(t_node* first, Dijkstra* i_d_map, int i_dest, float i_alpha, float i_beta, float i_delta, float i_phi, Randoms* i_r) {
@@ -120,6 +118,10 @@ void ant::next_node(int time) {
     }
 }
 
+iPair ant::cost_node(int time) {
+    return base_ant::cost_node(time);
+}
+
 void ant::roll_back(int time, float magnitude) {
     if (counter <= 0 && ordered_path.size() > 1) {
         current = ordered_path.front();
@@ -146,36 +148,6 @@ double ant::calculate_heuristic(int node_id, int e_dist, float ph) {
     }
     
     return pow(ph, ALPHA) * pow(d, BETA);
-}
-
-iPair ant::cost_node(int time) {
-    if (counter <= 0) {
-        current = ordered_path.front();
-        ordered_path.pop();
-        ordered_path.push(current);
-        
-        if (ordered_path.front()->get_id() == dest) {
-            t_node* prev = current;
-            current = ordered_path.front();
-            ordered_path.pop();
-            counter = 0;
-            return make_pair(prev->get_id(), current->get_id());
-        }
-        
-        if (current != ordered_path.front()) {
-            int n_nodeid = ordered_path.front()->get_id();
-            for (int i = 0; i < current->edge_number(); i++) {
-                t_edge* e = (*current)[i];
-                if (n_nodeid == e->get_dest()->get_id()) {
-                    counter = e->get_time_to_cross() - 1;
-                }
-            }
-        }
-        
-        return make_pair(current->get_id(), ordered_path.front()->get_id());
-    }
-    counter--;
-    return make_pair(INF, INF);
 }
 
 queue<t_node*> ant::get_ordered_path() {
