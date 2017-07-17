@@ -13,9 +13,7 @@ using namespace std;
 
 # define INF 0x3f3f3f3f
 
-base_ant::base_ant() {
-    // counter = 0;
-}
+base_ant::base_ant() { }
 
 base_ant::~base_ant() { }
 
@@ -54,4 +52,12 @@ bool base_ant::has_reached_destination() {
         return false;
     }
     return current->get_id() == dest;
+}
+
+queue<t_node*> base_ant::get_ordered_path() {
+    return ordered_path;
+}
+
+void base_ant::init_cost() {
+    current = ordered_path.front();
 }

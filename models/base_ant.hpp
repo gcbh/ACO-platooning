@@ -24,6 +24,8 @@ public:
     virtual         ~base_ant();
     iPair           cost_node(int time);
     bool            has_reached_destination();
+    queue<t_node*>  get_ordered_path();
+    void            init_cost();
 protected:
     int             counter, dest;
     t_node*         current;

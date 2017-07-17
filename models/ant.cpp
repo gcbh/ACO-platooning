@@ -151,11 +151,11 @@ double ant::calculate_heuristic(int node_id, int e_dist, float ph) {
 }
 
 queue<t_node*> ant::get_ordered_path() {
-    return ordered_path;
+    return base_ant::get_ordered_path();
 }
 
 void ant::init_cost() {
-    current = ordered_path.front();
+    base_ant::init_cost();
 }
 
 bool ant::has_reached_destination() {
