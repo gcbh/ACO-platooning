@@ -45,7 +45,7 @@ void ACO_new:: init(Dijkstra *dijkstra) {
     cout << setw(50) << "------------------------------------------------------------\n\n";
     cout << setw(50) << "ANT PATHS" << endl;
     d_map = dijkstra;
-    set_prime_ant(dijkstra->get_manifest_routes());
+//    set_prime_ant(dijkstra->get_manifest_routes());
     reset_ants();
 }
 

@@ -41,7 +41,7 @@ void ant::next_node(int time) {
             if (past_nodes.find(n_nodeid) == past_nodes.end()) {
                 pheromone p = e->get_pheromone(time);
                 
-                total += calculate_heuristic(n_nodeid, p.current);
+                total += calculate_heuristic(n_nodeid, e->get_distance(), p.current);
                 
                 // determines largest future pheromone
                 if (p.future > best_wait) {
@@ -57,7 +57,7 @@ void ant::next_node(int time) {
             return;
         }
         
-        total += calculate_heuristic(current->get_id(), best_wait);
+        total += calculate_heuristic(current->get_id(), 0, best_wait);
         
         // random value between 0 and 1
         double prob = probability->Uniforme();
@@ -68,7 +68,7 @@ void ant::next_node(int time) {
             if (past_nodes.find(n_nodeid) == past_nodes.end()) {
                 pheromone p = e->get_pheromone(time);
                 // sums to find position of random variable between 0 and 1
-                total_prob += calculate_heuristic(n_nodeid, p.current);
+                total_prob += calculate_heuristic(n_nodeid, e->get_distance(), p.current);
             
                 // if in range of current edge
                 if (total_prob/total >= prob) {
@@ -91,7 +91,7 @@ void ant::next_node(int time) {
             }
         }
         // portion of spectrum for 'WAIT' option
-        total_prob += calculate_heuristic(current->get_id(), best_wait);
+        total_prob += calculate_heuristic(current->get_id(), 0, best_wait);
         
         if (total_prob / total >= prob) {
             ordered_path.push(current);
@@ -125,15 +125,12 @@ void ant::roll_back(int time) {
     counter--;
 }
 
-double ant::calculate_heuristic(int node_id, float ph) {
+double ant::calculate_heuristic(int node_id, int e_dist, float ph) {
     float p, d;
     
     int distance = d_map->get_edge_weight(node_id, dest);
-    if (distance == 0) {
-        d = 1.0f;
-    } else {
-        d = 1.0f / distance;
-    }
+    
+    d = 1.0f / (e_dist + distance);
     
     if (!ph) {
         return PHI*d;

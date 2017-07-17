@@ -45,6 +45,6 @@ private:
     queue<t_node*>  ordered_path;
     bool            v_route;
     
-    double calculate_heuristic(int node_id, float ph);
+    double calculate_heuristic(int node_id, int e_dist, float ph);
 };
 #endif /* ant_hpp */

@@ -33,7 +33,7 @@ int main() {
     // algorithm optimization values
     float ALPHA = 0.2;
     float BETA = 0.8;
-    float PHI = 1.2;
+    float PHI = 15.3;
     float RHO = 5.8;
     int num_iterations = 500;
     bool DEBUG = true;
