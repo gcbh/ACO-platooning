@@ -7,7 +7,7 @@
 //
 
 #include <stdio.h>
-//#include <time.h>
+#include <time.h>
 #include <list>
 #include <iostream>
 #include <map>
@@ -34,9 +34,10 @@ int main() {
     float ALPHA = 0.2;
     float BETA = 0.8;
     float PHI = 1.2;
-    float RHO = 0.5;
-    int num_iterations = 200;
+    float RHO = 5.8;
+    int num_iterations = 500;
     bool DEBUG = true;
+    time_t seed = (long)time(nullptr);
     
 //    string file_name = "small_graph.txt";
 //    string manifest_file_name = "manifest_small_graph.txt";
@@ -101,8 +102,7 @@ int main() {
     graph *g = new graph();
     g->construct_graph(pre_opt_graph); 
     
-//    time_t rand = (long)time(nullptr);
-    ACO_new *ACO = new ACO_new(g, manifest_map, ALPHA, BETA, PHI, RHO, DEBUG);
+    ACO_new *ACO = new ACO_new(g, manifest_map, ALPHA, BETA, PHI, RHO, DEBUG, seed);
 
     ACO->init(dijkstra);
     

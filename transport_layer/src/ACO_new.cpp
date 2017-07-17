@@ -15,7 +15,7 @@ typedef pair<int, int> iPair;
 const float avg_prcnt_fuel_saving_by_middle = 4.1;
 const float avg_prcnt_fuel_saving_by_last = 6.1;
 
-ACO_new::ACO_new(graph *i_g, multimap< pair<int, int> , int> i_manifest, float i_alpha, float i_beta, float i_phi, float i_rho, bool i_debug) : r(21) {
+ACO_new::ACO_new(graph *i_g, multimap< pair<int, int> , int> i_manifest, float i_alpha, float i_beta, float i_phi, float i_rho, bool i_debug, long seed) : r(seed) {
     g = i_g;
 
     RHO = i_rho;

@@ -26,7 +26,7 @@
 
 class ACO_new {
 public:
-    ACO_new (graph *i_g, multimap< pair<int, int> , int> i_manifest, float i_alpha, float i_beta, float i_phi, float i_rho, bool i_debug);
+    ACO_new (graph *i_g, multimap< pair<int, int> , int> i_manifest, float i_alpha, float i_beta, float i_phi, float i_rho, bool i_debug, long seed);
     virtual ~ACO_new ();
     void    init(Dijkstra *dijkstra);
     int     iteration();
