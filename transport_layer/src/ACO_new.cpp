@@ -19,13 +19,13 @@ ACO_new::ACO_new(graph *i_g, int i_num_iterations, multimap< pair<int, int> , in
     g = i_g;
     num_iterations = i_num_iterations;
     RHO = 0.2;
-    ALPHA = 0.2;
-    BETA = 0.8;
-    PHI = 0.1;
+    ALPHA = 0.8;
+    BETA = 0.2;
+    PHI = 5.8;
     manifest = i_manifest;
-    RESULT_LOG_PATH = "../results.log";
-    result_log.open(RESULT_LOG_PATH); 
-    freopen(RESULT_LOG_PATH.c_str(), "w", stdout);
+    //RESULT_LOG_PATH = "../results.log";
+    //result_log.open(RESULT_LOG_PATH);
+    //freopen(RESULT_LOG_PATH.c_str(), "w", stdout);
 }
 
 ACO_new::~ACO_new() {

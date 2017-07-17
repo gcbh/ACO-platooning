@@ -34,7 +34,6 @@ public:
     void init_cost();
     bool void_route();
     queue<t_node*> get_ordered_path();
-    void roll_back(int time);
 private:
     t_node *current;
     Dijkstra* d_map;

@@ -7,6 +7,7 @@
 //
 
 #include <stdio.h>
+//#include <time.h>
 #include <list>
 #include <iostream>
 #include <map>
@@ -30,7 +31,7 @@ int main() {
     cout << "hello world" << endl;
 
     string file_name = "triangular_graph.txt";
-    string manifest_file_name = "manifest_tirangular_graph.txt";
+    string manifest_file_name = "manifest_triangular_graph.txt";
     
     // open graph file, read and pass data to Dijkstra to calculate shortest path
     ifstream file(MAPS + file_name);
@@ -90,7 +91,8 @@ int main() {
     graph *g = new graph();
     g->construct_graph(pre_opt_graph); 
     
-    ACO_new *ACO = new ACO_new(g, 200, manifest_map);
+//    time_t rand = (long)time(nullptr);
+    ACO_new *ACO = new ACO_new(g, 500, manifest_map);
     ACO->init(dijkstra);
 
 //    delete ACO;

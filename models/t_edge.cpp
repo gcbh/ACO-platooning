@@ -71,7 +71,7 @@ void t_edge::update_future_pheromone(int time, float value) {
             pheromone new_p;
             new_p.current = p.current;
             new_p.future = value;
-            pheromone_at[time] = new_p;
+            pheromone_at[i] = new_p;
         }
     }
 }
