@@ -18,7 +18,7 @@
 
 using namespace std;
 
-class primer_ant: base_ant {
+class primer_ant: public base_ant {
 public:
     primer_ant(t_node *first, vector<string> route_path);
     bool            has_reached_destination();

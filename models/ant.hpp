@@ -23,7 +23,7 @@
 using namespace std;
 typedef pair<int, int> iPair;
 
-class ant: base_ant {
+class ant: public base_ant {
 public:
     ant(t_node* first, Dijkstra* i_d_map, int i_dest, float i_alpha, float i_beta, float i_delta, float i_phi, Randoms* i_r);
     ~ant();

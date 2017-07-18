@@ -44,11 +44,13 @@ ACO_new::~ACO_new() {
 }
 
 void ACO_new:: init(Dijkstra *dijkstra) {
+    d_map = dijkstra;
+    set_prime_ant(dijkstra->get_manifest_routes());
+
     cout << setw(50) << "***BEGINNING ANT COLONY OPTIMIZATION***\n\n";
     cout << setw(50) << "------------------------------------------------------------\n\n";
     cout << setw(50) << "ANT PATHS" << endl;
-    d_map = dijkstra;
-    set_prime_ant(dijkstra->get_manifest_routes());
+    
     reset_ants();
 }
 
@@ -84,8 +86,8 @@ void ACO_new:: set_prime_ant(list<string> manifest_route) {
         (*itr)->init_cost();
     }
     
-    cout << "*********** GEOFF, HERE IS YOUR DIJKSTRA COST ****************";
-    
+    cout << setw(50) << "\b*********** DIJKSTRA COST ****************\n\n";
+    cout << setw(50) << "------------------------------------------------------------\n\n";
     
     cost = cost_evaluation(tick, primer_ants);
     
