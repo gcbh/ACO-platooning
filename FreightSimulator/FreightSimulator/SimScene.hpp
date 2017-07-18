@@ -33,6 +33,7 @@ public:
 
 private:
     glm::vec3 camera_position;
+    CityNode* camera_city;
     std::map<int, CityNode*> city_map;
     std::map<std::pair<int,int>, EdgeNode*> edge_map;
 };

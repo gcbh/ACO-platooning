@@ -34,10 +34,10 @@ public:
     void attachSceneCamera(Camera* camera);
 
     SceneNode* m_root_node;
-
+    Camera* m_scene_camera;
 
 private:
-    Camera* m_scene_camera;
+
 };
 
 #endif /* Scene_hpp */

@@ -7,7 +7,7 @@
 //
 
 #include "SimCamera.hpp"
-#define CAMERA_SPEED 50.0
+#define CAMERA_SPEED 10.0
 
 void SimCamera::setup() {
     m_position = glm::vec3(0.0f,0.0f,75.0f);

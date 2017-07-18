@@ -2349,15 +2349,6 @@
         "state": "California"
     }, 
     {
-        "city": "Richmond", 
-        "growth_from_2000_to_2013": "7.9%", 
-        "latitude": 37.9357576, 
-        "longitude": -122.3477486, 
-        "population": "107571", 
-        "rank": "262", 
-        "state": "California"
-    }, 
-    {
         "city": "Murrieta", 
         "growth_from_2000_to_2013": "107.4%", 
         "latitude": 33.5539143, 
@@ -7018,16 +7009,7 @@
         "population": "47842", 
         "rank": "780", 
         "state": "California"
-    }, 
-    {
-        "city": "Newark", 
-        "growth_from_2000_to_2013": "3.1%", 
-        "latitude": 40.0581205, 
-        "longitude": -82.4012642, 
-        "population": "47777", 
-        "rank": "781", 
-        "state": "Ohio"
-    }, 
+    },
     {
         "city": "Chesterfield", 
         "growth_from_2000_to_2013": "1.9%", 
@@ -7504,16 +7486,7 @@
         "population": "44113", 
         "rank": "834", 
         "state": "New Jersey"
-    }, 
-    {
-        "city": "Newark", 
-        "growth_from_2000_to_2013": "3.3%", 
-        "latitude": 37.5296593, 
-        "longitude": -122.0402399, 
-        "population": "44096", 
-        "rank": "835", 
-        "state": "California"
-    }, 
+    },
     {
         "city": "Pittsfield", 
         "growth_from_2000_to_2013": "-3.6%", 

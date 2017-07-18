@@ -40,7 +40,7 @@ try:
     f = open(new_name, 'w')
     for line in city_lines:
         l = line.split(' ')
-        print "Checking: {0} {1}".format(l[0], l[1].rstrip())
+        #print "Checking: {0} {1}".format(l[0], l[1].rstrip())
         if city_coords.has_key(l[1].rstrip()):
             f.write(
             l[0] + " " +
@@ -49,6 +49,8 @@ try:
             str(city_coords[l[1].rstrip()][1]) + " " +
             "\n"
             )
+        else:
+            print l[0] + " " + l[1].rstrip() + ""
 except IOError as e:
     print "I/O Error({0}): {1}".format(e.errno, e.strerror)
     raise

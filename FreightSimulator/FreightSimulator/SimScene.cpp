@@ -120,12 +120,12 @@ void SimScene::setup() {
 
         //Check the city list for both cities before creating the edge, log missing ones
         if(city_map.find(city_id1) == city_map.end()) {
-            //std::cout << "City: " << city_id1 << " " << city_name1 << " is in the edge map but not the city map" << std::endl;
+            std::cout << "City: " << city_id1 << " " << city_name1 << " is in the edge map but not the city map" << std::endl;
             hasBoth = false;
         }
 
         if(city_map.find(city_id2) == city_map.end()) {
-            //std::cout << "City: " << city_id2 << " " << city_name2 << " is in the edge map but not the city map" << std::endl;
+            std::cout << "City: " << city_id2 << " " << city_name2 << " is in the edge map but not the city map" << std::endl;
             hasBoth = false;
         }
 
@@ -143,12 +143,12 @@ void SimScene::setup() {
             float deltaY = city_map[city_id1]->m_position.y - city_map[city_id2]->m_position.y;
             float distance = sqrt(pow(deltaX, 2) + pow(deltaY, 2));
 
-            if (distance > 50.0) {
-                std::cout << "City: " << city_name1 << " " << city_name2 << " is over 50.0" << std::endl;
+            if (distance > 15.0) {
+                std::cout << "City: " << city_name1 << " " << city_name2 << " is over 15.0" << std::endl;
             }
             //Get scale based on distance
             edge->m_scale.x = distance;
-            edge->m_scale.y = 0.1;
+            edge->m_scale.y = 0.025;
 
             //Get rotation based on the two cities
             edge->m_rotation = atan2(deltaY, deltaX);
@@ -159,14 +159,34 @@ void SimScene::setup() {
             id++;
         }
     }
+
+    camera_city = new CityNode();
+    m_root_node->addChildNode(camera_city);
+    camera_city->m_position.z = -2.0;
 }
 
 void SimScene::input(InputState is) {
-    
+    if (glfwGetKey(is.window, GLFW_KEY_SPACE ) == GLFW_PRESS){
+        std::string closestCity = "";
+        float closestDistance = 200.0;
+        std::map<int, CityNode*>::iterator it;
+        for (it = city_map.begin(); it != city_map.end(); it++) {
+            float deltaX = it->second->m_position.x - m_scene_camera->m_position.x;
+            float deltaY = it->second->m_position.y - m_scene_camera->m_position.y;
+            float distance = sqrt(pow(deltaX, 2) + pow(deltaY, 2));
+
+            if (distance < closestDistance) {
+                closestCity = it->second->m_name;
+                closestDistance = distance;
+            }
+        }
+        std::cout << "City: " << closestCity << std::endl;
+    }
 }
 
 void SimScene::update(UpdateState us) {
-
+    camera_city->m_position.x = m_scene_camera->m_position.x;
+    camera_city->m_position.y = m_scene_camera->m_position.y;
 }
 
 void SimScene::render(RenderState rs) {
