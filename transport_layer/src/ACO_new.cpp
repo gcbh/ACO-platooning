@@ -237,7 +237,7 @@ double ACO_new::cost_evaluation(int max_duration, list<base_ant*> base_ants) {
 
 void ACO_new::log_results(int tick, int cost) {
     
-    cout << "ITERATION NUMBER " << num_iters << "\n";
+    cout << "\n" << "ITERATION NUMBER " << num_iters << "\n";
     cout<<setw(20);
     list<string> r = d_map->get_manifest_routes();
     int ant_num = 0;
@@ -247,9 +247,9 @@ void ACO_new::log_results(int tick, int cost) {
     }
     
     for (int i = 0; i <= tick; i++) {
-        cout<< "\n" << "tick" << i << setw(20);
+        cout<< "\n" << "tick" << i << setw(22);
         for (int j = 0; j < num_ants; j++) {
-            cout << print_route[j][i] << setw(20);
+            cout << print_route[j][i] << setw(22);
         }
     }
     cout << "Cost: " << cost << "\n";
