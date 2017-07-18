@@ -17,6 +17,7 @@ base_ant::base_ant() { }
 
 base_ant::~base_ant() { }
 
+void base_ant::next_node(int time) { }
 
 iPair base_ant::cost_node(int time) {
     if (counter <= 0) {

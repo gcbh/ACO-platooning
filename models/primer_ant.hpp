@@ -9,21 +9,24 @@
 #ifndef primer_ant_hpp
 #define primer_ant_hpp
 
-#include <stdio.h>
-#include <queue>
-
+#include "base_ant.hpp"
 #include "t_edge.hpp"
 #include <stdio.h>
 #include <iostream>
+#include <stdio.h>
+#include <queue>
 
 using namespace std;
 
-class primer_ant {
+class primer_ant: base_ant {
 public:
     primer_ant(t_node *first, vector<string> route_path);
-    void set_ant_path();
+    bool            has_reached_destination();
+    queue<t_node*>  get_ordered_path();
+    void            init_cost();
+    void            next_node(int time);
+
 private:
-    t_node*         current;
     vector<string>  route;
 };
 

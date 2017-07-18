@@ -12,28 +12,52 @@ using namespace std;
 
 
 primer_ant:: primer_ant(t_node *first, vector<string> route_path) {
+    counter = 0;
     current = first;
     route = route_path;
 }
 
-void primer_ant:: set_ant_path() {
+void primer_ant::next_node(int time) {
+    if (counter <= 0) {
+        
+        // Remove the first element from the vector
+        route.erase(route.begin());
 
-    int tick = 0;
+        int next_node = stoi(route.front());
+        t_edge* e = current->get_edge(next_node);
 
-    // get time to cross every edge and update phermone
-    for (int i = 1; i < route.size(); i++) {
+        e->update_pheromone(time, 1.0f);
 
-        for (int j = 0; j < current->edge_number(); j++) {
-            t_edge *cur_edge = (*current)[j];
-            t_node *next_n = cur_edge->get_dest();
-            if (next_n->get_id() == stoi(route[i])) {
-                // TODO: set value to increase to
-                cur_edge->update_pheromone(tick, 1.0f);
-                int time_to_cross = cur_edge->get_time_to_cross();
-                tick = tick + time_to_cross;
-                current = next_n;
-                break;
-            }
+        // current node included in up-to-date path
+        ordered_path.push(current);
+        // update 'current'
+        current = e->get_dest();
+        // update 'counter' for timing
+        counter = e->get_time_to_cross() - 1;
+                
+        if (has_reached_destination()) {
+            ordered_path.push(current);
         }
+
+        return;
+
     }
+        
+    counter--;
+    
+    if (has_reached_destination()) {
+        ordered_path.push(current);
+    }
+}
+
+bool primer_ant::has_reached_destination() {
+    return base_ant::has_reached_destination();
+}
+
+queue<t_node*> primer_ant::get_ordered_path() {
+    return base_ant::get_ordered_path();
+}
+
+void primer_ant::init_cost() {
+    base_ant::init_cost();
 }
