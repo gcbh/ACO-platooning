@@ -56,7 +56,7 @@ void ACO_new:: set_prime_ant(list<string> manifest_route) {
     int               tick = -1;
     list<string>::    iterator it;
     bool              endIteration;
-    list<primer_ant*> primer_ants;
+    list<base_ant*> primer_ants;
     double            cost = 0;
 
     for (it = manifest_route.begin(); it != manifest_route.end(); it++) {
@@ -71,7 +71,7 @@ void ACO_new:: set_prime_ant(list<string> manifest_route) {
     do {
         endIteration = true;
         tick++;
-        for (list<primer_ant*>::iterator it = primer_ants.begin(); it != primer_ants.end(); ++it) {
+        for (list<base_ant*>::iterator it = primer_ants.begin(); it != primer_ants.end(); ++it) {
             //if ant has not reached destination call nextnode
             if (!(*it)->has_reached_destination()) {
                 (*it)->next_node(tick);   
@@ -80,12 +80,14 @@ void ACO_new:: set_prime_ant(list<string> manifest_route) {
         }
     } while(!endIteration);
     
-    for (list<primer_ant*>::iterator itr = primer_ants.begin(); itr != primer_ants.end(); ++itr) {
+    for (list<base_ant*>::iterator itr = primer_ants.begin(); itr != primer_ants.end(); ++itr) {
         (*itr)->init_cost();
     }
     
     cout << "*********** GEOFF, HERE IS YOUR DIJKSTRA COST ****************";
-    cost = cost_evaluation(tick, *primer_ants);
+    
+    
+    cost = cost_evaluation(tick, primer_ants);
     
 }
 
@@ -110,14 +112,14 @@ int ACO_new::iteration() {
     do {
         endIteration = true;
         tick++;
-        for (list<ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
+        for (list<base_ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
             //if ant has not reached destination call nextnode
             if (!(*it)->has_reached_destination()) {
                 (*it)->next_node(tick);   
                 endIteration = false;   
             }
             
-            if ((*it)->void_route()) {
+            if (dynamic_cast<ant*>(*it)->void_route()) {
                 if (DEBUG) log_rollback((*it)->get_ordered_path().front()->get_id());
                 rollback_evaporation(tick, 1.0f);
                 reset_ants();
@@ -127,11 +129,11 @@ int ACO_new::iteration() {
         }
     } while(!endIteration);
     
-    for (list<ant*>::iterator itr = ants.begin(); itr != ants.end(); ++itr) {
+    for (list<base_ant*>::iterator itr = ants.begin(); itr != ants.end(); ++itr) {
         (*itr)->init_cost();
     }
     
-    cost = cost_evaluation(tick, &ants);
+    cost = cost_evaluation(tick, ants);
     
     if (prev_cost == INF) {
         prev_cost = cost;
@@ -152,8 +154,8 @@ int ACO_new::iteration() {
 
 void ACO_new::rollback_evaporation(int tick, float value) {
     for (int t = 0; t <= tick; ++t) {
-        for (list<ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
-            (*it)->roll_back(t, value);
+        for (list<base_ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
+            dynamic_cast<ant*>(*it)->roll_back(t, value);
         }
     }
 }
@@ -189,7 +191,7 @@ double ACO_new::cost_evaluation(int max_duration, list<base_ant*> base_ants) {
     for (int tick = 0; tick <= max_duration; tick++) {
         map< iPair, int > map_ant_count;
         int ant_index = -1;
-        for (list<ant*>::iterator it = base_ants.begin(); it != base_ants.end(); ++it) {
+        for (list<base_ant*>::iterator it = base_ants.begin(); it != base_ants.end(); ++it) {
             ant_index++;
             if (!(*it)->has_reached_destination()) {
                 iPair nodes_pair = (*it)->cost_node(tick);

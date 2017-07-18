@@ -22,16 +22,16 @@ class base_ant {
 public:
     base_ant();
     virtual         ~base_ant();
-    
+    void            init_cost();
+    virtual void    next_node(int time);
+    bool            has_reached_destination();
+    iPair           cost_node(int time);
+    queue<t_node*>  get_ordered_path();
 protected:
     int             counter, dest;
     t_node*         current;
     queue<t_node*>  ordered_path;
-    iPair           cost_node(int time);
-    queue<t_node*>  get_ordered_path();
-    void            init_cost();
-    virtual void    next_node(int time);
-    bool            has_reached_destination();
+    
 };
 
 #endif /* base_ant_hpp */

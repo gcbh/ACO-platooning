@@ -39,7 +39,7 @@ private:
     ofstream                            result_log;
     float                               RHO, ALPHA, BETA, DELTA, LAMBDA, PHI;
     multimap< pair<int, int> , int >    manifest;
-    list<ant*>                          ants;
+    list<base_ant*>                     ants;
     string**                            print_route;
     int                                 num_ants, num_iters;
     bool                                DEBUG;
