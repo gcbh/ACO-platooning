@@ -15,6 +15,7 @@ primer_ant:: primer_ant(t_node *first, vector<string> route_path) {
     counter = 0;
     current = first;
     route = route_path;
+    dest = stoi(route.back());
 }
 
 void primer_ant::next_node(int time) {

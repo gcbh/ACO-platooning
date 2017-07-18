@@ -85,7 +85,7 @@ void ACO_new:: set_prime_ant(list<string> manifest_route) {
     }
     
     cout << "*********** GEOFF, HERE IS YOUR DIJKSTRA COST ****************";
-    cost = cost_evaluation(tick);
+    cost = cost_evaluation(tick, *primer_ants);
     
 }
 
@@ -131,7 +131,7 @@ int ACO_new::iteration() {
         (*itr)->init_cost();
     }
     
-    cost = cost_evaluation(tick);
+    cost = cost_evaluation(tick, &ants);
     
     if (prev_cost == INF) {
         prev_cost = cost;
@@ -178,10 +178,10 @@ void ACO_new::evaporate_update_future_pheromones(int ticks) {
     }
 }
 
-double ACO_new::cost_evaluation(int max_duration) {
+double ACO_new::cost_evaluation(int max_duration, list<base_ant*> base_ants) {
     double total_cost = 0;
     
-    num_ants = ants.size();
+    num_ants = base_ants.size();
     print_route = new string*[num_ants];
     for (int i = 0; i < num_ants; i++)
         print_route[i] = new string[max_duration+1];
@@ -189,7 +189,7 @@ double ACO_new::cost_evaluation(int max_duration) {
     for (int tick = 0; tick <= max_duration; tick++) {
         map< iPair, int > map_ant_count;
         int ant_index = -1;
-        for (list<ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
+        for (list<ant*>::iterator it = base_ants.begin(); it != base_ants.end(); ++it) {
             ant_index++;
             if (!(*it)->has_reached_destination()) {
                 iPair nodes_pair = (*it)->cost_node(tick);

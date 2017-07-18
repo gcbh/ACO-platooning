@@ -48,7 +48,7 @@ private:
     void    set_prime_ant(list<string> manifest_route);
     void    evaporate_update_future_pheromones(int ticks);
     void    rollback_evaporation(int tick, float value);
-    double  cost_evaluation(int max_duration);
+    double  cost_evaluation(int max_duration, list<base_ant*> base_ants);
     double  cost_based_num_ants(int num_of_ants);
     double  cost_per_tick(map< iPair, int > map_ant_count);
     void    reset_ants();
