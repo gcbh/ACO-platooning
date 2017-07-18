@@ -86,7 +86,7 @@ void ACO_new:: set_prime_ant(list<string> manifest_route) {
         (*itr)->init_cost();
     }
     
-    cout << setw(50) << "\b*********** DIJKSTRA COST ****************\n\n";
+    cout << setw(50) << "*** DIJKSTRA COST ***\n\n";
     cout << setw(50) << "------------------------------------------------------------\n\n";
     
     cost = cost_evaluation(tick, primer_ants);
