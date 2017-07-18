@@ -242,14 +242,15 @@ void ACO_new::log_results(int tick, int cost) {
     list<string> r = d_map->get_manifest_routes();
     int ant_num = 0;
     for (list<string>::iterator it = r.begin(); it != r.end(); ++it) {
-        cout << "Ant" << ant_num << " " << *it << setw(10);;
+        vector<string> path = split((*it), ' ');
+        cout << "Ant" << ant_num << " "<< path.front() << "->" << path.back() << setw(5);;
         ant_num++;
     }
     
     for (int i = 0; i <= tick; i++) {
-        cout<< "\n" << "tick" << i << setw(22);
+        cout<< "\n" << "tick" << i << setw(16);
         for (int j = 0; j < num_ants; j++) {
-            cout << print_route[j][i] << setw(22);
+            cout << print_route[j][i] << setw(16);
         }
     }
     cout << "Cost: " << cost << "\n";
