@@ -44,25 +44,53 @@ ACO_new::~ACO_new() {
 }
 
 void ACO_new:: init(Dijkstra *dijkstra) {
+    d_map = dijkstra;
+    set_prime_ant(dijkstra->get_manifest_routes());
+
     cout << setw(50) << "***BEGINNING ANT COLONY OPTIMIZATION***\n\n";
     cout << setw(50) << "------------------------------------------------------------\n\n";
     cout << setw(50) << "ANT PATHS" << endl;
-    d_map = dijkstra;
-    set_prime_ant(dijkstra->get_manifest_routes());
+    
     reset_ants();
 }
 
 void ACO_new:: set_prime_ant(list<string> manifest_route) {
-    list<string>:: iterator it;
-    for (it = manifest_route.begin(); it != manifest_route.end(); it++) {
-        string route = *it;
-        vector<string> nodes = split(route, ' ');
-        t_node *start_from = (*g) [stoi(nodes[0])];
-        
-        primer_ant *ant = new primer_ant(start_from, nodes);
+    int               tick = -1;
+    list<string>::    iterator it;
+    bool              endIteration;
+    list<base_ant*> primer_ants;
+    double            cost = 0;
 
-        ant->set_ant_path();
+    for (it = manifest_route.begin(); it != manifest_route.end(); it++) {
+        string         route = *it;
+        vector<string> nodes = split(route, ' ');
+        t_node*        start_from = (*g) [stoi(nodes[0])];
+        primer_ant*    p_ant = new primer_ant(start_from, nodes);
+
+        primer_ants.push_back(p_ant);
     }
+
+    do {
+        endIteration = true;
+        tick++;
+        for (list<base_ant*>::iterator it = primer_ants.begin(); it != primer_ants.end(); ++it) {
+            //if ant has not reached destination call nextnode
+            if (!(*it)->has_reached_destination()) {
+                (*it)->next_node(tick);   
+                endIteration = false;   
+            }
+        }
+    } while(!endIteration);
+    
+    for (list<base_ant*>::iterator itr = primer_ants.begin(); itr != primer_ants.end(); ++itr) {
+        (*itr)->init_cost();
+    }
+    
+    cout << setw(50) << "*** DIJKSTRA COST ***\n\n";
+    cout << setw(50) << "------------------------------------------------------------\n\n";
+    
+    cost = cost_evaluation(tick, primer_ants);
+    
 }
 
 void ACO_new::reset_ants() {
@@ -86,14 +114,14 @@ int ACO_new::iteration() {
     do {
         endIteration = true;
         tick++;
-        for (list<ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
+        for (list<base_ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
             //if ant has not reached destination call nextnode
             if (!(*it)->has_reached_destination()) {
                 (*it)->next_node(tick);   
                 endIteration = false;   
             }
             
-            if ((*it)->void_route()) {
+            if (dynamic_cast<ant*>(*it)->void_route()) {
                 if (DEBUG) log_rollback((*it)->get_ordered_path().front()->get_id());
                 rollback_evaporation(tick, DELTA);
                 reset_ants();
@@ -103,11 +131,11 @@ int ACO_new::iteration() {
         }
     } while(!endIteration);
     
-    for (list<ant*>::iterator itr = ants.begin(); itr != ants.end(); ++itr) {
+    for (list<base_ant*>::iterator itr = ants.begin(); itr != ants.end(); ++itr) {
         (*itr)->init_cost();
     }
     
-    cost = cost_evaluation(tick);
+    cost = cost_evaluation(tick, ants);
     
     if (prev_cost == INF) {
         prev_cost = cost;
@@ -129,8 +157,8 @@ int ACO_new::iteration() {
 
 void ACO_new::rollback_evaporation(int tick, float value) {
     for (int t = 0; t <= tick; ++t) {
-        for (list<ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
-            (*it)->roll_back(t, value);
+        for (list<base_ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
+            dynamic_cast<ant*>(*it)->roll_back(t, value);
         }
     }
 }
@@ -155,10 +183,10 @@ void ACO_new::evaporate_update_future_pheromones(int ticks) {
     }
 }
 
-double ACO_new::cost_evaluation(int max_duration) {
+double ACO_new::cost_evaluation(int max_duration, list<base_ant*> base_ants) {
     double total_cost = 0;
     
-    num_ants = ants.size();
+    num_ants = base_ants.size();
     print_route = new string*[num_ants];
     for (int i = 0; i < num_ants; i++)
         print_route[i] = new string[max_duration+1];
@@ -166,7 +194,7 @@ double ACO_new::cost_evaluation(int max_duration) {
     for (int tick = 0; tick <= max_duration; tick++) {
         map< iPair, int > map_ant_count;
         int ant_index = -1;
-        for (list<ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
+        for (list<base_ant*>::iterator it = base_ants.begin(); it != base_ants.end(); ++it) {
             ant_index++;
             if (!(*it)->has_reached_destination()) {
                 iPair nodes_pair = (*it)->cost_node(tick);
@@ -209,7 +237,7 @@ double ACO_new::cost_evaluation(int max_duration) {
 
 void ACO_new::log_results(int tick, int cost) {
     
-    cout << "ITERATION NUMBER " << num_iters << "\n";
+    cout << "\n" << "ITERATION NUMBER " << num_iters << "\n";
     cout<<setw(20);
     list<string> r = d_map->get_manifest_routes();
     int ant_num = 0;
@@ -219,9 +247,9 @@ void ACO_new::log_results(int tick, int cost) {
     }
     
     for (int i = 0; i <= tick; i++) {
-        cout<< "\n" << "tick" << i << setw(20);
+        cout<< "\n" << "tick" << i << setw(22);
         for (int j = 0; j < num_ants; j++) {
-            cout << print_route[j][i] << setw(20);
+            cout << print_route[j][i] << setw(22);
         }
     }
     cout << "Cost: " << cost << "\n";
