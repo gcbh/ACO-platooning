@@ -7,7 +7,10 @@
 //
 
 #include "SimCamera.hpp"
-#define CAMERA_SPEED 10.0
+
+#define CAMERA_SPEED_X 10.0
+#define CAMERA_SPEED_Y 10.0
+#define CAMERA_SPEED_Z 20.0
 
 void SimCamera::setup() {
     m_position = glm::vec3(0.0f,0.0f,75.0f);
@@ -17,27 +20,27 @@ void SimCamera::setup() {
 
 void SimCamera::input(InputState is) {
     if (glfwGetKey(is.window, GLFW_KEY_UP ) == GLFW_PRESS){
-        m_position.y += is.deltaTime * CAMERA_SPEED;
+        m_position.y += is.deltaTime * CAMERA_SPEED_Y;
     }
     // Move backward
     if (glfwGetKey(is.window, GLFW_KEY_DOWN ) == GLFW_PRESS){
-        m_position.y -= is.deltaTime * CAMERA_SPEED;
+        m_position.y -= is.deltaTime * CAMERA_SPEED_Y;
     }
     // Strafe right
     if (glfwGetKey(is.window, GLFW_KEY_RIGHT ) == GLFW_PRESS){
-        m_position.x += is.deltaTime * CAMERA_SPEED;
+        m_position.x += is.deltaTime * CAMERA_SPEED_X;
     }
     // Strafe left
     if (glfwGetKey(is.window, GLFW_KEY_LEFT ) == GLFW_PRESS){
-        m_position.x -= is.deltaTime * CAMERA_SPEED;
+        m_position.x -= is.deltaTime * CAMERA_SPEED_X;
     }
     // Zoom In
     if (glfwGetKey(is.window, GLFW_KEY_EQUAL ) == GLFW_PRESS){
-        m_position.z -= is.deltaTime * CAMERA_SPEED;
+        m_position.z -= is.deltaTime * CAMERA_SPEED_Z;
     }
     // Zoom Out
     if (glfwGetKey(is.window, GLFW_KEY_MINUS ) == GLFW_PRESS){
-        m_position.z += is.deltaTime * CAMERA_SPEED;
+        m_position.z += is.deltaTime * CAMERA_SPEED_Z;
     }
 }
 
