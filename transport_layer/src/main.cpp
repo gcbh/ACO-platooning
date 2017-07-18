@@ -31,12 +31,12 @@ int main() {
     cout << "Begin optimization" << endl;
 
     // algorithm optimization values
-    float   ALPHA = 1.9f;     // pheromone exponent of heuristic
-    float   BETA = 0.3f;      // dijkstra exponent of heuristic
-    float   DELTA = 1.0f;     // pheromone incremental value
-    float   LAMBDA = 3.0f;    // reinforcement pheromone value
-    float   PHI = 0.1f;       // exploration coefficient
-    float   RHO = 0.2f;       // pheromone evaporation value
+    float   ALPHA = 2.1f;       // pheromone exponent of heuristic
+    float   BETA = 0.3f;        // dijkstra exponent of heuristic
+    float   DELTA = 1.0f;       // pheromone incremental value
+    float   LAMBDA = 3.0f;      // reinforcement pheromone value
+    float   PHI = 0.25f;        // exploration coefficient
+    float   RHO = 0.3f;         // pheromone evaporation value
     int     num_iterations = 100000;
     
     bool    DEBUG = true;

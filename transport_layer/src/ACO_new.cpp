@@ -123,7 +123,7 @@ int ACO_new::iteration() {
             
             if (dynamic_cast<ant*>(*it)->void_route()) {
                 if (DEBUG) log_rollback((*it)->get_ordered_path().front()->get_id());
-                rollback_evaporation(tick, 1.0f);
+                rollback_evaporation(tick, DELTA);
                 reset_ants();
                 return -1;
                 break;
@@ -142,12 +142,13 @@ int ACO_new::iteration() {
     }
     if (cost < prev_cost) {
         rollback_evaporation(tick, -1.0f * LAMBDA * prev_cost / cost);
+        prev_cost = cost;
     } else if (cost > prev_cost) {
-        rollback_evaporation(tick, 5.0f * cost / prev_cost);
+        rollback_evaporation(tick, 1.0f * cost / prev_cost);
     }
     
     evaporate_update_future_pheromones(tick);
-    prev_cost = cost;
+//    prev_cost = cost;
     
     reset_ants();
     
