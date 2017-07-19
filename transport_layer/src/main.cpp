@@ -43,8 +43,8 @@ int main() {
     
     time_t seed = (long)time(nullptr);
     
-    string file_name = "small_graph.txt";
-    string manifest_file_name = "manifest_small_graph.txt";
+    string file_name = "cities_p_p.txt";
+    string manifest_file_name = "manifest_1_cities_graph.txt";
 //    string file_name = "triangular_graph.txt";
 //    string manifest_file_name = "manifest_triangular_graph.txt";
     
