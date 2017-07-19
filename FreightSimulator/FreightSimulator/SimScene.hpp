@@ -25,7 +25,7 @@ public:
     void setup();
     void input(InputState is);
     void update(UpdateState is);
-    void render(RenderState rs);
+    void prerender(RenderState rs);
 
     static GLuint city_program, edge_program,
                   city_mvp_id, edge_mvp_id,

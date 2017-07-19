@@ -189,7 +189,7 @@ void SimScene::update(UpdateState us) {
 
 }
 
-void SimScene::render(RenderState rs) {
+void SimScene::prerender(RenderState rs) {
     camera_city->m_position.x = m_scene_camera->m_position.x;
     camera_city->m_position.y = m_scene_camera->m_position.y;
 }

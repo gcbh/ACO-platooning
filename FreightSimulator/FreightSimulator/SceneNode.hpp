@@ -28,12 +28,13 @@ public:
     virtual void setup() {};
     virtual void input(InputState is) {};
     virtual void update(UpdateState us) {};
-    virtual void render(RenderState rs) {};
+    virtual void prerender(RenderState rs) {};
 
     void _setup();
     void _input(InputState is);
     void _update(UpdateState us);
     void _render(RenderState rs);
+    virtual void render(RenderState rs) {};
 
     void addChildNode(SceneNode* node);
 

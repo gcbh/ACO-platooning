@@ -69,13 +69,10 @@ void SceneNode::_render(RenderState rs) {
 
     if (willRender) {
         //User render
-        render(rs);
+        prerender(rs);
 
         //Render self
-        glUseProgram(m_program);
-        glBindVertexArray(m_vertex_array);
-        glUniformMatrix4fv(m_mvp_id, 1, GL_FALSE, &rs.mvp[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+        render(rs);
     }
 
     //Render children

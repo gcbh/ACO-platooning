@@ -28,6 +28,7 @@
 		14A2326D1EE8D62900FB574F /* libglfw.3.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 14A2326C1EE8D62900FB574F /* libglfw.3.2.dylib */; };
 		14A2326F1EE8D70A00FB574F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14A2326E1EE8D70A00FB574F /* OpenGL.framework */; };
 		14D214351EEA254C00D568A8 /* SimulatorApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14D214331EEA254C00D568A8 /* SimulatorApp.cpp */; };
+		14DCE8C61F1EFA7700B8F938 /* QuadNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14DCE8C41F1EFA7700B8F938 /* QuadNode.cpp */; };
 		14ED4D6B1EEE3F7A009A6A35 /* GLFWEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14D214301EEA246900D568A8 /* GLFWEngine.cpp */; };
 		14ED4D701EEE4D0A009A6A35 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ED4D6E1EEE4D0A009A6A35 /* Scene.cpp */; };
 		14ED4D731EEE4D42009A6A35 /* SceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ED4D711EEE4D42009A6A35 /* SceneNode.cpp */; };
@@ -361,6 +362,8 @@
 		14D214331EEA254C00D568A8 /* SimulatorApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimulatorApp.cpp; sourceTree = "<group>"; };
 		14D214341EEA254C00D568A8 /* App.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = App.hpp; sourceTree = "<group>"; };
 		14D214361EEA29B900D568A8 /* SimulatorApp.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SimulatorApp.hpp; sourceTree = "<group>"; };
+		14DCE8C41F1EFA7700B8F938 /* QuadNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuadNode.cpp; sourceTree = "<group>"; };
+		14DCE8C51F1EFA7700B8F938 /* QuadNode.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = QuadNode.hpp; sourceTree = "<group>"; };
 		14ED4D6E1EEE4D0A009A6A35 /* Scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
 		14ED4D6F1EEE4D0A009A6A35 /* Scene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Scene.hpp; sourceTree = "<group>"; };
 		14ED4D711EEE4D42009A6A35 /* SceneNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneNode.cpp; sourceTree = "<group>"; };
@@ -788,6 +791,8 @@
 				1400DB981F0DE2D3002FA9B1 /* State.hpp */,
 				1400DCAF1F0E09F4002FA9B1 /* Camera.cpp */,
 				1400DCB01F0E09F4002FA9B1 /* Camera.hpp */,
+				14DCE8C41F1EFA7700B8F938 /* QuadNode.cpp */,
+				14DCE8C51F1EFA7700B8F938 /* QuadNode.hpp */,
 			);
 			name = scene;
 			sourceTree = "<group>";
@@ -917,6 +922,7 @@
 				14304B601F16D3DF007AEBC6 /* lodepng.cpp in Sources */,
 				14ED4D731EEE4D42009A6A35 /* SceneNode.cpp in Sources */,
 				14D214351EEA254C00D568A8 /* SimulatorApp.cpp in Sources */,
+				14DCE8C61F1EFA7700B8F938 /* QuadNode.cpp in Sources */,
 				14ED4D6B1EEE3F7A009A6A35 /* GLFWEngine.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

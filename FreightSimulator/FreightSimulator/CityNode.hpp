@@ -11,18 +11,18 @@
 
 #include <stdio.h>
 #include <string>
-#include "SceneNode.hpp"
+#include "QuadNode.hpp"
 
-class CityNode : public SceneNode
+class CityNode : public QuadNode
 {
 public:
 
-    CityNode() : SceneNode() {}
+    CityNode() : QuadNode() {}
 
     void setup();
     void input();
     void update(UpdateState us);
-    void render(RenderState rs);
+    void prerender(RenderState rs);
 
     int m_id;
     std::string m_name;

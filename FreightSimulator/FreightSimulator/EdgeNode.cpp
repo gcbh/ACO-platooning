@@ -24,5 +24,5 @@ void EdgeNode::input() {
 void EdgeNode::update(UpdateState us) {
 }
 
-void EdgeNode::render(RenderState rs) {
+void EdgeNode::prerender(RenderState rs) {
 }

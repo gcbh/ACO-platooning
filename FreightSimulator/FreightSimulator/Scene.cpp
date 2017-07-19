@@ -52,7 +52,7 @@ void Scene::_render(RenderState rs) {
     }
 
     //User render
-    render(rs);
+    prerender(rs);
 
     //Render root node
     m_root_node->_render(rs);

@@ -11,18 +11,18 @@
 
 #include <stdio.h>
 #include <string>
-#include "SceneNode.hpp"
+#include "QuadNode.hpp"
 
-class EdgeNode : public SceneNode
+class EdgeNode : public QuadNode
 {
 public:
 
-    EdgeNode() : SceneNode() {}
+    EdgeNode() : QuadNode() {}
 
     void setup();
     void input();
     void update(UpdateState us);
-    void render(RenderState rs);
+    void prerender(RenderState rs);
 
     std::pair<int,int> m_id;
     float m_weight;

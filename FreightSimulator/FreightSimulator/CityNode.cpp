@@ -24,5 +24,5 @@ void CityNode::input() {
 void CityNode::update(UpdateState us) {
 }
 
-void CityNode::render(RenderState rs) {
+void CityNode::prerender(RenderState rs) {
 }
