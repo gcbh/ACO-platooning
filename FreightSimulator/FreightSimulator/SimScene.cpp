@@ -60,6 +60,7 @@ void SimScene::setup() {
     SimScene::edge_program = LoadShaders("basic_vs.glsl", "edge_fs.glsl");
 
     //Textures
+    addTexture("heat.png");
     addTexture("circle.png");
 
     //Get MVP IDs

@@ -18,6 +18,8 @@
 		1452D0891EE9CCBB00883286 /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1452D0871EE9CCBB00883286 /* StringUtils.cpp */; };
 		1452D0901EE9D08100883286 /* Edge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1452D08B1EE9D08100883286 /* Edge.cpp */; };
 		145C581A1F1ED7280025A9DE /* heat.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 145C58191F1ED71D0025A9DE /* heat.png */; };
+		145C581D1F1EF7DB0025A9DE /* sourcecodepro.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 145C581C1F1EF7D20025A9DE /* sourcecodepro.png */; };
+		145C581E1F1EF7E40025A9DE /* text_fs.glsl in CopyFiles */ = {isa = PBXBuildFile; fileRef = 145C581B1F1EF6E80025A9DE /* text_fs.glsl */; };
 		1460A2411F1C8381002D7C30 /* EdgeNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1460A23F1F1C8381002D7C30 /* EdgeNode.cpp */; };
 		1460A2441F1C919E002D7C30 /* sim_test_edges.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1460A2431F1C9196002D7C30 /* sim_test_edges.txt */; };
 		1460A2451F1C91A5002D7C30 /* sim_test_cities.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1460A2421F1C9188002D7C30 /* sim_test_cities.txt */; };
@@ -43,6 +45,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				145C581E1F1EF7E40025A9DE /* text_fs.glsl in CopyFiles */,
+				145C581D1F1EF7DB0025A9DE /* sourcecodepro.png in CopyFiles */,
 				145C581A1F1ED7280025A9DE /* heat.png in CopyFiles */,
 				1460A2471F1C99B4002D7C30 /* edge_fs.glsl in CopyFiles */,
 				1460A2451F1C91A5002D7C30 /* sim_test_cities.txt in CopyFiles */,
@@ -341,6 +345,8 @@
 		1452D08B1EE9D08100883286 /* Edge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Edge.cpp; sourceTree = "<group>"; };
 		1452D08C1EE9D08100883286 /* Edge.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Edge.hpp; sourceTree = "<group>"; };
 		145C58191F1ED71D0025A9DE /* heat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = heat.png; path = assets/heat.png; sourceTree = "<group>"; };
+		145C581B1F1EF6E80025A9DE /* text_fs.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = text_fs.glsl; path = shaders/text_fs.glsl; sourceTree = "<group>"; };
+		145C581C1F1EF7D20025A9DE /* sourcecodepro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sourcecodepro.png; path = assets/sourcecodepro.png; sourceTree = "<group>"; };
 		1460A23F1F1C8381002D7C30 /* EdgeNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeNode.cpp; sourceTree = "<group>"; };
 		1460A2401F1C8381002D7C30 /* EdgeNode.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EdgeNode.hpp; sourceTree = "<group>"; };
 		1460A2421F1C9188002D7C30 /* sim_test_cities.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = sim_test_cities.txt; path = ../../maps/simulator_test_graphs/sim_test_cities.txt; sourceTree = "<group>"; };
@@ -693,6 +699,7 @@
 		14304B621F16D402007AEBC6 /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				145C581C1F1EF7D20025A9DE /* sourcecodepro.png */,
 				145C58191F1ED71D0025A9DE /* heat.png */,
 				14304B671F18140C007AEBC6 /* test.png */,
 				14304B611F16D3FD007AEBC6 /* circle.png */,
@@ -823,6 +830,7 @@
 				14ED4D791EEE500E009A6A35 /* basic_vs.glsl */,
 				14ED4D7A1EEE501E009A6A35 /* basic_fs.glsl */,
 				1460A2461F1C9808002D7C30 /* edge_fs.glsl */,
+				145C581B1F1EF6E80025A9DE /* text_fs.glsl */,
 			);
 			name = shaders;
 			sourceTree = "<group>";
