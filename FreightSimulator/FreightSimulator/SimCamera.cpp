@@ -10,12 +10,12 @@
 
 #define CAMERA_SPEED_X 10.0
 #define CAMERA_SPEED_Y 10.0
-#define CAMERA_SPEED_Z 20.0
+#define CAMERA_SPEED_Z 0.1
 
 void SimCamera::setup() {
     m_position = glm::vec3(0.0f,0.0f,75.0f);
     m_focal_point = glm::vec3(m_position.x,m_position.y,0.0f);
-    m_fov = 45.0;
+    m_zoom = 0.5f;
 }
 
 void SimCamera::input(InputState is) {
@@ -36,11 +36,11 @@ void SimCamera::input(InputState is) {
     }
     // Zoom In
     if (glfwGetKey(is.window, GLFW_KEY_EQUAL ) == GLFW_PRESS){
-        m_position.z -= is.deltaTime * CAMERA_SPEED_Z;
+        m_zoom -= is.deltaTime * CAMERA_SPEED_Z;
     }
     // Zoom Out
     if (glfwGetKey(is.window, GLFW_KEY_MINUS ) == GLFW_PRESS){
-        m_position.z += is.deltaTime * CAMERA_SPEED_Z;
+        m_zoom += is.deltaTime * CAMERA_SPEED_Z;
     }
 }
 

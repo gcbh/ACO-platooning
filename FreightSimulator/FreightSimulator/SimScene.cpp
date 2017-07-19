@@ -60,7 +60,7 @@ void SimScene::setup() {
     SimScene::edge_program = LoadShaders("basic_vs.glsl", "edge_fs.glsl");
 
     //Textures
-    SimScene::tex = LoadTexture("circle.png");
+    addTexture("circle.png");
 
     //Get MVP IDs
     SimScene::city_mvp_id = glGetUniformLocation(SimScene::city_program, "MVP");
@@ -166,7 +166,7 @@ void SimScene::setup() {
 }
 
 void SimScene::input(InputState is) {
-    if (glfwGetKey(is.window, GLFW_KEY_SPACE ) == GLFW_PRESS){
+    if (glfwGetKey(is.window, GLFW_KEY_SPACE ) == GLFW_PRESS) {
         std::string closestCity = "";
         float closestDistance = 200.0;
         std::map<int, CityNode*>::iterator it;
@@ -185,9 +185,10 @@ void SimScene::input(InputState is) {
 }
 
 void SimScene::update(UpdateState us) {
-    camera_city->m_position.x = m_scene_camera->m_position.x;
-    camera_city->m_position.y = m_scene_camera->m_position.y;
+
 }
 
 void SimScene::render(RenderState rs) {
+    camera_city->m_position.x = m_scene_camera->m_position.x;
+    camera_city->m_position.y = m_scene_camera->m_position.y;
 }

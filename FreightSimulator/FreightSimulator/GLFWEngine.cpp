@@ -104,7 +104,7 @@ void GLFWEngine::render() {
     glViewport(0, 0, width, height);
 
     //Render app
-    RenderState rs = {m_window, glm::mat4(1.0f)};
+    RenderState rs = {m_window, RenderMode::Normal, glm::mat4(1.0f)};
     m_appInstance->render(rs);
 }
 

@@ -17,7 +17,9 @@ void Camera::_setup() {
 
     m_position = glm::vec3(0.0f);
     m_focal_point = glm::vec3(0.0f);
-    m_fov = 45.0;
+    m_width = 800.0;
+    m_height = 600.0;
+    m_zoom = 1.0f;
 
     setup();
 }
@@ -30,7 +32,10 @@ void Camera::_update(UpdateState us) {
     //Update camera
     m_position = m_position + (m_velocity * (float)us.deltaTime);
 
-    glm::mat4 projection_matrix = glm::perspective(glm::radians(m_fov), (float) (800.0 / 600.0), 0.1f, 1000.0f);
+    //glm::mat4 projection_matrix = glm::perspective(glm::radians(m_fov), (float) (800.0 / 600.0), 0.1f, 1000.0f);
+    glm::mat4 projection_matrix = glm::ortho( (-m_width/2.0f)*m_zoom, (m_width/2.0f)*m_zoom, (-m_height/2.0f)*m_zoom, (m_height/2.0f)*m_zoom, 0.0f, 100.0f);
+
+
     glm::mat4 view_matrix = glm::lookAt(
         m_position, // Camera is at (4,3,3), in World Space
         m_focal_point, // and looks at the origin

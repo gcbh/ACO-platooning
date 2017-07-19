@@ -13,6 +13,12 @@
 #include <GLFW/glfw3.h>
 #include "glm.hpp"
 
+enum class RenderMode {
+    Normal,
+    StaticHeat,
+    DynamicHeat
+};
+
 struct InputState {
     GLFWwindow *window;
     double deltaTime;
@@ -24,6 +30,7 @@ struct UpdateState {
 
 struct RenderState {
     GLFWwindow *window;
+    RenderMode mode;
     glm::mat4 mvp;
 };
 

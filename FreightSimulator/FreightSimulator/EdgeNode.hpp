@@ -27,6 +27,7 @@ public:
     std::pair<int,int> m_id;
     float m_weight;
     float m_static_heat;
+    float m_dynamic_heat;
 
 private:
 };

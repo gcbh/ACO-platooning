@@ -15,6 +15,9 @@
 #include <GLFW/glfw3.h>
 #include <OpenGL/gl3.h>
 #include "State.hpp"
+#include "Scene.hpp"
+
+class Scene;
 
 class SceneNode
 {
@@ -34,6 +37,8 @@ public:
 
     void addChildNode(SceneNode* node);
 
+    Scene* parentScene;
+
     float m_rotation;
     glm::vec3 m_scale;
     glm::vec3 m_position;
@@ -42,8 +47,10 @@ public:
     GLuint m_program, m_vertex_array, m_mvp_id;
     bool willRender;
 
-private:
 
+
+private:
+    void propagateParentScene(Scene* scene);
     std::vector<SceneNode*> child_nodes;
 };
 

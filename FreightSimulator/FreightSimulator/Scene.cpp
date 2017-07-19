@@ -7,6 +7,7 @@
 //
 
 #include "Scene.hpp"
+#include "TextureUtils.hpp"
 
 Scene::Scene() {
 }
@@ -17,6 +18,7 @@ void Scene::_setup() {
 
     m_root_node = new SceneNode();
     m_root_node->_setup();
+    m_root_node->parentScene = this;
     m_root_node->willRender = false;
 
     setup();
@@ -59,4 +61,12 @@ void Scene::_render(RenderState rs) {
 void Scene::attachSceneCamera(Camera* camera) {
     m_scene_camera = camera;
     m_scene_camera->_setup();
+}
+
+void Scene::addTexture(std::string file_name) {
+    texture_map[file_name] = LoadTexture(file_name);
+}
+
+GLuint Scene::getTexture(std::string file_name) {
+    return texture_map[file_name];
 }

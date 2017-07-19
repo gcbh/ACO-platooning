@@ -30,7 +30,9 @@ public:
     glm::vec3 m_position;
     glm::vec3 m_velocity;
     glm::vec3 m_focal_point;
-    float m_fov;
+    float m_width;
+    float m_height;
+    float m_zoom;
 
 private:
 

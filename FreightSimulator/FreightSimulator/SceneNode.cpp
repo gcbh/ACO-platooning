@@ -87,7 +87,21 @@ void SceneNode::_render(RenderState rs) {
     }
 }
 
+//Once a node is added to another node, distrubute the new parent scene
+void SceneNode::propagateParentScene(Scene* scene) {
+
+    parentScene = scene;
+
+    std::vector<SceneNode*>::iterator itr = child_nodes.begin();
+    while( itr != child_nodes.end()) {
+        SceneNode* node = *itr;
+        node->propagateParentScene(scene);
+        itr++;
+    }
+}
+
 void SceneNode::addChildNode(SceneNode* node) {
     node->_setup();
+    node->propagateParentScene(parentScene);
     child_nodes.push_back(node);
 }

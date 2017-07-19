@@ -10,11 +10,13 @@
 #define Scene_hpp
 
 #include <stdio.h>
+#include <map>
 #include "SceneNode.hpp"
 #include "State.hpp"
 #include "glm.hpp"
 #include "Camera.hpp"
 
+class SceneNode;
 class Scene
 {
 public:
@@ -33,11 +35,14 @@ public:
 
     void attachSceneCamera(Camera* camera);
 
+    void addTexture(std::string file_name);
+    GLuint getTexture(std::string file_name);
+
     SceneNode* m_root_node;
     Camera* m_scene_camera;
 
 private:
-
+    std::map<std::string, GLuint> texture_map;
 };
 
 #endif /* Scene_hpp */
