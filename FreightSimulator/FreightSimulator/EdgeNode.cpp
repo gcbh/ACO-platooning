@@ -11,17 +11,17 @@
 #include "glm.hpp"
 #include "matrix_transform.hpp"
 
-void EdgeNode::setup() {
+void EdgeNode::postsetup() {
     m_scale = glm::vec3(0.5f, 0.5f, 0.5f);
     m_program = SimScene::edge_program;
     m_vertex_array = SimScene::vao;
     m_mvp_id = SimScene::edge_mvp_id;
 }
 
-void EdgeNode::input() {
+void EdgeNode::preinput(InputState is) {
 }
 
-void EdgeNode::update(UpdateState us) {
+void EdgeNode::preupdate(UpdateState us) {
 }
 
 void EdgeNode::prerender(RenderState rs) {

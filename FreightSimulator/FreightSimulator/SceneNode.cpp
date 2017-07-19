@@ -25,12 +25,16 @@ void SceneNode::_setup() {
     m_mvp_id = -1;
     willRender = true;
 
+    presetup();
     setup();
+    postsetup();
 }
 
 void SceneNode::_input(InputState is) {
-    //User input
+
+    preinput(is);
     input(is);
+    postinput(is);
 
     //Input children
     std::vector<SceneNode*>::iterator itr = child_nodes.begin();
@@ -50,8 +54,9 @@ void SceneNode::_update(UpdateState us) {
     m_model_matrix = glm::rotate(m_model_matrix, (glm::mediump_float)m_rotation, glm::vec3(0.0f, 0.0f, 1.0f));
     m_model_matrix = glm::scale(m_model_matrix, m_scale);
 
-    //User update
+    preupdate(us);
     update(us);
+    postupdate(us);
 
     //Update children
     std::vector<SceneNode*>::iterator itr = child_nodes.begin();
@@ -68,11 +73,9 @@ void SceneNode::_render(RenderState rs) {
     rs.mvp = rs.mvp * m_model_matrix;
 
     if (willRender) {
-        //User render
         prerender(rs);
-
-        //Render self
         render(rs);
+        postrender(rs);
     }
 
     //Render children

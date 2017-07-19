@@ -22,9 +22,9 @@ public:
 
     SimScene() : Scene() {}
 
-    void setup();
-    void input(InputState is);
-    void update(UpdateState is);
+    void postsetup();
+    void preinput(InputState is);
+    void preupdate(UpdateState is);
     void prerender(RenderState rs);
 
     static GLuint city_program, edge_program,

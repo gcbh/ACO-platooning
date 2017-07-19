@@ -21,11 +21,17 @@ void Scene::_setup() {
     m_root_node->parentScene = this;
     m_root_node->willRender = false;
 
+    presetup();
     setup();
+    postsetup();
 }
 
 void Scene::_input(InputState is) {
+
+    preinput(is);
     input(is);
+    postinput(is);
+
     if (m_scene_camera != nullptr) {
         m_scene_camera->_input(is);
     }
@@ -39,7 +45,9 @@ void Scene::_update(UpdateState us) {
     }
 
     //User update
+    preupdate(us);
     update(us);
+    postupdate(us);
 
     //Update root node
     m_root_node->_update(us);
@@ -53,6 +61,8 @@ void Scene::_render(RenderState rs) {
 
     //User render
     prerender(rs);
+    render(rs);
+    postrender(rs);
 
     //Render root node
     m_root_node->_render(rs);

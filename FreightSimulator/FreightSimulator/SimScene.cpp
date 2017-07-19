@@ -35,7 +35,7 @@ GLuint SimScene::tex = 0;
 GLuint SimScene::city_mvp_id = 0;
 GLuint SimScene::edge_mvp_id = 0;
 
-void SimScene::setup() {
+void SimScene::postsetup() {
     SimCamera* camera = new SimCamera();
     attachSceneCamera(camera);
 
@@ -53,7 +53,6 @@ void SimScene::setup() {
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(1, 2, GL_FLOAT, false, 5*sizeof(GL_FLOAT), (void*)(3*sizeof(GL_FLOAT)));
     glEnableVertexAttribArray(1);
-    //glVertexAttribPointer(1, 2, GL_FLOAT, false, 6*sizeof(GL_FLOAT), 3*sizeof(GL_FLOAT));
 
     //Basic Shaders
     SimScene::city_program = LoadShaders("basic_vs.glsl", "basic_fs.glsl");
@@ -166,7 +165,7 @@ void SimScene::setup() {
     camera_city->m_position.z = -2.0;
 }
 
-void SimScene::input(InputState is) {
+void SimScene::preinput(InputState is) {
     if (glfwGetKey(is.window, GLFW_KEY_SPACE ) == GLFW_PRESS) {
         std::string closestCity = "";
         float closestDistance = 200.0;
@@ -185,7 +184,7 @@ void SimScene::input(InputState is) {
     }
 }
 
-void SimScene::update(UpdateState us) {
+void SimScene::preupdate(UpdateState us) {
 
 }
 

@@ -19,9 +19,9 @@ public:
 
     EdgeNode() : QuadNode() {}
 
-    void setup();
-    void input();
-    void update(UpdateState us);
+    void postsetup();
+    void preinput(InputState is);
+    void preupdate(UpdateState us);
     void prerender(RenderState rs);
 
     std::pair<int,int> m_id;

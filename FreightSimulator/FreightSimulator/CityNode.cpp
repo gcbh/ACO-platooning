@@ -11,17 +11,17 @@
 #include "glm.hpp"
 #include "matrix_transform.hpp"
 
-void CityNode::setup() {
+void CityNode::postsetup() {
     m_scale = glm::vec3(0.1f, 0.1f, 0.1f);
     m_program = SimScene::city_program;
     m_vertex_array = SimScene::vao;
     m_mvp_id = SimScene::city_mvp_id;
 }
 
-void CityNode::input() {
+void CityNode::preinput(InputState is) {
 }
 
-void CityNode::update(UpdateState us) {
+void CityNode::preupdate(UpdateState us) {
 }
 
 void CityNode::prerender(RenderState rs) {

@@ -19,9 +19,9 @@ public:
 
     CityNode() : QuadNode() {}
 
-    void setup();
-    void input();
-    void update(UpdateState us);
+    void postsetup();
+    void preinput(InputState is);
+    void preupdate(UpdateState us);
     void prerender(RenderState rs);
 
     int m_id;
