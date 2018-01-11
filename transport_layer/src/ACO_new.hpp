@@ -40,7 +40,6 @@ private:
     float                               RHO, ALPHA, BETA, DELTA, LAMBDA, PHI;
     multimap< pair<int, int> , int >    manifest;
     list<base_ant*>                     ants;
-    string**                            print_route;
     int                                 num_ants, num_iters;
     bool                                DEBUG;
     double                              prev_cost;
@@ -52,7 +51,7 @@ private:
     double  cost_based_num_ants(int num_of_ants);
     double  cost_per_tick(map< iPair, int > map_ant_count);
     void    reset_ants();
-    void    log_results(int tick, int cost);
+    void    log_results(int tick, int cost, string** print_route);
     void    log_rollback(int node_id);
     
 };

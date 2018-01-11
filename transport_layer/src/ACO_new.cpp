@@ -37,11 +37,6 @@ ACO_new::ACO_new(graph *i_g, multimap< pair<int, int> , int> i_manifest, float i
 ACO_new::~ACO_new() {
     fclose(stdout);
     result_log.close();
-
-    for (int i = 0; i < num_ants; i++)
-        delete [] print_route[i];
-    
-    delete [] print_route;
 }
 
 void ACO_new:: init(Dijkstra *dijkstra) {
@@ -95,7 +90,7 @@ void ACO_new:: set_prime_ant(list<string> manifest_route) {
 }
 
 void ACO_new::reset_ants() {
-    for (list<ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
+    for (list<base_ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
         delete (*it);
     }
 
@@ -192,7 +187,7 @@ double ACO_new::cost_evaluation(int max_duration, list<base_ant*> base_ants) {
     double total_cost = 0;
     
     num_ants = base_ants.size();
-    print_route = new string*[num_ants];
+    string** print_route = new string*[num_ants];
     for (int i = 0; i < num_ants; i++)
         print_route[i] = new string[max_duration+1];
 
@@ -234,13 +229,16 @@ double ACO_new::cost_evaluation(int max_duration, list<base_ant*> base_ants) {
     }
     
     if (DEBUG) {
-        log_results(max_duration, total_cost);
+        log_results(max_duration, total_cost, print_route);
     }
-
+    
+    for (int i = 0; i < num_ants; i++)
+        delete [] print_route[i];
+    delete [] print_route;
     return total_cost;
 }
 
-void ACO_new::log_results(int tick, int cost) {
+void ACO_new::log_results(int tick, int cost, string** print_route) {
     
     
     cout << "\n" << "ITERATION NUMBER " << num_iters << "\n";
