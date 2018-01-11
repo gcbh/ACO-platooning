@@ -43,7 +43,7 @@ int main() {
     
     time_t seed = (long)time(nullptr);
     
-    string file_name = "cities_p_p.txt";
+    string file_name = "cities_p.txt";
     string manifest_file_name = "manifest_1_cities_graph.txt";
 //    string file_name = "triangular_graph.txt";
 //    string manifest_file_name = "manifest_triangular_graph.txt";
@@ -105,9 +105,9 @@ int main() {
 
     graph *g = new graph();
     g->construct_graph(pre_opt_graph); 
-    
-    ACO_new *ACO = new ACO_new(g, manifest_map, ALPHA, BETA, DELTA, LAMBDA, PHI, RHO, DEBUG, seed);
 
+    ACO_new *ACO = new ACO_new(g, manifest_map, ALPHA, BETA, DELTA, LAMBDA, PHI, RHO, DEBUG, seed);
+    
     ACO->init(dijkstra);
     
     for(int i = 1; i <= num_iterations; i++) {
@@ -116,8 +116,9 @@ int main() {
     }
 
     delete g;
-    delete dijkstra;
+//    delete dijkstra;
     delete ACO;
+
     return 0;
 }
 
