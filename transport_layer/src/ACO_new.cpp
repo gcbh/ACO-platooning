@@ -54,7 +54,6 @@ void ACO_new:: set_prime_ant(list<string> manifest_route) {
     int               tick = -1;
     list<string>::    iterator it;
     bool              endIteration;
-    list<base_ant*> primer_ants;
     double            cost = 0;
 
     for (it = manifest_route.begin(); it != manifest_route.end(); it++) {
@@ -63,13 +62,13 @@ void ACO_new:: set_prime_ant(list<string> manifest_route) {
         t_node*        start_from = (*g) [stoi(nodes[0])];
         primer_ant*    p_ant = new primer_ant(start_from, nodes);
 
-        primer_ants.push_back(p_ant);
+        ants.push_back(p_ant);
     }
 
     do {
         endIteration = true;
         tick++;
-        for (list<base_ant*>::iterator it = primer_ants.begin(); it != primer_ants.end(); ++it) {
+        for (list<base_ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
             //if ant has not reached destination call nextnode
             if (!(*it)->has_reached_destination()) {
                 (*it)->next_node(tick);   
@@ -78,14 +77,14 @@ void ACO_new:: set_prime_ant(list<string> manifest_route) {
         }
     } while(!endIteration);
     
-    for (list<base_ant*>::iterator itr = primer_ants.begin(); itr != primer_ants.end(); ++itr) {
+    for (list<base_ant*>::iterator itr = ants.begin(); itr != ants.end(); ++itr) {
         (*itr)->init_cost();
     }
     
     cout << setw(50) << "*** DIJKSTRA COST ***\n\n";
     cout << setw(50) << "------------------------------------------------------------\n\n";
     
-    cost = cost_evaluation(tick, primer_ants);
+    cost = cost_evaluation(tick, ants);
     
 }
 
