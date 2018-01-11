@@ -24,13 +24,17 @@ Dijkstra::Dijkstra() {
 }
 
 Dijkstra::~Dijkstra() {
-    // delete edg
-    delete [] edg;
-
     // deallocate edge_weight
     for (int i = 0; i < num_of_nodes; i++)
         delete edge_weight[i];
+    
     delete [] edge_weight;
+
+    delete [] edg;
+    cout << "test" << endl;
+//    delete [] edg;
+
+    
 }
 
 void Dijkstra::add_edge(int src, int dest, int weight) {

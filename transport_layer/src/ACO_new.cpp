@@ -31,6 +31,7 @@ ACO_new::ACO_new(graph *i_g, multimap< pair<int, int> , int> i_manifest, float i
     result_log.open(RESULT_LOG_PATH);
     prev_cost = INF;
     freopen(RESULT_LOG_PATH.c_str(), "w", stdout);
+ 
 }
 
 ACO_new::~ACO_new() {
@@ -94,6 +95,10 @@ void ACO_new:: set_prime_ant(list<string> manifest_route) {
 }
 
 void ACO_new::reset_ants() {
+    for (list<ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
+        delete (*it);
+    }
+
     ants.clear();
     int src, dest;
     for (multimap< pair<int, int> , int>::iterator it = manifest.begin(); it != manifest.end(); ++it) {
@@ -122,7 +127,7 @@ int ACO_new::iteration() {
             }
             
             if (dynamic_cast<ant*>(*it)->void_route()) {
-                if (DEBUG) log_rollback((*it)->get_ordered_path().front()->get_id());
+                if (DEBUG) log_rollback((*it)->get_ordered_path().back()->get_id());
                 rollback_evaporation(tick, DELTA);
                 reset_ants();
                 return -1;
@@ -237,6 +242,7 @@ double ACO_new::cost_evaluation(int max_duration, list<base_ant*> base_ants) {
 
 void ACO_new::log_results(int tick, int cost) {
     
+    
     cout << "\n" << "ITERATION NUMBER " << num_iters << "\n";
     cout<<setw(20);
     list<string> r = d_map->get_manifest_routes();
@@ -254,11 +260,14 @@ void ACO_new::log_results(int tick, int cost) {
         }
     }
     cout << "Cost: " << cost << "\n";
+
 }
 
 void ACO_new::log_rollback(int node_id) {
+
     cout << "ITERATION NUMBER " << num_iters << "\n";
     cout << "ROLLBACK at: " << node_id << endl;
+
 }
 
 double ACO_new::cost_per_tick(map< iPair, int > map_ant_count) {

@@ -41,7 +41,7 @@ void ant::next_node(int time) {
             if (past_nodes.find(n_nodeid) == past_nodes.end()) {
                 pheromone p = e->get_pheromone(time);
                 
-                total += calculate_heuristic(n_nodeid, e->get_distance(), p.current);;
+                total += calculate_heuristic(n_nodeid, e->get_distance(), p.current);
                 
                 // determines largest future pheromone
                 if (p.future > best_wait) {

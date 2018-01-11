@@ -27,15 +27,20 @@ using namespace std;
 
 multimap< pair<int, int> , int>  get_manifest(string file_name);
 
-int main() {
+int main(int argc, const char * argv[]) {
+    if (argc <= 1) {
+        cout << "Missing filename arguments" << endl;
+        return -1;
+    }
+    
     cout << "Begin optimization" << endl;
 
     // algorithm optimization values
-    float   ALPHA = 2.1f;       // pheromone exponent of heuristic
+    float   ALPHA = 1.2f;       // pheromone exponent of heuristic
     float   BETA = 0.3f;        // dijkstra exponent of heuristic
     float   DELTA = 1.0f;       // pheromone incremental value
     float   LAMBDA = 3.0f;      // reinforcement pheromone value
-    float   PHI = 0.25f;        // exploration coefficient
+    float   PHI = 1.2f;         // exploration coefficient
     float   RHO = 0.3f;         // pheromone evaporation value
     int     num_iterations = 100000;
     
@@ -43,8 +48,12 @@ int main() {
     
     time_t seed = (long)time(nullptr);
     
-    string file_name = "cities_p.txt";
-    string manifest_file_name = "manifest_1_cities_graph.txt";
+    string file_name = argv[1];
+    string manifest_file_name = argv[2];
+//    string file_name = "cities_p.txt";
+//    string manifest_file_name = "manifest_1_cities_graph.txt";
+//    string file_name = "small_graph.txt";
+//    string manifest_file_name = "manifest_small_graph.txt";
 //    string file_name = "triangular_graph.txt";
 //    string manifest_file_name = "manifest_triangular_graph.txt";
     
@@ -92,7 +101,6 @@ int main() {
         ofstream dijkstra_file;
         dijkstra_file.open(dijkstra_file_path, ios_base::out);
         
-
         // freopen to be able to write output to file directly
         freopen(dijkstra_file_path.c_str(), "w", stdout);
         dijkstra->init(pre_opt_graph, nodes.size());
@@ -102,9 +110,10 @@ int main() {
     
     multimap< pair<int, int> , int>  manifest_map = get_manifest(manifest_file_name);
     dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map);
-
+    
     graph *g = new graph();
-    g->construct_graph(pre_opt_graph); 
+
+    g->construct_graph(pre_opt_graph);
 
     ACO_new *ACO = new ACO_new(g, manifest_map, ALPHA, BETA, DELTA, LAMBDA, PHI, RHO, DEBUG, seed);
     
@@ -114,9 +123,11 @@ int main() {
         int cost = ACO->iteration();
         if (cost < 0) continue;
     }
+    
+    cout << "Run completed." << endl;
 
     delete g;
-//    delete dijkstra;
+    delete dijkstra;
     delete ACO;
 
     return 0;
