@@ -13,7 +13,7 @@
 #include <fstream>
 #include <sstream>
 #include "Dijkstra.hpp"
-#include "ACO_new.hpp"
+#include "ACO.hpp"
 #include "../../utils/config_factory.hpp"
 #include "../../models/manifest.hpp"
 #include "../../models/config.hpp"
@@ -61,11 +61,11 @@ int main(int argc, const char * argv[]) {
     graph *g = new graph();
     g->construct_graph(map);
 
-    ACO_new *ACO = new ACO_new(g, manifest_map, conf, seed);
-    ACO->init(dijkstra);
+    ACO *aco = new ACO(g, manifest_map, conf, seed);
+    aco->init(dijkstra);
     
     for(int i = 1; i <= conf.ITERS(); i++) {
-        int cost = ACO->iteration();
+        int cost = aco->iteration();
         if (cost < 0) continue;
     }
     
@@ -73,7 +73,7 @@ int main(int argc, const char * argv[]) {
 
     delete g;
     delete dijkstra;
-    delete ACO;
+    delete aco;
 
     return 0;
 }

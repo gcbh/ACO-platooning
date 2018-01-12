@@ -1,19 +1,19 @@
 //
-//  ACO_new.cpp
+//  ACO.cpp
 //  transport_layer
 //
 //  Created by Priya Bibra on 2017-06-08.
 //
 //
 
-#include "ACO_new.hpp"
+#include "ACO.hpp"
 
 # define INF 0x3f3f3f3f
 typedef pair<int, int> iPair;
 const float avg_prcnt_fuel_saving_by_middle = 4.1;
 const float avg_prcnt_fuel_saving_by_last = 6.1;
 
-ACO_new::ACO_new(graph *i_g, manifest i_manifest, config i_conf, long seed) : r(seed) {
+ACO::ACO(graph *i_g, manifest i_manifest, config i_conf, long seed) : r(seed) {
     g = i_g;
     conf = i_conf;
     manifest_data = i_manifest;
@@ -25,12 +25,12 @@ ACO_new::ACO_new(graph *i_g, manifest i_manifest, config i_conf, long seed) : r(
  
 }
 
-ACO_new::~ACO_new() {
+ACO::~ACO() {
     fclose(stdout);
     result_log.close();
 }
 
-void ACO_new:: init(Dijkstra *dijkstra) {
+void ACO:: init(Dijkstra *dijkstra) {
     d_map = dijkstra;
     set_prime_ant(dijkstra->get_manifest_routes());
 
@@ -41,7 +41,7 @@ void ACO_new:: init(Dijkstra *dijkstra) {
     reset_ants();
 }
 
-void ACO_new:: set_prime_ant(list<string> manifest_route) {
+void ACO:: set_prime_ant(list<string> manifest_route) {
     int               tick = -1;
     list<string>::    iterator it;
     bool              endIteration;
@@ -79,7 +79,7 @@ void ACO_new:: set_prime_ant(list<string> manifest_route) {
     
 }
 
-void ACO_new::reset_ants() {
+void ACO::reset_ants() {
     for (list<base_ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
         delete (*it);
     }
@@ -94,7 +94,7 @@ void ACO_new::reset_ants() {
     }
 }
 
-int ACO_new::iteration() {
+int ACO::iteration() {
     double  cost = 0;
     int     tick = -1;
     bool    ant_void = false;
@@ -145,7 +145,7 @@ int ACO_new::iteration() {
     return cost;
 }
 
-void ACO_new::rollback_evaporation(int tick, float value) {
+void ACO::rollback_evaporation(int tick, float value) {
     for (int t = 0; t <= tick; ++t) {
         for (list<base_ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
             dynamic_cast<ant*>(*it)->roll_back(t, value);
@@ -153,7 +153,7 @@ void ACO_new::rollback_evaporation(int tick, float value) {
     }
 }
 
-void ACO_new::evaporate_update_future_pheromones(int ticks) {
+void ACO::evaporate_update_future_pheromones(int ticks) {
     vector<t_edge*> edges;
     float max = 0.0f;
     float current = 0.0f;
@@ -173,7 +173,7 @@ void ACO_new::evaporate_update_future_pheromones(int ticks) {
     }
 }
 
-double ACO_new::cost_evaluation(int max_duration, list<base_ant*> base_ants) {
+double ACO::cost_evaluation(int max_duration, list<base_ant*> base_ants) {
     double total_cost = 0;
     
     num_ants = base_ants.size();
@@ -228,7 +228,7 @@ double ACO_new::cost_evaluation(int max_duration, list<base_ant*> base_ants) {
     return total_cost;
 }
 
-void ACO_new::log_results(int tick, int cost, string** print_route) {
+void ACO::log_results(int tick, int cost, string** print_route) {
     
     
     cout << "\n" << "ITERATION NUMBER " << num_iters << "\n";
@@ -251,14 +251,14 @@ void ACO_new::log_results(int tick, int cost, string** print_route) {
 
 }
 
-void ACO_new::log_rollback(int node_id) {
+void ACO::log_rollback(int node_id) {
 
     cout << "ITERATION NUMBER " << num_iters << "\n";
     cout << "ROLLBACK at: " << node_id << endl;
 
 }
 
-double ACO_new::cost_per_tick(map< iPair, int > map_ant_count) {
+double ACO::cost_per_tick(map< iPair, int > map_ant_count) {
     map< iPair, int >::iterator itm;
     double                      cost_per_tick = 0;
     
@@ -275,7 +275,7 @@ double ACO_new::cost_per_tick(map< iPair, int > map_ant_count) {
     return cost_per_tick;
 }
 
-double ACO_new::cost_based_num_ants(int num_of_ants) {
+double ACO::cost_based_num_ants(int num_of_ants) {
     int     num_at_middle = num_of_ants - 2;
     double  cost_for_middle = 0;
     double  cost_for_last = 0;
