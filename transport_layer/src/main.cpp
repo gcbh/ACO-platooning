@@ -29,7 +29,7 @@ using namespace std;
 
 map_data get_data(string file_name);
 manifest get_manifest(string file_name);
-void write_dijkstras(Dijkstra* dijkstra, string file_path);
+void write_dijkstras(Dijkstra* dijkstra, string file_path, map_data map);
 
 int main(int argc, const char * argv[]) {
 
@@ -52,7 +52,7 @@ int main(int argc, const char * argv[]) {
 
     // check if dijkstra file exists, if not create one
     if (djfile.fail()) {
-        write_dijkstras(dijkstra_file_path, dijkstra);
+        write_dijkstras(dijkstra, dijkstra_file_path, map);
     }
     
     manifest manifest_map = get_manifest(conf.getManifest());
@@ -124,7 +124,7 @@ manifest get_manifest(string file_name) {
     return manifest_data;
 }
 
-void write_dijkstras(Dijkstra* dijkstra, string file_path) {
+void write_dijkstras(Dijkstra* dijkstra, string file_path, map_data map) {
     // create file to output from dijkstra algorithm
     ofstream dijkstra_file;
     dijkstra_file.open(file_path, ios_base::out);
