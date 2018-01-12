@@ -13,11 +13,7 @@ typedef pair<int, int> iPair;
 const float avg_prcnt_fuel_saving_by_middle = 4.1;
 const float avg_prcnt_fuel_saving_by_last = 6.1;
 
-<<<<<<< HEAD:transport_layer/src/ACO_new.cpp
-ACO_new::ACO_new(graph *i_g, manifest i_manifest, config i_conf, heuristic_selector* i_sel) {
-=======
-ACO::ACO(graph *i_g, manifest i_manifest, config i_conf, long seed) : r(seed) {
->>>>>>> d5756c8df308278c969f430a3b895cdd7bd49d3a:transport_layer/src/ACO.cpp
+ACO::ACO(graph *i_g, manifest i_manifest, config i_conf, heuristic_selector* i_sel) {
     g = i_g;
     conf = i_conf;
     sel = i_sel;

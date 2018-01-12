@@ -30,13 +30,8 @@ using namespace std;
 
 class ACO {
 public:
-<<<<<<< HEAD:transport_layer/src/ACO_new.hpp
-    ACO_new (graph *i_g, manifest i_manifest, config i_config, heuristic_selector* i_sel);
-    virtual ~ACO_new ();
-=======
-    ACO (graph *i_g, manifest i_manifest, config i_config, long seed);
+    ACO (graph *i_g, manifest i_manifest, config i_config, heuristic_selector* i_sel);
     virtual ~ACO ();
->>>>>>> d5756c8df308278c969f430a3b895cdd7bd49d3a:transport_layer/src/ACO.hpp
     void    init(Dijkstra *dijkstra);
     int     iteration();
     
