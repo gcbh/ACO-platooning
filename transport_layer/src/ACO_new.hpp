@@ -16,17 +16,20 @@
 #include <sstream>
 #include <iomanip>
 #include "../../utils/StringUtils.hpp"
+#include "../../models/config.hpp"
 #include "../../models/t_node.hpp"
 #include "../../models/graph.hpp"
+#include "../../models/manifest.hpp"
 #include "../../models/t_edge.hpp"
 #include "../../models/primer_ant.hpp"
 #include "../../models/ant.hpp"
 #include "Dijkstra.hpp"
 
+using namespace std;
 
 class ACO_new {
 public:
-    ACO_new (graph *i_g, multimap< pair<int, int> , int> i_manifest, float i_alpha, float i_beta, float i_delta, float i_lambda, float i_phi, float i_rho, bool i_debug, long seed);
+    ACO_new (graph *i_g, manifest i_manifest, config i_config, long seed);
     virtual ~ACO_new ();
     void    init(Dijkstra *dijkstra);
     int     iteration();
@@ -35,13 +38,12 @@ private:
     graph*                              g;
     Dijkstra*                           d_map;
     Randoms                             r;
+    config                          conf;
     string                              RESULT_LOG_PATH;
     ofstream                            result_log;
-    float                               RHO, ALPHA, BETA, DELTA, LAMBDA, PHI;
-    multimap< pair<int, int> , int >    manifest;
+    manifest                            manifest_data;
     list<base_ant*>                     ants;
     int                                 num_ants, num_iters;
-    bool                                DEBUG;
     double                              prev_cost;
     
     void    set_prime_ant(list<string> manifest_route);

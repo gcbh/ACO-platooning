@@ -31,10 +31,6 @@ Dijkstra::~Dijkstra() {
     delete [] edge_weight;
 
     delete [] edg;
-    cout << "test" << endl;
-//    delete [] edg;
-
-    
 }
 
 void Dijkstra::add_edge(int src, int dest, int weight) {
@@ -42,19 +38,17 @@ void Dijkstra::add_edge(int src, int dest, int weight) {
     edg[dest].push_back(make_pair(weight, src));
 }
 
-void Dijkstra::init(list<graph_data> edge_list, int node_count) {
+void Dijkstra::init(map_data map) {
 
-    edg = new list<iPair> [node_count];
-    printf("%d", node_count);
-    for (list<graph_data>:: iterator itr = edge_list.begin(); itr != edge_list.end(); itr++) {
-        nodes.insert(itr->src);
-        nodes.insert(itr->dest);
+    edg = new list<iPair> [map.node_count()];
+    printf("%d", map.node_count());
+    for (list<graph_edge>:: iterator itr = map.begin(); itr != map.end(); itr++) {
         add_edge(itr->src, itr->dest, itr->weight);
     }
-
-    num_of_nodes = nodes.size();
     
-    for (set<int>:: iterator it = nodes.begin(); it != nodes.end(); it++) {
+    nodes = map.getNodes();
+    
+    for (unordered_set<int>:: iterator it = nodes.begin(); it != nodes.end(); it++) {
         shortest_route(*it);
     }
 
@@ -123,7 +117,7 @@ void Dijkstra::print_path(int route[], int j)
     printf("%d ", j);
 }
 
-void Dijkstra:: populate_from_dijkstra_file(string file_name, multimap< pair<int, int>, int> manifest_map) {
+void Dijkstra:: populate_from_dijkstra_file(string file_name, manifest manifest_map) {
     ifstream file(file_name);
     string   line;
 
@@ -154,7 +148,7 @@ void Dijkstra:: populate_from_dijkstra_file(string file_name, multimap< pair<int
             edge_weight[dest][src] = distance;
 
             // populate manifest routes from dijkstra's
-            int key_count = manifest_map.count(make_pair(src, dest));
+            int key_count = manifest_map.count(src, dest);
             while (key_count > 0) {
                 manifest_route.push_back(route);
                 --key_count;

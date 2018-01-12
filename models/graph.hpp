@@ -13,6 +13,7 @@
 #include <iostream>
 #include <list>
 #include <map>
+#include "map_data.hpp"
 #include "t_node.hpp"
 #include "t_edge.hpp"
 
@@ -26,7 +27,7 @@ class graph {
 public:
     graph();
     ~graph();
-    void    construct_graph(list<graph_data> i_edges);
+    void    construct_graph(map_data data);
     t_node* operator[](int);
     int     get_num_nodes();
 private:

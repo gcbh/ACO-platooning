@@ -8,24 +8,15 @@
 
 #include "ACO_new.hpp"
 
-using namespace std;
-
 # define INF 0x3f3f3f3f
 typedef pair<int, int> iPair;
 const float avg_prcnt_fuel_saving_by_middle = 4.1;
 const float avg_prcnt_fuel_saving_by_last = 6.1;
 
-ACO_new::ACO_new(graph *i_g, multimap< pair<int, int> , int> i_manifest, float i_alpha, float i_beta, float i_delta, float i_lambda, float i_phi, float i_rho, bool i_debug, long seed) : r(seed) {
+ACO_new::ACO_new(graph *i_g, manifest i_manifest, config i_conf, long seed) : r(seed) {
     g = i_g;
-
-    RHO = i_rho;
-    ALPHA = i_alpha;
-    BETA = i_beta;
-    DELTA = i_delta;
-    LAMBDA = i_lambda;
-    PHI = i_phi;
-    DEBUG = i_debug;
-    manifest = i_manifest;
+    conf = i_conf;
+    manifest_data = i_manifest;
     num_iters = 0;
     RESULT_LOG_PATH = "../results.log";
     result_log.open(RESULT_LOG_PATH);
@@ -95,10 +86,10 @@ void ACO_new::reset_ants() {
 
     ants.clear();
     int src, dest;
-    for (multimap< pair<int, int> , int>::iterator it = manifest.begin(); it != manifest.end(); ++it) {
+    for (multimap< pair<int, int> , int>::iterator it = manifest_data.begin(); it != manifest_data.end(); ++it) {
         src = it->first.first;
         dest = it->first.second;
-        ant *a = new ant((*g)[src], d_map, dest, ALPHA, BETA, DELTA, PHI, &r);
+        ant *a = new ant((*g)[src], d_map, dest, conf.getAlpha(), conf.getBeta(), conf.getDelta(), conf.getPhi(), &r);
         ants.push_back(a);
     }
 }
@@ -121,8 +112,8 @@ int ACO_new::iteration() {
             }
             
             if (dynamic_cast<ant*>(*it)->void_route()) {
-                if (DEBUG) log_rollback((*it)->get_ordered_path().back()->get_id());
-                rollback_evaporation(tick, DELTA);
+                if (conf.DEBUG()) log_rollback((*it)->get_ordered_path().back()->get_id());
+                rollback_evaporation(tick, conf.getDelta());
                 reset_ants();
                 return -1;
                 break;
@@ -140,7 +131,7 @@ int ACO_new::iteration() {
         prev_cost = cost;
     }
     if (cost < prev_cost) {
-        rollback_evaporation(tick, -1.0f * LAMBDA * prev_cost / cost);
+        rollback_evaporation(tick, -1.0f * conf.getLambda() * prev_cost / cost);
         prev_cost = cost;
     } else if (cost > prev_cost) {
         rollback_evaporation(tick, 1.0f * cost / prev_cost);
@@ -170,7 +161,7 @@ void ACO_new::evaporate_update_future_pheromones(int ticks) {
         edges = (*g)[i]->get_edges();
         for (int j = 0; j < edges.size(); j++) {
             for (int k = ticks; k >= 0; k--) {
-                edges[j]->evaporate(k, RHO);
+                edges[j]->evaporate(k, conf.getRho());
                 
                 current = edges[j]->get_pheromone(k).current;
                 if (current > max) {
@@ -227,7 +218,7 @@ double ACO_new::cost_evaluation(int max_duration, list<base_ant*> base_ants) {
         total_cost += cost_per_tick(map_ant_count);
     }
     
-    if (DEBUG) {
+    if (conf.DEBUG()) {
         log_results(max_duration, total_cost, print_route);
     }
     

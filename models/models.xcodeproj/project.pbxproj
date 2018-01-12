@@ -19,12 +19,21 @@
 		F14401741EE89C9600BBD888 /* t_node.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = t_node.hpp; sourceTree = "<group>"; };
 		F14401751EE89CA600BBD888 /* t_edge.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = t_edge.cpp; sourceTree = "<group>"; };
 		F14401761EE89CA600BBD888 /* t_edge.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = t_edge.hpp; sourceTree = "<group>"; };
+		F155DC082008730100E9F9DE /* map_data.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = map_data.cpp; sourceTree = "<group>"; };
+		F155DC092008730100E9F9DE /* map_data.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = map_data.hpp; sourceTree = "<group>"; };
+		F15F36F72008310800CBD9FE /* config.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = config.cpp; sourceTree = "<group>"; };
+		F15F36F82008310800CBD9FE /* config.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = config.hpp; sourceTree = "<group>"; };
+		F15F36FE2008619900CBD9FE /* manifest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = manifest.cpp; sourceTree = "<group>"; };
+		F15F36FF2008619900CBD9FE /* manifest.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = manifest.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		F1053E3E1F182C2D00967DC0 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				F155DC082008730100E9F9DE /* map_data.cpp */,
+				F15F36FE2008619900CBD9FE /* manifest.cpp */,
+				F15F36F72008310800CBD9FE /* config.cpp */,
 				187FD0921EEA51B00028001A /* graph.cpp */,
 				F14401751EE89CA600BBD888 /* t_edge.cpp */,
 				F14401731EE89C9600BBD888 /* t_node.cpp */,
@@ -38,6 +47,9 @@
 		F1053E3F1F182C3300967DC0 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				F155DC092008730100E9F9DE /* map_data.hpp */,
+				F15F36FF2008619900CBD9FE /* manifest.hpp */,
+				F15F36F82008310800CBD9FE /* config.hpp */,
 				187FD0931EEA51B00028001A /* graph.hpp */,
 				F14401761EE89CA600BBD888 /* t_edge.hpp */,
 				F14401741EE89C9600BBD888 /* t_node.hpp */,

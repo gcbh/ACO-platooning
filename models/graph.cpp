@@ -21,10 +21,10 @@ graph::~graph() {
     delete g_graph;
 }
 
-void graph::construct_graph(list<graph_data> i_edges) {
+void graph::construct_graph(map_data data) {
     int speed = 75; //fixed nominal average speed on every edge 
     int edge_id = 0;
-    for (list<graph_data>::iterator it = i_edges.begin(); it != i_edges.end(); ++it) {
+    for (list<graph_edge>::iterator it = data.begin(); it != data.end(); ++it) {
         t_node *src_node; //= new t_node(it->src);
         t_node *dest_node; //= new t_node(it->dest);
 

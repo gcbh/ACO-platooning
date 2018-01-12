@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <list>
 #include <map>
-#include <set>
+#include <unordered_set>
 #include <vector>
 #include <queue>
 #include <iostream>
@@ -20,6 +20,8 @@
 #include <sstream>
 #include "../../utils/StringUtils.hpp"
 #include "../../models/graph.hpp"
+#include "../../models/manifest.hpp"
+#include "../../models/map_data.hpp"
 
 using namespace std;
 
@@ -33,14 +35,14 @@ class Dijkstra {
 public:
     Dijkstra();
     virtual ~Dijkstra();
-    void            init(list<graph_data> list, int node_count);
-    void            populate_from_dijkstra_file(string file_name, multimap< pair<int, int>, int> manifest_map);
+    void            init(map_data map);
+    void            populate_from_dijkstra_file(string file_name, manifest manifest_map);
     int             get_edge_weight(int src, int dest);
     list<string>    get_manifest_routes();
     
 private:
     list< pair<int, int> >* edg;
-    set<int>                nodes;
+    unordered_set<int>      nodes;
     int**                   edge_weight;
     list<string>            manifest_route;
     int                     num_of_nodes;

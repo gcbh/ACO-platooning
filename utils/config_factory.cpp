@@ -1,0 +1,56 @@
+//
+//  config_factory.cpp
+//  utils
+//
+//  Created by Geoffrey Heath on 2018-01-11.
+//  Copyright © 2018 University of Waterloo. All rights reserved.
+//
+
+#include "config_factory.hpp"
+
+#define CONFIG_FILE "../application.conf"
+
+config_factory::config_factory() {  }
+
+config config_factory::build() {
+    config_data d;
+    std::ifstream file(CONFIG_FILE);
+    std::string   line;
+    
+    while (getline(file, line)) {
+        std::stringstream linestream(line);
+        std::string key;
+        std::string value;
+        
+        linestream >> key >> value;
+        convert(&d, key, value);
+    }
+    
+    config c(d.map_name, d.manifest_name, d.alpha, d.beta, d.delta, d.lambda, d.phi, d.rho, d.debug, d.iters);
+    return c;
+}
+
+void config_factory::convert(config_data* d, std::string key, std::string value) {
+    if (key == "map") {
+        d->map_name = value;
+    } else if (key == "manifest") {
+        d->manifest_name = value;
+    } else if (key == "alpha") {
+        d->alpha = atof(value.c_str());
+    } else if (key == "beta") {
+        d->beta = atof(value.c_str());
+    } else if (key == "delta") {
+        d->delta = atof(value.c_str());
+    } else if (key == "lambda") {
+        d->lambda = atof(value.c_str());
+    } else if (key == "phi") {
+        d->phi = atof(value.c_str());
+    } else if (key == "rho") {
+        d->rho = atof(value.c_str());
+    } else if (key == "debug") {
+        d->debug = (atoi(value.c_str()) == 1) ? true : false;
+    } else if (key == "iters") {
+        d->iters = atoi(value.c_str());
+    }
+}
+
