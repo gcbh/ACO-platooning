@@ -8,18 +8,16 @@
 
 #include <stdio.h>
 #include <time.h>
-#include <list>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include "Dijkstra.hpp"
 #include "ACO_new.hpp"
 #include "../../utils/config_factory.hpp"
-#include "../../models/manifest.hpp"
 #include "../../models/config.hpp"
 #include "../../models/map_data.hpp"
+#include "../../models/manifest.hpp"
 #include "../../models/graph.hpp"
-#include "../../utils/StringUtils.hpp"
 
 #define MAPS "../../maps/"
 #define DJ_MAPS "../../maps/d_maps/"
@@ -29,7 +27,7 @@ using namespace std;
 
 map_data get_data(string file_name);
 manifest get_manifest(string file_name);
-void write_dijkstras(Dijkstra* dijkstra, string file_path);
+void write_dijkstras(Dijkstra* dijkstra, map_data map, string file_path);
 
 int main(int argc, const char * argv[]) {
 
@@ -40,9 +38,8 @@ int main(int argc, const char * argv[]) {
     
     time_t seed = (long)time(nullptr);
     
-    Dijkstra *dijkstra = new Dijkstra();
-    
     map_data map = get_data(conf.getMap());
+    manifest manifest_map = get_manifest(conf.getManifest());
     
     // Creates d_maps folder if it doesn't exist
     system(("mkdir -p " + string(DJ_MAPS)).c_str());
@@ -50,18 +47,20 @@ int main(int argc, const char * argv[]) {
     string dijkstra_file_path = DJ_MAPS + ("dj_" + conf.getMap());
     ifstream djfile(dijkstra_file_path);
 
+    Dijkstra *dijkstra = new Dijkstra();
+    
     // check if dijkstra file exists, if not create one
     if (djfile.fail()) {
-        write_dijkstras(dijkstra_file_path, dijkstra);
+        write_dijkstras(dijkstra, map, dijkstra_file_path);
     }
-    
-    manifest manifest_map = get_manifest(conf.getManifest());
     dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map);
     
     graph *g = new graph();
     g->construct_graph(map);
-
-    ACO_new *ACO = new ACO_new(g, manifest_map, conf, seed);
+    
+    heuristic_selector* sel = new heuristic_selector(conf.getAlpha(), conf.getBeta(), conf.getPhi(), seed, dijkstra);
+    
+    ACO_new *ACO = new ACO_new(g, manifest_map, conf, sel);
     ACO->init(dijkstra);
     
     for(int i = 1; i <= conf.ITERS(); i++) {
@@ -69,12 +68,13 @@ int main(int argc, const char * argv[]) {
         if (cost < 0) continue;
     }
     
-    cout << "Run completed." << endl;
-
     delete g;
     delete dijkstra;
     delete ACO;
+    delete sel;
 
+    cout << "Run completed" << endl;
+    
     return 0;
 }
 
@@ -124,7 +124,7 @@ manifest get_manifest(string file_name) {
     return manifest_data;
 }
 
-void write_dijkstras(Dijkstra* dijkstra, string file_path) {
+void write_dijkstras(Dijkstra* dijkstra, map_data map, string file_path) {
     // create file to output from dijkstra algorithm
     ofstream dijkstra_file;
     dijkstra_file.open(file_path, ios_base::out);

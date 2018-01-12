@@ -13,16 +13,16 @@ typedef pair<int, int> iPair;
 const float avg_prcnt_fuel_saving_by_middle = 4.1;
 const float avg_prcnt_fuel_saving_by_last = 6.1;
 
-ACO_new::ACO_new(graph *i_g, manifest i_manifest, config i_conf, long seed) : r(seed) {
+ACO_new::ACO_new(graph *i_g, manifest i_manifest, config i_conf, heuristic_selector* i_sel) {
     g = i_g;
     conf = i_conf;
+    sel = i_sel;
     manifest_data = i_manifest;
     num_iters = 0;
     RESULT_LOG_PATH = "../results.log";
     result_log.open(RESULT_LOG_PATH);
     prev_cost = INF;
     freopen(RESULT_LOG_PATH.c_str(), "w", stdout);
- 
 }
 
 ACO_new::~ACO_new() {
@@ -89,7 +89,7 @@ void ACO_new::reset_ants() {
     for (multimap< pair<int, int> , int>::iterator it = manifest_data.begin(); it != manifest_data.end(); ++it) {
         src = it->first.first;
         dest = it->first.second;
-        ant *a = new ant((*g)[src], d_map, dest, conf.getAlpha(), conf.getBeta(), conf.getDelta(), conf.getPhi(), &r);
+        ant *a = new ant((*g)[src], dest, conf.getDelta(), sel);
         ants.push_back(a);
     }
 }

@@ -17,15 +17,14 @@
 
 #include "base_ant.hpp"
 #include "t_node.hpp"
-#include "../transport_layer/src/Randoms.h"
-#include "../transport_layer/src/Dijkstra.hpp"
+#include "../transport_layer/src/heuristic_selector.hpp"
 
 using namespace std;
 typedef pair<int, int> iPair;
 
 class ant: public base_ant {
 public:
-    ant(t_node* first, Dijkstra* i_d_map, int i_dest, float i_alpha, float i_beta, float i_delta, float i_phi, Randoms* i_r);
+    ant(t_node* first, int i_dest, float d, heuristic_selector* sel);
     ~ant();
     void            next_node(int time);
     void            roll_back(int time, float magnitude);
@@ -36,12 +35,12 @@ public:
     iPair           cost_node(int time);
 
 private:
-    Dijkstra*             d_map;
-    float                 ALPHA, BETA, DELTA, PHI;
-    Randoms*              probability;
+    heuristic_selector*   selector;
+    float                 DELTA;
     unordered_set<int>    past_nodes;
     bool                  v_route;
     
+    list<t_edge*>         avail_edges();
     double calculate_heuristic(int node_id, int e_dist, float ph);
 };
 #endif /* ant_hpp */

@@ -10,101 +10,45 @@
 
 using namespace std;
 
-ant::ant(t_node* first, Dijkstra* i_d_map, int i_dest, float i_alpha, float i_beta, float i_delta, float i_phi, Randoms* i_r) {
-    d_map = i_d_map;
-    probability = i_r;
+ant::ant(t_node* first, int i_dest, float d, heuristic_selector* sel) {
     dest = i_dest;
     counter = 0;
+    DELTA = d;
     current = first;
-    ALPHA = i_alpha;
-    BETA = i_beta;
-    DELTA = i_delta;
-    PHI = i_phi;
     v_route = false;
+    selector = sel;
 }
 
 ant::~ant() {   }
 
 void ant::next_node(int time) {
     if (counter <= 0) {
-        double total = 0;
-        double total_prob = 0;
-        float best_wait = 0;
-        int past_travelled = 0;
-        for (int i = 0; i < current->edge_number(); i++) {
-            
-            t_edge* e = (*current)[i];
-            
-            int n_nodeid = e->get_dest()->get_id();
-            int e_id = e->get_id();
-            
-            if (past_nodes.find(n_nodeid) == past_nodes.end()) {
-                pheromone p = e->get_pheromone(time);
-                
-                total += calculate_heuristic(n_nodeid, e->get_distance(), p.current);
-                
-                // determines largest future pheromone
-                if (p.future > best_wait) {
-                    best_wait = p.future;
-                }
-            } else {
-                past_travelled++;
-            }
-        }
         
-        if (past_travelled == current->edge_number()) {
+        int past_travelled = 0;
+        list<t_edge*> es = avail_edges();
+        if (es.size() == 0) {
             v_route = true;
             return;
         }
+        t_edge* e = selector->selected_edge(es, current->get_id(), dest, time);
         
-        total += calculate_heuristic(current->get_id(), 0, best_wait);
+        // current node included in up-to-date path
+        ordered_path.push(current);
         
-        // random value between 0 and 1
-        double prob = probability->Uniforme();
+        if (!e) return;
         
-        for (int i = 0; i < current->edge_number(); i++) {
-            t_edge* e = (*current)[i];
-            
-            int n_nodeid = e->get_dest()->get_id();
-            int e_id = e->get_id();
-            
-            if (past_nodes.find(n_nodeid) == past_nodes.end()) {
-                pheromone p = e->get_pheromone(time);
-                // sums to find position of random variable between 0 and 1
-                total_prob += calculate_heuristic(n_nodeid, e->get_distance(), p.current);
-            
-                // if in range of current edge
-                if (total_prob/total >= prob) {
-                    e->update_pheromone(time, 1.0f);
-                    // ensure node travelling from cannot be reached again
-                    past_nodes.insert(n_nodeid);
-                    // current node included in up-to-date path
-                    ordered_path.push(current);
-                    // update 'current'
-                    current = e->get_dest();
-                    // update 'counter' for timing
-                    counter = e->get_time_to_cross() - 1;
-                    
-                    if (has_reached_destination()) {
-                        ordered_path.push(current);
-                    }
-                    
-                    return;
-                }
-            }
-        }
-        // portion of spectrum for 'WAIT' option
-        total_prob += calculate_heuristic(current->get_id(), 0, best_wait);
+        e->update_pheromone(time, 1.0f);
+        // ensure node travelling from cannot be reached again
+        past_nodes.insert(current->get_id());
+        // update 'current'
+        current = e->get_dest();
+        // update 'counter' for timing
+        counter = e->get_time_to_cross() - 1;
         
-        if (total_prob / total >= prob) {
+        if (has_reached_destination()) {
             ordered_path.push(current);
-        } else {
-            string e = "Issue with pathfinding. Should not get past final probability. Total: "
-                + to_string(total_prob)
-                + " Current: "
-                + to_string(prob);
-            throw e;
         }
+        
         return;
     }
     counter--;
@@ -132,18 +76,15 @@ void ant::roll_back(int time, float magnitude) {
     counter--;
 }
 
-double ant::calculate_heuristic(int node_id, int e_dist, float ph) {
-    float p, d;
-    
-    int distance = d_map->get_edge_weight(node_id, dest);
-    
-    d = 1.0f / (e_dist + distance);
-    
-    if (!ph || floor(ph) == 0.0f) {
-        return PHI*d;
+list<t_edge*> ant::avail_edges() {
+    list<t_edge*> edges;
+    for (int i = 0; i < current->edge_number(); i++) {
+        t_edge* e = (*current)[i];
+        if (past_nodes.find(e->get_dest()->get_id()) == past_nodes.end()) {
+            edges.push_back((*current)[i]);
+        }
     }
-    
-    return pow(ph, ALPHA) * pow(d, BETA);
+    return edges;
 }
 
 queue<t_node*> ant::get_ordered_path() {
