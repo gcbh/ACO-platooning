@@ -24,21 +24,27 @@
 #include "../../models/primer_ant.hpp"
 #include "../../models/ant.hpp"
 #include "Dijkstra.hpp"
+#include "heuristic_selector.hpp"
 
 using namespace std;
 
 class ACO {
 public:
+<<<<<<< HEAD:transport_layer/src/ACO_new.hpp
+    ACO_new (graph *i_g, manifest i_manifest, config i_config, heuristic_selector* i_sel);
+    virtual ~ACO_new ();
+=======
     ACO (graph *i_g, manifest i_manifest, config i_config, long seed);
     virtual ~ACO ();
+>>>>>>> d5756c8df308278c969f430a3b895cdd7bd49d3a:transport_layer/src/ACO.hpp
     void    init(Dijkstra *dijkstra);
     int     iteration();
     
 private:
     graph*                              g;
     Dijkstra*                           d_map;
-    Randoms                             r;
-    config                          conf;
+    config                              conf;
+    heuristic_selector*                 sel;
     string                              RESULT_LOG_PATH;
     ofstream                            result_log;
     manifest                            manifest_data;
