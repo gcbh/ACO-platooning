@@ -60,7 +60,7 @@ int main(int argc, const char * argv[]) {
     
     heuristic_selector* sel = new heuristic_selector(conf.getAlpha(), conf.getBeta(), conf.getPhi(), seed, dijkstra);
 
-    ACO *aco = new ACO(g, manifest_map, conf, seed);
+    ACO *aco = new ACO(g, manifest_map, conf, sel);
     aco->init(dijkstra);
     
     for(int i = 1; i <= conf.ITERS(); i++) {
