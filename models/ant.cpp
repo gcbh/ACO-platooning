@@ -58,10 +58,6 @@ void ant::next_node(int time) {
     }
 }
 
-iPair ant::cost_node(int time) {
-    return base_ant::cost_node(time);
-}
-
 void ant::roll_back(int time, float magnitude) {
     if (counter <= 0 && ordered_path.size() > 1) {
         current = ordered_path.front();
@@ -85,18 +81,6 @@ list<t_edge*> ant::avail_edges() {
         }
     }
     return edges;
-}
-
-queue<t_node*> ant::get_ordered_path() {
-    return base_ant::get_ordered_path();
-}
-
-void ant::init_cost() {
-    base_ant::init_cost();
-}
-
-bool ant::has_reached_destination() {
-    return base_ant::has_reached_destination();
 }
 
 bool ant::void_route() {

@@ -1,13 +1,13 @@
 //
-//  ACO_new.hpp
+//  ACO.hpp
 //  transport_layer
 //
 //  Created by Priya Bibra on 2017-06-08.
 //
 //
 
-#ifndef ACO_new_hpp
-#define ACO_new_hpp
+#ifndef ACO_hpp
+#define ACO_hpp
 
 #include "Randoms.h"
 #include <map>
@@ -28,10 +28,15 @@
 
 using namespace std;
 
-class ACO_new {
+class ACO {
 public:
+<<<<<<< HEAD:transport_layer/src/ACO_new.hpp
     ACO_new (graph *i_g, manifest i_manifest, config i_config, heuristic_selector* i_sel);
     virtual ~ACO_new ();
+=======
+    ACO (graph *i_g, manifest i_manifest, config i_config, long seed);
+    virtual ~ACO ();
+>>>>>>> d5756c8df308278c969f430a3b895cdd7bd49d3a:transport_layer/src/ACO.hpp
     void    init(Dijkstra *dijkstra);
     int     iteration();
     
@@ -59,4 +64,4 @@ private:
     
 };
 
-#endif /* ACO_new_hpp */
+#endif /* ACO_hpp */

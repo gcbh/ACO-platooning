@@ -12,7 +12,7 @@
 #include <fstream>
 #include <sstream>
 #include "Dijkstra.hpp"
-#include "ACO_new.hpp"
+#include "ACO.hpp"
 #include "../../utils/config_factory.hpp"
 #include "../../models/config.hpp"
 #include "../../models/map_data.hpp"
@@ -27,7 +27,7 @@ using namespace std;
 
 map_data get_data(string file_name);
 manifest get_manifest(string file_name);
-void write_dijkstras(Dijkstra* dijkstra, map_data map, string file_path);
+void write_dijkstras(Dijkstra* dijkstra, string file_path, map_data map);
 
 int main(int argc, const char * argv[]) {
 
@@ -51,7 +51,7 @@ int main(int argc, const char * argv[]) {
     
     // check if dijkstra file exists, if not create one
     if (djfile.fail()) {
-        write_dijkstras(dijkstra, map, dijkstra_file_path);
+        write_dijkstras(dijkstra, dijkstra_file_path, map);
     }
     dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map);
     
@@ -59,19 +59,19 @@ int main(int argc, const char * argv[]) {
     g->construct_graph(map);
     
     heuristic_selector* sel = new heuristic_selector(conf.getAlpha(), conf.getBeta(), conf.getPhi(), seed, dijkstra);
-    
-    ACO_new *ACO = new ACO_new(g, manifest_map, conf, sel);
-    ACO->init(dijkstra);
+
+    ACO *aco = new ACO(g, manifest_map, conf, seed);
+    aco->init(dijkstra);
     
     for(int i = 1; i <= conf.ITERS(); i++) {
-        int cost = ACO->iteration();
+        int cost = aco->iteration();
         if (cost < 0) continue;
     }
     
     delete g;
     delete dijkstra;
-    delete ACO;
     delete sel;
+    delete aco;
 
     cout << "Run completed" << endl;
     
@@ -124,7 +124,7 @@ manifest get_manifest(string file_name) {
     return manifest_data;
 }
 
-void write_dijkstras(Dijkstra* dijkstra, map_data map, string file_path) {
+void write_dijkstras(Dijkstra* dijkstra, string file_path, map_data map) {
     // create file to output from dijkstra algorithm
     ofstream dijkstra_file;
     dijkstra_file.open(file_path, ios_base::out);

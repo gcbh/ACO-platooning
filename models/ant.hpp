@@ -28,11 +28,7 @@ public:
     ~ant();
     void            next_node(int time);
     void            roll_back(int time, float magnitude);
-    bool            has_reached_destination();
-    void            init_cost();
     bool            void_route();
-    queue<t_node*>  get_ordered_path();
-    iPair           cost_node(int time);
 
 private:
     heuristic_selector*   selector;
