@@ -8,12 +8,14 @@
 
 /* Begin PBXFileReference section */
 		187D97AF1EE9DF880061B301 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = "<group>"; };
-		187D97B01EE9E0890061B301 /* ACO_new.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ACO_new.cpp; path = src/ACO_new.cpp; sourceTree = "<group>"; };
 		C05DF7AA1EE9F4C90085DE9D /* Dijkstra.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Dijkstra.cpp; path = src/Dijkstra.cpp; sourceTree = "<group>"; };
-		F1053E251F17E50700967DC0 /* ACO_new.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ACO_new.hpp; path = src/ACO_new.hpp; sourceTree = "<group>"; };
 		F1053E261F17E50700967DC0 /* Dijkstra.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Dijkstra.hpp; path = src/Dijkstra.hpp; sourceTree = "<group>"; };
 		F1053E3C1F180CD000967DC0 /* Randoms.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Randoms.cpp; path = src/Randoms.cpp; sourceTree = "<group>"; };
 		F1053E3D1F180CD000967DC0 /* Randoms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Randoms.h; path = src/Randoms.h; sourceTree = "<group>"; };
+		F155DC0C20089D1200E9F9DE /* heuristic_selector.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = heuristic_selector.hpp; path = src/heuristic_selector.hpp; sourceTree = "<group>"; };
+		F155DC0D20089D1200E9F9DE /* heuristic_selector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = heuristic_selector.cpp; path = src/heuristic_selector.cpp; sourceTree = "<group>"; };
+		F155DC0E2009251A00E9F9DE /* ACO.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ACO.hpp; path = src/ACO.hpp; sourceTree = "<group>"; };
+		F155DC0F2009251A00E9F9DE /* ACO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ACO.cpp; path = src/ACO.cpp; sourceTree = "<group>"; };
 		F1E9F7B41EE7A8A6004511FE /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -22,8 +24,9 @@
 			isa = PBXGroup;
 			children = (
 				F1053E3C1F180CD000967DC0 /* Randoms.cpp */,
-				187D97B01EE9E0890061B301 /* ACO_new.cpp */,
+				F155DC0F2009251A00E9F9DE /* ACO.cpp */,
 				C05DF7AA1EE9F4C90085DE9D /* Dijkstra.cpp */,
+				F155DC0D20089D1200E9F9DE /* heuristic_selector.cpp */,
 				187D97AF1EE9DF880061B301 /* main.cpp */,
 			);
 			name = src;
@@ -33,8 +36,9 @@
 			isa = PBXGroup;
 			children = (
 				F1053E3D1F180CD000967DC0 /* Randoms.h */,
-				F1053E251F17E50700967DC0 /* ACO_new.hpp */,
+				F155DC0E2009251A00E9F9DE /* ACO.hpp */,
 				F1053E261F17E50700967DC0 /* Dijkstra.hpp */,
+				F155DC0C20089D1200E9F9DE /* heuristic_selector.hpp */,
 			);
 			name = include;
 			sourceTree = "<group>";
