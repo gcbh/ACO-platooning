@@ -12,6 +12,8 @@
 		F1053E261F17E50700967DC0 /* Dijkstra.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Dijkstra.hpp; path = src/Dijkstra.hpp; sourceTree = "<group>"; };
 		F1053E3C1F180CD000967DC0 /* Randoms.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Randoms.cpp; path = src/Randoms.cpp; sourceTree = "<group>"; };
 		F1053E3D1F180CD000967DC0 /* Randoms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Randoms.h; path = src/Randoms.h; sourceTree = "<group>"; };
+		F1463876200D30E800B47D97 /* cost_function.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = cost_function.hpp; path = src/cost_function.hpp; sourceTree = "<group>"; };
+		F1463877200D30E900B47D97 /* cost_function.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cost_function.cpp; path = src/cost_function.cpp; sourceTree = "<group>"; };
 		F155DC0C20089D1200E9F9DE /* heuristic_selector.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = heuristic_selector.hpp; path = src/heuristic_selector.hpp; sourceTree = "<group>"; };
 		F155DC0D20089D1200E9F9DE /* heuristic_selector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = heuristic_selector.cpp; path = src/heuristic_selector.cpp; sourceTree = "<group>"; };
 		F155DC0E2009251A00E9F9DE /* ACO.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ACO.hpp; path = src/ACO.hpp; sourceTree = "<group>"; };
@@ -27,6 +29,7 @@
 				F155DC0F2009251A00E9F9DE /* ACO.cpp */,
 				C05DF7AA1EE9F4C90085DE9D /* Dijkstra.cpp */,
 				F155DC0D20089D1200E9F9DE /* heuristic_selector.cpp */,
+				F1463877200D30E900B47D97 /* cost_function.cpp */,
 				187D97AF1EE9DF880061B301 /* main.cpp */,
 			);
 			name = src;
@@ -39,6 +42,7 @@
 				F155DC0E2009251A00E9F9DE /* ACO.hpp */,
 				F1053E261F17E50700967DC0 /* Dijkstra.hpp */,
 				F155DC0C20089D1200E9F9DE /* heuristic_selector.hpp */,
+				F1463876200D30E800B47D97 /* cost_function.hpp */,
 			);
 			name = include;
 			sourceTree = "<group>";

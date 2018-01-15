@@ -16,8 +16,21 @@
 #include "Dijkstra.hpp"
 #include "Randoms.h"
 
+/*
+ *  heuristic_selector is designed to implement the logic of the heuristic.
+ *  It is responsible for the selecting of the next edge that an ant will take.
+ */
+
 class heuristic_selector {
 public:
+    /*
+     *  Constructor for the selector function.
+     *  a - Alpha value
+     *  b - Beta value
+     *  p - Phi value
+     *  seed - value used to set up
+     *  map - pointer to Dijkstra data structure
+     */
     heuristic_selector(float a, float b, float p, long seed, Dijkstra* map);
     t_edge* selected_edge(list<t_edge*> edges, int current_id, int dest_id, int time);
 private:

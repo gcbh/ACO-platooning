@@ -11,13 +11,17 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+
 #include "Dijkstra.hpp"
 #include "ACO.hpp"
+#include "cost_function.hpp"
+
 #include "../../utils/config_factory.hpp"
 #include "../../models/config.hpp"
 #include "../../models/map_data.hpp"
 #include "../../models/manifest.hpp"
 #include "../../models/graph.hpp"
+
 
 #define MAPS "../../maps/"
 #define DJ_MAPS "../../maps/d_maps/"
@@ -59,8 +63,10 @@ int main(int argc, const char * argv[]) {
     g->construct_graph(map);
     
     heuristic_selector* sel = new heuristic_selector(conf.getAlpha(), conf.getBeta(), conf.getPhi(), seed, dijkstra);
+    
+    cost_function* cost = new cost_function();
 
-    ACO *aco = new ACO(g, manifest_map, conf, sel);
+    ACO *aco = new ACO(g, manifest_map, conf, sel, cost);
     aco->init(dijkstra);
     
     for(int i = 1; i <= conf.ITERS(); i++) {
@@ -106,6 +112,7 @@ map_data get_data(string file_name) {
 manifest get_manifest(string file_name) {
     ifstream file(MANIFESTS + file_name);
     string line;
+    
     manifest manifest_data;
 
     while(getline(file, line))

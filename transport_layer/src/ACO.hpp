@@ -9,12 +9,17 @@
 #ifndef ACO_hpp
 #define ACO_hpp
 
-#include "Randoms.h"
 #include <map>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+
+#include "Randoms.h"
+#include "Dijkstra.hpp"
+#include "heuristic_selector.hpp"
+#include "cost_function.hpp"
+
 #include "../../utils/StringUtils.hpp"
 #include "../../models/config.hpp"
 #include "../../models/t_node.hpp"
@@ -23,14 +28,12 @@
 #include "../../models/t_edge.hpp"
 #include "../../models/primer_ant.hpp"
 #include "../../models/ant.hpp"
-#include "Dijkstra.hpp"
-#include "heuristic_selector.hpp"
 
 using namespace std;
 
 class ACO {
 public:
-    ACO (graph *i_g, manifest i_manifest, config i_config, heuristic_selector* i_sel);
+    ACO (graph *i_g, manifest i_manifest, config i_config, heuristic_selector* i_sel, cost_function* i_j);
     virtual ~ACO ();
     void    init(Dijkstra *dijkstra);
     int     iteration();
@@ -40,6 +43,7 @@ private:
     Dijkstra*                           d_map;
     config                              conf;
     heuristic_selector*                 sel;
+    cost_function*                      j;
     string                              RESULT_LOG_PATH;
     ofstream                            result_log;
     manifest                            manifest_data;

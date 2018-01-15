@@ -13,10 +13,11 @@ typedef pair<int, int> iPair;
 const float avg_prcnt_fuel_saving_by_middle = 4.1;
 const float avg_prcnt_fuel_saving_by_last = 6.1;
 
-ACO::ACO(graph *i_g, manifest i_manifest, config i_conf, heuristic_selector* i_sel) {
+ACO::ACO(graph *i_g, manifest i_manifest, config i_conf, heuristic_selector* i_sel, cost_function* i_j) {
     g = i_g;
     conf = i_conf;
     sel = i_sel;
+    j = i_j;
     manifest_data = i_manifest;
     num_iters = 0;
     RESULT_LOG_PATH = "../results.log";
@@ -112,7 +113,10 @@ int ACO::iteration() {
             }
             
             if (dynamic_cast<ant*>(*it)->void_route()) {
-                if (conf.DEBUG()) log_rollback((*it)->get_ordered_path().back()->get_id());
+                if (conf.DEBUG()) {
+                    log_rollback((*it)->get_ordered_path().back()->get_id());
+//                    cost_evaluation(tick, ants);
+                }
                 rollback_evaporation(tick, conf.getDelta());
                 reset_ants();
                 return -1;
@@ -124,12 +128,13 @@ int ACO::iteration() {
     for (list<base_ant*>::iterator itr = ants.begin(); itr != ants.end(); ++itr) {
         (*itr)->init_cost();
     }
-    
+
     cost = cost_evaluation(tick, ants);
     
     if (prev_cost == INF) {
         prev_cost = cost;
     }
+    
     if (cost < prev_cost) {
         rollback_evaporation(tick, -1.0f * conf.getLambda() * prev_cost / cost);
         prev_cost = cost;
@@ -253,7 +258,7 @@ void ACO::log_results(int tick, int cost, string** print_route) {
 
 void ACO::log_rollback(int node_id) {
 
-    cout << "ITERATION NUMBER " << num_iters << "\n";
+//    cout << "ITERATION NUMBER " << num_iters << "\n";
     cout << "ROLLBACK at: " << node_id << endl;
 
 }
