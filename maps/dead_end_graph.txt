@@ -1,0 +1,14 @@
+0 San_Diego 1 Los_Angeles 200
+1 Los_Angeles 3 Sacramento 300
+1 San_Francisco 2 Sacramento 200
+2 Sacramento 4 Portland 300
+2 Portland 13 Seattle 100
+3 San_Diego 5 Ontario 400
+5 Ontario 6 Barstow 300
+13 Barstow 14 Cove_Fort 300
+4 Cove_Fort 7 Salt_Lake_City 100
+4 Salt_Lake_City 11 Tremonton 200
+11 Tremonton 10 Butte 100
+11 Las_Cruces 12 Albuquerque 300
+7 Albuquerque 8 Denver 100
+7 Denver 9 Cheyenne 200

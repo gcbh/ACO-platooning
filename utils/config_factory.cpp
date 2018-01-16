@@ -14,23 +14,25 @@ config_factory::config_factory() {  }
 
 config config_factory::build() {
     config_data d;
-    std::ifstream file(CONFIG_FILE);
-    std::string   line;
+    ifstream file(CONFIG_FILE);
+    string   line;
     
     while (getline(file, line)) {
-        std::stringstream linestream(line);
-        std::string key;
-        std::string value;
+        stringstream linestream(line);
+        string key;
+        string value;
         
         linestream >> key >> value;
         convert(&d, key, value);
     }
     
+    // Instantiation of immutable config data structure
     config c(d.map_name, d.manifest_name, d.alpha, d.beta, d.delta, d.lambda, d.phi, d.rho, d.debug, d.iters);
     return c;
 }
 
-void config_factory::convert(config_data* d, std::string key, std::string value) {
+// Mapping of key to data structure location
+void config_factory::convert(config_data* d, string key, string value) {
     if (key == "map") {
         d->map_name = value;
     } else if (key == "manifest") {

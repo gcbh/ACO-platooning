@@ -18,7 +18,7 @@ primer_ant:: primer_ant(t_node *first, vector<string> route_path) {
     dest = stoi(route.back());
 }
 
-void primer_ant::next_node(int time) {
+path primer_ant::next_node(int time) {
     if (counter <= 0) {
         
         // Remove the first element from the vector
@@ -40,7 +40,7 @@ void primer_ant::next_node(int time) {
             ordered_path.push(current);
         }
 
-        return;
+        return make_pair(nullptr, nullptr);
 
     }
         
@@ -49,6 +49,7 @@ void primer_ant::next_node(int time) {
     if (has_reached_destination()) {
         ordered_path.push(current);
     }
+    return make_pair(nullptr, nullptr);
 }
 
 bool primer_ant::has_reached_destination() {
@@ -57,8 +58,4 @@ bool primer_ant::has_reached_destination() {
 
 queue<t_node*> primer_ant::get_ordered_path() {
     return base_ant::get_ordered_path();
-}
-
-void primer_ant::init_cost() {
-    base_ant::init_cost();
 }

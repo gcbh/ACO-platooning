@@ -17,48 +17,37 @@ base_ant::base_ant() { }
 
 base_ant::~base_ant() { }
 
-void base_ant::next_node(int time) { }
+path base_ant::next_node(int time) {
+    return make_pair(nullptr, nullptr);
+}
 
-iPair base_ant::cost_node(int time) {
-    if (counter <= 0) {
+path base_ant::replay_route() {
+    if (ordered_path.size() > 0) {
         current = ordered_path.front();
-        ordered_path.pop();
-        
-        if (ordered_path.front()->get_id() == dest) {
-            t_node* prev = current;
-            current = ordered_path.front();
+        if (counter <= 0) {
             ordered_path.pop();
-            counter = 0;
-            return make_pair(prev->get_id(), current->get_id());
-        }
-        
-        if (current != ordered_path.front()) {
-            int n_nodeid = ordered_path.front()->get_id();
+            t_node* next = ordered_path.front();
             for (int i = 0; i < current->edge_number(); i++) {
                 t_edge* e = (*current)[i];
-                if (n_nodeid == e->get_dest()->get_id()) {
-                    counter = e->get_time_to_cross() - 1;
+                if (e->get_dest() == next) {
+                    counter = (*current)[i]->get_time_to_cross() - 1;
+                    return make_pair(current, e);
                 }
             }
         }
-        
-        return make_pair(current->get_id(), ordered_path.front()->get_id());
     }
-    counter--;
-    return make_pair(INF, INF);
+    --counter;
+    return make_pair(nullptr, nullptr);
 }
 
 bool base_ant::has_reached_destination() {
-    if (counter > 0) {
-        return false;
-    }
-    return current->get_id() == dest;
+    return (current->get_id() == dest && counter <= 0);
+}
+
+bool base_ant::has_concluded() {
+    return has_reached_destination();
 }
 
 queue<t_node*> base_ant::get_ordered_path() {
     return ordered_path;
-}
-
-void base_ant::init_cost() {
-    current = ordered_path.front();
 }

@@ -53,14 +53,12 @@ private:
     
     void    set_prime_ant(list<string> manifest_route);
     void    evaporate_update_future_pheromones(int ticks);
-    void    rollback_evaporation(int tick, float value);
-    double  cost_evaluation(int max_duration, list<base_ant*> base_ants);
-    double  cost_based_num_ants(int num_of_ants);
-    double  cost_per_tick(map< iPair, int > map_ant_count);
+    void evaporation(unordered_set<int> traversed, double mag, int ticks);
+    double  evaluation(int max_duration);
     void    reset_ants();
-    void    log_results(int tick, int cost, string** print_route);
-    void    log_rollback(int node_id);
-    
+    void    init_log();
+    void    log_tick(int tick, list<string> segments);
+    void    log_cost(double cost);
 };
 
 #endif /* ACO_hpp */

@@ -20,15 +20,14 @@
 #include "../transport_layer/src/heuristic_selector.hpp"
 
 using namespace std;
-typedef pair<int, int> iPair;
 
 class ant: public base_ant {
 public:
     ant(t_node* first, int i_dest, float d, heuristic_selector* sel);
     ~ant();
-    void            next_node(int time);
-    void            roll_back(int time, float magnitude);
+    path            next_node(int time);
     bool            void_route();
+    bool            has_concluded();
 
 private:
     heuristic_selector*   selector;

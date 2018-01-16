@@ -17,59 +17,42 @@ ant::ant(t_node* first, int i_dest, float d, heuristic_selector* sel) {
     current = first;
     v_route = false;
     selector = sel;
+    ordered_path.push(current);
 }
 
 ant::~ant() {   }
 
-void ant::next_node(int time) {
-    if (counter <= 0) {
+path ant::next_node(int time) {
+    if (counter <= 0 && current->get_id() != dest) {
         
         int past_travelled = 0;
         list<t_edge*> es = avail_edges();
         if (es.size() == 0) {
             v_route = true;
-            return;
+            return make_pair(nullptr, nullptr);
         }
         t_edge* e = selector->selected_edge(es, current->get_id(), dest, time);
         
-        // current node included in up-to-date path
-        ordered_path.push(current);
+        if (!e) return make_pair(nullptr, nullptr);
         
-        if (!e) return;
+        t_node* next = e->get_dest();
+        
+        // current node included in up-to-date path
+        ordered_path.push(next);
         
         e->update_pheromone(time, 1.0f);
         // ensure node travelling from cannot be reached again
-        past_nodes.insert(current->get_id());
+        past_nodes.insert(next->get_id());
+        path p = make_pair(current, e);
         // update 'current'
-        current = e->get_dest();
+        current = next;
         // update 'counter' for timing
         counter = e->get_time_to_cross() - 1;
         
-        if (has_reached_destination()) {
-            ordered_path.push(current);
-        }
-        
-        return;
+        return p;
     }
     counter--;
-    
-    if (has_reached_destination()) {
-        ordered_path.push(current);
-    }
-}
-
-void ant::roll_back(int time, float magnitude) {
-    if (counter <= 0 && ordered_path.size() > 1) {
-        current = ordered_path.front();
-        ordered_path.pop();
-        for (int i = 0; i < current->edge_number(); i++) {
-            if ((*current)[i]->get_dest()->get_id() == ordered_path.front()->get_id()) {
-                counter = (*current)[i]->get_time_to_cross() - 1;
-                (*current)[i]->update_pheromone(time, -1.0f * magnitude);
-            }
-        }
-    }
-    counter--;
+    return make_pair(nullptr, nullptr);
 }
 
 list<t_edge*> ant::avail_edges() {
@@ -81,6 +64,10 @@ list<t_edge*> ant::avail_edges() {
         }
     }
     return edges;
+}
+
+bool ant::has_concluded() {
+    return (v_route || has_reached_destination());
 }
 
 bool ant::void_route() {

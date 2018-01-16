@@ -12,9 +12,12 @@
 #include <stdio.h>
 #include "../models/config.hpp"
 
+using namespace std;
+
+// Intermediate data structure to allow for conversion into immutable version
 struct config_data {
-    std::string map_name;
-    std::string manifest_name;
+    string map_name;
+    string manifest_name;
     float alpha;
     float beta;
     float delta;
@@ -30,6 +33,7 @@ public:
     config_factory();
     config build();
 private:
-    void convert(config_data* d, std::string key, std::string value);
+    void convert(config_data* d, string key, string value);
 };
+
 #endif /* config_factory_hpp */

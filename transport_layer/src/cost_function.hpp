@@ -20,7 +20,7 @@ typedef pair<int, int> iPair;
 class cost_function {
 public:
     cost_function();
-    double evaluate(graph g, list<base_ant*> base_ants, int max_duration);
+    double evaluate(map<path, int> segments);
 private:
     double cost_per_tick(graph g, map< iPair, int > map_ant_count);
     double cost_based_num_ants(int num_of_ants);

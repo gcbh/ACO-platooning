@@ -23,8 +23,7 @@ public:
     primer_ant(t_node *first, vector<string> route_path);
     bool            has_reached_destination();
     queue<t_node*>  get_ordered_path();
-    void            init_cost();
-    void            next_node(int time);
+    path            next_node(int time);
 
 private:
     vector<string>  route;
