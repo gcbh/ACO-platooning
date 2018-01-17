@@ -15,6 +15,7 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+#include <vector>
 #include "../../utils/StringUtils.hpp"
 #include "../../models/config.hpp"
 #include "../../models/t_node.hpp"
@@ -40,6 +41,7 @@ private:
     Dijkstra*                           d_map;
     config                              conf;
     heuristic_selector*                 sel;
+    vector<string>**                    output;
     string                              RESULT_LOG_PATH;
     ofstream                            result_log;
     manifest                            manifest_data;

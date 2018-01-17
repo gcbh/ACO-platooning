@@ -19,6 +19,10 @@ int manifest::count(int src, int dest) {
     return m.count(make_pair(src, dest));
 }
 
+int manifest::size() {
+    return m.size();
+}
+
 multimap< pair<int, int> , int>::iterator manifest::begin() {
     return m.begin();
 }
