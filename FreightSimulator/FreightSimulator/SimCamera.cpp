@@ -7,10 +7,14 @@
 //
 
 #include "SimCamera.hpp"
+#include "imgui.h"
+#include "imgui_impl_glfw_gl3.h"
 
 #define CAMERA_SPEED_X 200.0
 #define CAMERA_SPEED_Y 200.0
 #define CAMERA_SPEED_Z 20.0
+
+ImVec2 prevMouseDrag = ImVec2();
 
 void SimCamera::setup() {
     m_position = glm::vec3(0.0f,0.0f,75.0f);
@@ -19,29 +23,20 @@ void SimCamera::setup() {
 }
 
 void SimCamera::input(InputState is) {
-    if (glfwGetKey(is.window, GLFW_KEY_UP ) == GLFW_PRESS){
-        m_position.y += is.deltaTime * CAMERA_SPEED_Y / m_zoom;
+
+    ImGuiIO& io = ImGui::GetIO();
+    float mouseWheel = io.MouseWheel;
+    m_zoom -= mouseWheel;
+
+    ImVec2 mouseDrag = ImGui::GetMouseDragDelta(0, 0.0f);
+    ImVec2 mouseDragDelta = ImVec2(mouseDrag.x - prevMouseDrag.x, mouseDrag.y - prevMouseDrag.y);
+
+    if (!ImGui::IsMouseReleased(0)) {
+        m_position.x -= mouseDragDelta.x/m_zoom;
+        m_position.y += mouseDragDelta.y/m_zoom;
     }
-    // Move backward
-    if (glfwGetKey(is.window, GLFW_KEY_DOWN ) == GLFW_PRESS){
-        m_position.y -= is.deltaTime * CAMERA_SPEED_Y / m_zoom;
-    }
-    // Strafe right
-    if (glfwGetKey(is.window, GLFW_KEY_RIGHT ) == GLFW_PRESS){
-        m_position.x += is.deltaTime * CAMERA_SPEED_X / m_zoom;
-    }
-    // Strafe left
-    if (glfwGetKey(is.window, GLFW_KEY_LEFT ) == GLFW_PRESS){
-        m_position.x -= is.deltaTime * CAMERA_SPEED_X / m_zoom;
-    }
-    // Zoom In
-    if (glfwGetKey(is.window, GLFW_KEY_EQUAL ) == GLFW_PRESS){
-        m_zoom += is.deltaTime * CAMERA_SPEED_Z;
-    }
-    // Zoom Out
-    if (glfwGetKey(is.window, GLFW_KEY_MINUS ) == GLFW_PRESS){
-        m_zoom -= is.deltaTime * CAMERA_SPEED_Z;
-    }
+
+    prevMouseDrag = mouseDrag;
 }
 
 void SimCamera::update(UpdateState us) {

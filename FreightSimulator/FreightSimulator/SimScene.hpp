@@ -24,8 +24,12 @@ public:
 
     void postsetup();
     void preinput(InputState is);
-    void preupdate(UpdateState is);
+    void preupdate(UpdateState us);
+    void postupdate(UpdateState us);
     void prerender(RenderState rs);
+
+    void loadGraph();
+    void loadManifest();
 
     static GLuint city_program, edge_program,
                   city_mvp_id, edge_mvp_id,

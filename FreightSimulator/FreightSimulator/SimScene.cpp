@@ -6,6 +6,8 @@
 //  Copyright © 2017 FYDP. All rights reserved.
 //
 
+#include "imgui.h"
+#include "imgui_impl_glfw_gl3.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -65,7 +67,48 @@ void SimScene::postsetup() {
     //Get MVP IDs
     SimScene::city_mvp_id = glGetUniformLocation(SimScene::city_program, "MVP");
     SimScene::edge_mvp_id = glGetUniformLocation(SimScene::edge_program, "MVP");
+}
 
+void SimScene::preinput(InputState is) {
+    if (glfwGetKey(is.window, GLFW_KEY_SPACE ) == GLFW_PRESS) {
+        std::string closestCity = "";
+        float closestDistance = 200.0;
+        std::map<int, CityNode*>::iterator it;
+        for (it = city_map.begin(); it != city_map.end(); it++) {
+            float deltaX = it->second->m_position.x - m_scene_camera->m_position.x;
+            float deltaY = it->second->m_position.y - m_scene_camera->m_position.y;
+            float distance = sqrt(pow(deltaX, 2) + pow(deltaY, 2));
+
+            if (distance < closestDistance) {
+                closestCity = it->second->m_name;
+                closestDistance = distance;
+            }
+        }
+        std::cout << "City: " << closestCity << std::endl;
+    }
+}
+
+void SimScene::preupdate(UpdateState us) {
+    ImGui::Begin("Freight Simulator");
+    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+    if (ImGui::Button("Load Graph")) {
+        loadGraph();
+    }
+
+    if (ImGui::Button("Load Manifest")) {
+        loadManifest();
+    }
+}
+
+void SimScene::postupdate(UpdateState us) {
+    ImGui::End();
+}
+
+void SimScene::prerender(RenderState rs) {
+}
+
+void SimScene::loadGraph() {
     //Load cities, also get a middle point to put the camera at to start
     std::ifstream cities_file("cities_ids_coords.txt");
     std::string   line;
@@ -97,10 +140,10 @@ void SimScene::postsetup() {
 
     avgX /= city_map.size();
     avgY /= city_map.size();
-    camera->m_position.x = avgX;
-    camera->m_position.y = avgY;
-    camera->m_focal_point.x = avgX;
-    camera->m_focal_point.y = avgY;
+    m_scene_camera->m_position.x = avgX;
+    m_scene_camera->m_position.y = avgY;
+    m_scene_camera->m_focal_point.x = avgX;
+    m_scene_camera->m_focal_point.y = avgY;
 
     //Load edges
     std::ifstream edges_file("cities_p.txt");
@@ -159,36 +202,8 @@ void SimScene::postsetup() {
             id++;
         }
     }
-
-    camera_city = new CityNode();
-    m_root_node->addChildNode(camera_city);
-    camera_city->m_position.z = -2.0;
 }
 
-void SimScene::preinput(InputState is) {
-    if (glfwGetKey(is.window, GLFW_KEY_SPACE ) == GLFW_PRESS) {
-        std::string closestCity = "";
-        float closestDistance = 200.0;
-        std::map<int, CityNode*>::iterator it;
-        for (it = city_map.begin(); it != city_map.end(); it++) {
-            float deltaX = it->second->m_position.x - m_scene_camera->m_position.x;
-            float deltaY = it->second->m_position.y - m_scene_camera->m_position.y;
-            float distance = sqrt(pow(deltaX, 2) + pow(deltaY, 2));
-
-            if (distance < closestDistance) {
-                closestCity = it->second->m_name;
-                closestDistance = distance;
-            }
-        }
-        std::cout << "City: " << closestCity << std::endl;
-    }
-}
-
-void SimScene::preupdate(UpdateState us) {
-
-}
-
-void SimScene::prerender(RenderState rs) {
-    camera_city->m_position.x = m_scene_camera->m_position.x;
-    camera_city->m_position.y = m_scene_camera->m_position.y;
+void SimScene::loadManifest() {
+    //TODO: Load and parse a manifest file
 }

@@ -8,6 +8,8 @@
 //  Copyright © 2017 FYDP. All rights reserved.
 //
 
+#include "imgui.h"
+#include "imgui_impl_glfw_gl3.h"
 #include "GLFWEngine.hpp"
 #include "glm.hpp"
 #include <stdlib.h>
@@ -58,6 +60,14 @@ void GLFWEngine::setup(bool fullScreenEnable)
 
     fprintf(stdout, "Engine Setup Complete.\n");
 
+    // Setup ImGui binding
+    ImGui_ImplGlfwGL3_Init(m_window, true);
+
+    // Setup style
+    ImGui::StyleColorsClassic();
+
+    fprintf(stdout, "UI Setup Complete.\n");
+
     // Setup our attached demo if it exists
     if(m_appInstance != NULL) {
         m_appInstance->setup();
@@ -69,12 +79,16 @@ void GLFWEngine::run() {
     fprintf(stdout, "Engine Starting.\n");
     while (!glfwWindowShouldClose(m_window))
     {
+        glfwPollEvents();
+        ImGui_ImplGlfwGL3_NewFrame();
+
         input();
         update();
         render();
 
+        ImGui::Render();
         glfwSwapBuffers(m_window);
-        glfwPollEvents();
+
     }
     cleanup();
 }
