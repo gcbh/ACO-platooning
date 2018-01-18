@@ -21,8 +21,6 @@ using namespace std;
 class primer_ant: public base_ant {
 public:
     primer_ant(t_node *first, vector<string> route_path);
-    bool            has_reached_destination();
-    queue<t_node*>  get_ordered_path();
     path            next_node(int time);
 
 private:

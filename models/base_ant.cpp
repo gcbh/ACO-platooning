@@ -22,21 +22,21 @@ path base_ant::next_node(int time) {
 }
 
 path base_ant::replay_route() {
-    if (ordered_path.size() > 0) {
-        current = ordered_path.front();
-        if (counter <= 0) {
-            ordered_path.pop();
-            t_node* next = ordered_path.front();
-            for (int i = 0; i < current->edge_number(); i++) {
-                t_edge* e = (*current)[i];
-                if (e->get_dest() == next) {
-                    counter = (*current)[i]->get_time_to_cross() - 1;
-                    return make_pair(current, e);
-                }
-            }
-        }
-    }
     --counter;
+    if ((ordered_path.size() > 1 && !in_transit())) {
+        current = ordered_path.front();
+        
+        ordered_path.pop();
+        
+        t_node* next = ordered_path.front();
+        t_edge* e = current->get_edge(next->get_id());
+        
+        if (!e) return make_pair(current, nullptr);
+        
+        counter = e->get_time_to_cross();
+        
+        return make_pair(current, e);
+    }
     return make_pair(nullptr, nullptr);
 }
 
@@ -46,6 +46,10 @@ bool base_ant::has_reached_destination() {
 
 bool base_ant::has_concluded() {
     return has_reached_destination();
+}
+
+bool base_ant::in_transit() {
+    return counter > 0;
 }
 
 queue<t_node*> base_ant::get_ordered_path() {

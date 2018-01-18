@@ -112,6 +112,9 @@ int ACO::iteration() {
                 path p = (*it)->next_node(tick);
                 if (p.second) traversed.insert(p.second->get_id());
                 endIteration = false;   
+            } else {
+                base_ant* a = (*it);
+                cout << "";
             }
         }
     } while(!endIteration);
@@ -145,16 +148,23 @@ double ACO::evaluation(int max_duration) {
             path p = (*it)->replay_route();
             
             if (p.first) {
-                if (segments.find(p) == segments.end()) {
-                    segments.insert(make_pair(p, 1));
-                } else {
-                    segments[p] = segments[p] + 1;
-                }
                 string start = to_string(p.first->get_id());
-                string dest = to_string(p.second->get_dest()->get_id());
+                string dest;
+                
+                if (p.second) {
+                    dest = to_string(p.second->get_dest()->get_id());
+                    if (segments.find(p) == segments.end()) {
+                        segments.insert(make_pair(p, 1));
+                    } else {
+                        segments[p] = segments[p] + 1;
+                    }
+                } else {
+                    dest = start;
+                }
+                
                 actions.push_back(start + "->" + dest);
             } else {
-                if (!(*it)->has_concluded()) {
+                if ((*it)->in_transit()) {
                     actions.push_back("Transit");
                 }
             }

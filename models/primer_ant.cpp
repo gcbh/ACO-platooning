@@ -51,11 +51,3 @@ path primer_ant::next_node(int time) {
     }
     return make_pair(nullptr, nullptr);
 }
-
-bool primer_ant::has_reached_destination() {
-    return base_ant::has_reached_destination();
-}
-
-queue<t_node*> primer_ant::get_ordered_path() {
-    return base_ant::get_ordered_path();
-}

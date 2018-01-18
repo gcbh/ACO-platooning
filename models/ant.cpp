@@ -18,22 +18,24 @@ ant::ant(t_node* first, int i_dest, float d, heuristic_selector* sel) {
     v_route = false;
     selector = sel;
     ordered_path.push(current);
+    past_nodes.insert(current->get_id());
 }
 
 ant::~ant() {   }
 
 path ant::next_node(int time) {
-    if (counter <= 0 && current->get_id() != dest) {
+    if (counter <= 0 && !has_concluded()) {
         
-        int past_travelled = 0;
         list<t_edge*> es = avail_edges();
+        
         if (es.size() == 0) {
             v_route = true;
             return make_pair(nullptr, nullptr);
         }
+        
         t_edge* e = selector->selected_edge(es, current->get_id(), dest, time);
         
-        if (!e) return make_pair(nullptr, nullptr);
+        if (!e) return make_pair(current, nullptr);
         
         t_node* next = e->get_dest();
         
@@ -44,6 +46,7 @@ path ant::next_node(int time) {
         // ensure node travelling from cannot be reached again
         past_nodes.insert(next->get_id());
         path p = make_pair(current, e);
+        
         // update 'current'
         current = next;
         // update 'counter' for timing
@@ -67,7 +70,7 @@ list<t_edge*> ant::avail_edges() {
 }
 
 bool ant::has_concluded() {
-    return (v_route || has_reached_destination());
+    return v_route ^ has_reached_destination();
 }
 
 bool ant::void_route() {

@@ -25,7 +25,8 @@ public:
     virtual         ~base_ant();
     virtual path    next_node(int time);
     bool            has_reached_destination();
-    bool            has_concluded();
+    bool            in_transit();
+    virtual bool    has_concluded();
     path            replay_route();
     queue<t_node*>  get_ordered_path();
 protected:
