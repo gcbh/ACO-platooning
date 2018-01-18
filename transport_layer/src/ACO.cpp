@@ -162,6 +162,10 @@ double ACO::evaluation(int max_duration) {
                     string result = "Transit";
                     actions.push_back(result);
                     output[ant_num]->push_back(result);
+                } else {
+                    string result = "";
+                    actions.push_back(result);
+                    output[ant_num]->push_back(result);
                 }
             }
             
