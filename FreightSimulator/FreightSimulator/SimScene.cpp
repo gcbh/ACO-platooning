@@ -136,7 +136,7 @@ void SimScene::postsetup() {
             edge->m_weight = weight;
             edge->m_position.x = (city_map[city_id1]->m_position.x + city_map[city_id2]->m_position.x)/2;
             edge->m_position.y = (city_map[city_id1]->m_position.y + city_map[city_id2]->m_position.y)/2;
-            edge->m_position.z = 0.1;
+            edge->m_position.z = -0.1;
 
 
             float deltaX = city_map[city_id1]->m_position.x - city_map[city_id2]->m_position.x;
