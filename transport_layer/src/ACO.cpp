@@ -112,9 +112,6 @@ int ACO::iteration() {
                 path p = (*it)->next_node(tick);
                 if (p.second) traversed.insert(p.second->get_id());
                 endIteration = false;   
-            } else {
-                base_ant* a = (*it);
-                cout << "";
             }
         }
     } while(!endIteration);
