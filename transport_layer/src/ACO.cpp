@@ -30,6 +30,10 @@ ACO::ACO(graph *i_g, manifest i_manifest, config i_conf, heuristic_selector* i_s
 ACO::~ACO() {
     fclose(stdout);
     result_log.close();
+    for (int i = 0; i < ants.size(); ++i) {
+        delete output[i];
+    }
+    delete output;
 }
 
 void ACO:: init(Dijkstra *dijkstra) {
@@ -93,9 +97,14 @@ void ACO::reset_ants() {
 
 int ACO::iteration() {
     double  cost = 0;
-    int     tick = 0;
+    int     tick = -1;
     bool    endIteration;
     unordered_set<int> traversed;
+    for (int i = 0; i < ants.size(); ++i) {
+        delete output[i];
+        output[i] = new vector<string>();
+    }
+    
     num_iters++;
     
     do {
@@ -115,7 +124,7 @@ int ACO::iteration() {
     
     double evap_mag = conf.getDelta();
     
-    if (cost > prev_cost) {
+    if (cost < prev_cost) {
         prev_cost = cost;
         evap_mag *= -1.0;
     }
