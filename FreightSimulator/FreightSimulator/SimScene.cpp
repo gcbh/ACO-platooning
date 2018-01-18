@@ -99,13 +99,56 @@ void SimScene::preupdate(UpdateState us) {
     if (ImGui::Button("Load Manifest")) {
         loadManifest();
     }
-}
-
-void SimScene::postupdate(UpdateState us) {
     ImGui::End();
 }
 
+void SimScene::postupdate(UpdateState us) {
+    closestCity();
+}
+
 void SimScene::prerender(RenderState rs) {
+}
+
+void SimScene::closestCity() {
+
+    if (city_map.size() <= 0) {
+        return;
+    }
+    // Find closest city
+    CityNode* closestCity = 0;
+    float closestDistance = 1000.0;
+    std::map<int, CityNode*>::iterator it;
+    for (it = city_map.begin(); it != city_map.end(); it++) {
+        float deltaX = it->second->m_position.x - m_scene_camera->m_position.x;
+        float deltaY = it->second->m_position.y - m_scene_camera->m_position.y;
+        float distance = sqrt(pow(deltaX, 2) + pow(deltaY, 2));
+
+        if (distance < closestDistance) {
+            closestCity = it->second;
+            closestDistance = distance;
+        }
+    }
+
+    bool show = false;
+    if (closestCity) {
+        show = true;
+    }
+
+    // Render UI for closest city
+    const float DISTANCE = 10.0f;
+    static int corner = 3;
+    ImVec2 window_pos = ImVec2((corner & 1) ? ImGui::GetIO().DisplaySize.x - DISTANCE : DISTANCE, (corner & 2) ? ImGui::GetIO().DisplaySize.y - DISTANCE : DISTANCE);
+    ImVec2 window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
+    ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.3f)); // Transparent background
+    if (ImGui::Begin("Example: Fixed Overlay", &show, ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_AlwaysAutoResize|ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoSavedSettings))
+    {
+        ImGui::Text("%d: %s", closestCity->m_id, closestCity->m_name.c_str());
+        ImGui::Separator();
+        ImGui::Text("Lat/Long: (%.1f,%.1f)", closestCity->m_position.x, closestCity->m_position.y);
+        ImGui::End();
+    }
+    ImGui::PopStyleColor();
 }
 
 void SimScene::loadGraph() {

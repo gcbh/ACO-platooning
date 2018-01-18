@@ -30,6 +30,7 @@ public:
 
     void loadGraph();
     void loadManifest();
+    void closestCity();
 
     static GLuint city_program, edge_program,
                   city_mvp_id, edge_mvp_id,
@@ -37,7 +38,6 @@ public:
 
 private:
     glm::vec3 camera_position;
-    CityNode* camera_city;
     std::map<int, CityNode*> city_map;
     std::map<std::pair<int,int>, EdgeNode*> edge_map;
 };
