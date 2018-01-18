@@ -217,7 +217,7 @@ void ACO::init_log() {
     for (list<string>::iterator it = r.begin(); it != r.end(); ++it) {
         vector<string> path = split((*it), ' ');
         cout << "Ant" << ant_num <<
-        " "<< path.front() << "->" << path.back() << setw(5);
+        " "<< path.front() << "->" << path.back() << setw(16);
     }
     cout << endl;
 }
