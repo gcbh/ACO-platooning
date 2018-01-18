@@ -57,7 +57,7 @@ double heuristic_selector::calculate_heuristic(int node_id, int dest_id, int e_d
     
     int distance = d_map->get_edge_weight(node_id, dest_id);
     
-    d = 1.0f / (e_dist + distance);
+    d = 1.0f / (e_dist + distance) + 1.0f;
     
     if (!ph || floor(ph) == 0.0f) {
         return PHI*d;

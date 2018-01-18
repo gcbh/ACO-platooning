@@ -31,12 +31,16 @@ path base_ant::replay_route() {
         t_node* next = ordered_path.front();
         t_edge* e = current->get_edge(next->get_id());
         
+        // If the ant is not moving from current node
         if (!e) return make_pair(current, nullptr);
         
+        // Set counter to determine later if ant is still on edge
         counter = e->get_time_to_cross();
         
+        // If the ant is taking off from current node, onto given edge
         return make_pair(current, e);
     }
+    // Either the ant is on an edge or has completed its journey
     return make_pair(nullptr, nullptr);
 }
 

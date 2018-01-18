@@ -38,6 +38,7 @@ public:
     virtual ~ACO ();
     void    init(Dijkstra *dijkstra);
     int     iteration();
+    vector<string>** result();
     
 private:
     graph*                              g;
@@ -50,7 +51,7 @@ private:
     ofstream                            result_log;
     manifest                            manifest_data;
     list<base_ant*>                     ants;
-    int                                 num_ants, num_iters;
+    int                                 num_iters;
     double                              prev_cost;
     
     void    set_prime_ant(list<string> manifest_route);

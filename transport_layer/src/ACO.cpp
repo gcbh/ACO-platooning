@@ -9,9 +9,6 @@
 #include "ACO.hpp"
 
 # define INF 0x3f3f3f3f
-typedef pair<int, int> iPair;
-const float avg_prcnt_fuel_saving_by_middle = 4.1;
-const float avg_prcnt_fuel_saving_by_last = 6.1;
 
 ACO::ACO(graph *i_g, manifest i_manifest, config i_conf, heuristic_selector* i_sel, cost_function* i_j) {
     g = i_g;
@@ -23,8 +20,8 @@ ACO::ACO(graph *i_g, manifest i_manifest, config i_conf, heuristic_selector* i_s
     for (int i = 0; i < i_manifest.size(); ++i) {
         output[i] = new vector<string>();
     }
-    num_iters = 0;
     RESULT_LOG_PATH = "../results.log";
+    num_iters = 0;
     result_log.open(RESULT_LOG_PATH);
     prev_cost = INF;
     freopen(RESULT_LOG_PATH.c_str(), "w", stdout);
@@ -66,7 +63,7 @@ void ACO:: set_prime_ant(list<string> manifest_route) {
         tick++;
         for (list<base_ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
             //if ant has not reached destination call nextnode
-            if (!(*it)->has_reached_destination()) {
+            if (!(*it)->has_concluded()) {
                 (*it)->next_node(tick);   
                 endIteration = false;   
             }
@@ -76,8 +73,7 @@ void ACO:: set_prime_ant(list<string> manifest_route) {
     cout << setw(50) << "*** DIJKSTRA COST ***\n\n";
     cout << setw(50) << "------------------------------------------------------------\n\n";
     
-//    cost = evaluation(tick);
-    
+    cost = evaluation(tick);
 }
 
 void ACO::reset_ants() {
@@ -97,8 +93,7 @@ void ACO::reset_ants() {
 
 int ACO::iteration() {
     double  cost = 0;
-    int     tick = -1;
-    bool    ant_void = false;
+    int     tick = 0;
     bool    endIteration;
     unordered_set<int> traversed;
     num_iters++;
@@ -116,7 +111,7 @@ int ACO::iteration() {
         }
     } while(!endIteration);
 
-    cost += evaluation(tick);
+    cost += evaluation(tick-1);
     
     double evap_mag = conf.getDelta();
     
@@ -125,7 +120,7 @@ int ACO::iteration() {
         evap_mag *= -1.0;
     }
     
-    evaporation(traversed, evap_mag, tick);
+    evaporation(traversed, evap_mag, tick-1);
     
     reset_ants();
     
@@ -137,9 +132,10 @@ double ACO::evaluation(int max_duration) {
     
     if (conf.DEBUG()) init_log();
     
-    for (int tick = 0; tick <= max_duration; tick++) {
+    for (int tick = 0; tick < max_duration; tick++) {
         map<path, int> segments;
         list<string> actions;
+        int ant_num = 0;
         
         for (list<base_ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
             path p = (*it)->replay_route();
@@ -158,13 +154,18 @@ double ACO::evaluation(int max_duration) {
                 } else {
                     dest = start;
                 }
-                
-                actions.push_back(start + "->" + dest);
+                string result = start + "->" + dest;
+                actions.push_back(result);
+                output[ant_num]->push_back(result);
             } else {
                 if ((*it)->in_transit()) {
-                    actions.push_back("Transit");
+                    string result = "Transit";
+                    actions.push_back(result);
+                    output[ant_num]->push_back(result);
                 }
             }
+            
+            ant_num++;
         }
         
         if (conf.DEBUG()) log_tick(tick, actions);
@@ -228,3 +229,5 @@ void ACO::log_tick(int tick, list<string> segments) {
 void ACO::log_cost(double cost) {
     cout << "Cost: " << cost << "\n";
 }
+
+vector<string>** ACO::result() { return output; }
