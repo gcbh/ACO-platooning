@@ -147,6 +147,8 @@ double ACO::evaluation(int max_duration) {
     
     if (conf.DEBUG()) init_log();
     
+    cost += path_failure_penalty();
+    
     for (int tick = 0; tick < max_duration; tick++) {
         map<path, int> segments;
         list<string> actions;
@@ -185,8 +187,6 @@ double ACO::evaluation(int max_duration) {
         
         cost += j->evaluate(segments);
     }
-    
-    cost += path_failure_penalty();
     
     log_cost(cost);
     
