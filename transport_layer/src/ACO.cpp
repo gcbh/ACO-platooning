@@ -78,6 +78,7 @@ void ACO:: set_prime_ant(list<string> manifest_route) {
     cout << setw(50) << "------------------------------------------------------------\n\n";
     
     cost = evaluation(tick);
+    prev_cost = cost;
 }
 
 void ACO::reset_ants() {
@@ -130,11 +131,13 @@ int ACO::iteration() {
     double evap_mag = conf.getLambda();
     
     if (cost < prev_cost) {
-        prev_cost = cost;
+        evap_mag = evap_mag * (prev_cost / cost);
     } else if (cost > prev_cost) {
-        evap_mag *= -1.0;
+        evap_mag *= -1.0 * cost / prev_cost;
+    } else {
+        evap_mag = 0.0;
     }
-    
+    prev_cost = cost;
     evaporation(traversed, evap_mag, tick);
     
     reset_ants();
@@ -195,24 +198,25 @@ double ACO::evaluation(int max_duration) {
 
 void ACO::evaporation(unordered_set<position, position_hash> traversed, double mag, int ticks) {
     vector<t_edge*> edges;
-    float max = 0.0f;
-    float current = 0.0f;
     for (int i = 0; i < g->get_num_nodes(); i++) {
         edges = (*g)[i]->get_edges();
         for (int j = 0; j < edges.size(); j++) {
+            float max = 0.0f;
+            float current = 0.0f;
+            t_edge* e = edges[j];
             for (int k = ticks; k >= 0; k--) {
-                t_edge* e = edges[j];
                 position p = { .time = k, .edge_id = e->get_id() };
+                
                 if (traversed.find(p) != traversed.end()) {
                     e->update_pheromone(k, mag);
-                } else {
-                    e->evaporate(k, conf.getRho());
                 }
+                
+                e->evaporate(k, conf.getRho());
                 
                 current = e->get_pheromone(k).current;
                 if (current > max) {
                     max = current;
-                    edges[j]->update_future_pheromone(k, max);
+                    e->update_future_pheromone(k, max);
                 }
             }
         }

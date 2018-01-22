@@ -69,16 +69,20 @@ int main(int argc, const char * argv[]) {
     ACO *aco = new ACO(g, manifest_map, conf, sel, cost);
     aco->init(dijkstra);
     
-    for(int i = 1; i <= conf.ITERS(); i++) {
-        int cost = aco->iteration();
-        if (cost < 0) continue;
+    try {
+        for(int i = 1; i <= conf.ITERS(); i++) {
+            int cost = aco->iteration();
+            if (cost < 0) continue;
+        }
+        
+        delete g;
+        delete dijkstra;
+        delete sel;
+        delete aco;
+    } catch (const exception &e) {
+        cout << e.what();
     }
     
-    delete g;
-    delete dijkstra;
-    delete sel;
-    delete aco;
-
     cout << "Run completed" << endl;
     
     return 0;

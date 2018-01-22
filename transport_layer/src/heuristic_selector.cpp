@@ -60,7 +60,7 @@ double heuristic_selector::calculate_heuristic(int node_id, int dest_id, int e_d
     d = 1.0f / (e_dist + distance) + 1.0f;
     
     if (!ph || floor(ph) == 0.0f) {
-        return PHI*d;
+        return pow(d, PHI);
     }
     
     return pow(ph, ALPHA) * pow(d, BETA);
