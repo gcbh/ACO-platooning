@@ -15,6 +15,7 @@
 #include <sstream>
 #include <iomanip>
 #include <vector>
+#include <unordered_set>
 
 #include "Randoms.h"
 #include "Dijkstra.hpp"
@@ -31,6 +32,21 @@
 #include "../../models/ant.hpp"
 
 using namespace std;
+
+struct position {
+    int time, edge_id;
+    
+    bool operator == (position const& pos) const {
+        return ((time == pos.time) && (edge_id == pos.edge_id));
+    }
+};
+
+struct position_hash {
+    std::size_t operator () (const position& pos) const {
+        // modified Bernstein hash
+        return (33 * pos.time) ^ pos.edge_id;
+    }
+};
 
 class ACO {
 public:
@@ -56,9 +72,11 @@ private:
     
     void    set_prime_ant(list<string> manifest_route);
     void    evaporate_update_future_pheromones(int ticks);
-    void evaporation(unordered_set<int> traversed, double mag, int ticks);
+    void    evaporation(unordered_set<position, position_hash> traversed, double mag, int ticks);
     double  evaluation(int max_duration);
     void    reset_ants();
+    void    build_output(int ant_num, string act, list<string>* action);
+    double  path_failure_penalty();
     void    init_log();
     void    log_tick(int tick, list<string> segments);
     void    log_cost(double cost);

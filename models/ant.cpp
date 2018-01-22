@@ -35,14 +35,17 @@ path ant::next_node(int time) {
         
         t_edge* e = selector->selected_edge(es, current->get_id(), dest, time);
         
-        if (!e) return make_pair(current, nullptr);
+        if (!e) {
+            ordered_path.push(current);
+            return make_pair(current, nullptr);
+        }
         
         t_node* next = e->get_dest();
         
         // current node included in up-to-date path
         ordered_path.push(next);
         
-        e->update_pheromone(time, 1.0f);
+        e->update_pheromone(time, DELTA);
         // ensure node travelling from cannot be reached again
         past_nodes.insert(next->get_id());
         path p = make_pair(current, e);

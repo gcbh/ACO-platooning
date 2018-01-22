@@ -99,7 +99,7 @@ int ACO::iteration() {
     double  cost = 0;
     int     tick = -1;
     bool    endIteration;
-    unordered_set<int> traversed;
+    unordered_set<position, position_hash> traversed;
     for (int i = 0; i < ants.size(); ++i) {
         delete output[i];
         output[i] = new vector<string>();
@@ -114,22 +114,28 @@ int ACO::iteration() {
             //if ant has not reached destination call nextnode
             if (!(*it)->has_concluded()) {
                 path p = (*it)->next_node(tick);
-                if (p.second) traversed.insert(p.second->get_id());
+                if (p.second) {
+                    position pos;
+                    pos.time = tick;
+                    pos.edge_id = p.second->get_id();
+                    traversed.insert(pos);
+                }
                 endIteration = false;   
             }
         }
     } while(!endIteration);
 
-    cost += evaluation(tick-1);
+    cost += evaluation(tick);
     
-    double evap_mag = conf.getDelta();
+    double evap_mag = conf.getLambda();
     
     if (cost < prev_cost) {
         prev_cost = cost;
+    } else if (cost > prev_cost) {
         evap_mag *= -1.0;
     }
     
-    evaporation(traversed, evap_mag, tick-1);
+    evaporation(traversed, evap_mag, tick);
     
     reset_ants();
     
@@ -163,18 +169,12 @@ double ACO::evaluation(int max_duration) {
                 } else {
                     dest = start;
                 }
-                string result = start + "->" + dest;
-                actions.push_back(result);
-                output[ant_num]->push_back(result);
+                build_output(ant_num, start + "->" + dest, &actions);
             } else {
                 if ((*it)->in_transit()) {
-                    string result = "Transit";
-                    actions.push_back(result);
-                    output[ant_num]->push_back(result);
+                    build_output(ant_num, "Transit", &actions);
                 } else {
-                    string result = "";
-                    actions.push_back(result);
-                    output[ant_num]->push_back(result);
+                    build_output(ant_num, "", &actions);
                 }
             }
             
@@ -186,12 +186,14 @@ double ACO::evaluation(int max_duration) {
         cost += j->evaluate(segments);
     }
     
+    cost += path_failure_penalty();
+    
     log_cost(cost);
     
     return cost;
 }
 
-void ACO::evaporation(unordered_set<int> traversed, double mag, int ticks) {
+void ACO::evaporation(unordered_set<position, position_hash> traversed, double mag, int ticks) {
     vector<t_edge*> edges;
     float max = 0.0f;
     float current = 0.0f;
@@ -200,13 +202,14 @@ void ACO::evaporation(unordered_set<int> traversed, double mag, int ticks) {
         for (int j = 0; j < edges.size(); j++) {
             for (int k = ticks; k >= 0; k--) {
                 t_edge* e = edges[j];
-                double evap_mag = conf.getRho();
-                if (traversed.find(e->get_id()) != traversed.end()) {
-                    evap_mag += mag;
+                position p = { .time = k, .edge_id = e->get_id() };
+                if (traversed.find(p) != traversed.end()) {
+                    e->update_pheromone(k, mag);
+                } else {
+                    e->evaporate(k, conf.getRho());
                 }
-                edges[j]->evaporate(k, evap_mag);
                 
-                current = edges[j]->get_pheromone(k).current;
+                current = e->get_pheromone(k).current;
                 if (current > max) {
                     max = current;
                     edges[j]->update_future_pheromone(k, max);
@@ -214,6 +217,21 @@ void ACO::evaporation(unordered_set<int> traversed, double mag, int ticks) {
             }
         }
     }
+}
+
+void ACO::build_output(int ant_num, string act, list<string> *actions) {
+    actions->push_back(act);
+    output[ant_num]->push_back(act);
+}
+
+double ACO::path_failure_penalty() {
+    double cost = 0.0;
+    for (list<base_ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
+        if (!(*it)->has_reached_destination()) {
+            cost += 100000.0;
+        }
+    }
+    return cost;
 }
 
 void ACO::init_log() {
@@ -226,7 +244,8 @@ void ACO::init_log() {
     for (list<string>::iterator it = r.begin(); it != r.end(); ++it) {
         vector<string> path = split((*it), ' ');
         cout << "Ant" << ant_num <<
-        " "<< path.front() << "->" << path.back() << setw(16);
+        " "<< path.front() << "->" << path.back() << setw(10);
+        ++ant_num;
     }
     cout << endl;
 }
