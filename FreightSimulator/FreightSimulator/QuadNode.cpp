@@ -51,9 +51,9 @@ void QuadNode::setup() {
     }
 }
 
-void QuadNode::render(RenderState rs) {
+void QuadNode::render(RenderState* rs) {
     glUseProgram(QuadNode::program);
     glBindVertexArray(QuadNode::vao);
-    glUniformMatrix4fv(m_mvp_id, 1, GL_FALSE, &rs.mvp[0][0]);
+    glUniformMatrix4fv(m_mvp_id, 1, GL_FALSE, &rs->mvp[0][0]);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }

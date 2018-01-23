@@ -13,16 +13,17 @@
 #include <string>
 #include "QuadNode.hpp"
 
-class CityNode : public QuadNode
+class CityNode : public SceneNode
 {
 public:
 
-    CityNode() : QuadNode() {}
+    CityNode() : SceneNode() {}
 
     void postsetup();
     void preinput(InputState is);
     void preupdate(UpdateState us);
     void postupdate(UpdateState us);
+    void render(RenderState* rs);
 
     int m_id;
     std::string m_name;

@@ -20,7 +20,7 @@ public:
     QuadNode() : SceneNode() {}
 
     void setup();
-    void render(RenderState rs);
+    void render(RenderState* rs);
 
 private:
     static GLuint vbo, vao, program;

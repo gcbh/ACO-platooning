@@ -39,7 +39,7 @@ void SimulatorApp::update(UpdateState us) {
     m_scene->_update(us);
 }
 
-void SimulatorApp::render(RenderState rs) {
+void SimulatorApp::render(RenderState* rs) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 

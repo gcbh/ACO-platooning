@@ -25,7 +25,7 @@ public:
     virtual void cleanup() = 0;
     virtual void input(InputState is) = 0;
     virtual void update(UpdateState us) = 0;
-    virtual void render(RenderState rs) = 0;
+    virtual void render(RenderState* rs) = 0;
 };
 
 #endif /* App_hpp */

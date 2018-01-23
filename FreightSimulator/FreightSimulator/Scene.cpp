@@ -53,19 +53,20 @@ void Scene::_update(UpdateState us) {
     m_root_node->_update(us);
 }
 
-void Scene::_render(RenderState rs) {
+void Scene::_render(RenderState* rs) {
     //MVP setup
     if (m_scene_camera != nullptr) {
-        rs.mvp = rs.mvp * m_scene_camera->vp_matrix;
+        rs->mvp = rs->mvp * m_scene_camera->vp_matrix;
     }
 
     //User render
     prerender(rs);
     render(rs);
+    m_root_node->_render(rs);
     postrender(rs);
 
     //Render root node
-    m_root_node->_render(rs);
+
 }
 
 void Scene::attachSceneCamera(Camera* camera) {

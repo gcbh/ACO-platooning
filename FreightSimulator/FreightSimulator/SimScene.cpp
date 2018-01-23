@@ -41,6 +41,8 @@ GLuint SimScene::tex = 0;
 GLuint SimScene::city_mvp_id = 0;
 GLuint SimScene::edge_mvp_id = 0;
 
+ImVec2 prevMouseDrag = ImVec2();
+
 void SimScene::postsetup() {
     SimCamera* camera = new SimCamera();
     attachSceneCamera(camera);
@@ -96,163 +98,33 @@ void SimScene::preinput(InputState is) {
     }
 }
 
-void SimScene::preupdate(UpdateState us) {
+void SimScene::prerender(RenderState* rs) {
 
-    // Main Menu Bar
-    if (ImGui::BeginMainMenuBar()) {
-        if (ImGui::BeginMenu("File")) {
-            if (ImGui::MenuItem("Open Map")) {
+    renderUI(rs);
 
-            }
-            if (ImGui::MenuItem("Open Manifest")) {
+    ImGui::SetNextWindowPos(ImVec2(0,0));
+    ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+    ImGui::Begin("MainWindow", NULL, ImGui::GetIO().DisplaySize, 0.0f, ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoScrollbar|ImGuiWindowFlags_NoInputs|ImGuiWindowFlags_NoSavedSettings|ImGuiWindowFlags_NoFocusOnAppearing|ImGuiWindowFlags_NoBringToFrontOnFocus);
 
-            }
-            ImGui::Separator();
-            if (ImGui::MenuItem("Exit")) {
+    if(!ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow)){
+        ImGuiIO& io = ImGui::GetIO();
+        float mouseWheel = io.MouseWheel;
+        m_scene_camera->m_zoom -= mouseWheel;
 
-            }
-            ImGui::EndMenu();
-        }
-        if (ImGui::BeginMenu("Windows")) {
-            ImGui::MenuItem("Map", NULL, &show_map_window);
-            ImGui::MenuItem("Manifest", NULL, &show_manifest_window);
-            ImGui::EndMenu();
-        }
-        ImGui::EndMainMenuBar();
-    }
+        ImVec2 mouseDrag = ImGui::GetMouseDragDelta(0, 0.0f);
+        ImVec2 mouseDragDelta = ImVec2(mouseDrag.x - prevMouseDrag.x, mouseDrag.y - prevMouseDrag.y);
 
-    // Render map window UI
-    if (show_map_window) {
-        if (!ImGui::Begin("Map")) {
-            ImGui::End();
-            return;
+        if (!ImGui::IsMouseReleased(0)) {
+            m_scene_camera->m_position.x -= mouseDragDelta.x/m_scene_camera->m_zoom;
+            m_scene_camera->m_position.y += mouseDragDelta.y/m_scene_camera->m_zoom;
         }
 
-        //Show map information
-        if (ImGui::Button("Load Map")) {
-            loadGraph();
-        }
-
-        // Show node list
-        if (ImGui::CollapsingHeader("Nodes")) {
-            if (city_map.size() > 0) {
-                std::map<int, CityNode*>::iterator it;
-                for (it = city_map.begin(); it != city_map.end(); it++) {
-                    if (ImGui::TreeNode(it->second, "%d: %s", it->second->m_id, it->second->m_name.c_str())) {
-                        ImGui::Text("Latitude: %f", it->second->m_position.y);
-                        ImGui::Text("Longitude: %f", it->second->m_position.x);
-                        ImGui::TreePop();
-                    }
-                }
-            } else {
-                ImGui::Text("No map loaded");
-            }
-        }
-        ImGui::End();
-    }
-
-    // Render manifest window UI
-    if (show_manifest_window) {
-        if (!ImGui::Begin("Manifest")) {
-            ImGui::End();
-            return;
-        }
-
-        //Show map information
-        if (ImGui::Button("Load Manifest")) {
-            loadManifest();
-        }
-
-        // Show node list
-        if (ImGui::CollapsingHeader("Truck")) {
-            if (truck_map.size() > 0) {
-                std::map<int, TruckNode*>::iterator it;
-                for (it = truck_map.begin(); it != truck_map.end(); it++) {
-                    if (ImGui::TreeNode(it->second, "%d", it->second->m_id)) {
-                        ImGui::Text("Segments");
-                        ImGui::TreePop();
-                    }
-                }
-            } else {
-                ImGui::Text("No manifest loaded");
-            }
-        }
-        ImGui::End();
+        prevMouseDrag = mouseDrag;
     }
 }
 
-void SimScene::postupdate(UpdateState us) {
-    closestCity();
-}
-
-void SimScene::prerender(RenderState rs) {
-
-    std::map<int, CityNode*>::iterator it;
-    for (it = city_map.begin(); it != city_map.end(); it++) {
-        glm::vec3 point = rs.mvp * glm::vec4(it->second->m_position, 1.0f);
-
-        ImVec2 screenSpacePoint = ImVec2(0.0f, 0.0f);
-        screenSpacePoint.x = m_scene_camera->m_width * (point.x + 1.0)/2.0;
-        screenSpacePoint.y = m_scene_camera->m_height * (1.0 - ((point.y + 1.0) / 2.0));
-
-        std::ostringstream windowID;
-        windowID << "CityOverlay" << it->second->m_id;
-        ImGui::SetNextWindowPos(screenSpacePoint);
-        ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
-        ImGui::Begin(windowID.str().c_str(), NULL, ImVec2(0,0), 0.0f, ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoScrollbar|ImGuiWindowFlags_NoScrollWithMouse);
-
-        std::ostringstream cityLabel;
-        cityLabel << it->second->m_id;
-        ImGui::Text(cityLabel.str().c_str());
-
-        ImGui::End();
-    }
-}
-
-void SimScene::postrender(RenderState rs) {
-
-}
-
-void SimScene::closestCity() {
-
-    if (city_map.size() <= 0) {
-        return;
-    }
-    // Find closest city
-    CityNode* closestCity = 0;
-    float closestDistance = 1000.0;
-    std::map<int, CityNode*>::iterator it;
-    for (it = city_map.begin(); it != city_map.end(); it++) {
-        float deltaX = it->second->m_position.x - m_scene_camera->m_position.x;
-        float deltaY = it->second->m_position.y - m_scene_camera->m_position.y;
-        float distance = sqrt(pow(deltaX, 2) + pow(deltaY, 2));
-
-        if (distance < closestDistance) {
-            closestCity = it->second;
-            closestDistance = distance;
-        }
-    }
-
-    bool show = false;
-    if (closestCity) {
-        show = true;
-    }
-
-    // Render UI for closest city
-    const float DISTANCE = 10.0f;
-    static int corner = 3;
-    ImVec2 window_pos = ImVec2((corner & 1) ? ImGui::GetIO().DisplaySize.x - DISTANCE : DISTANCE, (corner & 2) ? ImGui::GetIO().DisplaySize.y - DISTANCE : DISTANCE);
-    ImVec2 window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
-    ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.3f)); // Transparent background
-    if (ImGui::Begin("Example: Fixed Overlay", &show, ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_AlwaysAutoResize|ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoSavedSettings))
-    {
-        ImGui::Text("%d: %s", closestCity->m_id, closestCity->m_name.c_str());
-        ImGui::Separator();
-        ImGui::Text("Lat/Long: (%.1f,%.1f)", closestCity->m_position.x, closestCity->m_position.y);
-        ImGui::End();
-    }
-    ImGui::PopStyleColor();
+void SimScene::postrender(RenderState* rs) {
+    ImGui::End(); //End main window
 }
 
 void SimScene::loadGraph() {
@@ -327,21 +199,10 @@ void SimScene::loadGraph() {
             edge->m_position.x = (city_map[city_id1]->m_position.x + city_map[city_id2]->m_position.x)/2;
             edge->m_position.y = (city_map[city_id1]->m_position.y + city_map[city_id2]->m_position.y)/2;
             edge->m_position.z = -0.1;
-
-
-            float deltaX = city_map[city_id1]->m_position.x - city_map[city_id2]->m_position.x;
-            float deltaY = city_map[city_id1]->m_position.y - city_map[city_id2]->m_position.y;
-            float distance = sqrt(pow(deltaX, 2) + pow(deltaY, 2));
-
-            if (distance > 15.0) {
-                std::cout << "City: " << city_name1 << " " << city_name2 << " is over 15.0" << std::endl;
-            }
-            //Get scale based on distance
-            edge->m_scale.x = distance;
-            edge->m_scale.y = 0.025;
-
-            //Get rotation based on the two cities
-            edge->m_rotation = atan2(deltaY, deltaX);
+            edge->m_position_pair = std::make_pair(
+                glm::vec4(city_map[city_id1]->m_position.x, city_map[city_id1]->m_position.y, 0.0f, 1.0f),
+                glm::vec4(city_map[city_id2]->m_position.x, city_map[city_id2]->m_position.y, 0.0f, 1.0f)
+            );
 
             //Add to our edge map
             edge_map[edge->m_id] = edge;
@@ -365,4 +226,95 @@ void SimScene::loadManifest() {
         TruckNode* t = new TruckNode(schedule);
         truck_map[t->m_id] = t;
     }*/
+}
+
+void SimScene::renderUI(RenderState* rs) {
+    // Main Menu Bar
+    if (ImGui::BeginMainMenuBar()) {
+        if (ImGui::BeginMenu("File")) {
+            if (ImGui::MenuItem("Open Map")) {
+
+            }
+            if (ImGui::MenuItem("Open Manifest")) {
+
+            }
+            ImGui::Separator();
+            if (ImGui::MenuItem("Exit")) {
+
+            }
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("Windows")) {
+            ImGui::MenuItem("Map", NULL, &show_map_window);
+            ImGui::MenuItem("Manifest", NULL, &show_manifest_window);
+            ImGui::EndMenu();
+        }
+        ImGui::EndMainMenuBar();
+    }
+
+    // Render map window UI
+    if (show_map_window) {
+        if (!ImGui::Begin("Map")) {
+            ImGui::End();
+            return;
+        }
+
+        //Show map information
+        if (ImGui::Button("Load Map")) {
+            loadGraph();
+        }
+
+        if (ImGui::CollapsingHeader("View")) {
+
+            ImGui::Text("City Mode");
+            ImGui::RadioButton("None##CM", (int*)&rs->cityMode, 0); ImGui::SameLine();
+            ImGui::RadioButton("Default##CM", (int*)&rs->cityMode, 1);
+
+            ImGui::Text("City Label Mode");
+            ImGui::RadioButton("None##CLM", (int*)&rs->cityLabelMode, 0); ImGui::SameLine();
+            ImGui::RadioButton("Name##CLM", (int*)&rs->cityLabelMode, 1); ImGui::SameLine();
+            ImGui::RadioButton("ID##CLM", (int*)&rs->cityLabelMode, 2); ImGui::SameLine();
+            ImGui::RadioButton("Name & ID##CLM", (int*)&rs->cityLabelMode, 3);
+
+            ImGui::Text("Road Mode");
+            ImGui::RadioButton("None##RM", (int*)&rs->roadMode, 0); ImGui::SameLine();
+            ImGui::RadioButton("Default##RM", (int*)&rs->roadMode, 1); ImGui::SameLine();
+            ImGui::RadioButton("Static Heat##RM", (int*)&rs->roadMode, 2); ImGui::SameLine();
+            ImGui::RadioButton("Dynamic Heat##RM", (int*)&rs->roadMode, 3);
+
+            ImGui::Text("Road Label Mode");
+            ImGui::RadioButton("None##RLM", (int*)&rs->roadLabelMode, 0); ImGui::SameLine();
+            ImGui::RadioButton("Distance##RLM", (int*)&rs->roadLabelMode, 1);
+        }
+        ImGui::End();
+    }
+
+    // Render manifest window UI
+    if (show_manifest_window) {
+        if (!ImGui::Begin("Manifest")) {
+            ImGui::End();
+            return;
+        }
+
+        //Show map information
+        if (ImGui::Button("Load Manifest")) {
+            loadManifest();
+        }
+
+        // Show node list
+        if (ImGui::CollapsingHeader("Truck")) {
+            if (truck_map.size() > 0) {
+                std::map<int, TruckNode*>::iterator it;
+                for (it = truck_map.begin(); it != truck_map.end(); it++) {
+                    if (ImGui::TreeNode(it->second, "%d", it->second->m_id)) {
+                        ImGui::Text("Segments");
+                        ImGui::TreePop();
+                    }
+                }
+            } else {
+                ImGui::Text("No manifest loaded");
+            }
+        }
+        ImGui::End();
+    }
 }

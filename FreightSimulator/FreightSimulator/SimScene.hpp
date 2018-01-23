@@ -25,10 +25,8 @@ public:
 
     void postsetup();
     void preinput(InputState is);
-    void preupdate(UpdateState us);
-    void postupdate(UpdateState us);
-    void prerender(RenderState rs);
-    void postrender(RenderState rs);
+    void prerender(RenderState* rs);
+    void postrender(RenderState* rs);
 
     void loadGraph();
     void loadManifest();
@@ -39,6 +37,8 @@ public:
                   vbo, vao, tex;
 
 private:
+    void renderUI(RenderState* rs);
+
     glm::vec3 camera_position;
     std::map<int, CityNode*> city_map;
     std::map<int, TruckNode*> truck_map;

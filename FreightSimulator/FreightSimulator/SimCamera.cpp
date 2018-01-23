@@ -14,8 +14,6 @@
 #define CAMERA_SPEED_Y 200.0
 #define CAMERA_SPEED_Z 20.0
 
-ImVec2 prevMouseDrag = ImVec2();
-
 void SimCamera::setup() {
     m_position = glm::vec3(0.0f,0.0f,75.0f);
     m_focal_point = glm::vec3(m_position.x,m_position.y,0.0f);
@@ -24,19 +22,6 @@ void SimCamera::setup() {
 
 void SimCamera::input(InputState is) {
 
-    ImGuiIO& io = ImGui::GetIO();
-    float mouseWheel = io.MouseWheel;
-    m_zoom -= mouseWheel;
-
-    ImVec2 mouseDrag = ImGui::GetMouseDragDelta(0, 0.0f);
-    ImVec2 mouseDragDelta = ImVec2(mouseDrag.x - prevMouseDrag.x, mouseDrag.y - prevMouseDrag.y);
-
-    if (!ImGui::IsMouseReleased(0)) {
-        m_position.x -= mouseDragDelta.x/m_zoom;
-        m_position.y += mouseDragDelta.y/m_zoom;
-    }
-
-    prevMouseDrag = mouseDrag;
 }
 
 void SimCamera::update(UpdateState us) {

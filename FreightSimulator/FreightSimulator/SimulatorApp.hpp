@@ -24,7 +24,7 @@ public:
     void cleanup();
     void input(InputState is);
     void update(UpdateState is);
-    void render(RenderState is);
+    void render(RenderState* is);
 
 private:
     SimScene* m_scene;

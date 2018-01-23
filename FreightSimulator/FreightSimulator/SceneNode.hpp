@@ -11,6 +11,8 @@
 
 #include <stdio.h>
 #include <vector>
+#include "imgui.h"
+#include "imgui_impl_glfw_gl3.h"
 #include "glm.hpp"
 #include <GLFW/glfw3.h>
 #include <OpenGL/gl3.h>
@@ -32,20 +34,24 @@ public:
     virtual void postinput(InputState is) {};
     virtual void preupdate(UpdateState us) {};
     virtual void postupdate(UpdateState us) {};
-    virtual void prerender(RenderState rs) {};
-    virtual void postrender(RenderState rs) {};
+    virtual void prerender(RenderState* rs) {};
+    virtual void postrender(RenderState* rs) {};
 
     //Internal final
     void _setup();
     void _input(InputState is);
     void _update(UpdateState us);
-    void _render(RenderState rs);
+    void _render(RenderState* rs);
 
     //Internal overrideable
     virtual void setup() {};
     virtual void input(InputState rs) {};
     virtual void update(UpdateState rs) {};
-    virtual void render(RenderState rs) {};
+    virtual void render(RenderState* rs) {};
+
+    //
+    ImVec2 getScreenSpace(RenderState* rs);
+    ImVec2 getScreenSpace(RenderState* rs, glm::vec4 point);
 
     void addChildNode(SceneNode* node);
 

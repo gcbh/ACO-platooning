@@ -67,16 +67,19 @@ void SceneNode::_update(UpdateState us) {
     }
 }
 
-void SceneNode::_render(RenderState rs) {
+void SceneNode::_render(RenderState* rs) {
 
     //Perform mvp update
-    rs.mvp = rs.mvp * m_model_matrix;
+    rs->mvp = rs->mvp * m_model_matrix;
 
     if (willRender) {
         prerender(rs);
+
+
         render(rs);
-        postrender(rs);
     }
+
+
 
     //Render children
     std::vector<SceneNode*>::iterator itr = child_nodes.begin();
@@ -85,6 +88,22 @@ void SceneNode::_render(RenderState rs) {
         node->_render(rs);
         itr++;
     }
+
+    if (willRender) {
+        postrender(rs);
+    }
+
+    //Reset MVP update
+    rs->mvp = rs->mvp * glm::inverse(m_model_matrix);
+}
+
+ImVec2 SceneNode::getScreenSpace(RenderState* rs) {
+    return getScreenSpace(rs, glm::vec4(0.0, 0.0, 0.0, 1.0));
+}
+
+ImVec2 SceneNode::getScreenSpace(RenderState* rs, glm::vec4 point) {
+    glm::vec4 ss = rs->mvp * point;
+    return ImVec2(rs->screen_size.x * (ss.x + 1.0)/2.0, rs->screen_size.y * (1.0 - ((ss.y + 1.0) / 2.0)));
 }
 
 //Once a node is added to another node, distrubute the new parent scene

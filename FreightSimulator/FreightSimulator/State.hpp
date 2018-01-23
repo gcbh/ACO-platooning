@@ -9,14 +9,41 @@
 #ifndef RenderState_hpp
 #define RenderState_hpp
 
+#include "imgui.h"
+#include "imgui_impl_glfw_gl3.h"
 #include <stdio.h>
 #include <GLFW/glfw3.h>
 #include "glm.hpp"
 
-enum class RenderMode {
-    Normal,
+enum class CityMode : int {
+    None,
+    Default
+};
+
+enum class CityLabelMode : int {
+    None,
+    Name,
+    ID,
+    NameAndID
+};
+
+enum class RoadMode : int {
+    None,
+    Default,
     StaticHeat,
     DynamicHeat
+};
+
+enum class RoadLabelMode : int {
+    None,
+    Distance
+};
+
+enum class TruckMode : int {
+    None,
+    Dijkstra,
+    ACO,
+    DijkstraAndACO
 };
 
 struct InputState {
@@ -29,9 +56,17 @@ struct UpdateState {
 };
 
 struct RenderState {
+    // Rendering
     GLFWwindow *window;
-    RenderMode mode;
     glm::mat4 mvp;
+    ImVec2 screen_size;
+
+    // Rendering Modes
+    CityMode cityMode;
+    CityLabelMode cityLabelMode;
+    RoadMode roadMode;
+    RoadLabelMode roadLabelMode;
+    TruckMode truckMode;
 };
 
 #endif /* RenderState_hpp */

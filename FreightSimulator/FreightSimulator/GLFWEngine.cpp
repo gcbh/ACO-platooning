@@ -66,7 +66,18 @@ void GLFWEngine::setup(bool fullScreenEnable)
     // Setup style
     ImGui::StyleColorsClassic();
 
+    rs = new RenderState();
+    rs->window = m_window;
+    rs->mvp = glm::mat4(1.0f);
+    rs->cityMode = CityMode::Default;
+    rs->cityLabelMode = CityLabelMode::None;
+    rs->roadMode = RoadMode::Default;
+    rs->roadLabelMode = RoadLabelMode::None;
+    rs->truckMode = TruckMode::ACO;
+
     fprintf(stdout, "UI Setup Complete.\n");
+
+    
 
     // Setup our attached demo if it exists
     if(m_appInstance != NULL) {
@@ -118,7 +129,8 @@ void GLFWEngine::render() {
     glViewport(0, 0, width, height);
 
     //Render app
-    RenderState rs = {m_window, RenderMode::Normal, glm::mat4(1.0f)};
+    rs->screen_size = ImGui::GetIO().DisplaySize;
+    rs->mvp = glm::mat4(1.0f);
     m_appInstance->render(rs);
 }
 
