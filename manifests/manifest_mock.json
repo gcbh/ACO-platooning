@@ -1,0 +1,54 @@
+{
+	"metadata": {
+	},
+	"schedules" : [
+		{
+			"vehicle_id" : 1,
+			"segments" : [
+				{
+					"type" : "solo_travel",
+					"start_node" : 0,
+					"end_node" : 1,
+					"time" : 3
+				},
+				{
+					"type" : "wait",
+					"time" : 1
+				},
+				{
+					"type" : "solo_travel",
+					"start_node" : 1,
+					"end_node" : 4,
+					"time" : 2
+				},
+				{
+					"type" : "platoon_travel",
+					"start_node" : 4,
+					"end_node" : 5,
+					"platoon_members" : [2],
+					"time" : 3,
+					"max_wait": 2,
+				},
+			]
+		},
+		{
+			"vehicle_id" : 2,
+			"segments" : [
+				{
+					"type" : "solo_travel",
+					"start_node" : 3,
+					"end_node" : 4,
+					"time" : 6
+				},
+				{
+					"type" : "platoon_travel",
+					"start_node" : 4,
+					"end_node" : 5,
+					"platoon_members" : [1],
+					"time" : 3,
+					"max_wait": 2,
+				},
+			]
+		}
+	]
+}

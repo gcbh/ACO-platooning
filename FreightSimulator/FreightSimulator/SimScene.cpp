@@ -18,6 +18,10 @@
 #include "SimCamera.hpp"
 #include "lodepng.h"
 #include <math.h>
+#include "json.hpp"
+
+// for convenience
+using json = nlohmann::json;
 
 //Basic quad
 static const GLfloat points[] = {
@@ -67,6 +71,10 @@ void SimScene::postsetup() {
     //Get MVP IDs
     SimScene::city_mvp_id = glGetUniformLocation(SimScene::city_program, "MVP");
     SimScene::edge_mvp_id = glGetUniformLocation(SimScene::edge_program, "MVP");
+
+    //UI Setup
+    show_map_window = 0;
+    show_manifest_window = 0;
 }
 
 void SimScene::preinput(InputState is) {
@@ -89,17 +97,88 @@ void SimScene::preinput(InputState is) {
 }
 
 void SimScene::preupdate(UpdateState us) {
-    ImGui::Begin("Freight Simulator");
-    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
-    if (ImGui::Button("Load Graph")) {
-        loadGraph();
+    // Main Menu Bar
+    if (ImGui::BeginMainMenuBar()) {
+        if (ImGui::BeginMenu("File")) {
+            if (ImGui::MenuItem("Open Map")) {
+
+            }
+            if (ImGui::MenuItem("Open Manifest")) {
+
+            }
+            ImGui::Separator();
+            if (ImGui::MenuItem("Exit")) {
+
+            }
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("Windows")) {
+            ImGui::MenuItem("Map", NULL, &show_map_window);
+            ImGui::MenuItem("Manifest", NULL, &show_manifest_window);
+            ImGui::EndMenu();
+        }
+        ImGui::EndMainMenuBar();
     }
 
-    if (ImGui::Button("Load Manifest")) {
-        loadManifest();
+    // Render map window UI
+    if (show_map_window) {
+        if (!ImGui::Begin("Map")) {
+            ImGui::End();
+            return;
+        }
+
+        //Show map information
+        if (ImGui::Button("Load Map")) {
+            loadGraph();
+        }
+
+        // Show node list
+        if (ImGui::CollapsingHeader("Nodes")) {
+            if (city_map.size() > 0) {
+                std::map<int, CityNode*>::iterator it;
+                for (it = city_map.begin(); it != city_map.end(); it++) {
+                    if (ImGui::TreeNode(it->second, "%d: %s", it->second->m_id, it->second->m_name.c_str())) {
+                        ImGui::Text("Latitude: %f", it->second->m_position.y);
+                        ImGui::Text("Longitude: %f", it->second->m_position.x);
+                        ImGui::TreePop();
+                    }
+                }
+            } else {
+                ImGui::Text("No map loaded");
+            }
+        }
+        ImGui::End();
     }
-    ImGui::End();
+
+    // Render manifest window UI
+    if (show_manifest_window) {
+        if (!ImGui::Begin("Manifest")) {
+            ImGui::End();
+            return;
+        }
+
+        //Show map information
+        if (ImGui::Button("Load Manifest")) {
+            loadManifest();
+        }
+
+        // Show node list
+        if (ImGui::CollapsingHeader("Truck")) {
+            if (truck_map.size() > 0) {
+                std::map<int, TruckNode*>::iterator it;
+                for (it = truck_map.begin(); it != truck_map.end(); it++) {
+                    if (ImGui::TreeNode(it->second, "%d", it->second->m_id)) {
+                        ImGui::Text("Segments");
+                        ImGui::TreePop();
+                    }
+                }
+            } else {
+                ImGui::Text("No manifest loaded");
+            }
+        }
+        ImGui::End();
+    }
 }
 
 void SimScene::postupdate(UpdateState us) {
@@ -107,6 +186,31 @@ void SimScene::postupdate(UpdateState us) {
 }
 
 void SimScene::prerender(RenderState rs) {
+
+    std::map<int, CityNode*>::iterator it;
+    for (it = city_map.begin(); it != city_map.end(); it++) {
+        glm::vec3 point = rs.mvp * glm::vec4(it->second->m_position, 1.0f);
+
+        ImVec2 screenSpacePoint = ImVec2(0.0f, 0.0f);
+        screenSpacePoint.x = m_scene_camera->m_width * (point.x + 1.0)/2.0;
+        screenSpacePoint.y = m_scene_camera->m_height * (1.0 - ((point.y + 1.0) / 2.0));
+
+        std::ostringstream windowID;
+        windowID << "CityOverlay" << it->second->m_id;
+        ImGui::SetNextWindowPos(screenSpacePoint);
+        ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+        ImGui::Begin(windowID.str().c_str(), NULL, ImVec2(0,0), 0.0f, ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoScrollbar|ImGuiWindowFlags_NoScrollWithMouse);
+
+        std::ostringstream cityLabel;
+        cityLabel << it->second->m_id;
+        ImGui::Text(cityLabel.str().c_str());
+
+        ImGui::End();
+    }
+}
+
+void SimScene::postrender(RenderState rs) {
+
 }
 
 void SimScene::closestCity() {
@@ -249,4 +353,16 @@ void SimScene::loadGraph() {
 
 void SimScene::loadManifest() {
     //TODO: Load and parse a manifest file
+    std::ifstream manifest_file("manifest_mock.json");
+
+    json j;
+    manifest_file >> j;
+
+    json metadata = j["metadata"];
+    json schedules = j["schedules"];
+
+    /*for (auto& schedule : schedules) {
+        TruckNode* t = new TruckNode(schedule);
+        truck_map[t->m_id] = t;
+    }*/
 }

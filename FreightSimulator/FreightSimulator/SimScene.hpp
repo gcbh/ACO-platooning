@@ -13,6 +13,7 @@
 #include <map>
 #include <GLFW/glfw3.h>
 #include "CityNode.hpp"
+#include "TruckNode.hpp"
 #include "EdgeNode.hpp"
 #include "Scene.hpp"
 
@@ -27,6 +28,7 @@ public:
     void preupdate(UpdateState us);
     void postupdate(UpdateState us);
     void prerender(RenderState rs);
+    void postrender(RenderState rs);
 
     void loadGraph();
     void loadManifest();
@@ -39,7 +41,11 @@ public:
 private:
     glm::vec3 camera_position;
     std::map<int, CityNode*> city_map;
+    std::map<int, TruckNode*> truck_map;
     std::map<std::pair<int,int>, EdgeNode*> edge_map;
+
+    bool show_map_window;
+    bool show_manifest_window;
 };
 
 #endif /* SimScene_hpp */

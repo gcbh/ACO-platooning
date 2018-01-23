@@ -21,7 +21,7 @@
 int main ( int argc, char *argv[] )
 {
     SimulatorApp* app = new SimulatorApp();
-    GLFWEngine* engine = new GLFWEngine(1280,800,3,2,app->getName());
+    GLFWEngine* engine = new GLFWEngine(1600,900,3,2,app->getName());
 
     engine->attachDemo(app);
     engine->setup(false);

@@ -17,8 +17,8 @@ void Camera::_setup() {
 
     m_position = glm::vec3(0.0f);
     m_focal_point = glm::vec3(0.0f);
-    m_width = 1280.0;
-    m_height = 720.0;
+    m_width = 1600.0;
+    m_height = 900.0;
     m_zoom = 1.0f;
 
     setup();

@@ -22,7 +22,7 @@ public:
     void postsetup();
     void preinput(InputState is);
     void preupdate(UpdateState us);
-    void prerender(RenderState rs);
+    void postupdate(UpdateState us);
 
     int m_id;
     std::string m_name;
