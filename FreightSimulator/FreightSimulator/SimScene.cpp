@@ -233,14 +233,14 @@ void SimScene::renderUI(RenderState* rs) {
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
             if (ImGui::MenuItem("Open Map")) {
-
+                loadGraph();
             }
             if (ImGui::MenuItem("Open Manifest")) {
-
+                loadManifest();
             }
             ImGui::Separator();
             if (ImGui::MenuItem("Exit")) {
-
+                exit(0);
             }
             ImGui::EndMenu();
         }
