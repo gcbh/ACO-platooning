@@ -16,6 +16,7 @@
 #include <iomanip>
 #include <vector>
 #include <unordered_set>
+#include <cfloat>
 
 #include "Randoms.h"
 #include "Dijkstra.hpp"

@@ -8,8 +8,6 @@
 
 #include "ACO.hpp"
 
-# define INF 0x3f3f3f3f
-
 ACO::ACO(graph *i_g, manifest i_manifest, config i_conf, heuristic_selector* i_sel, cost_function* i_j) {
     g = i_g;
     conf = i_conf;
@@ -23,7 +21,7 @@ ACO::ACO(graph *i_g, manifest i_manifest, config i_conf, heuristic_selector* i_s
     RESULT_LOG_PATH = "../results.log";
     num_iters = 0;
     result_log.open(RESULT_LOG_PATH);
-    prev_cost = INF;
+    prev_cost = DBL_MAX;
     freopen(RESULT_LOG_PATH.c_str(), "w", stdout);
 }
 
@@ -78,7 +76,6 @@ void ACO:: set_prime_ant(list<string> manifest_route) {
     cout << setw(50) << "------------------------------------------------------------\n\n";
     
     cost = evaluation(tick);
-    prev_cost = cost;
 }
 
 void ACO::reset_ants() {
