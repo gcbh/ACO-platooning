@@ -68,9 +68,9 @@ double heuristic_selector::calculate_heuristic(int node_id, int dest_id, int e_d
 }
 
 float heuristic_selector::distance(int node_id, int dest_id, int e_dist) {
-    int distance = d_map->get_edge_weight(node_id, dest_id);
+    int distance = e_dist + d_map->get_edge_weight(node_id, dest_id);
     
-    float t_d = (e_dist + distance) / d_map->get_max_dj_distance();
+    float t_d = distance / d_map->get_max_dj_distance();
     
-    return (t_d >= 1.0f) ? (e_dist + distance) / (e_dist + d_map->get_max_dj_distance()) : 1.0f - t_d;
+    return (t_d >= 1.0f) ? distance / (e_dist + d_map->get_max_dj_distance()) : 1.0f - t_d;
 }
