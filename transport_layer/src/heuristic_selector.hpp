@@ -38,7 +38,8 @@ private:
     Randoms probability;
     Dijkstra* d_map;
     
-    double calculate_heuristic(int node_id, int dest_id, int e_dist, float ph);
+    double calculate_heuristic(int node_id, int dest_id, int e_dist, double ph);
+    float distance(int node_id, int dest_id, int e_dist);
 };
 
 #endif /* heuristic_selector_hpp */

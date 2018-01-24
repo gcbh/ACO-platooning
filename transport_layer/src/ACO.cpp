@@ -116,9 +116,7 @@ int ACO::iteration() {
             if (!(*it)->has_concluded()) {
                 path p = (*it)->next_node(tick);
                 if (p.second) {
-                    position pos;
-                    pos.time = tick;
-                    pos.edge_id = p.second->get_id();
+                    position pos = { .time = tick, .edge_id = p.second->get_id() };
                     traversed.insert(pos);
                 }
                 endIteration = false;   
@@ -132,12 +130,13 @@ int ACO::iteration() {
     
     if (cost < prev_cost) {
         evap_mag = evap_mag * (prev_cost / cost);
+        prev_cost = cost;
     } else if (cost > prev_cost) {
         evap_mag *= -1.0 * cost / prev_cost;
     } else {
         evap_mag = 0.0;
     }
-    prev_cost = cost;
+    
     evaporation(traversed, evap_mag, tick);
     
     reset_ants();

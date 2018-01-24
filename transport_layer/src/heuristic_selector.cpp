@@ -21,8 +21,10 @@ t_edge* heuristic_selector::selected_edge(list<t_edge*> edges, int current_id, i
         t_edge* e = (*it);
         int n_nodeid = e->get_dest()->get_id();
         int e_id = e->get_id();
-        
-        pheromone p = e->get_pheromone(time);
+        pheromone p = { .current = 0.0f, .future = 0.0f };
+        if (e->pheromone_exists(time)) {
+            p = e->get_pheromone(time);
+        }
         
         total += calculate_heuristic(n_nodeid, dest_id, e->get_distance(), p.current);
         
@@ -40,7 +42,10 @@ t_edge* heuristic_selector::selected_edge(list<t_edge*> edges, int current_id, i
         int n_nodeid = e->get_dest()->get_id();
         int e_id = e->get_id();
         
-        pheromone p = e->get_pheromone(time);
+        pheromone p = { .current = 0.0f, .future = 0.0f };
+        if (e->pheromone_exists(time)) {
+            p = e->get_pheromone(time);
+        }
         
         total_prob += calculate_heuristic(n_nodeid, dest_id, e->get_distance(), p.current);
         
@@ -52,16 +57,20 @@ t_edge* heuristic_selector::selected_edge(list<t_edge*> edges, int current_id, i
     return nullptr;
 }
 
-double heuristic_selector::calculate_heuristic(int node_id, int dest_id, int e_dist, float ph) {
-    float p, d;
+double heuristic_selector::calculate_heuristic(int node_id, int dest_id, int e_dist, double ph) {
+    float d = distance(node_id, dest_id, e_dist);
     
-    int distance = d_map->get_edge_weight(node_id, dest_id);
-    
-    d = 1.0f / (e_dist + distance) + 1.0f;
-    
-    if (!ph || floor(ph) == 0.0f) {
+    if (ph == 0.0f) {
         return pow(d, PHI);
     }
     
     return pow(ph, ALPHA) * pow(d, BETA);
+}
+
+float heuristic_selector::distance(int node_id, int dest_id, int e_dist) {
+    int distance = d_map->get_edge_weight(node_id, dest_id);
+    
+    float t_d = (e_dist + distance) / 4288.0f;
+    
+    return (t_d > 1.0f) ? 0.0f : 1.0f - t_d;
 }
