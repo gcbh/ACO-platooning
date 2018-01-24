@@ -70,7 +70,7 @@ double heuristic_selector::calculate_heuristic(int node_id, int dest_id, int e_d
 float heuristic_selector::distance(int node_id, int dest_id, int e_dist) {
     int distance = d_map->get_edge_weight(node_id, dest_id);
     
-    float t_d = (e_dist + distance) / 4288.0f;
+    float t_d = (e_dist + distance) / d_map->get_max_dj_distance();
     
     return (t_d > 1.0f) ? 0.0f : 1.0f - t_d;
 }

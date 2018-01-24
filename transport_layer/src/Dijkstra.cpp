@@ -166,6 +166,10 @@ list<string> Dijkstra:: get_manifest_routes() {
     return manifest_route;
 }
 
+float Dijkstra::get_max_dj_distance() {
+    return 4288.0f;
+}
+
 
 
 
