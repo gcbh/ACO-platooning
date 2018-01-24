@@ -47,6 +47,7 @@ private:
     int**                   edge_weight;
     list<string>            manifest_route;
     int                     num_of_nodes;
+    float                   max_distance;
     
     void shortest_route(int src);
     void add_edge(int src, int dest, int weight);

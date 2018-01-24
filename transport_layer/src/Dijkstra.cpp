@@ -20,7 +20,7 @@ typedef pair<int, int> iPair;
 
 
 Dijkstra::Dijkstra() {
-    
+    max_distance = 0.0f;
 }
 
 Dijkstra::~Dijkstra() {
@@ -143,6 +143,11 @@ void Dijkstra:: populate_from_dijkstra_file(string file_name, manifest manifest_
             int distance = stod(columns[1]);
             string route = columns[2];
 
+            // Fetch maximum dijkstra distance
+            if (max_distance < distance) {
+                max_distance = distance;
+            }
+
             // populate 2D array for an edge with weight
             edge_weight[src][dest] = distance;
             edge_weight[dest][src] = distance;
@@ -167,7 +172,7 @@ list<string> Dijkstra:: get_manifest_routes() {
 }
 
 float Dijkstra::get_max_dj_distance() {
-    return 4288.0f;
+    return max_distance;
 }
 
 
