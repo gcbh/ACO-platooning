@@ -72,5 +72,5 @@ float heuristic_selector::distance(int node_id, int dest_id, int e_dist) {
     
     float t_d = (e_dist + distance) / d_map->get_max_dj_distance();
     
-    return (t_d > 1.0f) ? 0.0f : 1.0f - t_d;
+    return (t_d >= 1.0f) ? (e_dist + distance) / (e_dist + d_map->get_max_dj_distance()) : 1.0f - t_d;
 }
