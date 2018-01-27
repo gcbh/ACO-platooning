@@ -27,7 +27,7 @@ path primer_ant::next_node(int time) {
         int next_node = stoi(route.front());
         t_edge* e = current->get_edge(next_node);
 
-        e->update_pheromone(time, 1.0f);
+        e->update_pheromone(time, 0.2f);
 
         // current node included in up-to-date path
         ordered_path.push(current);
