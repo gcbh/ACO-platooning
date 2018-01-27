@@ -22,7 +22,6 @@
 #include "Dijkstra.hpp"
 #include "heuristic_selector.hpp"
 #include "cost_function.hpp"
-#include "output_extractor.hpp"
 
 #include "../../utils/StringUtils.hpp"
 #include "../../models/config.hpp"
