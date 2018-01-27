@@ -15,13 +15,15 @@ ACO::ACO(graph *i_g, manifest i_manifest, config i_conf, heuristic_selector* i_s
     j = i_j;
     manifest_data = i_manifest;
     output = new vector<string>*[i_manifest.size()];
+    lowest_cost_route = new vector<string>*[i_manifest.size()];
     for (int i = 0; i < i_manifest.size(); ++i) {
         output[i] = new vector<string>();
+        lowest_cost_route[i] = new vector<string>();
     }
     RESULT_LOG_PATH = "../results.log";
     num_iters = 0;
     result_log.open(RESULT_LOG_PATH);
-    prev_cost = DBL_MAX;
+    lowest_cost = DBL_MAX;
     freopen(RESULT_LOG_PATH.c_str(), "w", stdout);
 }
 
@@ -30,12 +32,15 @@ ACO::~ACO() {
     fclose(stdout);
     for (int i = 0; i < ants.size(); ++i) {
         delete output[i];
+        delete lowest_cost_route[i];
     }
     delete output;
+    delete lowest_cost_route;
 }
 
 void ACO:: init(Dijkstra *dijkstra) {
     d_map = dijkstra;
+
     set_prime_ant(dijkstra->get_manifest_routes());
 
     cout << setw(50) << "***BEGINNING ANT COLONY OPTIMIZATION***\n\n";
@@ -125,11 +130,12 @@ int ACO::iteration() {
     
     double evap_mag = conf.getLambda();
     
-    if (cost < prev_cost) {
-        evap_mag = evap_mag * (prev_cost / cost);
-        prev_cost = cost;
-    } else if (cost > prev_cost) {
-        evap_mag *= -1.0 * cost / prev_cost;
+    if (cost < lowest_cost) {
+        evap_mag = evap_mag * (lowest_cost / cost);
+        lowest_cost = cost;
+        save_lowest_cost_route();
+    } else if (cost > lowest_cost) {
+        evap_mag *= -1.0 * cost / lowest_cost;
     } else {
         evap_mag = 0.0;
     }
@@ -137,7 +143,7 @@ int ACO::iteration() {
     evaporation(traversed, evap_mag, tick);
     
     reset_ants();
-    
+
     return cost;
 }
 
@@ -150,7 +156,7 @@ double ACO::evaluation(int max_duration) {
     
     for (int tick = 0; tick < max_duration; tick++) {
         map<path, int> segments;
-        list<string> actions;
+        vector<string> actions;
         int ant_num = 0;
         
         for (list<base_ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
@@ -219,7 +225,7 @@ void ACO::evaporation(unordered_set<position, position_hash> traversed, double m
     }
 }
 
-void ACO::build_output(int ant_num, string act, list<string> *actions) {
+void ACO::build_output(int ant_num, string act, vector<string> *actions) {
     actions->push_back(act);
     output[ant_num]->push_back(act);
 }
@@ -250,9 +256,9 @@ void ACO::init_log() {
     cout << endl;
 }
 
-void ACO::log_tick(int tick, list<string> segments) {
+void ACO::log_tick(int tick, vector<string> segments) {
     cout << "tick" << tick << setw(16);
-    for (list<string>::iterator it = segments.begin(); it != segments.end(); ++it) {
+    for (vector<string>::iterator it = segments.begin(); it != segments.end(); ++it) {
         cout << *it << setw(16);
     }
     cout << endl;
@@ -262,4 +268,14 @@ void ACO::log_cost(double cost) {
     cout << "Cost: " << cost << "\n";
 }
 
-vector<string>** ACO::result() { return output; }
+void ACO::save_lowest_cost_route() {
+
+    for(int ant = 0; ant < ants.size(); ant++) {
+        delete lowest_cost_route[ant];
+        vector<string>* ant_route = output[ant];
+        lowest_cost_route[ant] = new vector<string> (*ant_route);
+    }
+
+}
+
+vector<string>** ACO::result() { return lowest_cost_route; }

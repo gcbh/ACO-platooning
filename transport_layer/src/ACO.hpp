@@ -69,18 +69,20 @@ private:
     manifest                            manifest_data;
     list<base_ant*>                     ants;
     int                                 num_iters;
-    double                              prev_cost;
+    double                              lowest_cost;
+    vector<string>**                    lowest_cost_route;
     
     void    set_prime_ant(list<string> manifest_route);
     void    evaporate_update_future_pheromones(int ticks);
     void    evaporation(unordered_set<position, position_hash> traversed, double mag, int ticks);
     double  evaluation(int max_duration);
     void    reset_ants();
-    void    build_output(int ant_num, string act, list<string>* action);
+    void    build_output(int ant_num, string act, vector<string>* action);
     double  path_failure_penalty();
     void    init_log();
-    void    log_tick(int tick, list<string> segments);
+    void    log_tick(int tick, vector<string> segments);
     void    log_cost(double cost);
+    void    save_lowest_cost_route();
 };
 
 #endif /* ACO_hpp */

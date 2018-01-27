@@ -58,6 +58,10 @@ void t_edge::update_pheromone(int time, float value) {
     pheromone_at[time] = new_p;
 }
 
+int t_edge::get_speed() {
+    return speed;
+}
+
 int t_edge::get_time_to_cross() {
     return time_to_cross;
 }

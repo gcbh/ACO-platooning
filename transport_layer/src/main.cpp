@@ -32,6 +32,7 @@ using namespace std;
 map_data get_data(string file_name);
 manifest get_manifest(string file_name);
 void write_dijkstras(Dijkstra* dijkstra, string file_path, map_data map);
+void write_final_output(ACO* aco, graph* g, int num_vehicles);
 
 int main(int argc, const char * argv[]) {
 
@@ -75,6 +76,9 @@ int main(int argc, const char * argv[]) {
             if (cost < 0) continue;
         }
         
+        // generate final output
+        write_final_output(aco, g, manifest_map.size());
+
         delete g;
         delete dijkstra;
         delete sel;
@@ -146,4 +150,11 @@ void write_dijkstras(Dijkstra* dijkstra, string file_path, map_data map) {
     dijkstra->init(map);
     fclose(stdout);
     dijkstra_file.close();
+}
+
+void write_final_output(ACO* aco, graph* g, int num_vehicles) {
+    output_extractor* extractor = new output_extractor(g, num_vehicles);
+    extractor->extract_output(aco->result());
+    
+    delete extractor;
 }
