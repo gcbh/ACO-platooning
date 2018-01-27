@@ -79,11 +79,12 @@ int main(int argc, const char * argv[]) {
         delete dijkstra;
         delete sel;
         delete aco;
+        
     } catch (const exception &e) {
-        cout << e.what();
+        cout << e.what() << endl;
     }
     
-    cout << "Run completed" << endl;
+    cout << "Run completed"<< endl;
     
     return 0;
 }

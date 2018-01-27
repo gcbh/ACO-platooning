@@ -26,8 +26,8 @@ ACO::ACO(graph *i_g, manifest i_manifest, config i_conf, heuristic_selector* i_s
 }
 
 ACO::~ACO() {
-    fclose(stdout);
     result_log.close();
+    fclose(stdout);
     for (int i = 0; i < ants.size(); ++i) {
         delete output[i];
     }
