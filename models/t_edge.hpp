@@ -35,6 +35,7 @@ public:
     pheromone   get_pheromone(int time);
     bool        pheromone_exists(int time);
     void        update_pheromone(int time, float value);
+    int         get_speed();
     int         get_time_to_cross();
     int         get_distance();
     void        evaporate(int time, float rho);
