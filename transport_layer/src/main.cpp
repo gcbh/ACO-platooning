@@ -15,6 +15,7 @@
 #include "Dijkstra.hpp"
 #include "ACO.hpp"
 #include "cost_function.hpp"
+#include "output_extractor.hpp"
 
 #include "../../utils/config_factory.hpp"
 #include "../../models/config.hpp"
