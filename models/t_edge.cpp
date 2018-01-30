@@ -73,6 +73,11 @@ void t_edge::update_future_pheromone(int time, float value) {
         pheromone new_p;
         new_p.current = p.current;
         new_p.future = value;
+        if (new_p.future < 0.0) {
+            new_p.future = 0.0;
+        } else if (new_p.future > 1.0) {
+            new_p.future = 1.0;
+        }
         pheromone_at[i] = new_p;
     }
 }
