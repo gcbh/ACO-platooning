@@ -8,7 +8,7 @@
 
 #include "ACO.hpp"
 
-ACO::ACO(graph *i_g, manifest i_manifest, config i_conf, heuristic_selector* i_sel, cost_function* i_j) {
+ACO::ACO(graph *i_g, manifest i_manifest, config i_conf, heuristic_selector* i_sel, cost_function* i_j, logger standard, logger cost, logger debug) {
     g = i_g;
     conf = i_conf;
     sel = i_sel;
@@ -20,16 +20,14 @@ ACO::ACO(graph *i_g, manifest i_manifest, config i_conf, heuristic_selector* i_s
         output[i] = new vector<string>();
         lowest_cost_route[i] = new vector<string>();
     }
-    RESULT_LOG_PATH = "../results.log";
     num_iters = 0;
-    result_log.open(RESULT_LOG_PATH);
     lowest_cost = DBL_MAX;
-    freopen(RESULT_LOG_PATH.c_str(), "w", stdout);
+    std_out = standard;
+    cost_out = cost;
+    debug_log = debug;
 }
 
 ACO::~ACO() {
-    result_log.close();
-    fclose(stdout);
     for (int i = 0; i < ants.size(); ++i) {
         delete output[i];
         delete lowest_cost_route[i];
@@ -46,7 +44,7 @@ void ACO:: init(Dijkstra *dijkstra) {
     cout << setw(50) << "***BEGINNING ANT COLONY OPTIMIZATION***\n\n";
     cout << setw(50) << "------------------------------------------------------------\n\n";
     cout << setw(50) << "ANT PATHS" << endl;
-    
+    std_out.log(INFO, "Start your engines");
     reset_ants();
 }
 
@@ -192,9 +190,7 @@ double ACO::evaluation(int max_duration) {
         
         cost += j->evaluate(segments);
     }
-    
-    log_cost(cost);
-    
+    cost_out.log(INFO, to_string(cost));
     return cost;
 }
 
@@ -243,29 +239,23 @@ double ACO::path_failure_penalty() {
 void ACO::init_log() {
     int ant_num = 0;
     list<string> r = d_map->get_manifest_routes();
-    
-    cout << "\n" << "ITERATION NUMBER " << num_iters << "\n";
-    cout << setw(20);
-    
+    string output = "\n ITERATION NUMBER" + to_string(num_iters) + "\n" + space(20);
+
     for (list<string>::iterator it = r.begin(); it != r.end(); ++it) {
         vector<string> path = split((*it), ' ');
-        cout << "Ant" << ant_num <<
-        " "<< path.front() << "->" << path.back() << setw(10);
+        output += "Ant" + to_string(ant_num) + " " + path.front() + "->" + path.back() + space(10);
         ++ant_num;
     }
-    cout << endl;
+    output += "\n";
+    debug_log.log(DEBUG, output);
 }
 
 void ACO::log_tick(int tick, vector<string> segments) {
-    cout << "tick" << tick << setw(16);
+    string output = "tick" + to_string(tick) + space(16);
     for (vector<string>::iterator it = segments.begin(); it != segments.end(); ++it) {
-        cout << *it << setw(16);
+        output += (*it) + space(16);
     }
-    cout << endl;
-}
-
-void ACO::log_cost(double cost) {
-    cout << "Cost: " << cost << "\n";
+    debug_log.log(DEBUG, output);
 }
 
 void ACO::save_lowest_cost_route() {
