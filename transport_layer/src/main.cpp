@@ -12,6 +12,8 @@
 #include <fstream>
 #include <sstream>
 
+#include "../lib/ga_lib/src/Galgo.hpp"
+
 #include "Dijkstra.hpp"
 #include "ACO.hpp"
 #include "cost_function.hpp"
@@ -61,13 +63,27 @@ int main(int argc, const char * argv[]) {
     }
     dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map);
     
-    graph *g = new graph();
-    g->construct_graph(map);
-    
     heuristic_selector* sel = new heuristic_selector(conf.getAlpha(), conf.getBeta(), conf.getPhi(), seed, dijkstra);
     
     cost_function* cost = new cost_function();
-
+    
+    // initializing parameters lower and upper bounds
+    // an initial value can be added inside the initializer list after the upper bound
+    galgo::Parameter<double> alpha({0.0,1.0});
+    galgo::Parameter<double> beta({0.0,1.0});
+    galgo::Parameter<double> delta({0.0,1.0});
+    galgo::Parameter<double> lambda({0.0,1.0});
+    galgo::Parameter<double> phi({0.0,1.0});
+    galgo::Parameter<double> rho({0.0,1.0});
+    
+    ga_objective<double> obj(map, manifest_map, dijkstra, 10)
+    
+    // initiliazing genetic algorithm
+    galgo::GeneticAlgorithm<double> ga(obj::Objective,100,50,true,alpha, beta, delta, lambda, phi, rho);
+    
+    graph *g = new graph();
+    g->construct_graph(map);
+    
     ACO *aco = new ACO(g, manifest_map, conf, sel, cost);
     aco->init(dijkstra);
     

@@ -12,6 +12,29 @@
 		F1053E261F17E50700967DC0 /* Dijkstra.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Dijkstra.hpp; path = src/Dijkstra.hpp; sourceTree = "<group>"; };
 		F1053E3C1F180CD000967DC0 /* Randoms.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Randoms.cpp; path = src/Randoms.cpp; sourceTree = "<group>"; };
 		F1053E3D1F180CD000967DC0 /* Randoms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Randoms.h; path = src/Randoms.h; sourceTree = "<group>"; };
+		F121D51020242E9B003393FC /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		F121D51220242E9B003393FC /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		F121D51320242E9B003393FC /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		F121D51520242E9B003393FC /* Evolution.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Evolution.hpp; sourceTree = "<group>"; };
+		F121D51620242E9B003393FC /* Galgo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Galgo.hpp; sourceTree = "<group>"; };
+		F121D51720242E9B003393FC /* example.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = example.cpp; sourceTree = "<group>"; };
+		F121D51820242E9B003393FC /* Randomize.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Randomize.hpp; sourceTree = "<group>"; };
+		F121D51920242E9B003393FC /* Population.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Population.hpp; sourceTree = "<group>"; };
+		F121D51A20242E9B003393FC /* Chromosome.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Chromosome.hpp; sourceTree = "<group>"; };
+		F121D51B20242E9B003393FC /* Converter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Converter.hpp; sourceTree = "<group>"; };
+		F121D51C20242E9B003393FC /* GeneticAlgorithm.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GeneticAlgorithm.hpp; sourceTree = "<group>"; };
+		F121D51D20242E9B003393FC /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		F121D51F20242E9B003393FC /* Evolution.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Evolution.hpp; sourceTree = "<group>"; };
+		F121D52020242E9B003393FC /* Galgo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Galgo.hpp; sourceTree = "<group>"; };
+		F121D52120242E9B003393FC /* example.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = example.cpp; sourceTree = "<group>"; };
+		F121D52220242E9B003393FC /* Randomize.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Randomize.hpp; sourceTree = "<group>"; };
+		F121D52320242E9B003393FC /* Population.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Population.hpp; sourceTree = "<group>"; };
+		F121D52420242E9B003393FC /* Chromosome.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Chromosome.hpp; sourceTree = "<group>"; };
+		F121D52520242E9B003393FC /* Converter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Converter.hpp; sourceTree = "<group>"; };
+		F121D52620242E9B003393FC /* GeneticAlgorithm.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GeneticAlgorithm.hpp; sourceTree = "<group>"; };
+		F121D52720242E9B003393FC /* Parameter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Parameter.hpp; sourceTree = "<group>"; };
+		F121D52820243061003393FC /* ga_objective.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ga_objective.cpp; path = src/ga_objective.cpp; sourceTree = "<group>"; };
+		F121D52920243061003393FC /* ga_objective.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = ga_objective.hpp; path = src/ga_objective.hpp; sourceTree = "<group>"; };
 		F1463876200D30E800B47D97 /* cost_function.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = cost_function.hpp; path = src/cost_function.hpp; sourceTree = "<group>"; };
 		F1463877200D30E900B47D97 /* cost_function.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cost_function.cpp; path = src/cost_function.cpp; sourceTree = "<group>"; };
 		F155DC0C20089D1200E9F9DE /* heuristic_selector.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = heuristic_selector.hpp; path = src/heuristic_selector.hpp; sourceTree = "<group>"; };
@@ -31,6 +54,7 @@
 				F155DC0D20089D1200E9F9DE /* heuristic_selector.cpp */,
 				F1463877200D30E900B47D97 /* cost_function.cpp */,
 				187D97AF1EE9DF880061B301 /* main.cpp */,
+				F121D52820243061003393FC /* ga_objective.cpp */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -38,6 +62,7 @@
 		F1053E271F17E50C00967DC0 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				F121D52920243061003393FC /* ga_objective.hpp */,
 				F1053E3D1F180CD000967DC0 /* Randoms.h */,
 				F155DC0E2009251A00E9F9DE /* ACO.hpp */,
 				F1053E261F17E50700967DC0 /* Dijkstra.hpp */,
@@ -47,9 +72,70 @@
 			name = include;
 			sourceTree = "<group>";
 		};
+		F121D50E20242E9B003393FC /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				F121D50F20242E9B003393FC /* ga_lib */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		F121D50F20242E9B003393FC /* ga_lib */ = {
+			isa = PBXGroup;
+			children = (
+				F121D51020242E9B003393FC /* README.md */,
+				F121D51120242E9B003393FC /* GALGO-1.0 */,
+				F121D51D20242E9B003393FC /* LICENSE.txt */,
+				F121D51E20242E9B003393FC /* src */,
+			);
+			path = ga_lib;
+			sourceTree = "<group>";
+		};
+		F121D51120242E9B003393FC /* GALGO-1.0 */ = {
+			isa = PBXGroup;
+			children = (
+				F121D51220242E9B003393FC /* README.md */,
+				F121D51320242E9B003393FC /* LICENSE.txt */,
+				F121D51420242E9B003393FC /* src */,
+			);
+			path = "GALGO-1.0";
+			sourceTree = "<group>";
+		};
+		F121D51420242E9B003393FC /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F121D51520242E9B003393FC /* Evolution.hpp */,
+				F121D51620242E9B003393FC /* Galgo.hpp */,
+				F121D51720242E9B003393FC /* example.cpp */,
+				F121D51820242E9B003393FC /* Randomize.hpp */,
+				F121D51920242E9B003393FC /* Population.hpp */,
+				F121D51A20242E9B003393FC /* Chromosome.hpp */,
+				F121D51B20242E9B003393FC /* Converter.hpp */,
+				F121D51C20242E9B003393FC /* GeneticAlgorithm.hpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		F121D51E20242E9B003393FC /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F121D51F20242E9B003393FC /* Evolution.hpp */,
+				F121D52020242E9B003393FC /* Galgo.hpp */,
+				F121D52120242E9B003393FC /* example.cpp */,
+				F121D52220242E9B003393FC /* Randomize.hpp */,
+				F121D52320242E9B003393FC /* Population.hpp */,
+				F121D52420242E9B003393FC /* Chromosome.hpp */,
+				F121D52520242E9B003393FC /* Converter.hpp */,
+				F121D52620242E9B003393FC /* GeneticAlgorithm.hpp */,
+				F121D52720242E9B003393FC /* Parameter.hpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		F1E9F7901EE7A5E1004511FE = {
 			isa = PBXGroup;
 			children = (
+				F121D50E20242E9B003393FC /* lib */,
 				F1053E271F17E50C00967DC0 /* include */,
 				187D97AD1EE9DEA50061B301 /* src */,
 				F1E9F7B41EE7A8A6004511FE /* Makefile */,
