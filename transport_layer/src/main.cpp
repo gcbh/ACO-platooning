@@ -16,6 +16,7 @@
 #include "ACO.hpp"
 #include "cost_function.hpp"
 #include "output_extractor.hpp"
+#include "graph_processor.hpp"
 
 #include "../../utils/config_factory.hpp"
 #include "../../models/config.hpp"
@@ -37,6 +38,8 @@ void write_final_output(ACO* aco, graph* g, int num_vehicles);
 int main(int argc, const char * argv[]) {
 
     cout << "Begin optimization" << endl;
+    
+    map< pair<int, int>, string>* mappp = new map< pair<int, int>, string>();
     
     config_factory conf_fac;
     config conf = conf_fac.build();
@@ -63,6 +66,9 @@ int main(int argc, const char * argv[]) {
         write_dijkstras(dijkstra, dijkstra_file_path, map);
     }
     dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map);
+    
+    graph_processor *gp = new graph_processor(dijkstra);
+    gp->get_distribution_nodes("Amazon_Distribution_Centers.txt");
     
     graph *g = new graph();
     g->construct_graph(map);
