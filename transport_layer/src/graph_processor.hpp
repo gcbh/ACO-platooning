@@ -4,10 +4,16 @@
 
 #include <stdio.h>
 
+#include "Dijkstra.hpp"
+
 using namespace std;
 
 class graph_processor {
-
+public:
+    graph_processor(Dijkstra* dj);
+    virtual ~graph_processor(); 
+private:
+    Dijkstra*               dijkstra;
 };
 
 #endif
