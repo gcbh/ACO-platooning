@@ -55,6 +55,8 @@ void config_factory::convert(config_data* d, string key, string value) {
         d->debug = (atoi(value.c_str()) == 1) ? true : false;
     } else if (key == "iters") {
         d->iters = atoi(value.c_str());
+    } else if (key == "dist_center") {
+        d->distribution_center_name = value;
     }
 }
 

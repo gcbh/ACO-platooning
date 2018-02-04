@@ -9,10 +9,9 @@ graph_processor::~graph_processor() {
     //delete distribution nodes
 }
 
-map<iPair, string>* graph_processor::get_distribution_nodes(string distribution_center) {
-    stringstream ss;
-    ss << "../../maps/distribution_centers/" << distribution_center;
-    ifstream file(ss.str());
+
+map<iPair, string>* graph_processor::get_distribution_nodes(string file_name) {
+    ifstream file(file_name);
     string line;
     getline(file, line);
     vector<string> columns;
@@ -60,4 +59,13 @@ map_data graph_processor::format_distribution_graph(Dijkstra* dj) {
     return graph_map;
 }
 
-
+void graph_processor::create_distribution_map_file(map_data map, string file_name) {
+    ofstream output_file;
+    output_file.open(file_name);
+    
+    for (list<graph_edge>::iterator it = map.begin(); it != map.end(); ++it) {
+        output_file << it->src << it->dest << it->weight << endl;
+    }
+    
+    output_file.close();
+}

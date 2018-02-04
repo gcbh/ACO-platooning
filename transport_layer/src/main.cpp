@@ -32,6 +32,7 @@
 using namespace std;
 
 map_data get_data(string file_name);
+map_data get_dist_data(string file_name);
 manifest get_manifest(string file_name);
 void write_dijkstras(Dijkstra* dijkstra, string file_path, map_data map);
 void write_final_output(ACO* aco, graph* g, int num_vehicles);
@@ -39,8 +40,6 @@ void write_final_output(ACO* aco, graph* g, int num_vehicles);
 int main(int argc, const char * argv[]) {
 
     cout << "Begin optimization" << endl;
-    
-    map< pair<int, int>, string>* gp_map = new map< pair<int, int>, string>();
     
     config_factory conf_fac;
     config conf = conf_fac.build();
@@ -51,7 +50,7 @@ int main(int argc, const char * argv[]) {
     
     time_t seed = (long)time(nullptr);
     
-    map_data map = get_data(conf.getMap());
+    map_data cities_map = get_data(conf.getMap());
     manifest manifest_map = get_manifest(conf.getManifest());
     
     // Creates d_maps folder if it doesn't exist
@@ -64,7 +63,7 @@ int main(int argc, const char * argv[]) {
     
     // check if dijkstra file exists, if not create one
     if (djfile.fail()) {
-        write_dijkstras(dijkstra, dijkstra_file_path, map);
+        write_dijkstras(dijkstra, dijkstra_file_path, cities_map);
     }
 
     graph *g = new graph();
@@ -73,27 +72,27 @@ int main(int argc, const char * argv[]) {
     // process distribution center info
     string distr_cntr_file_path = DISTRIBUTION_MAPS + ("gp_" + conf.getDistributionCenter());
     ifstream distrFile(distr_cntr_file_path);
+
+    map< pair<int, int>, string>* gp_map = new map< pair<int, int>, string>();
+    map_data gp_processed_map;
     
     if (distrFile.fail()) {
-        gp_map = gp->get_distribution_nodes(conf.getDistributionCenter());
+        gp_map = gp->get_distribution_nodes(distr_cntr_file_path);
         // Populate info from manifest and for graph processor
         dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map, gp_map);
         
-        map_data gp_processed_map = gp->format_distribution_graph(dijkstra);
-        // write graph to a file to be used next time @Priya
+        gp_processed_map = gp->format_distribution_graph(dijkstra);
+        gp->create_distribution_map_file(gp_processed_map, distr_cntr_file_path);
 
-        g->construct_graph(gp_processed_map);
     } else {
         // Populate info for map
         dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map, gp_map);
-        // Read distribution center graph from file @Priya
-
-        // g->construct_graph(gp_processed_map);
+        gp_processed_map = get_dist_data(distr_cntr_file_path);
     }
 
-    // delete graph processor
-    
-    // g->construct_graph(map);
+    g->construct_graph(gp_processed_map);
+  
+    delete gp;
     
     heuristic_selector* sel = new heuristic_selector(conf.getAlpha(), conf.getBeta(), conf.getPhi(), seed, dijkstra);
     
@@ -147,6 +146,28 @@ map_data get_data(string file_name) {
         int            distance;
         
         linestream >> src >> src_name >> dest >> dest_name >> distance;
+        
+        map.insert(src, dest, distance);
+    }
+    
+    return map;
+}
+
+map_data get_dist_data(string file_name) {
+    // open graph file, read and pass data to Dijkstra to calculate shortest path
+    ifstream file(file_name);
+    string   line;
+    
+    map_data map;
+    
+    while(getline(file, line))
+    {
+        stringstream   linestream(line);
+        int            src;
+        int            dest;
+        int            distance;
+        
+        linestream >> src >> dest >> distance;
         
         map.insert(src, dest, distance);
     }
