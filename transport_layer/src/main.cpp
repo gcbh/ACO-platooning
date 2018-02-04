@@ -39,7 +39,8 @@ int main(int argc, const char * argv[]) {
 
     cout << "Begin optimization" << endl;
     
-    map< pair<int, int>, string>* mappp = new map< pair<int, int>, string>();
+    map< pair<int, int>, string>* gp_map = new map< pair<int, int>, string>();
+    gp_map->insert(make_pair(make_pair(5, 66), ""));
     
     config_factory conf_fac;
     config conf = conf_fac.build();
@@ -65,10 +66,14 @@ int main(int argc, const char * argv[]) {
     if (djfile.fail()) {
         write_dijkstras(dijkstra, dijkstra_file_path, map);
     }
-    dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map);
-    
-    graph_processor *gp = new graph_processor(dijkstra);
-    gp->get_distribution_nodes("Amazon_Distribution_Centers.txt");
+
+    graph_processor *gp = new graph_processor();
+    gp_map = gp->get_distribution_nodes("Amazon_Distribution_Centers.txt");
+
+    dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map, gp_map);
+
+    gp->format_distribution_graph(dijkstra);
+
     
     graph *g = new graph();
     g->construct_graph(map);

@@ -117,7 +117,7 @@ void Dijkstra::print_path(int route[], int j)
     printf("%d ", j);
 }
 
-void Dijkstra:: populate_from_dijkstra_file(string file_name, manifest manifest_map) {
+void Dijkstra:: populate_from_dijkstra_file(string file_name, manifest manifest_map, map<pair<int, int>, string>* gp_map) {
     ifstream file(file_name);
     string   line;
 
@@ -157,6 +157,12 @@ void Dijkstra:: populate_from_dijkstra_file(string file_name, manifest manifest_
             while (key_count > 0) {
                 manifest_route.push_back(route);
                 --key_count;
+            }
+
+            // populate distribution centre routes from dijkstra
+            int distr_key_count = gp_map->count(make_pair(src, dest));
+            if (distr_key_count > 0) {
+                (*gp_map)[make_pair(src, dest)] = route;
             }
         }
         
