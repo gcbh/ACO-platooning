@@ -51,7 +51,7 @@ map_data graph_processor::format_distribution_graph(Dijkstra* dj) {
         for (vector<string>::iterator it2 = route.begin(); ++it2 != route.end();) {
             int dest = stoi(*it2);
             int weight = dj->get_edge_weight(src, dest);
-            graph_map.insert(src, dest, weight); // not inserting correct values @Priya
+            graph_map.insert(src, dest, weight);
             src = dest;
         }
     }
