@@ -19,17 +19,20 @@ void map_data::insert(int src, int dest, int distance) {
     edge.dest = dest;
     edge.weight = distance;
     
-    if (edges.size() > 0) {
-        for (list<graph_edge>::iterator it= edges.begin(); it != edges.end(); ++it ) {
-            if ((*it).src != edge.src && (*it).dest != edge.dest) {
-                edges.push_back(edge);
-            }
-        }
-    } else {
+    if (!edge_exists(edge)) {
         edges.push_back(edge);
+        existing_edges.insert(make_pair(src, dest));
     }
-    
+}
 
+bool map_data::edge_exists(graph_edge edge) {
+    pair<int, int> p = make_pair(edge.src, edge.dest);
+    
+    if (existing_edges.find(p) != existing_edges.end()) {
+        return true;
+    }
+
+    return false;
 }
 
 int map_data::node_count() {
