@@ -26,6 +26,7 @@
 
 #define MAPS "../../maps/"
 #define DJ_MAPS "../../maps/d_maps/"
+#define DISTRIBUTION_MAPS "../../maps/distribution_centers/"
 #define MANIFESTS "../../manifests/"
 
 using namespace std;
@@ -40,7 +41,6 @@ int main(int argc, const char * argv[]) {
     cout << "Begin optimization" << endl;
     
     map< pair<int, int>, string>* gp_map = new map< pair<int, int>, string>();
-    gp_map->insert(make_pair(make_pair(5, 66), ""));
     
     config_factory conf_fac;
     config conf = conf_fac.build();
@@ -67,16 +67,33 @@ int main(int argc, const char * argv[]) {
         write_dijkstras(dijkstra, dijkstra_file_path, map);
     }
 
-    graph_processor *gp = new graph_processor();
-    gp_map = gp->get_distribution_nodes(conf.getDistributionCenter());
-
-    dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map, gp_map);
-
-    gp->format_distribution_graph(dijkstra);
-
-    
     graph *g = new graph();
-    g->construct_graph(map);
+    graph_processor *gp = new graph_processor();
+    
+    // process distribution center info
+    string distr_cntr_file_path = DISTRIBUTION_MAPS + ("gp_" + conf.getDistributionCenter());
+    ifstream distrFile(distr_cntr_file_path);
+    
+    if (distrFile.fail()) {
+        gp_map = gp->get_distribution_nodes(conf.getDistributionCenter());
+        // Populate info from manifest and for graph processor
+        dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map, gp_map);
+        
+        map_data gp_processed_map = gp->format_distribution_graph(dijkstra);
+        // write graph to a file to be used next time @Priya
+
+        g->construct_graph(gp_processed_map);
+    } else {
+        // Populate info for map
+        dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map, gp_map);
+        // Read distribution center graph from file @Priya
+
+        // g->construct_graph(gp_processed_map);
+    }
+
+    // delete graph processor
+    
+    // g->construct_graph(map);
     
     heuristic_selector* sel = new heuristic_selector(conf.getAlpha(), conf.getBeta(), conf.getPhi(), seed, dijkstra);
     
