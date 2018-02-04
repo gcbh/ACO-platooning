@@ -19,7 +19,12 @@ void map_data::insert(int src, int dest, int distance) {
     edge.dest = dest;
     edge.weight = distance;
     
-    edges.push_back(edge);
+    for (list<graph_edge>::iterator it= edges.begin(); it != edges.end(); ++it ) {
+        if ((*it).src != edge.src && (*it).dest != edge.dest) {
+            edges.push_back(edge);
+        }
+    }
+
 }
 
 int map_data::node_count() {
