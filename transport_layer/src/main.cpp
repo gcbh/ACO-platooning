@@ -68,7 +68,7 @@ int main(int argc, const char * argv[]) {
     }
 
     graph_processor *gp = new graph_processor();
-    gp_map = gp->get_distribution_nodes("Amazon_Distribution_Centers.txt");
+    gp_map = gp->get_distribution_nodes(conf.getDistributionCenter());
 
     dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map, gp_map);
 
