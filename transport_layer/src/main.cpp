@@ -77,7 +77,7 @@ int main(int argc, const char * argv[]) {
     map_data gp_processed_map;
     
     if (distrFile.fail()) {
-        gp_map = gp->get_distribution_nodes(distr_cntr_file_path);
+        gp_map = gp->get_distribution_nodes(DISTRIBUTION_MAPS + conf.getDistributionCenter());
         // Populate info from manifest and for graph processor
         dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map, gp_map);
         

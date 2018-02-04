@@ -64,7 +64,7 @@ void graph_processor::create_distribution_map_file(map_data map, string file_nam
     output_file.open(file_name);
     
     for (list<graph_edge>::iterator it = map.begin(); it != map.end(); ++it) {
-        output_file << it->src << it->dest << it->weight << endl;
+        output_file << it->src << " " << it->dest << " " << it->weight << endl;
     }
     
     output_file.close();
