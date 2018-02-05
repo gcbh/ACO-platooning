@@ -17,7 +17,6 @@ graph_processor::~graph_processor() {
 map<iPair, string>* graph_processor::get_distribution_nodes(string file_name) {
     ifstream file(file_name);
     string line;
-    getline(file, line);
     vector<string> columns;
     list<int>* nodes = new list<int>();
 
