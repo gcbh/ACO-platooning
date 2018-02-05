@@ -20,5 +20,6 @@ using namespace std;
 
 vector<string> split(const string &s, char delim);
 std::string readFile(const std::string file_path);
+std::string space(int size);
 
 #endif /* StringUtils_hpp */

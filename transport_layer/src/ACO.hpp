@@ -22,6 +22,7 @@
 #include "Dijkstra.hpp"
 #include "heuristic_selector.hpp"
 #include "cost_function.hpp"
+#include "logger.h"
 
 #include "../../utils/StringUtils.hpp"
 #include "../../models/config.hpp"
@@ -51,7 +52,7 @@ struct position_hash {
 
 class ACO {
 public:
-    ACO (graph *i_g, manifest i_manifest, config i_config, heuristic_selector* i_sel, cost_function* i_j);
+    ACO (graph *i_g, manifest i_manifest, config i_config, heuristic_selector* i_sel, cost_function* i_j, logger standard, logger cost, logger debug);
     virtual ~ACO ();
     void    init(Dijkstra *dijkstra);
     int     iteration();
@@ -64,13 +65,12 @@ private:
     heuristic_selector*                 sel;
     cost_function*                      j;
     vector<string>**                    output;
-    string                              RESULT_LOG_PATH;
-    ofstream                            result_log;
     manifest                            manifest_data;
     list<base_ant*>                     ants;
     int                                 num_iters;
     double                              lowest_cost;
     vector<string>**                    lowest_cost_route;
+    logger                              std_out, cost_out, debug_log;
     
     void    set_prime_ant(list<string> manifest_route);
     void    evaporate_update_future_pheromones(int ticks);
@@ -81,7 +81,6 @@ private:
     double  path_failure_penalty();
     void    init_log();
     void    log_tick(int tick, vector<string> segments);
-    void    log_cost(double cost);
     void    save_lowest_cost_route();
 };
 

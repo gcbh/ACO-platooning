@@ -25,7 +25,6 @@
 #include "../../models/manifest.hpp"
 #include "../../models/graph.hpp"
 
-
 #define MAPS "../../maps/"
 #define DJ_MAPS "../../maps/d_maps/"
 #define MANIFESTS "../../manifests/"
@@ -43,6 +42,10 @@ int main(int argc, const char * argv[]) {
     
     config_factory conf_fac;
     config conf = conf_fac.build();
+    
+    logger std_out;
+    logger cost_out("../logs/cost.out", false);
+    logger debug_log("../logs/debug.log", false);
     
     time_t seed = (long)time(nullptr);
     
@@ -84,7 +87,7 @@ int main(int argc, const char * argv[]) {
     graph *g = new graph();
     g->construct_graph(map);
     
-    ACO *aco = new ACO(g, manifest_map, conf, sel, cost);
+    ACO *aco = new ACO(g, manifest_map, conf, sel, cost, std_out, cost_out, debug_log);
     aco->init(dijkstra);
     
     try {
@@ -108,6 +111,10 @@ int main(int argc, const char * argv[]) {
     cout << "Run completed"<< endl;
     
     return 0;
+}
+
+void build_loggers() {
+    
 }
 
 map_data get_data(string file_name) {
