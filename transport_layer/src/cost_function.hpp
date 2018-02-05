@@ -11,9 +11,9 @@
 #include <stdio.h>
 #include <list>
 
-#include "../../models/primer_ant.hpp"
-#include "../../models/ant.hpp"
-#include "../../models/graph.hpp"
+#include "primer_ant.hpp"
+#include "ant.hpp"
+#include "graph.hpp"
 
 typedef pair<int, int> iPair;
 

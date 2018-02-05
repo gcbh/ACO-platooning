@@ -17,7 +17,7 @@
 
 #include "base_ant.hpp"
 #include "t_node.hpp"
-#include "../transport_layer/src/heuristic_selector.hpp"
+#include "heuristic_selector.hpp"
 
 using namespace std;
 

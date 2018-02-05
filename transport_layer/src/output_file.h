@@ -17,20 +17,18 @@ class output_file {
     
 public:
     static FILE*& stream();
-    static void output(const std::string& msg);
+    static void output(const std::string& msg) {
+        FILE* p_stream = stream();
+        if (!p_stream) {  return; }
+        
+        fprintf(p_stream, "%s", msg.c_str());
+        fflush(p_stream);
+    }
 };
 
 inline FILE*& output_file::stream() {
     static FILE* p_stream = stderr;
     return p_stream;
-}
-
-inline void output_file::output(const std::string& msg) {
-    FILE* p_stream = stream();
-    if (!p_stream) {  return; }
-    
-    fprintf(p_stream, "%s", msg.c_str());
-    fflush(p_stream);
 }
 
 typedef Log<output_file> file_log;

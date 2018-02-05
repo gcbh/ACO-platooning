@@ -41,9 +41,9 @@ void ACO:: init(Dijkstra *dijkstra) {
 
     set_prime_ant(dijkstra->get_manifest_routes());
 
-    cout << setw(50) << "***BEGINNING ANT COLONY OPTIMIZATION***\n\n";
-    cout << setw(50) << "------------------------------------------------------------\n\n";
-    cout << setw(50) << "ANT PATHS" << endl;
+//    cout << setw(50) << "***BEGINNING ANT COLONY OPTIMIZATION***\n\n";
+//    cout << setw(50) << "------------------------------------------------------------\n\n";
+//    cout << setw(50) << "ANT PATHS" << endl;
     std_out.log(INFO, "Start your engines");
     reset_ants();
 }

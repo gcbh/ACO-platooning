@@ -19,7 +19,7 @@ OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 MODELS := $(patsubst $(MODELDIR)/%,$(BUILDDIR)/%,$(MODELSRCS:.$(SRCEXT)=.o))
 UTILS := $(patsubst $(UTILDIR)/%,$(BUILDDIR)/%,$(UTILSRCS:.$(SRCEXT)=.o))
 
-INC := -I lib/ga_lib/src/ -I ../models/ -I ../utils/
+INC := -I lib/ga_lib/src/ -I ../models/ -I ../utils/ -I src/
 
 # Build source files
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
@@ -29,7 +29,7 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 # Build model files
 $(BUILDDIR)/%.o: $(MODELDIR)/%.$(SRCEXT)
 	@mkdir -p $(BUILDDIR)
-	@echo " $(CC) $(CFLAGS) -c -o $@ $<"; $(CC) $(CFLAGS) -c -o $@ $<
+	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 # Build util files
 $(BUILDDIR)/%.o: $(UTILDIR)/%.$(SRCEXT)

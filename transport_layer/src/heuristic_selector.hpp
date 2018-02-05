@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "../../models/t_edge.hpp"
+#include "t_edge.hpp"
 
 #include "Dijkstra.hpp"
 #include "Randoms.h"

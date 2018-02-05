@@ -7,16 +7,10 @@
 //
 
 #include <stdio.h>
-#include <time.h>
-#include <iostream>
-#include <fstream>
-#include <sstream>
 
 #include "Galgo.hpp"
 
-#include "output_extractor.hpp"
 #include "ga_objective.hpp"
-
 #include "config_factory.hpp"
 
 #define MAPS "../../maps/"
@@ -28,7 +22,7 @@ using namespace std;
 map_data get_data(string file_name);
 manifest get_manifest(string file_name);
 void write_dijkstras(Dijkstra* dijkstra, string file_path, map_data map);
-void write_final_output(ACO* aco, graph* g, int num_vehicles);
+//void write_final_output(ACO* aco, graph* g, int num_vehicles);
 
 int main(int argc, const char * argv[]) {
 
@@ -36,8 +30,6 @@ int main(int argc, const char * argv[]) {
     
     config_factory conf_fac;
     config conf = conf_fac.build();
-    
-    time_t seed = (long)time(nullptr);
     
     map_data map = get_data(conf.getMap());
     manifest manifest_map = get_manifest(conf.getManifest());
@@ -70,18 +62,22 @@ int main(int argc, const char * argv[]) {
     galgo::Parameter<double> phi({0.0,1.0});
     galgo::Parameter<double> rho({0.0,1.0});
     
-    // initiliazing genetic algorithm
-    galgo::GeneticAlgorithm<double> ga(ga_objective<double>::Objective,100,50,true,alpha, beta, delta, lambda, phi, rho);
+   
+    
+    try {
+        // initiliazing genetic algorithm
+        galgo::GeneticAlgorithm<double> ga(ga_objective<double>::Objective,100,50,true,alpha, beta, delta, lambda, phi, rho);
+        ga.run();
+    } catch (exception& e) {
+        e.what();
+    }
+    
     
     cout << "Run completed"<< endl;
     
     delete dijkstra;
     
     return 0;
-}
-
-void build_loggers() {
-    
 }
 
 map_data get_data(string file_name) {
@@ -143,9 +139,10 @@ void write_dijkstras(Dijkstra* dijkstra, string file_path, map_data map) {
     dijkstra_file.close();
 }
 
-void write_final_output(ACO* aco, graph* g, int num_vehicles) {
-    output_extractor* extractor = new output_extractor(g, num_vehicles);
-    extractor->extract_output(aco->result());
-    
-    delete extractor;
-}
+//void write_final_output(ACO* aco, graph* g, int num_vehicles) {
+//    output_extractor* extractor = new output_extractor(g, num_vehicles);
+//    extractor->extract_output(aco->result());
+//
+//    delete extractor;
+//}
+

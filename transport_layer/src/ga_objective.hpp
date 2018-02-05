@@ -8,10 +8,13 @@
 #ifndef ga_objective_hpp
 #define ga_objective_hpp
 
+#include <time.h>
+
 #include "ACO.hpp"
 #include "Dijkstra.hpp"
 #include "cost_function.hpp"
 #include "heuristic_selector.hpp"
+//#include "transport_exception.hpp"
 
 #include "config.hpp"
 #include "map_data.hpp"
@@ -31,12 +34,14 @@ public:
         
         config c("", "", x[0], x[1], x[2], x[3], x[4], x[5], false, 100);
         
+        cost_function* cf = new cost_function();
+        
         heuristic_selector* sel = new heuristic_selector(c.getAlpha(), c.getBeta(), c.getPhi(), seed, ga_objective<T>::dijkstra());
         
         graph *g = new graph();
         g->construct_graph((*ga_objective<T>::map()));
         
-        ACO *aco = new ACO(g, (*ga_objective<T>::manifest_d()), c, sel, ga_objective<T>::j(), std_out, cost_out, debug_log);
+        ACO *aco = new ACO(g, (*ga_objective<T>::manifest_d()), c, sel, cf, std_out, cost_out, debug_log);
         aco->init(ga_objective<T>::dijkstra());
         
         T full_sum = 0.0;
@@ -54,7 +59,7 @@ public:
             delete g;
             delete sel;
             delete aco;
-            
+            delete cf;
         } catch (const exception &e) {
             cout << e.what() << endl;
         }
@@ -63,10 +68,6 @@ public:
     static map_data*& map();
     static manifest*& manifest_d();
     static Dijkstra*& dijkstra();
-    static cost_function*& j() {
-        static cost_function* cf = new cost_function();
-        return cf;
-    };
     static int& num_iters();
 
 };

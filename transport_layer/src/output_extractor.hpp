@@ -10,8 +10,8 @@
 #include <list>
 #include <vector>
 #include <cmath>
-#include "../../models/graph.hpp"
-#include "../../models/t_node.hpp"
+#include "graph.hpp"
+#include "t_node.hpp"
 
 using namespace std;
 typedef pair<int, int> iPair;

@@ -25,13 +25,13 @@
 #include "logger.h"
 
 #include "StringUtils.hpp"
-#include "../../models/config.hpp"
-#include "../../models/t_node.hpp"
-#include "../../models/graph.hpp"
-#include "../../models/manifest.hpp"
-#include "../../models/t_edge.hpp"
-#include "../../models/primer_ant.hpp"
-#include "../../models/ant.hpp"
+#include "config.hpp"
+#include "t_node.hpp"
+#include "graph.hpp"
+#include "manifest.hpp"
+#include "t_edge.hpp"
+#include "primer_ant.hpp"
+#include "ant.hpp"
 
 using namespace std;
 

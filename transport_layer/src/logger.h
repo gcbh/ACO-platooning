@@ -17,6 +17,7 @@
 class logger {
 public:
     logger(std::string file_name = "", bool print_headers = true);
+    ~logger();
     void log(TLogLevel level, const std::string& msg);
 private:
     FILE* f;

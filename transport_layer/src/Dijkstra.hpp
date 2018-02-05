@@ -18,10 +18,10 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "../../utils/StringUtils.hpp"
-#include "../../models/graph.hpp"
-#include "../../models/manifest.hpp"
-#include "../../models/map_data.hpp"
+#include "StringUtils.hpp"
+#include "graph.hpp"
+#include "manifest.hpp"
+#include "map_data.hpp"
 
 using namespace std;
 
