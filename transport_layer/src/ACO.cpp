@@ -196,8 +196,9 @@ double ACO::evaluation(int max_duration) {
 
 void ACO::evaporation(unordered_set<position, position_hash> traversed, double mag, int ticks) {
     vector<t_edge*> edges;
-    for (int i = 0; i < g->get_num_nodes(); i++) {
-        edges = (*g)[i]->get_edges();
+    unordered_set<int> nodes = g->get_nodes();
+    for (unordered_set<int>::iterator it = nodes.begin(); it != nodes.end(); ++it) {
+        edges = (*g)[(*it)]->get_edges();
         for (int j = 0; j < edges.size(); j++) {
             float max = 0.0f;
             float current = 0.0f;
