@@ -6,12 +6,28 @@
 //
 
 #include "ga_objective.hpp"
-template <typename T>
 
-static std::vector<T> ga_objective::Objective(const std::vector<T>& x) {
-    config c;
-    
-    heuristic_selector* sel = new heuristic_selector(conf.getAlpha(), conf.getBeta(), conf.getPhi(), seed, dijkstra);
-    
-    cost_function* cost = new cost_function();
-}
+//template <typename T>
+//inline map_data*& ga_objective<T>::map() {
+//    static map_data* m = new map_data();
+//    return m;
+//}
+//
+//template <typename T>
+//inline manifest*& ga_objective<T>::manifest_d() {
+//    static manifest* m = new manifest();
+//    return m;
+//}
+//
+//template <typename T>
+//inline Dijkstra*& ga_objective<T>::dijkstra() {
+//    static Dijkstra* d = new Dijkstra();
+//    return d;
+//}
+//
+//template <typename T>
+//inline int& ga_objective<T>::num_iters() {
+//    static int i = 0;
+//    return i;
+//}
+

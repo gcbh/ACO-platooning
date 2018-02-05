@@ -24,7 +24,7 @@
 #include "cost_function.hpp"
 #include "logger.h"
 
-#include "../../utils/StringUtils.hpp"
+#include "StringUtils.hpp"
 #include "../../models/config.hpp"
 #include "../../models/t_node.hpp"
 #include "../../models/graph.hpp"

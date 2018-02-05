@@ -9,6 +9,10 @@
 #ifndef Randoms_h
 #define Randoms_h
 
+#include <cstdlib>
+#include <cmath>
+#include <limits>
+
 class Randoms {
 public:
     Randoms(long x);

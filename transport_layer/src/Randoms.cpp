@@ -1,8 +1,4 @@
 #include "Randoms.h"
-#include <cstdlib>
-
-#include <cmath>
-#include <limits>
 
 using namespace std;
 
@@ -89,7 +85,7 @@ float Randoms::gaussdev(long *idum)
 			 rsq=v1*v1+v2*v2;          // see if they are in the unit circle,
 
 	  } while (rsq >= 1.0 || rsq == 0.0);  // and if they are not, try again.
-	  fac=sqrt(-2.0*log(rsq)/rsq);
+        fac=sqrt(-2.0*log(rsq)/rsq);
 	  // Now make the Box-Muller transformation to get two normal deviates. 
 	  // Return one and save the other for next time.
 	  gset=v1*fac;

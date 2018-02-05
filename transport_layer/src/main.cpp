@@ -12,18 +12,12 @@
 #include <fstream>
 #include <sstream>
 
-#include "../lib/ga_lib/src/Galgo.hpp"
+#include "Galgo.hpp"
 
-#include "Dijkstra.hpp"
-#include "ACO.hpp"
-#include "cost_function.hpp"
 #include "output_extractor.hpp"
+#include "ga_objective.hpp"
 
-#include "../../utils/config_factory.hpp"
-#include "../../models/config.hpp"
-#include "../../models/map_data.hpp"
-#include "../../models/manifest.hpp"
-#include "../../models/graph.hpp"
+#include "config_factory.hpp"
 
 #define MAPS "../../maps/"
 #define DJ_MAPS "../../maps/d_maps/"
@@ -79,10 +73,8 @@ int main(int argc, const char * argv[]) {
     galgo::Parameter<double> phi({0.0,1.0});
     galgo::Parameter<double> rho({0.0,1.0});
     
-    ga_objective<double> obj(map, manifest_map, dijkstra, 10)
-    
     // initiliazing genetic algorithm
-    galgo::GeneticAlgorithm<double> ga(obj::Objective,100,50,true,alpha, beta, delta, lambda, phi, rho);
+    galgo::GeneticAlgorithm<double> ga(ga_objective<double>::Objective,100,50,true,alpha, beta, delta, lambda, phi, rho);
     
     graph *g = new graph();
     g->construct_graph(map);

@@ -34,6 +34,7 @@
 		F131BE0F2028B66700515E50 /* Converter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Converter.hpp; sourceTree = "<group>"; };
 		F131BE102028B66700515E50 /* GeneticAlgorithm.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GeneticAlgorithm.hpp; sourceTree = "<group>"; };
 		F131BE112028B66700515E50 /* Parameter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Parameter.hpp; sourceTree = "<group>"; };
+		F131BE122028B73C00515E50 /* ga_objective.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ga_objective.hpp; path = src/ga_objective.hpp; sourceTree = "<group>"; };
 		F1463876200D30E800B47D97 /* cost_function.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = cost_function.hpp; path = src/cost_function.hpp; sourceTree = "<group>"; };
 		F1463877200D30E900B47D97 /* cost_function.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cost_function.cpp; path = src/cost_function.cpp; sourceTree = "<group>"; };
 		F1517F0820212055009D2FC6 /* output_extractor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = output_extractor.cpp; path = src/output_extractor.cpp; sourceTree = "<group>"; };
@@ -62,8 +63,8 @@
 				C05DF7AA1EE9F4C90085DE9D /* Dijkstra.cpp */,
 				F155DC0D20089D1200E9F9DE /* heuristic_selector.cpp */,
 				F1463877200D30E900B47D97 /* cost_function.cpp */,
-				187D97AF1EE9DF880061B301 /* main.cpp */,
 				F121D52820243061003393FC /* ga_objective.cpp */,
+				187D97AF1EE9DF880061B301 /* main.cpp */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -78,6 +79,7 @@
 				F1053E261F17E50700967DC0 /* Dijkstra.hpp */,
 				F155DC0C20089D1200E9F9DE /* heuristic_selector.hpp */,
 				F1463876200D30E800B47D97 /* cost_function.hpp */,
+				F131BE122028B73C00515E50 /* ga_objective.hpp */,
 			);
 			name = include;
 			sourceTree = "<group>";
