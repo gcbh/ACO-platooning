@@ -37,10 +37,6 @@ int main(int argc, const char * argv[]) {
     config_factory conf_fac;
     config conf = conf_fac.build();
     
-    logger std_out;
-    logger cost_out("../logs/cost.out", false);
-    logger debug_log("../logs/debug.log", false);
-    
     time_t seed = (long)time(nullptr);
     
     map_data map = get_data(conf.getMap());
@@ -60,9 +56,10 @@ int main(int argc, const char * argv[]) {
     }
     dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map);
     
-    heuristic_selector* sel = new heuristic_selector(conf.getAlpha(), conf.getBeta(), conf.getPhi(), seed, dijkstra);
-    
-    cost_function* cost = new cost_function();
+    ga_objective<double>::map() = &map;
+    ga_objective<double>::manifest_d() = &manifest_map;
+    ga_objective<double>::dijkstra() = dijkstra;
+    ga_objective<double>::num_iters() = conf.ITERS();
     
     // initializing parameters lower and upper bounds
     // an initial value can be added inside the initializer list after the upper bound
@@ -76,31 +73,9 @@ int main(int argc, const char * argv[]) {
     // initiliazing genetic algorithm
     galgo::GeneticAlgorithm<double> ga(ga_objective<double>::Objective,100,50,true,alpha, beta, delta, lambda, phi, rho);
     
-    graph *g = new graph();
-    g->construct_graph(map);
-    
-    ACO *aco = new ACO(g, manifest_map, conf, sel, cost, std_out, cost_out, debug_log);
-    aco->init(dijkstra);
-    
-    try {
-        for(int i = 1; i <= conf.ITERS(); i++) {
-            int cost = aco->iteration();
-            if (cost < 0) continue;
-        }
-        
-        // generate final output
-        write_final_output(aco, g, manifest_map.size());
-
-        delete g;
-        delete dijkstra;
-        delete sel;
-        delete aco;
-        
-    } catch (const exception &e) {
-        cout << e.what() << endl;
-    }
-    
     cout << "Run completed"<< endl;
+    
+    delete dijkstra;
     
     return 0;
 }

@@ -22,16 +22,48 @@ template <typename T>
 class ga_objective {
 public:
     static std::vector<T> Objective(const std::vector<T>& x) {
-        config c("", "", x[0], x[1], x[2], x[3], x[4], x[5], false, 100);
+        
         time_t seed = (long)time(nullptr);
+        
+        logger std_out;
+        logger cost_out("../logs/" + to_string(seed) + "-cost.out", false);
+        logger debug_log("../logs/" + to_string(seed) + "-debug.log", false);
+        
+        config c("", "", x[0], x[1], x[2], x[3], x[4], x[5], false, 100);
+        
         heuristic_selector* sel = new heuristic_selector(c.getAlpha(), c.getBeta(), c.getPhi(), seed, ga_objective<T>::dijkstra());
-    
-        cost_function* cost = new cost_function();
+        
+        graph *g = new graph();
+        g->construct_graph((*ga_objective<T>::map()));
+        
+        ACO *aco = new ACO(g, (*ga_objective<T>::manifest_d()), c, sel, ga_objective<T>::j(), std_out, cost_out, debug_log);
+        aco->init(ga_objective<T>::dijkstra());
+        
+        try {
+            for(int i = 1; i <= ga_objective<T>::num_iters(); i++) {
+                int cost = aco->iteration();
+                if (cost < 0) continue;
+            }
+            
+            // generate final output
+//            write_final_output(aco, g, manifest_map.size());
+            
+            delete g;
+            delete sel;
+            delete aco;
+            
+        } catch (const exception &e) {
+            cout << e.what() << endl;
+        }
         return x;
     }
     static map_data*& map();
     static manifest*& manifest_d();
     static Dijkstra*& dijkstra();
+    static cost_function*& j() {
+        static cost_function* cf = new cost_function();
+        return cf;
+    };
     static int& num_iters();
 
 };
