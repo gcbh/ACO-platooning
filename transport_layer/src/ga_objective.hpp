@@ -39,10 +39,13 @@ public:
         ACO *aco = new ACO(g, (*ga_objective<T>::manifest_d()), c, sel, ga_objective<T>::j(), std_out, cost_out, debug_log);
         aco->init(ga_objective<T>::dijkstra());
         
+        T full_sum = 0.0;
+        
         try {
             for(int i = 1; i <= ga_objective<T>::num_iters(); i++) {
                 int cost = aco->iteration();
                 if (cost < 0) continue;
+                else full_sum += cost;
             }
             
             // generate final output
@@ -55,7 +58,7 @@ public:
         } catch (const exception &e) {
             cout << e.what() << endl;
         }
-        return x;
+        return {full_sum / ga_objective<T>::num_iters()};;
     }
     static map_data*& map();
     static manifest*& manifest_d();
