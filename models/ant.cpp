@@ -47,7 +47,12 @@ path ant::next_node(int time) {
         
         e->update_pheromone(time, DELTA);
         // ensure node travelling from cannot be reached again
+        t_node* node = e->get_dest();
+        t_edge* e2 = node->get_edge(current->get_id());
+        
         past_edges.insert(e->get_id());
+        past_edges.insert(e2->get_id());
+        
         path p = make_pair(current, e);
         
         // update 'current'
@@ -65,7 +70,10 @@ list<t_edge*> ant::avail_edges() {
     list<t_edge*> edges;
     for (int i = 0; i < current->edge_number(); i++) {
         t_edge* e = (*current)[i];
-        if (past_edges.find(e->get_id()) == past_edges.end()) {
+        t_node* node = e->get_dest();
+        t_edge* e2 = node->get_edge(current->get_id());
+        
+        if (past_edges.find(e->get_id()) == past_edges.end() && past_edges.find(e2->get_id()) == past_edges.end()) {
             edges.push_back(e);
         }
     }

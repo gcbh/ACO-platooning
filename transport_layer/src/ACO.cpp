@@ -200,7 +200,7 @@ double ACO::evaluation(int max_duration) {
 }
 
 void ACO::rollback_ant(int start, int dest, base_ant* ant, int tick) {
-    if (!ant->has_reached_destination()) {
+    if (!ant->get_did_reach_destination()) {
         t_edge* e = (*g)[start]->get_edge(dest);
         e->update_pheromone(tick, -(1.5 * conf.getDelta()));
     }
@@ -241,10 +241,17 @@ void ACO::build_output(int ant_num, string act, vector<string> *actions) {
 
 double ACO::path_failure_penalty() {
     double cost = 0.0;
+    bool reached_dest = true;
     for (list<base_ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
         if (!(*it)->has_reached_destination()) {
             cost += 100000.0;
+            reached_dest = false;
+        } else {
+            reached_dest = true;
         }
+        // replay_route() in evaluation will reset current which changes the result of has_reached_destination().
+        // Need to hold this property for rollback.
+        (*it)->set_did_reach_destination(reached_dest);
     }
     return cost;
 }

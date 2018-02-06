@@ -48,7 +48,7 @@ int main(int argc, const char * argv[]) {
     config conf = conf_fac.build();
     
     logger std_out;
-    logger cost_out("../logs/cost.out", false);
+    logger cost_out("../logs/cost.log", false);
     logger debug_log("../logs/debug.log", false);
     
     time_t seed = (long)time(nullptr);
