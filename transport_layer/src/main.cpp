@@ -28,6 +28,9 @@
 #define DJ_MAPS "../../maps/d_maps/"
 #define DISTRIBUTION_MAPS "../../maps/distribution_centers/"
 #define MANIFESTS "../../manifests/"
+#define SCRIPT "../../utils/scripts/"
+#define SCRIPT_NAME "process_cities_complete.py"
+#define COORDS_FILENAME "cities_ids_coords.txt"
 
 using namespace std;
 
@@ -93,6 +96,9 @@ int main(int argc, const char * argv[]) {
     g->construct_graph(gp_processed_map);
   
     delete gp;
+
+    // create file for Simulation
+    system(("python " + string(SCRIPT) + SCRIPT_NAME + " " + distr_cntr_file_path + " "+ MAPS + COORDS_FILENAME).c_str());
     
     heuristic_selector* sel = new heuristic_selector(conf.getAlpha(), conf.getBeta(), conf.getPhi(), seed, dijkstra);
     
