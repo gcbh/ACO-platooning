@@ -14,6 +14,7 @@
 #include "SimScene.hpp"
 #include "ShaderUtils.hpp"
 #include "TextureUtils.hpp"
+#include "StringUtils.hpp"
 #include "glm.hpp"
 #include "SimCamera.hpp"
 #include "lodepng.h"
@@ -89,18 +90,18 @@ void SimScene::postsetup() {
     SimScene::edge_mvp_id = glGetUniformLocation(SimScene::edge_program, "MVP");
 
     //UI Setup
-    show_map_window = 0;
-    show_manifest_window = 0;
+    show_map_window = 1;
+    show_schedule_window = 1;
     sim_time_scale = 0.1;
     sim_max_time = 8.0;
 }
 
 void SimScene::preupdate(UpdateState *us){
-    double new_sim_time = us->sim_time + us->deltaTime * sim_time_scale;
+    /*double new_sim_time = us->sim_time + us->deltaTime * sim_time_scale;
     us->sim_time = fmax(0.0, fmin(new_sim_time, sim_max_time));
 
-    printf("Sim Time: %f", us->sim_time);
-    positionTrucks(us);
+    //printf("Sim Time: %f", us->sim_time);
+    positionTrucks(us);*/
 }
 
 void SimScene::prerender(RenderState* rs) {
@@ -133,33 +134,56 @@ void SimScene::postrender(RenderState* rs) {
 }
 
 void SimScene::loadGraph() {
+    char const * lTheOpenFileName;
+
+    lTheOpenFileName = tinyfd_openFileDialog(
+                                             "Choose Map File",
+                                             "",
+                                             0,
+                                             NULL,
+                                             NULL,
+                                             0);
+
+    if (! lTheOpenFileName) {
+        printf("Error selecting map file");
+        return;
+    }
+
     //Load cities, also get a middle point to put the camera at to start
-    std::ifstream cities_file("cities_ids_coords.txt");
+    std::ifstream cities_file(lTheOpenFileName);
     std::string   line;
     float         avgX = 0.0f;
     float         avgY = 0.0f;
 
     while(getline(cities_file, line)) {
         std::stringstream   linestream(line);
-        int            city_id;
-        std::string    city_name;
-        float          latitude;
-        float          longitude;
+        int            city1_id;
+        std::string    city1_name;
+        float          city1_lat;
+        float          city1_long;
+        int            city2_id;
+        std::string    city2_name;
+        float          city2_lat;
+        float          city2_long;
+        float          weight;
 
 
-        linestream >> city_id >> city_name >> latitude >> longitude;
+        linestream >> city1_id >> city1_name >> city1_lat >> city1_long >> city2_id >> city2_name >> city2_lat >> city2_long >> weight;
 
-        CityNode* city = new CityNode();
-        m_root_node->addChildNode(city);
-        city->m_id = city_id;
-        city->m_name = city_name;
-        city->m_position.x = longitude;
-        city->m_position.y = latitude;
+        //Check the city list for both cities before creating the edge, create any missing ones
+        if(city_map.find(city1_id) == city_map.end()) {
+            addCityNode(city1_id, city1_name, city1_lat, city1_long);
+            avgX += city1_long;
+            avgY += city1_lat;
+        }
 
-        //Add to our city map
-        city_map[city->m_id] = city;
-        avgX += longitude;
-        avgY += latitude;
+        if(city_map.find(city2_id) == city_map.end()) {
+            addCityNode(city2_id, city2_name, city2_lat, city2_long);
+            avgX += city2_long;
+            avgY += city2_lat;
+        }
+
+        addEdgeNode(city1_id, city2_id, weight);
     }
 
     avgX /= city_map.size();
@@ -168,63 +192,48 @@ void SimScene::loadGraph() {
     m_scene_camera->m_position.y = avgY;
     m_scene_camera->m_focal_point.x = avgX;
     m_scene_camera->m_focal_point.y = avgY;
-
-    //Load edges
-    std::ifstream edges_file("cities_p.txt");
-    int id = 0;
-
-    while(getline(edges_file, line)) {
-        std::stringstream   linestream(line);
-        int            city_id1;
-        std::string    city_name1;
-        int            city_id2;
-        std::string    city_name2;
-        float          weight;
-
-        bool hasBoth = true;
-
-        linestream >> city_id1 >> city_name1 >> city_id2 >> city_name2 >> weight;
-
-        //Check the city list for both cities before creating the edge, log missing ones
-        if(city_map.find(city_id1) == city_map.end()) {
-            std::cout << "City: " << city_id1 << " " << city_name1 << " is in the edge map but not the city map" << std::endl;
-            hasBoth = false;
-        }
-
-        if(city_map.find(city_id2) == city_map.end()) {
-            std::cout << "City: " << city_id2 << " " << city_name2 << " is in the edge map but not the city map" << std::endl;
-            hasBoth = false;
-        }
-
-        if (hasBoth) {
-            EdgeNode* edge = new EdgeNode();
-            m_root_node->addChildNode(edge);
-            edge->m_id = hash_pair(std::make_pair(city_id1, city_id2));
-            edge->m_weight = weight;
-            edge->m_position.x = (city_map[city_id1]->m_position.x + city_map[city_id2]->m_position.x)/2;
-            edge->m_position.y = (city_map[city_id1]->m_position.y + city_map[city_id2]->m_position.y)/2;
-            edge->m_position.z = -0.1;
-            edge->m_position_pair = std::make_pair(
-                glm::vec4(city_map[city_id1]->m_position.x, city_map[city_id1]->m_position.y, 0.0f, 1.0f),
-                glm::vec4(city_map[city_id2]->m_position.x, city_map[city_id2]->m_position.y, 0.0f, 1.0f)
-            );
-            edge->m_static_heat = 0.0f;
-            edge->m_dynamic_heat = 0.0f;
-
-            //Add to our edge map
-            edge_map[edge->m_id] = edge;
-
-            id++;
-        }
-    }
 }
 
-void SimScene::loadManifest() {
+CityNode* SimScene::addCityNode(int city_id, std::string city_name, float latitude, float longitude) {
+    CityNode* city = new CityNode();
+    m_root_node->addChildNode(city);
+    city->m_id = city_id;
+    city->m_name = city_name;
+    city->m_position.x = longitude;
+    city->m_position.y = latitude;
+
+    //Add to our city map
+    city_map[city->m_id] = city;
+    return city;
+}
+
+EdgeNode* SimScene::addEdgeNode(int city_id1, int city_id2, float weight) {
+
+    EdgeNode* edge = new EdgeNode();
+    m_root_node->addChildNode(edge);
+    edge->m_id = hash_pair(std::make_pair(city_id1, city_id2));
+    edge->m_weight = weight;
+    edge->m_position.x = (city_map[city_id1]->m_position.x + city_map[city_id2]->m_position.x)/2;
+    edge->m_position.y = (city_map[city_id1]->m_position.y + city_map[city_id2]->m_position.y)/2;
+    edge->m_position.z = -0.1;
+    edge->m_position_pair = std::make_pair(
+                                           glm::vec4(city_map[city_id1]->m_position.x, city_map[city_id1]->m_position.y, 0.0f, 1.0f),
+                                           glm::vec4(city_map[city_id2]->m_position.x, city_map[city_id2]->m_position.y, 0.0f, 1.0f)
+                                           );
+    edge->m_static_heat = 0.0f;
+    edge->m_dynamic_heat = 0.0f;
+
+    //Add to our edge map
+    edge_map[edge->m_id] = edge;
+    return edge;
+}
+
+void SimScene::loadSchedule() {
 
     char const * lTheOpenFileName;
 
     lTheOpenFileName = tinyfd_openFileDialog(
-                                             "Choose Manifest File",
+                                             "Choose Schedule File",
                                              "",
                                              0,
                                              NULL,
@@ -232,22 +241,22 @@ void SimScene::loadManifest() {
                                              0);
 
     if (! lTheOpenFileName) {
-        printf("Error selecting file");
+        printf("Error selecting schedule file");
         return;
     }
     
-    //Load and the manifest file
-    std::ifstream manifest_file(lTheOpenFileName);
+    //Load and the schedule file
+    std::ifstream schedule_file(lTheOpenFileName);
 
     json j;
-    manifest_file >> j;
+    schedule_file >> j;
 
     json schedules = j["schedules"];
 
     //Parse and create trucks
     for (auto& schedule : schedules) {
         TruckNode* t = new TruckNode(schedule);
-        m_root_node->addChildNode(t);
+        //m_root_node->addChildNode(t);
         truck_map[t->m_id] = t;
     }
 
@@ -317,8 +326,8 @@ void SimScene::renderUI(RenderState* rs) {
             if (ImGui::MenuItem("Open Map")) {
                 loadGraph();
             }
-            if (ImGui::MenuItem("Open Manifest")) {
-                loadManifest();
+            if (ImGui::MenuItem("Open Schedule")) {
+                loadSchedule();
             }
             ImGui::Separator();
             if (ImGui::MenuItem("Exit")) {
@@ -328,7 +337,7 @@ void SimScene::renderUI(RenderState* rs) {
         }
         if (ImGui::BeginMenu("Windows")) {
             ImGui::MenuItem("Map", NULL, &show_map_window);
-            ImGui::MenuItem("Manifest", NULL, &show_manifest_window);
+            ImGui::MenuItem("Schedule", NULL, &show_schedule_window);
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
@@ -369,44 +378,51 @@ void SimScene::renderUI(RenderState* rs) {
             ImGui::RadioButton("Distance##RLM", (int*)&rs->roadLabelMode, 1); ImGui::SameLine();
             ImGui::RadioButton("Static Heat##RLM", (int*)&rs->roadLabelMode, 2); ImGui::SameLine();
             ImGui::RadioButton("Dynamic Heat##RLM", (int*)&rs->roadLabelMode, 3);
+        }
+        ImGui::End();
+    }
 
+    // Render schedule window UI
+    if (show_schedule_window) {
+        if (!ImGui::Begin("Schedule")) {
+            ImGui::End();
+            return;
+        }
+
+        //Show map information
+        if (ImGui::Button("Load Schedule")) {
+            loadSchedule();
+        }
+
+        //ImGui::DragFloat("Time Scale", &sim_time_scale, 0.01f, -2.0f, 2.0f, "%.06f x");
+
+        if (ImGui::CollapsingHeader("View")) {
             ImGui::Text("Truck Mode");
             ImGui::RadioButton("None##RLM", (int*)&rs->truckMode, 0); ImGui::SameLine();
             ImGui::RadioButton("Dijkstra##RLM", (int*)&rs->truckMode, 1); ImGui::SameLine();
             ImGui::RadioButton("ACO##RLM", (int*)&rs->truckMode, 2); ImGui::SameLine();
             ImGui::RadioButton("Dijkstra & ACO##RLM", (int*)&rs->truckMode, 3);
         }
-        ImGui::End();
-    }
-
-    // Render manifest window UI
-    if (show_manifest_window) {
-        if (!ImGui::Begin("Manifest")) {
-            ImGui::End();
-            return;
-        }
-
-        //Show map information
-        if (ImGui::Button("Load Manifest")) {
-            loadManifest();
-        }
-
-        ImGui::DragFloat("Time Scale", &sim_time_scale, 0.01f, -2.0f, 2.0f, "%.06f x");
 
         // Show node list
-        if (ImGui::CollapsingHeader("Truck")) {
-            if (truck_map.size() > 0) {
-                std::map<int, TruckNode*>::iterator it;
-                for (it = truck_map.begin(); it != truck_map.end(); it++) {
-                    if (ImGui::TreeNode(it->second, "%d", it->second->m_id)) {
-                        ImGui::Text("Segments");
-                        ImGui::TreePop();
-                    }
-                }
-            } else {
-                ImGui::Text("No manifest loaded");
-            }
-        }
+//        if (ImGui::CollapsingHeader("Truck")) {
+//            if (truck_map.size() > 0) {
+//                std::map<int, TruckNode*>::iterator i;
+//                for (i = truck_map.begin(); i != truck_map.end(); i++) {
+//                    if (ImGui::TreeNode(i->second, "%d", i->second->m_id)) {
+//                        std::vector<Segment*>::iterator j;
+//                        for (j = i->second->m_schedule.begin(); j != i->second->m_schedule.end(); j++) {
+//                            Segment* s = *j;
+//                            ImGui::Text("%s -> %s", city_map[s->start_node]->m_name.c_str(), city_map[s->end_node]->m_name.c_str());
+//                        }
+//                        ImGui::TreePop();
+//                    }
+//
+//                }
+//            } else {
+//                ImGui::Text("No schedule loaded");
+//            }
+//        }
         ImGui::End();
     }
 }

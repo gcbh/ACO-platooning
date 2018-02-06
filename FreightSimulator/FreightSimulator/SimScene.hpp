@@ -29,7 +29,7 @@ public:
     void postrender(RenderState* rs);
 
     void loadGraph();
-    void loadManifest();
+    void loadSchedule();
     void closestCity();
 
     static GLuint city_program, edge_program,
@@ -37,6 +37,13 @@ public:
                   vbo, vao, tex;
 
 private:
+    CityNode* addCityNode(int            city_id,
+                     std::string    city_name,
+                     float          latitude,
+                     float          longitude);
+    EdgeNode* addEdgeNode(int            city_id1,
+                     int            city_id2,
+                     float          weight);
     void generateStaticHeatMap();
     void clearStaticHeatMap();
     void positionTrucks(UpdateState* us);
@@ -52,7 +59,7 @@ private:
     float sim_max_time;
 
     bool show_map_window;
-    bool show_manifest_window;
+    bool show_schedule_window;
 };
 
 #endif /* SimScene_hpp */
