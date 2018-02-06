@@ -191,6 +191,7 @@ double ACO::evaluation(int max_duration) {
         cost += j->evaluate(segments);
     }
     cost_out.log(INFO, to_string(cost));
+    debug_log.log(DEBUG, "Cost: " + to_string(cost));
     return cost;
 }
 
