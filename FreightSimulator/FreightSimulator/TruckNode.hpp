@@ -24,7 +24,7 @@ class TruckNode : public QuadNode
 public:
 
     TruckNode() : QuadNode() {}
-//    TruckNode(json json);
+    TruckNode(json json);
 
     void postsetup();
     void preinput(InputState is);
@@ -32,7 +32,7 @@ public:
     void prerender(RenderState rs);
 
     int m_id;
-    std::vector<fydp::Segment*> m_schedule;
+    std::vector<Segment*> m_schedule;
 
 private:
 };

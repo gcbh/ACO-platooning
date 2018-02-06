@@ -11,10 +11,13 @@
 #include "glm.hpp"
 #include "matrix_transform.hpp"
 
-/*TruckNode::TruckNode(json j) {
+TruckNode::TruckNode(json j) {
     m_id = j.at("vehicle_id").get<int>();
-    //m_schedule = j.at("segments").get<std::vector<fydp::Segment>>();
-}*/
+    for (auto& segment : j["segments"]) {
+        Segment* s = new Segment(segment);
+        m_schedule.push_back(s);
+    }
+}
 
 void TruckNode::postsetup() {
     m_scale = glm::vec3(0.1f, 0.1f, 0.1f);

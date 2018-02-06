@@ -19,6 +19,7 @@
 #include "lodepng.h"
 #include <math.h>
 #include "json.hpp"
+#include "tinyfiledialogs.h"
 
 // for convenience
 using json = nlohmann::json;
@@ -213,19 +214,34 @@ void SimScene::loadGraph() {
 }
 
 void SimScene::loadManifest() {
-    //TODO: Load and parse a manifest file
-    std::ifstream manifest_file("manifest_mock.json");
+
+    char const * lTheOpenFileName;
+
+    lTheOpenFileName = tinyfd_openFileDialog(
+                                             "Choose Manifest File",
+                                             "",
+                                             0,
+                                             NULL,
+                                             NULL,
+                                             0);
+
+    if (! lTheOpenFileName) {
+        printf("Error selecting file");
+        return;
+    }
+    
+    //Load and the manifest file
+    std::ifstream manifest_file(lTheOpenFileName);
 
     json j;
     manifest_file >> j;
 
-    json metadata = j["metadata"];
     json schedules = j["schedules"];
 
-    /*for (auto& schedule : schedules) {
+    for (auto& schedule : schedules) {
         TruckNode* t = new TruckNode(schedule);
         truck_map[t->m_id] = t;
-    }*/
+    }
 }
 
 void SimScene::renderUI(RenderState* rs) {

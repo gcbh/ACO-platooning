@@ -27,8 +27,8 @@
 					"end_node" : 5,
 					"platoon_members" : [2],
 					"time" : 3,
-					"max_wait": 2,
-				},
+					"max_wait": 2
+				}
 			]
 		},
 		{
