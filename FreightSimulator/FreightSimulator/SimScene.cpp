@@ -21,6 +21,19 @@
 #include "json.hpp"
 #include "tinyfiledialogs.h"
 
+// Allow unordered hashing of pairs (for edge map)
+int hash_pair(std::pair<int,int> p) {
+    int a, b;
+
+    // Sort
+    a = fmin(p.first,p.second);
+    b = fmax(p.first,p.second);
+
+    return a + b * b;
+}
+
+
+
 // for convenience
 using json = nlohmann::json;
 
@@ -78,25 +91,16 @@ void SimScene::postsetup() {
     //UI Setup
     show_map_window = 0;
     show_manifest_window = 0;
+    sim_time_scale = 0.1;
+    sim_max_time = 8.0;
 }
 
-void SimScene::preinput(InputState is) {
-    if (glfwGetKey(is.window, GLFW_KEY_SPACE ) == GLFW_PRESS) {
-        std::string closestCity = "";
-        float closestDistance = 200.0;
-        std::map<int, CityNode*>::iterator it;
-        for (it = city_map.begin(); it != city_map.end(); it++) {
-            float deltaX = it->second->m_position.x - m_scene_camera->m_position.x;
-            float deltaY = it->second->m_position.y - m_scene_camera->m_position.y;
-            float distance = sqrt(pow(deltaX, 2) + pow(deltaY, 2));
+void SimScene::preupdate(UpdateState *us){
+    double new_sim_time = us->sim_time + us->deltaTime * sim_time_scale;
+    us->sim_time = fmax(0.0, fmin(new_sim_time, sim_max_time));
 
-            if (distance < closestDistance) {
-                closestCity = it->second->m_name;
-                closestDistance = distance;
-            }
-        }
-        std::cout << "City: " << closestCity << std::endl;
-    }
+    printf("Sim Time: %f", us->sim_time);
+    positionTrucks(us);
 }
 
 void SimScene::prerender(RenderState* rs) {
@@ -195,7 +199,7 @@ void SimScene::loadGraph() {
         if (hasBoth) {
             EdgeNode* edge = new EdgeNode();
             m_root_node->addChildNode(edge);
-            edge->m_id = std::make_pair(city_id1, city_id2);
+            edge->m_id = hash_pair(std::make_pair(city_id1, city_id2));
             edge->m_weight = weight;
             edge->m_position.x = (city_map[city_id1]->m_position.x + city_map[city_id2]->m_position.x)/2;
             edge->m_position.y = (city_map[city_id1]->m_position.y + city_map[city_id2]->m_position.y)/2;
@@ -204,6 +208,8 @@ void SimScene::loadGraph() {
                 glm::vec4(city_map[city_id1]->m_position.x, city_map[city_id1]->m_position.y, 0.0f, 1.0f),
                 glm::vec4(city_map[city_id2]->m_position.x, city_map[city_id2]->m_position.y, 0.0f, 1.0f)
             );
+            edge->m_static_heat = 0.0f;
+            edge->m_dynamic_heat = 0.0f;
 
             //Add to our edge map
             edge_map[edge->m_id] = edge;
@@ -238,9 +244,69 @@ void SimScene::loadManifest() {
 
     json schedules = j["schedules"];
 
+    //Parse and create trucks
     for (auto& schedule : schedules) {
         TruckNode* t = new TruckNode(schedule);
+        m_root_node->addChildNode(t);
         truck_map[t->m_id] = t;
+    }
+
+    clearStaticHeatMap();
+    generateStaticHeatMap();
+}
+
+void SimScene::generateStaticHeatMap() {
+    int max_heat = 1;
+    std::map<int, int> heatMap;
+
+    std::map<int, TruckNode*>::iterator i;
+    for (i = truck_map.begin(); i != truck_map.end(); i++) {
+        std::vector<Segment*>::iterator j;
+        for (j = i->second->m_schedule.begin(); j != i->second->m_schedule.end(); j++) {
+            Segment* s = *j;
+            int edge_id = hash_pair(std::make_pair(s->start_node, s->end_node));
+
+            heatMap[edge_id] += 1;
+            max_heat = fmax(max_heat, heatMap[edge_id]);
+        }
+    }
+
+    //Assign static heat values
+    std::map<int, int>::iterator k;
+    for (k = heatMap.begin(); k != heatMap.end(); k++) {
+        edge_map[k->first]->m_static_heat = float(k->second) / float(max_heat);
+    }
+}
+
+void SimScene::clearStaticHeatMap() {
+    //Assign static heat values
+    std::map<int, EdgeNode*>::iterator i;
+    for (i = edge_map.begin(); i != edge_map.end(); i++) {
+        i->second->m_static_heat = 0.0f;
+    }
+}
+
+void SimScene::positionTrucks(UpdateState* us) {
+    std::map<int, TruckNode*>::iterator i;
+    for (i = truck_map.begin(); i != truck_map.end(); i++) {
+
+        double time = 0.0;
+        std::vector<Segment*>::iterator j;
+        for (j = i->second->m_schedule.begin(); j != i->second->m_schedule.end(); j++) {
+            Segment* s = *j;
+
+            double segment_end_time = time + s->time;
+
+            //We are on the current segment
+            if (us->sim_time <= segment_end_time) {
+                double segment_progress = fmax(0.0, us->sim_time - time) / s->time;
+
+                float x = city_map[s->start_node]->m_position.x + (city_map[s->end_node]->m_position.x - city_map[s->start_node]->m_position.x)*segment_progress;
+                float y = city_map[s->start_node]->m_position.y + (city_map[s->end_node]->m_position.y - city_map[s->start_node]->m_position.y)*segment_progress;
+                i->second->m_position = glm::vec3(x,y,0.0f);
+                break;
+            }
+        }
     }
 }
 
@@ -300,7 +366,15 @@ void SimScene::renderUI(RenderState* rs) {
 
             ImGui::Text("Road Label Mode");
             ImGui::RadioButton("None##RLM", (int*)&rs->roadLabelMode, 0); ImGui::SameLine();
-            ImGui::RadioButton("Distance##RLM", (int*)&rs->roadLabelMode, 1);
+            ImGui::RadioButton("Distance##RLM", (int*)&rs->roadLabelMode, 1); ImGui::SameLine();
+            ImGui::RadioButton("Static Heat##RLM", (int*)&rs->roadLabelMode, 2); ImGui::SameLine();
+            ImGui::RadioButton("Dynamic Heat##RLM", (int*)&rs->roadLabelMode, 3);
+
+            ImGui::Text("Truck Mode");
+            ImGui::RadioButton("None##RLM", (int*)&rs->truckMode, 0); ImGui::SameLine();
+            ImGui::RadioButton("Dijkstra##RLM", (int*)&rs->truckMode, 1); ImGui::SameLine();
+            ImGui::RadioButton("ACO##RLM", (int*)&rs->truckMode, 2); ImGui::SameLine();
+            ImGui::RadioButton("Dijkstra & ACO##RLM", (int*)&rs->truckMode, 3);
         }
         ImGui::End();
     }
@@ -316,6 +390,8 @@ void SimScene::renderUI(RenderState* rs) {
         if (ImGui::Button("Load Manifest")) {
             loadManifest();
         }
+
+        ImGui::DragFloat("Time Scale", &sim_time_scale, 0.01f, -2.0f, 2.0f, "%.06f x");
 
         // Show node list
         if (ImGui::CollapsingHeader("Truck")) {

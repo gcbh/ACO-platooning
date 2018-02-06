@@ -365,6 +365,7 @@
 		1452D0881EE9CCBB00883286 /* StringUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StringUtils.hpp; sourceTree = "<group>"; };
 		1452D08B1EE9D08100883286 /* Edge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Edge.cpp; sourceTree = "<group>"; };
 		1452D08C1EE9D08100883286 /* Edge.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Edge.hpp; sourceTree = "<group>"; };
+		145811AC20294CD400D1B695 /* Heatmap.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Heatmap.hpp; sourceTree = "<group>"; };
 		145C58191F1ED71D0025A9DE /* heat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = heat.png; path = assets/heat.png; sourceTree = "<group>"; };
 		145C581B1F1EF6E80025A9DE /* text_fs.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = text_fs.glsl; path = shaders/text_fs.glsl; sourceTree = "<group>"; };
 		145C581C1F1EF7D20025A9DE /* sourcecodepro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sourcecodepro.png; path = assets/sourcecodepro.png; sourceTree = "<group>"; };
@@ -761,6 +762,7 @@
 			children = (
 				1452D0871EE9CCBB00883286 /* StringUtils.cpp */,
 				1452D0881EE9CCBB00883286 /* StringUtils.hpp */,
+				145811AC20294CD400D1B695 /* Heatmap.hpp */,
 			);
 			name = utils;
 			path = ../../utils;

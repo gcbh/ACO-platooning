@@ -26,7 +26,7 @@ void Scene::_setup() {
     postsetup();
 }
 
-void Scene::_input(InputState is) {
+void Scene::_input(InputState* is) {
 
     preinput(is);
     input(is);
@@ -38,7 +38,7 @@ void Scene::_input(InputState is) {
     m_root_node->_input(is);
 }
 
-void Scene::_update(UpdateState us) {
+void Scene::_update(UpdateState* us) {
     //Update camera
     if (m_scene_camera != nullptr) {
         m_scene_camera->_update(us);

@@ -18,8 +18,8 @@ public:
     SimCamera() : Camera() {}
 
     void setup();
-    void input(InputState is);
-    void update(UpdateState us);
+    void input(InputState* is);
+    void update(UpdateState* us);
 
 private:
 };

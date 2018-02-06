@@ -26,15 +26,15 @@ void CityNode::postsetup() {
     m_mvp_id = SimScene::city_mvp_id;
 }
 
-void CityNode::preinput(InputState is) {
+void CityNode::preinput(InputState* is) {
 
 }
 
-void CityNode::preupdate(UpdateState us) {
+void CityNode::preupdate(UpdateState* us) {
 
 }
 
-void CityNode::postupdate(UpdateState us) {
+void CityNode::postupdate(UpdateState* us) {
 
 }
 

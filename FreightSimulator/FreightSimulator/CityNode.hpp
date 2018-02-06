@@ -20,9 +20,9 @@ public:
     CityNode() : SceneNode() {}
 
     void postsetup();
-    void preinput(InputState is);
-    void preupdate(UpdateState us);
-    void postupdate(UpdateState us);
+    void preinput(InputState* is);
+    void preupdate(UpdateState* us);
+    void postupdate(UpdateState* us);
     void render(RenderState* rs);
 
     int m_id;

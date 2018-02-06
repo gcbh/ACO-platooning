@@ -11,6 +11,9 @@
 #include "glm.hpp"
 #include "matrix_transform.hpp"
 
+static const ImVec4 col = ImVec4(1.0f,1.0f,1.0f,1.0f);
+static const ImU32 col32 = ImColor(col);
+
 TruckNode::TruckNode(json j) {
     m_id = j.at("vehicle_id").get<int>();
     for (auto& segment : j["segments"]) {
@@ -26,11 +29,25 @@ void TruckNode::postsetup() {
     m_mvp_id = SimScene::city_mvp_id;
 }
 
-void TruckNode::preinput(InputState is) {
+void TruckNode::preinput(InputState* is) {
 }
 
-void TruckNode::preupdate(UpdateState us) {
+void TruckNode::update(UpdateState* us) {
+    
 }
 
-void TruckNode::prerender(RenderState rs) {
+void TruckNode::prerender(RenderState* rs) {
+}
+
+void TruckNode::render(RenderState* rs) {
+    ImVec2 point = getScreenSpace(rs);
+    switch (rs->truckMode) {
+        case TruckMode::ACO:
+        case TruckMode::DijkstraAndACO:
+            ImGui::GetWindowDrawList()->AddCircleFilled(point, 2.0f, col32);
+            break;
+            break;
+        default:
+            break;
+    }
 }

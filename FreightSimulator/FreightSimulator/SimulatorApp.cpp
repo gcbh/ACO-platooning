@@ -24,17 +24,17 @@ void SimulatorApp::cleanup() {
     fprintf(stdout, "App Cleanup.\n");
 }
 
-void SimulatorApp::input(InputState is) {
-    if (glfwGetKey(is.window, GLFW_KEY_ESCAPE) == GLFW_PRESS){
+void SimulatorApp::input(InputState* is) {
+    if (glfwGetKey(is->window, GLFW_KEY_ESCAPE) == GLFW_PRESS){
         //Cleanup and exit
         cleanup();
-        glfwSetWindowShouldClose(is.window, GLFW_TRUE);
+        glfwSetWindowShouldClose(is->window, GLFW_TRUE);
     }
     
     m_scene->_input(is);
 }
 
-void SimulatorApp::update(UpdateState us) {
+void SimulatorApp::update(UpdateState* us) {
     //Calculate delta time
     m_scene->_update(us);
 }

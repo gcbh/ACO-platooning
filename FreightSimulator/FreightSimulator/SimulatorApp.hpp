@@ -22,8 +22,8 @@ public:
     std::string getName();
     void setup();
     void cleanup();
-    void input(InputState is);
-    void update(UpdateState is);
+    void input(InputState* is);
+    void update(UpdateState* is);
     void render(RenderState* is);
 
 private:

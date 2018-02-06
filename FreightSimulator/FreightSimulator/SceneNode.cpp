@@ -30,7 +30,7 @@ void SceneNode::_setup() {
     postsetup();
 }
 
-void SceneNode::_input(InputState is) {
+void SceneNode::_input(InputState* is) {
 
     preinput(is);
     input(is);
@@ -45,9 +45,9 @@ void SceneNode::_input(InputState is) {
     }
 }
 
-void SceneNode::_update(UpdateState us) {
+void SceneNode::_update(UpdateState* us) {
     //Update self
-    m_position = m_position + (m_velocity * (float)us.deltaTime);
+    m_position = m_position + (m_velocity * (float)us->deltaTime);
 
     m_model_matrix = glm::mat4(1.0);
     m_model_matrix = glm::translate(m_model_matrix, m_position);

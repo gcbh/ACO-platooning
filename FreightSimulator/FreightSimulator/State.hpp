@@ -36,7 +36,9 @@ enum class RoadMode : int {
 
 enum class RoadLabelMode : int {
     None,
-    Distance
+    Distance,
+    StaticHeat,
+    DynamicHeat
 };
 
 enum class TruckMode : int {
@@ -53,6 +55,8 @@ struct InputState {
 
 struct UpdateState {
     double deltaTime;
+    float sim_time;
+    float sim_time_scale;
 };
 
 struct RenderState {
@@ -67,6 +71,10 @@ struct RenderState {
     RoadMode roadMode;
     RoadLabelMode roadLabelMode;
     TruckMode truckMode;
+
+    // Sim Info
+    float sim_time;
+    float sim_time_scale;
 };
 
 #endif /* RenderState_hpp */

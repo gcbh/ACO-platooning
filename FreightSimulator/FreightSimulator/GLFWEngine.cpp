@@ -66,6 +66,14 @@ void GLFWEngine::setup(bool fullScreenEnable)
     // Setup style
     ImGui::StyleColorsClassic();
 
+    is = new InputState();
+    is->window = m_window;
+    is->deltaTime = 0.0f;
+
+    us = new UpdateState();
+    us->deltaTime = 0.0f;
+    us->sim_time = 0.0f;
+
     rs = new RenderState();
     rs->window = m_window;
     rs->mvp = glm::mat4(1.0f);
@@ -111,15 +119,12 @@ void GLFWEngine::input() {
     lastTime = currentTime;
 
     //Handle app input
-    InputState is = {m_window, deltaTime};
+    is->deltaTime = deltaTime;
     m_appInstance->input(is);
 }
 
 void GLFWEngine::update() {
-
-
-    //Update app
-    UpdateState us = {deltaTime};
+    us->deltaTime = deltaTime;
     m_appInstance->update(us);
 }
 

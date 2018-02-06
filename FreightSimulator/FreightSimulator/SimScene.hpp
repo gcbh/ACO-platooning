@@ -24,7 +24,7 @@ public:
     SimScene() : Scene() {}
 
     void postsetup();
-    void preinput(InputState is);
+    void preupdate(UpdateState* us);
     void prerender(RenderState* rs);
     void postrender(RenderState* rs);
 
@@ -37,12 +37,19 @@ public:
                   vbo, vao, tex;
 
 private:
+    void generateStaticHeatMap();
+    void clearStaticHeatMap();
+    void positionTrucks(UpdateState* us);
+
     void renderUI(RenderState* rs);
 
     glm::vec3 camera_position;
     std::map<int, CityNode*> city_map;
     std::map<int, TruckNode*> truck_map;
-    std::map<std::pair<int,int>, EdgeNode*> edge_map;
+    std::map<int, EdgeNode*> edge_map;
+
+    float sim_time_scale;
+    float sim_max_time;
 
     bool show_map_window;
     bool show_manifest_window;

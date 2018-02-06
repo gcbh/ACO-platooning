@@ -19,12 +19,12 @@ public:
     ~Camera();
 
     virtual void setup() {};
-    virtual void input(InputState is) {};
-    virtual void update(UpdateState us) {};
+    virtual void input(InputState* is) {};
+    virtual void update(UpdateState* us) {};
 
     void _setup();
-    void _input(InputState is);
-    void _update(UpdateState us);
+    void _input(InputState* is);
+    void _update(UpdateState* us);
 
     glm::mat4 vp_matrix;
     glm::vec3 m_position;

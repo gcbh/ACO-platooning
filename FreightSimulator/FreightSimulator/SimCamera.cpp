@@ -20,11 +20,11 @@ void SimCamera::setup() {
     m_zoom = 12.0f;
 }
 
-void SimCamera::input(InputState is) {
+void SimCamera::input(InputState* is) {
 
 }
 
-void SimCamera::update(UpdateState us) {
+void SimCamera::update(UpdateState* us) {
     //Lock direction
     m_focal_point.x = m_position.x;
     m_focal_point.y = m_position.y;

@@ -27,9 +27,10 @@ public:
     TruckNode(json json);
 
     void postsetup();
-    void preinput(InputState is);
-    void preupdate(UpdateState us);
-    void prerender(RenderState rs);
+    void preinput(InputState* is);
+    void update(UpdateState* us);
+    void prerender(RenderState* rs);
+    void render(RenderState* rs);
 
     int m_id;
     std::vector<Segment*> m_schedule;

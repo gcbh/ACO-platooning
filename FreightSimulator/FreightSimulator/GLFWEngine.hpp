@@ -40,6 +40,8 @@ private:
     std::string m_windowTitle;
     App* m_appInstance;
     GLFWwindow* m_window;
+    InputState* is;
+    UpdateState* us;
     RenderState* rs;
     double lastTime;
     double deltaTime;

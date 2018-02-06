@@ -20,12 +20,12 @@ public:
     EdgeNode() : SceneNode() {}
 
     void postsetup();
-    void preinput(InputState is);
-    void preupdate(UpdateState us);
+    void preinput(InputState* is);
+    void preupdate(UpdateState* us);
     void prerender(RenderState* rs);
     void render(RenderState* rs);
 
-    std::pair<int,int> m_id;
+    int m_id;
     std::pair<glm::vec4,glm::vec4> m_position_pair;
     float m_weight;
     float m_static_heat;
