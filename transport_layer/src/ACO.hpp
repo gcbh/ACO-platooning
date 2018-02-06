@@ -82,6 +82,7 @@ private:
     void    init_log();
     void    log_tick(int tick, vector<string> segments);
     void    save_lowest_cost_route();
+    void    rollback_ant(int start, int dest, base_ant* ant, int tick);
 };
 
 #endif /* ACO_hpp */

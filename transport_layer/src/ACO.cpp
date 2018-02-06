@@ -132,8 +132,6 @@ int ACO::iteration() {
         evap_mag = evap_mag * (lowest_cost / cost);
         lowest_cost = cost;
         save_lowest_cost_route();
-    } else if (cost > lowest_cost) {
-        evap_mag *= -1.0 * cost / lowest_cost;
     } else {
         evap_mag = 0.0;
     }
@@ -161,11 +159,17 @@ double ACO::evaluation(int max_duration) {
             path p = (*it)->replay_route();
             
             if (p.first) {
-                string start = to_string(p.first->get_id());
+                int start_id = p.first->get_id();
+        
+                string start = to_string(start_id);
                 string dest;
                 
                 if (p.second) {
-                    dest = to_string(p.second->get_dest()->get_id());
+                    int dest_id = p.second->get_dest()->get_id();
+                    dest = to_string(dest_id);
+                    
+                    rollback_ant(start_id, dest_id, (*it), tick);
+                    
                     if (segments.find(p) == segments.end()) {
                         segments.insert(make_pair(p, 1));
                     } else {
@@ -193,6 +197,13 @@ double ACO::evaluation(int max_duration) {
     cost_out.log(INFO, to_string(cost));
     debug_log.log(DEBUG, "Cost: " + to_string(cost));
     return cost;
+}
+
+void ACO::rollback_ant(int start, int dest, base_ant* ant, int tick) {
+    if (!ant->has_reached_destination()) {
+        t_edge* e = (*g)[start]->get_edge(dest);
+        e->update_pheromone(tick, -(1.5 * conf.getDelta()));
+    }
 }
 
 void ACO::evaporation(unordered_set<position, position_hash> traversed, double mag, int ticks) {
