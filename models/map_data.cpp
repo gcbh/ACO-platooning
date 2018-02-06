@@ -27,8 +27,9 @@ void map_data::insert(int src, int dest, int distance) {
 
 bool map_data::edge_exists(graph_edge edge) {
     pair<int, int> p = make_pair(edge.src, edge.dest);
+    pair<int, int> p_reverse = make_pair(edge.dest, edge.src);
     
-    if (existing_edges.find(p) != existing_edges.end()) {
+    if (existing_edges.find(p) != existing_edges.end() || existing_edges.find(p_reverse) != existing_edges.end()) {
         return true;
     }
 

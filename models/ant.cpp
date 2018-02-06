@@ -66,7 +66,7 @@ list<t_edge*> ant::avail_edges() {
     for (int i = 0; i < current->edge_number(); i++) {
         t_edge* e = (*current)[i];
         if (past_edges.find(e->get_id()) == past_edges.end()) {
-            edges.push_back((*current)[i]);
+            edges.push_back(e);
         }
     }
     return edges;
