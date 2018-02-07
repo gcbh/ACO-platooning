@@ -52,6 +52,8 @@ void output_extractor::fetch_dijkstra_for_non_platooning() {
         if (is_vehicle_platooning->at(i) == false) {
             string route = manifest_route.at(i);
             delete schedules[i];
+            schedules[i] = new vector<segment>();
+            
             vector<string> route_id = split(route, ' ');
 
             int current = stoi(route_id[0]);
@@ -62,6 +64,7 @@ void output_extractor::fetch_dijkstra_for_non_platooning() {
                 float t_time = (float) edge->get_distance() / (float) edge->get_speed();
 
                 segment seg;
+                seg.type = "solo_travel";
                 seg.start_node = current;
                 seg.end_node = next;
                 seg.time = t_time;
