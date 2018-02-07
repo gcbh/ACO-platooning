@@ -32,7 +32,7 @@ public:
         logger cost_out("../logs/" + to_string(seed) + "-cost.out", false);
         logger debug_log("../logs/" + to_string(seed) + "-debug.log", false);
         
-        config c("", "", x[0], x[1], x[2], x[3], x[4], x[5], false, 100);
+        config c("", "", "", x[0], x[1], x[2], x[3], x[4], x[5], false, 100);
         
         cost_function* cf = new cost_function();
         

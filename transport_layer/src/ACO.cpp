@@ -84,7 +84,8 @@ void ACO:: set_prime_ant() {
 
 void ACO::reset_ants() {
     for (list<base_ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
-        delete (*it);
+        base_ant *t = (*it);
+        delete t;
     }
 
     ants.clear();
