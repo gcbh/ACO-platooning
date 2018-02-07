@@ -73,7 +73,7 @@ int main(int argc, const char * argv[]) {
     graph_processor *gp = new graph_processor();
     
     // process distribution center info
-    string distr_cntr_file_path = DISTRIBUTION_MAPS + ("gp_" + conf.getDistributionCenter());
+    string distr_cntr_file_path = DISTRIBUTION_MAPS + ("comp_gp_" + conf.getDistributionCenter());
     ifstream distrFile(distr_cntr_file_path);
 
     map< pair<int, int>, string>* gp_map = new map< pair<int, int>, string>();
@@ -85,7 +85,15 @@ int main(int argc, const char * argv[]) {
         dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map, gp_map);
         
         gp_processed_map = gp->format_distribution_graph(dijkstra);
-        gp->create_distribution_map_file(gp_processed_map, distr_cntr_file_path);
+        
+        string temp_file_path = DISTRIBUTION_MAPS + ("gp_" + conf.getDistributionCenter());
+        gp->create_distribution_map_file(gp_processed_map, temp_file_path);
+
+        // create file for Simulation
+        system(("python " + string(SCRIPT) + SCRIPT_NAME + " " + temp_file_path + " "+ MAPS + COORDS_FILENAME).c_str());
+
+        // delete the temp file
+        system(("rm -f " + temp_file_path).c_str());
 
     } else {
         // Populate info for map
@@ -97,8 +105,7 @@ int main(int argc, const char * argv[]) {
   
     delete gp;
 
-    // create file for Simulation
-    system(("python " + string(SCRIPT) + SCRIPT_NAME + " " + distr_cntr_file_path + " "+ MAPS + COORDS_FILENAME).c_str());
+    
     
     heuristic_selector* sel = new heuristic_selector(conf.getAlpha(), conf.getBeta(), conf.getPhi(), seed, dijkstra);
     
@@ -170,10 +177,16 @@ map_data get_dist_data(string file_name) {
     {
         stringstream   linestream(line);
         int            src;
+        string         src_name;
+        double         src_lat;
+        double         src_long;
         int            dest;
+        string         dest_name;
+        double         dest_lat;
+        double         dest_long;
         int            distance;
         
-        linestream >> src >> dest >> distance;
+        linestream >> src >> src_name >> src_lat >> src_long >> dest >> dest_name >> dest_lat >> dest_long >> distance;
         
         map.insert(src, dest, distance);
     }

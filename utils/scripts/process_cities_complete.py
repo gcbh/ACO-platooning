@@ -53,7 +53,7 @@ else:
 new_name = file_name.rsplit('/', 1)[-1]
 file_path = file_name.rsplit('/',1)
 new_name = new_name.split('.')
-new_name = file_path[0] + "/" +new_name[0] + "_complete." + new_name[1]
+new_name = file_path[0] + "/" + "comp_" + new_name[0] + "." + new_name[1]
 print new_name
 
 try:
