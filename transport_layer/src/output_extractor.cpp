@@ -150,6 +150,7 @@ void output_extractor::extract_output(vector<string>** schedule) {
         }
         make_schedule(platoons);
     }
+    fetch_dijkstra_for_non_platooning();
     pretty_print_json();
 }
 
