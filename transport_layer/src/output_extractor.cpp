@@ -6,6 +6,7 @@ output_extractor::output_extractor(graph *i_g, int i_num_vehicles, Dijkstra *i_d
     dijkstra = i_dijkstra;
     num_vehicles = i_num_vehicles;
     transit_times = new float[num_vehicles];
+    is_vehicle_platooning = new vector<bool>[num_vehicles];
     schedules = new vector<segment>*[num_vehicles];
     for (int i = 0; i < num_vehicles; i++) {
         schedules[i] = new vector<segment>();
@@ -17,7 +18,7 @@ output_extractor::~output_extractor() {
     for (int i = 0; i < num_vehicles; i++) {
         delete schedules[i];
     }
-    
+    delete is_vehicle_platooning;
     delete[] schedules;
 }
 

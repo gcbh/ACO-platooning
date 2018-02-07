@@ -38,6 +38,7 @@ private:
     vector<segment>**                   schedules;
     float*                              transit_times;
     int                                 num_vehicles;
+    vector<bool>*                       is_vehicle_platooning;
     void    make_schedule(map<iPair, vector<int> > platoons);
     float   get_max_time_for_platoon(vector<int> vehicles);
     void    put_schedule(int vehicle_id, segment seg);
