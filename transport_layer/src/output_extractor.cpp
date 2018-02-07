@@ -51,13 +51,28 @@ void output_extractor::fetch_dijkstra_for_non_platooning() {
     for (unsigned i = 0; i < num_vehicles; i++) {
         if (is_vehicle_platooning->at(i) == false) {
             string route = manifest_route.at(i);
+            delete schedules[i];
+            vector<string> route_id = split(route, ' ');
+
+            int current = stoi(route_id[0]);
+            for (vector<string>::iterator it2 = route_id.begin(); ++it2 != route_id.end();) {
+                int next = stoi(*it2);
+
+                t_edge* edge = ((*g)[current])->get_edge(((*g)[next])->get_id());
+                float t_time = (float) edge->get_distance() / (float) edge->get_speed();
+
+                segment seg;
+                seg.start_node = current;
+                seg.end_node = next;
+                seg.time = t_time;
+                seg.max_wait = 0;
+
+                put_schedule(i, seg);
+
+                current = stoi(*it2);
+            }
         }
     }
-    // for (vector<bool>::iterator it = is_vehicle_platooning->begin(); it != is_vehicle_platooning->end(); ++it) {
-    //     if (*it == false) {
-
-    //     }
-    // }
 }
 
 void output_extractor::make_schedule(map<iPair, vector<int> > platoons) {
