@@ -151,12 +151,23 @@ void output_extractor::pretty_print_json() {
                 }
             }
             
-            output_file << "]," << endl; //close platoon_members
+            output_file << "]" << endl; //close platoon_members
             
-            output_file << "\t \t \t \t }," << endl; // close segment
+            vector<segment>::iterator dupe = it;
+            ++dupe;
+            output_file << "\t \t \t \t }";
+            if (dupe != schedules[i]->end()) {
+                output_file << ",";
+            }
+            output_file << endl; // close segment
         }
         output_file << "\t \t \t ]" << endl; // close segments
-        output_file << "\t \t }," << endl; // close vehicle
+        
+        output_file << "\t \t }";
+        if (i != num_vehicles - 1) {
+            output_file << ",";
+        }
+        output_file << endl; // close vehicle
     }
     
     output_file << "\t ]" << endl; // close schedules
