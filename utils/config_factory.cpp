@@ -27,7 +27,7 @@ config config_factory::build() {
     }
     
     // Instantiation of immutable config data structure
-    config c(d.map_name, d.manifest_name, d.alpha, d.beta, d.delta, d.lambda, d.phi, d.rho, d.debug, d.iters);
+    config c(d.map_name, d.distribution_center_name, d.manifest_name, d.alpha, d.beta, d.delta, d.lambda, d.phi, d.rho, d.debug, d.iters);
     return c;
 }
 
@@ -35,6 +35,8 @@ config config_factory::build() {
 void config_factory::convert(config_data* d, string key, string value) {
     if (key == "map") {
         d->map_name = value;
+    } if (key == "distribution") {
+        d->distribution_center_name = value;
     } else if (key == "manifest") {
         d->manifest_name = value;
     } else if (key == "alpha") {
@@ -53,6 +55,8 @@ void config_factory::convert(config_data* d, string key, string value) {
         d->debug = (atoi(value.c_str()) == 1) ? true : false;
     } else if (key == "iters") {
         d->iters = atoi(value.c_str());
+    } else if (key == "dist_center") {
+        d->distribution_center_name = value;
     }
 }
 

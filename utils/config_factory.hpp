@@ -17,6 +17,7 @@ using namespace std;
 // Intermediate data structure to allow for conversion into immutable version
 struct config_data {
     string map_name;
+    string distribution_center_name;
     string manifest_name;
     float alpha;
     float beta;

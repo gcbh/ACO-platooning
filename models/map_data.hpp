@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include <list>
 #include <unordered_set>
+#include <set>
+#include <iterator>
 
 using namespace std;
 
@@ -28,7 +30,9 @@ public:
     list<graph_edge>::iterator end();
     unordered_set<int> getNodes();
 private:
+    bool edge_exists(graph_edge edge);
     unordered_set<int> nodes;
+    set< pair<int, int> > existing_edges;
     list<graph_edge> edges;
 };
 

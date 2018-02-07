@@ -8,8 +8,9 @@
 
 #include "config.hpp"
 config::config() { }
-config::config(string map, string manifest,float i_a, float i_b, float i_d, float i_l, float i_p, float i_r, bool i_debug, int i_iters) {
+config::config(string map, string distribution_cntr, string manifest,float i_a, float i_b, float i_d, float i_l, float i_p, float i_r, bool i_debug, int i_iters) {
     map_name = map;
+    distribution_center_name = distribution_cntr;
     manifest_name = manifest;
     alpha = i_a;
     beta = i_b;
@@ -22,6 +23,7 @@ config::config(string map, string manifest,float i_a, float i_b, float i_d, floa
 }
 
 string config::getMap() {   return map_name;    }
+string config::getDistributionCenter() {    return distribution_center_name;    }
 string config::getManifest() {  return manifest_name;   }
 float config::getAlpha() {  return alpha;   }
 float config::getBeta() {   return beta;    }

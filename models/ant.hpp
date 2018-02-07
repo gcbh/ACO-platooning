@@ -32,7 +32,7 @@ public:
 private:
     heuristic_selector*   selector;
     float                 DELTA;
-    unordered_set<int>    past_nodes;
+    unordered_set<int>    past_edges;
     bool                  v_route;
     
     list<t_edge*>         avail_edges();
