@@ -1,10 +1,12 @@
 
 #include "output_extractor.hpp"
 
-output_extractor::output_extractor(graph *i_g, int i_num_vehicles) {
+output_extractor::output_extractor(graph *i_g, int i_num_vehicles, Dijkstra *i_dijkstra) {
     g = i_g;
+    dijkstra = i_dijkstra;
     num_vehicles = i_num_vehicles;
     transit_times = new float[num_vehicles];
+    is_vehicle_platooning = new vector<bool>(num_vehicles, false);
     schedules = new vector<segment>*[num_vehicles];
     for (int i = 0; i < num_vehicles; i++) {
         schedules[i] = new vector<segment>();
@@ -16,7 +18,7 @@ output_extractor::~output_extractor() {
     for (int i = 0; i < num_vehicles; i++) {
         delete schedules[i];
     }
-    
+    delete is_vehicle_platooning;
     delete[] schedules;
 }
 
@@ -44,6 +46,38 @@ void output_extractor::put_schedule(int vehicle_id, segment seg) {
     schedules[vehicle_id]->push_back(seg);
 }
 
+void output_extractor::fetch_dijkstra_for_non_platooning() {
+    vector<string> manifest_route = dijkstra->get_manifest_routes();
+    for (unsigned i = 0; i < num_vehicles; i++) {
+        if (is_vehicle_platooning->at(i) == false) {
+            string route = manifest_route.at(i);
+            delete schedules[i];
+            schedules[i] = new vector<segment>();
+            
+            vector<string> route_id = split(route, ' ');
+
+            int current = stoi(route_id[0]);
+            for (vector<string>::iterator it2 = route_id.begin(); ++it2 != route_id.end();) {
+                int next = stoi(*it2);
+
+                t_edge* edge = ((*g)[current])->get_edge(((*g)[next])->get_id());
+                float t_time = (float) edge->get_distance() / (float) edge->get_speed();
+
+                segment seg;
+                seg.type = "solo_travel";
+                seg.start_node = current;
+                seg.end_node = next;
+                seg.time = t_time;
+                seg.max_wait = 0;
+
+                put_schedule(i, seg);
+
+                current = stoi(*it2);
+            }
+        }
+    }
+}
+
 void output_extractor::make_schedule(map<iPair, vector<int> > platoons) {
     for (map<iPair, vector<int> >::iterator it = platoons.begin(); it != platoons.end(); ++it) {
         int src_id = it->first.first;
@@ -66,6 +100,9 @@ void output_extractor::make_schedule(map<iPair, vector<int> > platoons) {
             float max_time = get_max_time_for_platoon(vehicles);
             for(vector<int>::iterator l_it = vehicles.begin(); l_it != vehicles.end(); ++l_it) {
                 int vehicle_id = *l_it;
+                // this vehicle is platooning so no need to reset its path to dijkstra
+                is_vehicle_platooning->at(vehicle_id) = true;
+                
                 vector<int> members = vehicles;
                 
                 // don't want vehicle to be part of it's own platoon list.
@@ -116,6 +153,7 @@ void output_extractor::extract_output(vector<string>** schedule) {
         }
         make_schedule(platoons);
     }
+    fetch_dijkstra_for_non_platooning();
     pretty_print_json();
 }
 
@@ -151,12 +189,23 @@ void output_extractor::pretty_print_json() {
                 }
             }
             
-            output_file << "]," << endl; //close platoon_members
+            output_file << "]" << endl; //close platoon_members
             
-            output_file << "\t \t \t \t }," << endl; // close segment
+            vector<segment>::iterator dupe = it;
+            ++dupe;
+            output_file << "\t \t \t \t }";
+            if (dupe != schedules[i]->end()) {
+                output_file << ",";
+            }
+            output_file << endl; // close segment
         }
         output_file << "\t \t \t ]" << endl; // close segments
-        output_file << "\t \t }," << endl; // close vehicle
+        
+        output_file << "\t \t }";
+        if (i != num_vehicles - 1) {
+            output_file << ",";
+        }
+        output_file << endl; // close vehicle
     }
     
     output_file << "\t ]" << endl; // close schedules

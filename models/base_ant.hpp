@@ -29,11 +29,13 @@ public:
     virtual bool    has_concluded();
     path            replay_route();
     queue<t_node*>  get_ordered_path();
+    void            set_did_reach_destination(bool value);
+    bool            get_did_reach_destination();
 protected:
     int                      counter, dest;
     t_node*                  current;
     queue<t_node*>           ordered_path;
-    
+    bool                     did_reach_destination;
 };
 
 #endif /* base_ant_hpp */

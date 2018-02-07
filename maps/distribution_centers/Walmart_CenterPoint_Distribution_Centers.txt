@@ -1,0 +1,12 @@
+1 Los_Angeles
+19 Dallas
+49 Atlanta
+31 Memphis
+33 St_Louis
+21 Kansas_City
+20 Oklahoma_City
+37 Chicago
+116 Columbus
+43 Indianapolis
+71 New_York
+94 Charlotte

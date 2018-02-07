@@ -19,8 +19,9 @@ using namespace std;
 class config {
 public:
     config();
-    config(string map, string manifest, float i_a, float i_b, float i_d, float i_l, float i_p, float i_r, bool i_debug, int i_iters);
+    config(string map, string distribution_cntr, string manifest, float i_a, float i_b, float i_d, float i_l, float i_p, float i_r, bool i_debug, int i_iters);
     string getMap();
+    string getDistributionCenter();
     string getManifest();
     float getAlpha();
     float getBeta();
@@ -32,6 +33,7 @@ public:
     int ITERS();
 private:
     string map_name;
+    string distribution_center_name;
     string manifest_name;
     float alpha;
     float beta;

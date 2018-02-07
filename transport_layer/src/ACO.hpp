@@ -72,7 +72,7 @@ private:
     vector<string>**                    lowest_cost_route;
     logger                              std_out, cost_out, debug_log;
     
-    void    set_prime_ant(list<string> manifest_route);
+    void    set_prime_ant();
     void    evaporate_update_future_pheromones(int ticks);
     void    evaporation(unordered_set<position, position_hash> traversed, double mag, int ticks);
     double  evaluation(int max_duration);
@@ -82,6 +82,7 @@ private:
     void    init_log();
     void    log_tick(int tick, vector<string> segments);
     void    save_lowest_cost_route();
+    void    rollback_ant(int start, int dest, base_ant* ant, int tick);
 };
 
 #endif /* ACO_hpp */

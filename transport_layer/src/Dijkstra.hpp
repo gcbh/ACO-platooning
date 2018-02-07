@@ -23,6 +23,7 @@
 #include "manifest.hpp"
 #include "map_data.hpp"
 
+
 using namespace std;
 
 struct manifest_data {
@@ -36,16 +37,17 @@ public:
     Dijkstra();
     virtual ~Dijkstra();
     void            init(map_data map);
-    void            populate_from_dijkstra_file(string file_name, manifest manifest_map);
+    void            populate_from_dijkstra_file(string file_name, manifest manifest_map, map<pair<int, int>,
+     string>* gp_map);
     int             get_edge_weight(int src, int dest);
     float           get_max_dj_distance();
-    list<string>    get_manifest_routes();
+    vector<string>  get_manifest_routes();
     
 private:
     list< pair<int, int> >* edg;
     unordered_set<int>      nodes;
     int**                   edge_weight;
-    list<string>            manifest_route;
+    vector<string>          manifest_route;
     int                     num_of_nodes;
     float                   max_distance;
     

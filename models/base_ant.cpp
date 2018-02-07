@@ -48,6 +48,14 @@ bool base_ant::has_reached_destination() {
     return (current->get_id() == dest && counter <= 0);
 }
 
+void base_ant::set_did_reach_destination(bool value) {
+    did_reach_destination = value;
+}
+
+bool base_ant::get_did_reach_destination() {
+    return did_reach_destination;
+}
+
 bool base_ant::has_concluded() {
     return has_reached_destination();
 }

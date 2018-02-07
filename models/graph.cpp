@@ -22,6 +22,7 @@ graph::~graph() {
 }
 
 void graph::construct_graph(map_data data) {
+    set_nodes(data.getNodes());
     int speed = 75; //fixed nominal average speed on every edge 
     int edge_id = 0;
     for (list<graph_edge>::iterator it = data.begin(); it != data.end(); ++it) {
@@ -55,6 +56,14 @@ void graph::construct_graph(map_data data) {
         src_node->add_edge(edge_sd);
         dest_node->add_edge(edge_ds);
     }
+}
+
+void graph::set_nodes(unordered_set<int> node_ids) {
+    nodes = node_ids;
+}
+
+unordered_set<int> graph::get_nodes() {
+    return nodes;
 }
 
 t_node* graph::operator[](int i_node_id) {

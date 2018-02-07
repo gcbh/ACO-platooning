@@ -50,6 +50,8 @@
 		F155DC0D20089D1200E9F9DE /* heuristic_selector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = heuristic_selector.cpp; path = src/heuristic_selector.cpp; sourceTree = "<group>"; };
 		F155DC0E2009251A00E9F9DE /* ACO.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ACO.hpp; path = src/ACO.hpp; sourceTree = "<group>"; };
 		F155DC0F2009251A00E9F9DE /* ACO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ACO.cpp; path = src/ACO.cpp; sourceTree = "<group>"; };
+		F1CDD3AF202B66B800272C24 /* graph_processor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = graph_processor.hpp; path = src/graph_processor.hpp; sourceTree = "<group>"; };
+		F1CDD3B0202B66B800272C24 /* graph_processor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = graph_processor.cpp; path = src/graph_processor.cpp; sourceTree = "<group>"; };
 		F1E9F7B41EE7A8A6004511FE /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -58,13 +60,14 @@
 			isa = PBXGroup;
 			children = (
 				F1517F1420218A86009D2FC6 /* logger */,
+				F155DC0F2009251A00E9F9DE /* ACO.cpp */,
+				F1463877200D30E900B47D97 /* cost_function.cpp */,
+				C05DF7AA1EE9F4C90085DE9D /* Dijkstra.cpp */,
+				F121D52820243061003393FC /* ga_objective.cpp */,
+				F1CDD3B0202B66B800272C24 /* graph_processor.cpp */,
+				F155DC0D20089D1200E9F9DE /* heuristic_selector.cpp */,
 				F1517F0820212055009D2FC6 /* output_extractor.cpp */,
 				F1053E3C1F180CD000967DC0 /* Randoms.cpp */,
-				F155DC0F2009251A00E9F9DE /* ACO.cpp */,
-				C05DF7AA1EE9F4C90085DE9D /* Dijkstra.cpp */,
-				F155DC0D20089D1200E9F9DE /* heuristic_selector.cpp */,
-				F1463877200D30E900B47D97 /* cost_function.cpp */,
-				F121D52820243061003393FC /* ga_objective.cpp */,
 				187D97AF1EE9DF880061B301 /* main.cpp */,
 			);
 			name = src;
@@ -74,13 +77,14 @@
 			isa = PBXGroup;
 			children = (
 				F1517F0D202153B9009D2FC6 /* logger */,
+				F155DC0E2009251A00E9F9DE /* ACO.hpp */,
+				F1463876200D30E800B47D97 /* cost_function.hpp */,
+				F1053E261F17E50700967DC0 /* Dijkstra.hpp */,
+				F131BE122028B73C00515E50 /* ga_objective.hpp */,
+				F1CDD3AF202B66B800272C24 /* graph_processor.hpp */,
+				F155DC0C20089D1200E9F9DE /* heuristic_selector.hpp */,
 				F1517F0920212055009D2FC6 /* output_extractor.hpp */,
 				F1053E3D1F180CD000967DC0 /* Randoms.h */,
-				F155DC0E2009251A00E9F9DE /* ACO.hpp */,
-				F1053E261F17E50700967DC0 /* Dijkstra.hpp */,
-				F155DC0C20089D1200E9F9DE /* heuristic_selector.hpp */,
-				F1463876200D30E800B47D97 /* cost_function.hpp */,
-				F131BE122028B73C00515E50 /* ga_objective.hpp */,
 				F131BE142028DEEF00515E50 /* transport_exception.hpp */,
 			);
 			name = include;

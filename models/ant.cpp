@@ -18,7 +18,6 @@ ant::ant(t_node* first, int i_dest, float d, heuristic_selector* sel) {
     v_route = false;
     selector = sel;
     ordered_path.push(current);
-    past_nodes.insert(current->get_id());
 }
 
 ant::~ant() {   }
@@ -47,7 +46,12 @@ path ant::next_node(int time) {
         
         e->update_pheromone(time, DELTA);
         // ensure node travelling from cannot be reached again
-        past_nodes.insert(next->get_id());
+        t_node* node = e->get_dest();
+        t_edge* e2 = node->get_edge(current->get_id());
+        
+        past_edges.insert(e->get_id());
+        past_edges.insert(e2->get_id());
+        
         path p = make_pair(current, e);
         
         // update 'current'
@@ -65,8 +69,11 @@ list<t_edge*> ant::avail_edges() {
     list<t_edge*> edges;
     for (int i = 0; i < current->edge_number(); i++) {
         t_edge* e = (*current)[i];
-        if (past_nodes.find(e->get_dest()->get_id()) == past_nodes.end()) {
-            edges.push_back((*current)[i]);
+        t_node* node = e->get_dest();
+        t_edge* e2 = node->get_edge(current->get_id());
+        
+        if (past_edges.find(e->get_id()) == past_edges.end() && past_edges.find(e2->get_id()) == past_edges.end()) {
+            edges.push_back(e);
         }
     }
     return edges;
