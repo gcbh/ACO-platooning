@@ -18,8 +18,6 @@ ant::ant(t_node* first, int i_dest, float d, heuristic_selector* sel) {
     v_route = false;
     selector = sel;
     ordered_path.push(current);
-    src = first->get_id();
-    // past_edges.insert(current->get_id());
 }
 
 ant::~ant() {   }

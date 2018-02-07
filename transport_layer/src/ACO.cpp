@@ -39,7 +39,7 @@ ACO::~ACO() {
 void ACO:: init(Dijkstra *dijkstra) {
     d_map = dijkstra;
 
-    set_prime_ant(dijkstra->get_manifest_routes());
+    set_prime_ant();
 
     cout << setw(50) << "***BEGINNING ANT COLONY OPTIMIZATION***\n\n";
     cout << setw(50) << "------------------------------------------------------------\n\n";
@@ -48,12 +48,13 @@ void ACO:: init(Dijkstra *dijkstra) {
     reset_ants();
 }
 
-void ACO:: set_prime_ant(vector<string> manifest_route) {
+void ACO:: set_prime_ant() {
     int               tick = -1;
     vector<string>::  iterator it;
     bool              endIteration;
     double            cost = 0;
-
+    
+    vector<string>    manifest_route = d_map->get_manifest_routes();
     for (it = manifest_route.begin(); it != manifest_route.end(); it++) {
         string         route = *it;
         vector<string> nodes = split(route, ' ');
@@ -87,12 +88,14 @@ void ACO::reset_ants() {
     }
 
     ants.clear();
-    int src, dest;
-
-    for (multimap< pair<int, int> , int>::iterator it = manifest_data.begin(); it != manifest_data.end(); ++it) {
-        src = it->first.first;
-        dest = it->first.second;
-        ant *a = new ant((*g)[src], dest, conf.getDelta(), sel);
+    vector<string> manifest_route = d_map->get_manifest_routes();
+    for (vector<string>::iterator it = manifest_route.begin(); it != manifest_route.end(); it++) {
+        string         route = *it;
+        vector<string> nodes = split(route, ' ');
+        int            src = stoi(nodes[0]);
+        int            dest = stoi(nodes[nodes.size() - 1]);
+        t_node*        start_from = (*g)[src];
+        ant *a = new ant(start_from, dest, conf.getDelta(), sel);
         ants.push_back(a);
     }
 }
@@ -258,11 +261,11 @@ double ACO::path_failure_penalty() {
 }
 
 void ACO::init_log() {
+    vector<string> manifest_route = d_map->get_manifest_routes();
     int ant_num = 0;
-    vector<string> r = d_map->get_manifest_routes();
     string output = "\n ITERATION NUMBER" + to_string(num_iters) + "\n" + space(20);
 
-    for (vector<string>::iterator it = r.begin(); it != r.end(); ++it) {
+    for (vector<string>::iterator it = manifest_route.begin(); it != manifest_route.end(); ++it) {
         vector<string> path = split((*it), ' ');
         output += "Ant" + to_string(ant_num) + " " + path.front() + "->" + path.back() + space(10);
         ++ant_num;

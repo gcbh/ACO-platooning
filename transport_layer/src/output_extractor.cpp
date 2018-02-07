@@ -6,7 +6,7 @@ output_extractor::output_extractor(graph *i_g, int i_num_vehicles, Dijkstra *i_d
     dijkstra = i_dijkstra;
     num_vehicles = i_num_vehicles;
     transit_times = new float[num_vehicles];
-    is_vehicle_platooning = new vector<bool>[num_vehicles];
+    is_vehicle_platooning = new vector<bool>(num_vehicles, false);
     schedules = new vector<segment>*[num_vehicles];
     for (int i = 0; i < num_vehicles; i++) {
         schedules[i] = new vector<segment>();
@@ -77,6 +77,9 @@ void output_extractor::make_schedule(map<iPair, vector<int> > platoons) {
         seg.max_wait = 0; // initialize to 0
         
         if (vehicles.size() > 1) {
+            // this vehicle is platooning so no need to reset its path to dijkstra
+            is_vehicle_platooning->at(vehicles.front()) = true;
+            
             // platoon travel
             seg.type = "platoon_travel";
             float max_time = get_max_time_for_platoon(vehicles);

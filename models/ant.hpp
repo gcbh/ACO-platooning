@@ -28,13 +28,11 @@ public:
     path            next_node(int time);
     bool            void_route();
     bool            has_concluded();
-
 private:
     heuristic_selector*   selector;
     float                 DELTA;
     unordered_set<int>    past_edges;
     bool                  v_route;
-    
     list<t_edge*>         avail_edges();
     double calculate_heuristic(int node_id, int e_dist, float ph);
 };
