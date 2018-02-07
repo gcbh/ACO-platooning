@@ -72,7 +72,7 @@ private:
     vector<string>**                    lowest_cost_route;
     logger                              std_out, cost_out, debug_log;
     
-    void    set_prime_ant(list<string> manifest_route);
+    void    set_prime_ant(vector<string> manifest_route);
     void    evaporate_update_future_pheromones(int ticks);
     void    evaporation(unordered_set<position, position_hash> traversed, double mag, int ticks);
     double  evaluation(int max_duration);

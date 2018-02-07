@@ -44,6 +44,7 @@ private:
     void    put_schedule(int vehicle_id, segment seg);
     void    update_transit_time(int vehicle_id, float time);
     float   get_transit_time(int vehicle_id);
+    void    fetch_dijkstra_for_non_platooning();
     void    pretty_print_json();
 };
 

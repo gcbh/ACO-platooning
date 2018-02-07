@@ -48,9 +48,9 @@ void ACO:: init(Dijkstra *dijkstra) {
     reset_ants();
 }
 
-void ACO:: set_prime_ant(list<string> manifest_route) {
+void ACO:: set_prime_ant(vector<string> manifest_route) {
     int               tick = -1;
-    list<string>::    iterator it;
+    vector<string>::  iterator it;
     bool              endIteration;
     double            cost = 0;
 
@@ -88,6 +88,7 @@ void ACO::reset_ants() {
 
     ants.clear();
     int src, dest;
+
     for (multimap< pair<int, int> , int>::iterator it = manifest_data.begin(); it != manifest_data.end(); ++it) {
         src = it->first.first;
         dest = it->first.second;
@@ -258,10 +259,10 @@ double ACO::path_failure_penalty() {
 
 void ACO::init_log() {
     int ant_num = 0;
-    list<string> r = d_map->get_manifest_routes();
+    vector<string> r = d_map->get_manifest_routes();
     string output = "\n ITERATION NUMBER" + to_string(num_iters) + "\n" + space(20);
 
-    for (list<string>::iterator it = r.begin(); it != r.end(); ++it) {
+    for (vector<string>::iterator it = r.begin(); it != r.end(); ++it) {
         vector<string> path = split((*it), ' ');
         output += "Ant" + to_string(ant_num) + " " + path.front() + "->" + path.back() + space(10);
         ++ant_num;

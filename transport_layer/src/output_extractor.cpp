@@ -46,6 +46,20 @@ void output_extractor::put_schedule(int vehicle_id, segment seg) {
     schedules[vehicle_id]->push_back(seg);
 }
 
+void output_extractor::fetch_dijkstra_for_non_platooning() {
+    vector<string> manifest_route = dijkstra->get_manifest_routes();
+    for (unsigned i = 0; i < num_vehicles; i++) {
+        if (is_vehicle_platooning->at(i) == false) {
+            string route = manifest_route.at(i);
+        }
+    }
+    // for (vector<bool>::iterator it = is_vehicle_platooning->begin(); it != is_vehicle_platooning->end(); ++it) {
+    //     if (*it == false) {
+
+    //     }
+    // }
+}
+
 void output_extractor::make_schedule(map<iPair, vector<int> > platoons) {
     for (map<iPair, vector<int> >::iterator it = platoons.begin(); it != platoons.end(); ++it) {
         int src_id = it->first.first;

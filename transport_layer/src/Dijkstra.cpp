@@ -173,7 +173,7 @@ int Dijkstra:: get_edge_weight(int src, int dest) {
     return edge_weight[src][dest];
 }
 
-list<string> Dijkstra:: get_manifest_routes() {
+vector<string> Dijkstra:: get_manifest_routes() {
     return manifest_route;
 }
 
