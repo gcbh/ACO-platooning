@@ -92,14 +92,14 @@ void output_extractor::make_schedule(map<iPair, vector<int> > platoons) {
         seg.max_wait = 0; // initialize to 0
         
         if (vehicles.size() > 1) {
-            // this vehicle is platooning so no need to reset its path to dijkstra
-            is_vehicle_platooning->at(vehicles.front()) = true;
-            
             // platoon travel
             seg.type = "platoon_travel";
             float max_time = get_max_time_for_platoon(vehicles);
             for(vector<int>::iterator l_it = vehicles.begin(); l_it != vehicles.end(); ++l_it) {
                 int vehicle_id = *l_it;
+                // this vehicle is platooning so no need to reset its path to dijkstra
+                is_vehicle_platooning->at(vehicle_id) = true;
+                
                 vector<int> members = vehicles;
                 
                 // don't want vehicle to be part of it's own platoon list.
