@@ -38,7 +38,7 @@ map_data get_data(string file_name);
 map_data get_dist_data(string file_name);
 manifest get_manifest(string file_name);
 void write_dijkstras(Dijkstra* dijkstra, string file_path, map_data map);
-void write_final_output(ACO* aco, graph* g, int num_vehicles);
+void write_final_output(ACO* aco, graph* g, int num_vehicles, Dijkstra *dijkstra);
 
 int main(int argc, const char * argv[]) {
 
@@ -121,7 +121,7 @@ int main(int argc, const char * argv[]) {
         }
         
         // generate final output
-        write_final_output(aco, g, manifest_map.size());
+        write_final_output(aco, g, manifest_map.size(), dijkstra);
 
         delete g;
         delete dijkstra;
@@ -228,8 +228,8 @@ void write_dijkstras(Dijkstra* dijkstra, string file_path, map_data map) {
     dijkstra_file.close();
 }
 
-void write_final_output(ACO* aco, graph* g, int num_vehicles) {
-    output_extractor* extractor = new output_extractor(g, num_vehicles);
+void write_final_output(ACO* aco, graph* g, int num_vehicles, Dijkstra *dijkstra) {
+    output_extractor* extractor = new output_extractor(g, num_vehicles, dijkstra);
     extractor->extract_output(aco->result());
     
     delete extractor;

@@ -1,8 +1,9 @@
 
 #include "output_extractor.hpp"
 
-output_extractor::output_extractor(graph *i_g, int i_num_vehicles) {
+output_extractor::output_extractor(graph *i_g, int i_num_vehicles, Dijkstra *i_dijkstra) {
     g = i_g;
+    dijkstra = i_dijkstra;
     num_vehicles = i_num_vehicles;
     transit_times = new float[num_vehicles];
     schedules = new vector<segment>*[num_vehicles];

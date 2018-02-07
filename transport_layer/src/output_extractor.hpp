@@ -10,6 +10,7 @@
 #include <list>
 #include <vector>
 #include <cmath>
+#include "Dijkstra.hpp"
 #include "../../models/graph.hpp"
 #include "../../models/t_node.hpp"
 
@@ -27,12 +28,13 @@ struct segment {
 
 class output_extractor {
 public:
-    output_extractor(graph *i_g, int i_num_vehicles);
+    output_extractor(graph *i_g, int i_num_vehicles, Dijkstra *i_dijkstra);
     virtual ~output_extractor ();
     void    extract_output(vector<string>** schedule);
     
 private:
     graph*                              g;
+    Dijkstra*                           dijkstra;
     vector<segment>**                   schedules;
     float*                              transit_times;
     int                                 num_vehicles;

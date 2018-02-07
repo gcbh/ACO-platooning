@@ -32,7 +32,7 @@ public:
     void            set_did_reach_destination(bool value);
     bool            get_did_reach_destination();
 protected:
-    int                      counter, dest;
+    int                      counter, src, dest;
     t_node*                  current;
     queue<t_node*>           ordered_path;
     bool                     did_reach_destination;
