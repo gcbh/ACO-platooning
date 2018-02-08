@@ -41,7 +41,7 @@ void Dijkstra::add_edge(int src, int dest, int weight) {
 
 void Dijkstra::init(map_data map) {
 
-    edg = new list<iPair> [map.node_count()];
+    edg = new vector<iPair> [map.node_count()];
     printf("%d", map.node_count());
     for (list<graph_edge>:: iterator itr = map.begin(); itr != map.end(); itr++) {
         add_edge(itr->src, itr->dest, itr->weight);
@@ -78,7 +78,7 @@ void Dijkstra::shortest_route (int src) {
         int vertex = pq.top().second;
         pq.pop();
         
-        for (list< pair<int, int> >::iterator itr = edg[vertex].begin(); itr != edg[vertex].end(); itr++)
+        for (vector< pair<int, int> >::iterator itr = edg[vertex].begin(); itr != edg[vertex].end(); itr++)
         {
             int adj = itr->second;
             int weight = itr->first;
