@@ -1,3 +1,3 @@
 [submodule "transport_layer/lib/ga_lib"]
 	path = transport_layer/lib/ga_lib
-	url = git@github.com:olmallet81/GALGO-2.0.git
+	url = git@github.com:gcbh/GALGO-2.0.git
