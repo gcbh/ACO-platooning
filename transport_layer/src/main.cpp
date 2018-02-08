@@ -95,32 +95,40 @@ int main(int argc, const char * argv[]) {
   
     delete gp;
     
+    map_data* delete_map = ga_objective<double>::map();
     ga_objective<double>::map() = &gp_processed_map;
+    delete delete_map;
+    
+    manifest* delete_man = ga_objective<double>::manifest_d();
     ga_objective<double>::manifest_d() = &manifest_map;
+    delete delete_man;
+    
+    Dijkstra* delete_dj = ga_objective<double>::dijkstra();
     ga_objective<double>::dijkstra() = dijkstra;
+    delete delete_dj;
+    
     ga_objective<double>::num_iters() = conf.ITERS();
     
     // initializing parameters lower and upper bounds
     // an initial value can be added inside the initializer list after the upper bound
-    galgo::Parameter<double> alpha({1.0, 1000.0});
-    galgo::Parameter<double> beta({1.0,1000.0});
-    galgo::Parameter<double> delta({0.0,1000.0});
-    galgo::Parameter<double> lambda({0.0,1000.0});
-    galgo::Parameter<double> phi({0.0,1000.0});
-    galgo::Parameter<double> rho({0.0,1.0});
+    galgo::Parameter<double> alpha({1.0, 10.0});
+    galgo::Parameter<double> beta({1.0,10.0});
+    galgo::Parameter<double> delta({0.0,10.0});
+    galgo::Parameter<double> lambda({0.0,10.0});
+    galgo::Parameter<double> phi({1.0,10.0});
+    galgo::Parameter<double> rho({0.0f,1.0f});
     
     try {
         // initiliazing genetic algorithm
-        galgo::GeneticAlgorithm<double> ga(ga_objective<double>::Objective,100,50,true,alpha, beta, delta, lambda, phi, rho);
+        galgo::GeneticAlgorithm<double> ga(ga_objective<double>::Objective,10,50,true,alpha, beta, delta, lambda, phi, rho);
         ga.run();
     } catch (exception& e) {
         e.what();
     }
     
-    
     cout << "Run completed"<< endl;
     
-    delete dijkstra;
+//    delete dijkstra;
     
     return 0;
 }

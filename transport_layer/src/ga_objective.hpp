@@ -27,12 +27,25 @@ public:
     static std::vector<T> Objective(const std::vector<T>& x) {
         
         time_t seed = (long)time(nullptr);
+        int num_avg = 10;
         
         logger std_out;
         logger cost_out("../logs/" + to_string(seed) + "-cost.out", false);
         logger debug_log("../logs/" + to_string(seed) + "-debug.log", false);
         
-        config c("", "", "", x[0], x[1], x[2], x[3], x[4], x[5], false, 100);
+        float alpha = (float)x[0];
+        float beta = (float)x[1];
+        float delta = (float)x[2];
+        float lambda = (float)x[3];
+        float phi = (float)x[4];
+        float rho = (float)x[5];
+        
+        if (phi <= alpha+beta) {
+            return {-1000000};
+        }
+        
+        cout <<"a: " + to_string(alpha) + " b: " + to_string(beta) + " d: " + to_string(delta) + " l: " + to_string(lambda) + " p: " + to_string(phi) + " r: " + to_string(rho) << endl;
+        config c("", "", "", alpha, beta, delta, lambda, phi, rho, false, 100);
         
         cost_function* cf = new cost_function();
         
@@ -50,11 +63,8 @@ public:
             for(int i = 1; i <= ga_objective<T>::num_iters(); i++) {
                 int cost = aco->iteration();
                 if (cost < 0) continue;
-                else full_sum += cost;
+                else if(ga_objective<T>::num_iters() - i < num_avg) full_sum += cost;
             }
-            
-            // generate final output
-//            write_final_output(aco, g, manifest_map.size());
             
             delete g;
             delete sel;
@@ -63,7 +73,7 @@ public:
         } catch (const exception &e) {
             cout << e.what() << endl;
         }
-        return {full_sum / ga_objective<T>::num_iters()};;
+        return {-1 * full_sum / num_avg};
     }
     static map_data*& map();
     static manifest*& manifest_d();

@@ -21,6 +21,10 @@
  *  It is responsible for the selecting of the next edge that an ant will take.
  */
 
+struct max_pheromones {
+    float max, best_wait;
+};
+
 class heuristic_selector {
 public:
     /*
@@ -38,6 +42,9 @@ private:
     Randoms probability;
     Dijkstra* d_map;
     
+    max_pheromones get_max(list<t_edge*> edges, int time);
+    double calculate_from_edge(t_edge* e, int time, float max_pheromone);
+    pheromone get_pheromone(t_edge* e, int time);
     double calculate_heuristic(int node_id, int dest_id, int e_dist, double ph, float max_pheromone);
     float distance(int node_id, int dest_id, int e_dist);
 };

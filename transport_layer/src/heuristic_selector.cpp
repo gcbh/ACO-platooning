@@ -16,57 +16,26 @@ heuristic_selector::heuristic_selector(float a, float b, float p, long seed, Dij
 
 t_edge* heuristic_selector::selected_edge(list<t_edge*> edges, int current_id, int dest_id, int time) {
     double total = 0, total_prob = 0, best_wait = 0;
-    float max_pheromone = 1.0f;
     
-    // get maximum pheromone of all the edges available including "wait" pheromone
-    for (list<t_edge*>::iterator it = edges.begin(); it != edges.end(); ++it) {
-        t_edge* e = (*it);
-        pheromone p = { .current = 0.0f, .future = 0.0f };
-        if (e->pheromone_exists(time)) {
-            p = e->get_pheromone(time);
-        }
-        
-        if (p.current > max_pheromone) {
-            max_pheromone = p.current;
-        }
-        
-        if (p.future > max_pheromone) {
-            max_pheromone = p.future;
-        }
-    }
+    max_pheromones mp = get_max(edges, time);
     
     // calculate total of all heuristics for each edge
     for (list<t_edge*>::iterator it = edges.begin(); it != edges.end(); ++it) {
         t_edge* e = (*it);
-        int n_nodeid = e->get_dest()->get_id();
-        int e_id = e->get_id();
         
-        pheromone p = e->get_pheromone(time);
-        
-        total += calculate_heuristic(n_nodeid, dest_id, e->get_distance(), p.current, max_pheromone);
-        
-        if (p.future > best_wait) {
-            best_wait = p.future;
-        }
+        total += calculate_from_edge(e, time, mp.max);
     }
     
     // add "wait" heuristic to total
-    total += calculate_heuristic(current_id, dest_id, 0, best_wait, max_pheromone);
+    total += calculate_heuristic(current_id, dest_id, 0, mp.best_wait, mp.max);
     
     double prob = probability.Uniforme();
     
     // pick edge to traverse
     for (list<t_edge*>::iterator it = edges.begin(); it != edges.end(); ++it) {
         t_edge* e = (*it);
-        int n_nodeid = e->get_dest()->get_id();
-        int e_id = e->get_id();
         
-        pheromone p = { .current = 0.0f, .future = 0.0f };
-        if (e->pheromone_exists(time)) {
-            p = e->get_pheromone(time);
-        }
-        
-        total_prob += calculate_heuristic(n_nodeid, dest_id, e->get_distance(), p.current, max_pheromone);
+        total_prob += calculate_from_edge(e, time, mp.max);
         
         if (total_prob/total >= prob) {
             return e;
@@ -74,6 +43,40 @@ t_edge* heuristic_selector::selected_edge(list<t_edge*> edges, int current_id, i
     }
     
     return nullptr;
+}
+
+// get maximum pheromone of all the edges available including "wait" pheromone
+max_pheromones heuristic_selector::get_max(list<t_edge*> edges, int time) {
+    max_pheromones mp = { .max=0.0f, .best_wait=0.0f };
+    
+    for (list<t_edge*>::iterator it = edges.begin(); it != edges.end(); ++it) {
+        t_edge* e = (*it);
+        pheromone p = get_pheromone(e, time);
+        
+        if (p.current > mp.max) mp.max = p.current;
+        
+        if (p.future > mp.max) mp.max = p.future;
+        
+        if (p.future > mp.best_wait) mp.best_wait = p.future;
+    }
+    return mp;
+}
+
+double heuristic_selector::calculate_from_edge(t_edge* e, int time, float max_pheromone) {
+    int n_nodeid = e->get_dest()->get_id();
+    int e_id = e->get_id();
+    
+    pheromone p = get_pheromone(e, time);
+    
+    return calculate_heuristic(n_nodeid, e_id, e->get_distance(), p.current, max_pheromone);
+}
+
+pheromone heuristic_selector::get_pheromone(t_edge* e, int time) {
+    pheromone p = { .current = 0.0f, .future = 0.0f };
+    if (e->pheromone_exists(time)) {
+        p = e->get_pheromone(time);
+    }
+    return p;
 }
 
 double heuristic_selector::calculate_heuristic(int node_id, int dest_id, int e_dist, double ph, float max_pheromone) {
@@ -91,5 +94,5 @@ float heuristic_selector::distance(int node_id, int dest_id, int e_dist) {
     
     float t_d = distance / d_map->get_max_dj_distance();
     
-    return (1.0f - ((t_d >= 1.0f) ? distance / (e_dist + d_map->get_max_dj_distance() + 1) : t_d)) * 1000;
+    return (1.0f - ((t_d >= 1.0f) ? distance / (e_dist + d_map->get_max_dj_distance() + 1) : t_d));
 }

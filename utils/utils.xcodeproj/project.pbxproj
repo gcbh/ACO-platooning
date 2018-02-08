@@ -17,8 +17,8 @@
 		F1053E2F1F17F9D700967DC0 = {
 			isa = PBXGroup;
 			children = (
-				F15F36FC2008585A00CBD9FE /* src */,
 				F15F36FD2008586D00CBD9FE /* include */,
+				F15F36FC2008585A00CBD9FE /* src */,
 			);
 			sourceTree = "<group>";
 		};

@@ -12,8 +12,9 @@
 #include "t_node.hpp"
 
 #include <stdio.h>
-#include <map>
+#include <unordered_map>
 #include <cmath>
+#include <list>
 
 using namespace std;
 
@@ -40,12 +41,13 @@ public:
     int         get_distance();
     void        evaporate(int time, float rho);
     void        update_future_pheromone(int time, float value);
+    list<int>   pheromone_times();
 
 private:
     t_node*             dest;
     int                 id, distance, speed, max_tick, time_to_cross;
     float               max_pheromone;
-    map<int, pheromone> pheromone_at;
+    unordered_map<int, pheromone> pheromone_at;
 };
 
 #endif /* t_edge_hpp */

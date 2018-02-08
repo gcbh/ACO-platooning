@@ -37,10 +37,16 @@ int t_edge::get_distance() {
 }
 
 bool t_edge::pheromone_exists(int time) {
-    if (pheromone_at.find(time) == pheromone_at.end()) {
-        return false;
+    return pheromone_at.find(time) != pheromone_at.end();
+}
+
+list<int> t_edge::pheromone_times() {
+    list<int> times;
+    for (auto it = pheromone_at.begin(); it != pheromone_at.end(); ++it) {
+        times.push_front(it->first);
     }
-    return true;
+    times.sort();
+    return times;
 }
 
 void t_edge::update_pheromone(int time, float value) {

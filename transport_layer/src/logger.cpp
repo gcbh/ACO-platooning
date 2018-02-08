@@ -25,7 +25,6 @@ logger::logger(std::string file_name, bool print_headers) {
 
 logger::~logger() {
     fclose(f);
-//    delete f;
 }
 
 void logger::log(TLogLevel level, const std::string& msg) {
@@ -35,6 +34,7 @@ void logger::log(TLogLevel level, const std::string& msg) {
     } else {
         file_log::print_headers() = headers;
         output_file::stream() = f;
-        FILE_LOG(level) << msg;
+        FILE_LOG(level) << msg << std::endl;
+        fflush(f);
     }
 }

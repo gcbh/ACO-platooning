@@ -38,13 +38,9 @@ ACO::~ACO() {
 
 void ACO:: init(Dijkstra *dijkstra) {
     d_map = dijkstra;
-
+    std_out.log(INFO, "Init with dijkstra");
     set_prime_ant();
-
-//    cout << setw(50) << "***BEGINNING ANT COLONY OPTIMIZATION***\n\n";
-//    cout << setw(50) << "------------------------------------------------------------\n\n";
-//    cout << setw(50) << "ANT PATHS" << endl;
-    std_out.log(INFO, "Start your engines");
+    
     reset_ants();
 }
 
@@ -67,7 +63,7 @@ void ACO:: set_prime_ant() {
     do {
         endIteration = true;
         tick++;
-        for (list<base_ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
+        for (auto it = ants.begin(); it != ants.end(); ++it) {
             //if ant has not reached destination call nextnode
             if (!(*it)->has_concluded()) {
                 (*it)->next_node(tick);   
@@ -76,21 +72,18 @@ void ACO:: set_prime_ant() {
         }
     } while(!endIteration);
     
-    cout << setw(50) << "*** DIJKSTRA COST ***\n\n";
-    cout << setw(50) << "------------------------------------------------------------\n\n";
-    
     cost = evaluation(tick);
 }
 
 void ACO::reset_ants() {
-    for (list<base_ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
+    for (auto it = ants.begin(); it != ants.end(); ++it) {
         base_ant *t = (*it);
         delete t;
     }
 
     ants.clear();
     vector<string> manifest_route = d_map->get_manifest_routes();
-    for (vector<string>::iterator it = manifest_route.begin(); it != manifest_route.end(); it++) {
+    for (auto it = manifest_route.begin(); it != manifest_route.end(); it++) {
         string         route = *it;
         vector<string> nodes = split(route, ' ');
         int            src = stoi(nodes[0]);
@@ -111,12 +104,12 @@ int ACO::iteration() {
         output[i] = new vector<string>();
     }
     
-    num_iters++;
+    std_out.log(INFO, "iteration: " + to_string(num_iters++));
     
     do {
         endIteration = true;
         tick++;
-        for (list<base_ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
+        for (auto it = ants.begin(); it != ants.end(); ++it) {
             //if ant has not reached destination call nextnode
             if (!(*it)->has_concluded()) {
                 path p = (*it)->next_node(tick);
@@ -141,7 +134,7 @@ int ACO::iteration() {
         evap_mag = 0.0;
     }
     
-    evaporation(traversed, evap_mag, tick);
+    evaporation(traversed, evap_mag);
     
     reset_ants();
 
@@ -157,10 +150,9 @@ double ACO::evaluation(int max_duration) {
     
     for (int tick = 0; tick < max_duration; tick++) {
         map<path, int> segments;
-        vector<string> actions;
         int ant_num = 0;
         
-        for (list<base_ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
+        for (auto it = ants.begin(); it != ants.end(); ++it) {
             path p = (*it)->replay_route();
             
             if (p.first) {
@@ -183,24 +175,13 @@ double ACO::evaluation(int max_duration) {
                 } else {
                     dest = start;
                 }
-                build_output(ant_num, start + "->" + dest, &actions);
-            } else {
-                if ((*it)->in_transit()) {
-                    build_output(ant_num, "Transit", &actions);
-                } else {
-                    build_output(ant_num, "", &actions);
-                }
             }
-            
             ant_num++;
         }
-        
-        if (conf.DEBUG()) log_tick(tick, actions);
         
         cost += j->evaluate(segments);
     }
     cost_out.log(INFO, to_string(cost));
-    debug_log.log(DEBUG, "Cost: " + to_string(cost));
     return cost;
 }
 
@@ -211,16 +192,25 @@ void ACO::rollback_ant(int start, int dest, base_ant* ant, int tick) {
     }
 }
 
-void ACO::evaporation(unordered_set<position, position_hash> traversed, double mag, int ticks) {
-    vector<t_edge*> edges;
+void ACO::evaporation(unordered_set<position, position_hash> traversed, double mag) {
+    
     unordered_set<int> nodes = g->get_nodes();
-    for (unordered_set<int>::iterator it = nodes.begin(); it != nodes.end(); ++it) {
-        edges = (*g)[(*it)]->get_edges();
+    
+    for (auto n_it = nodes.begin(); n_it != nodes.end(); ++n_it) {
+        
+        vector<t_edge*> edges = (*g)[(*n_it)]->get_edges();
+        
         for (int j = 0; j < edges.size(); j++) {
+            
             float max = 0.0f;
             float current = 0.0f;
             t_edge* e = edges[j];
-            for (int k = ticks; k >= 0; k--) {
+            list<int> ticks = e->pheromone_times();
+            
+            for (auto t_it = ticks.rbegin(); t_it != 
+                 ticks.rend(); ++t_it) {
+                
+                int k = (*t_it);
                 position p = { .time = k, .edge_id = e->get_id() };
                 
                 if (traversed.find(p) != traversed.end()) {
@@ -247,7 +237,7 @@ void ACO::build_output(int ant_num, string act, vector<string> *actions) {
 double ACO::path_failure_penalty() {
     double cost = 0.0;
     bool reached_dest = true;
-    for (list<base_ant*>::iterator it = ants.begin(); it != ants.end(); ++it) {
+    for (auto it = ants.begin(); it != ants.end(); ++it) {
         if (!(*it)->has_reached_destination()) {
             cost += 100000.0;
             reached_dest = false;
@@ -266,7 +256,7 @@ void ACO::init_log() {
     int ant_num = 0;
     string output = "\n ITERATION NUMBER" + to_string(num_iters) + "\n" + space(20);
 
-    for (vector<string>::iterator it = manifest_route.begin(); it != manifest_route.end(); ++it) {
+    for (auto it = manifest_route.begin(); it != manifest_route.end(); ++it) {
         vector<string> path = split((*it), ' ');
         output += "Ant" + to_string(ant_num) + " " + path.front() + "->" + path.back() + space(10);
         ++ant_num;
@@ -277,7 +267,7 @@ void ACO::init_log() {
 
 void ACO::log_tick(int tick, vector<string> segments) {
     string output = "tick" + to_string(tick) + space(16);
-    for (vector<string>::iterator it = segments.begin(); it != segments.end(); ++it) {
+    for (auto it = segments.begin(); it != segments.end(); ++it) {
         output += (*it) + space(16);
     }
     debug_log.log(DEBUG, output);

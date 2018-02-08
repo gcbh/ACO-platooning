@@ -21,6 +21,7 @@ typedef pair<int, int> iPair;
 
 Dijkstra::Dijkstra() {
     max_distance = 0.0f;
+    num_of_nodes = 0;
 }
 
 Dijkstra::~Dijkstra() {
@@ -28,9 +29,9 @@ Dijkstra::~Dijkstra() {
     for (int i = 0; i < num_of_nodes; i++)
         delete edge_weight[i];
     
-    delete [] edge_weight;
+    if (edge_weight) delete [] edge_weight;
 
-    delete [] edg;
+    if (edg) delete [] edg;
 }
 
 void Dijkstra::add_edge(int src, int dest, int weight) {

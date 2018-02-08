@@ -74,7 +74,7 @@ private:
     
     void    set_prime_ant();
     void    evaporate_update_future_pheromones(int ticks);
-    void    evaporation(unordered_set<position, position_hash> traversed, double mag, int ticks);
+    void    evaporation(unordered_set<position, position_hash> traversed, double mag);
     double  evaluation(int max_duration);
     void    reset_ants();
     void    build_output(int ant_num, string act, vector<string>* action);
