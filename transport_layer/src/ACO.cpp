@@ -59,7 +59,7 @@ void ACO:: set_prime_ant() {
         string         route = *it;
         vector<string> nodes = split(route, ' ');
         t_node*        start_from = (*g) [stoi(nodes[0])];
-        primer_ant*    p_ant = new primer_ant(start_from, nodes);
+        primer_ant*    p_ant = new primer_ant(start_from, nodes, conf.getPrimer());
 
         ants.push_back(p_ant);
     }
