@@ -20,6 +20,7 @@ struct config_data {
     string distribution_center_name;
     string manifest_name;
     float alpha;
+    float primer;
     float beta;
     float delta;
     float lambda;
