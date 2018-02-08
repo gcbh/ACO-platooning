@@ -44,7 +44,7 @@ public:
     vector<string>  get_manifest_routes();
     
 private:
-    list< pair<int, int> >* edg;
+    vector< pair<int, int> >* edg;
     unordered_set<int>      nodes;
     int**                   edge_weight;
     vector<string>          manifest_route;
