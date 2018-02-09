@@ -77,7 +77,7 @@ t_edge* heuristic_selector::selected_edge(list<t_edge*> edges, int current_id, i
 }
 
 double heuristic_selector::calculate_heuristic(int node_id, int dest_id, int e_dist, double ph, double max_pheromone) {
-    float d = distance(node_id, dest_id, e_dist);
+    float d = distance(node_id, dest_id, e_dist) * 1000;
     
     if (ph == 0.0f) {
         return pow(d, PHI);
@@ -91,5 +91,5 @@ float heuristic_selector::distance(int node_id, int dest_id, int e_dist) {
     
     float t_d = distance / d_map->get_max_dj_distance();
 
-    return (1.0f - ((t_d >= 1.0f) ? distance / (e_dist + d_map->get_max_dj_distance() + 1) : t_d)) * 1000;
+    return (1.0f - ((t_d >= 1.0f) ? distance / (e_dist + d_map->get_max_dj_distance() + 1) : t_d));
 }
