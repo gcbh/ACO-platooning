@@ -15,7 +15,7 @@ cost_function::cost_function() {    }
 double cost_function::evaluate(map<path, int> segments) {
     double j = 0;
     
-    for (map<path, int>::iterator it = segments.begin(); it != segments.end(); ++it) {
+    for (auto it = segments.begin(); it != segments.end(); ++it) {
         int n = it->second;
         path p = it->first;
         t_edge* e = get<1> (p);

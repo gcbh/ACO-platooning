@@ -20,7 +20,7 @@ t_edge* heuristic_selector::selected_edge(list<t_edge*> edges, int current_id, i
     max_pheromones mp = get_max(edges, time);
     
     // calculate total of all heuristics for each edge
-    for (list<t_edge*>::iterator it = edges.begin(); it != edges.end(); ++it) {
+    for (auto it = edges.begin(); it != edges.end(); ++it) {
         t_edge* e = (*it);
         
         total += calculate_from_edge(e, time, mp.max);
@@ -32,7 +32,7 @@ t_edge* heuristic_selector::selected_edge(list<t_edge*> edges, int current_id, i
     double prob = probability.Uniforme();
     
     // pick edge to traverse
-    for (list<t_edge*>::iterator it = edges.begin(); it != edges.end(); ++it) {
+    for (auto it = edges.begin(); it != edges.end(); ++it) {
         t_edge* e = (*it);
         
         total_prob += calculate_from_edge(e, time, mp.max);
@@ -49,7 +49,7 @@ t_edge* heuristic_selector::selected_edge(list<t_edge*> edges, int current_id, i
 max_pheromones heuristic_selector::get_max(list<t_edge*> edges, int time) {
     max_pheromones mp = { .max=0.0f, .best_wait=0.0f };
     
-    for (list<t_edge*>::iterator it = edges.begin(); it != edges.end(); ++it) {
+    for (auto it = edges.begin(); it != edges.end(); ++it) {
         t_edge* e = (*it);
         pheromone p = get_pheromone(e, time);
         

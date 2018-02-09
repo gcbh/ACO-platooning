@@ -22,6 +22,7 @@ public:
 private:
     FILE* f;
     bool headers;
+    static const std::string LOG_DIR;
 };
 
 #endif /* logger_h */

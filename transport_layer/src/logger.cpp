@@ -5,11 +5,12 @@
 //  Created by Geoffrey Heath on 2018-01-31.
 //
 
-#include <stdio.h>
-
 #include "logger.h"
 
+const std::string logger::LOG_DIR = "logs";
+
 logger::logger(std::string file_name, bool print_headers) {
+    std::system(("mkdir -p " + logger::LOG_DIR).c_str());
     headers = print_headers;
     if (file_name != "") {
         try {

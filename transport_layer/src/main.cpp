@@ -42,6 +42,16 @@ int main(int argc, const char * argv[]) {
 
     cout << "Begin optimization" << endl;
     
+    // initializing parameters lower and upper bounds
+    // an initial value can be added inside the initializer list after the upper bound
+    galgo::Parameter<double> alpha({1.0, 10.0});
+    galgo::Parameter<double> primer({1.0, 100.0});
+    galgo::Parameter<double> beta({1.0,10.0});
+    galgo::Parameter<double> delta({0.0,10.0});
+    galgo::Parameter<double> lambda({0.0,10.0});
+    galgo::Parameter<double> phi({1.0,20.0});
+    galgo::Parameter<double> rho({0.0f,1.0f});
+    
     config_factory conf_fac;
     config conf = conf_fac.build();
     
@@ -53,74 +63,69 @@ int main(int argc, const char * argv[]) {
 
     string dijkstra_file_path = DJ_MAPS + ("dj_" + conf.getMap());
     ifstream djfile(dijkstra_file_path);
-
-    Dijkstra *dijkstra = new Dijkstra();
-    
-    // check if dijkstra file exists, if not create one
-    if (djfile.fail()) {
-        write_dijkstras(dijkstra, dijkstra_file_path, cities_map);
-    }
-
-    graph *g = new graph();
-    graph_processor *gp = new graph_processor();
-    
-    // process distribution center info
-    string distr_cntr_file_path = DISTRIBUTION_MAPS + ("comp_gp_" + conf.getDistributionCenter());
-    ifstream distrFile(distr_cntr_file_path);
-
-    map< pair<int, int>, string>* gp_map = new map< pair<int, int>, string>();
-    map_data gp_processed_map;
-    
-    if (distrFile.fail()) {
-        gp_map = gp->get_distribution_nodes(DISTRIBUTION_MAPS + conf.getDistributionCenter());
-        // Populate info from manifest and for graph processor
-        dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map, gp_map);
-        
-        gp_processed_map = gp->format_distribution_graph(dijkstra);
-        
-        string temp_file_path = DISTRIBUTION_MAPS + ("gp_" + conf.getDistributionCenter());
-        gp->create_distribution_map_file(gp_processed_map, temp_file_path);
-
-        // create file for Simulation
-        system(("python " + string(SCRIPT) + SCRIPT_NAME + " " + temp_file_path + " "+ MAPS + COORDS_FILENAME).c_str());
-
-        // delete the temp file
-        system(("rm -f " + temp_file_path).c_str());
-
-    } else {
-        // Populate info for map
-        dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map, gp_map);
-        gp_processed_map = get_dist_data(distr_cntr_file_path);
-    }
-  
-    delete gp;
-    
-    map_data* delete_map = ga_objective<double>::map();
-    ga_objective<double>::map() = &gp_processed_map;
-    delete delete_map;
     
     manifest* delete_man = ga_objective<double>::manifest_d();
     ga_objective<double>::manifest_d() = &manifest_map;
     delete delete_man;
     
     Dijkstra* delete_dj = ga_objective<double>::dijkstra();
-    ga_objective<double>::dijkstra() = dijkstra;
-    delete delete_dj;
+    //    delete delete_dj;
+    
+    map_data* delete_map = ga_objective<double>::map();
+    delete delete_map;
     
     ga_objective<double>::num_iters() = conf.ITERS();
+
+    map< pair<int, int>, string>* gp_map = new map< pair<int, int>, string>();
+    Dijkstra *dijkstra = new Dijkstra();
+    ga_objective<double>::dijkstra() = dijkstra;
     
-    // initializing parameters lower and upper bounds
-    // an initial value can be added inside the initializer list after the upper bound
-    galgo::Parameter<double> alpha({1.0, 10.0});
-    galgo::Parameter<double> beta({1.0,10.0});
-    galgo::Parameter<double> delta({0.0,10.0});
-    galgo::Parameter<double> lambda({0.0,10.0});
-    galgo::Parameter<double> phi({1.0,10.0});
-    galgo::Parameter<double> rho({0.0f,1.0f});
+    // check if dijkstra file exists, if not create one
+    if (djfile.fail()) {
+        write_dijkstras(dijkstra, dijkstra_file_path, cities_map);
+    }
+    
+    if (conf.getDistributionCenter() != "") {
+        graph_processor *gp = new graph_processor();
+        
+        // process distribution center info
+        string distr_cntr_file_path = DISTRIBUTION_MAPS + ("comp_gp_" + conf.getDistributionCenter());
+        ifstream distrFile(distr_cntr_file_path);
+
+        map_data gp_processed_map;
+        
+        if (distrFile.fail()) {
+            gp_map = gp->get_distribution_nodes(DISTRIBUTION_MAPS + conf.getDistributionCenter());
+            // Populate info from manifest and for graph processor
+            dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map, gp_map);
+            
+            gp_processed_map = gp->format_distribution_graph(dijkstra);
+            
+            string temp_file_path = DISTRIBUTION_MAPS + ("gp_" + conf.getDistributionCenter());
+            gp->create_distribution_map_file(gp_processed_map, temp_file_path);
+
+            // create file for Simulation
+            system(("python " + string(SCRIPT) + SCRIPT_NAME + " " + temp_file_path + " "+ MAPS + COORDS_FILENAME).c_str());
+
+            // delete the temp file
+            system(("rm -f " + temp_file_path).c_str());
+
+        } else {
+            // Populate info for map
+            dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map, gp_map);
+            gp_processed_map = get_dist_data(distr_cntr_file_path);
+        }
+      
+        ga_objective<double>::map() = &gp_processed_map;
+        delete gp;
+    } else {
+        ga_objective<double>::map() = &cities_map;
+        dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map, gp_map);
+    }
     
     try {
         // initiliazing genetic algorithm
-        galgo::GeneticAlgorithm<double> ga(ga_objective<double>::Objective,10,50,true,alpha, beta, delta, lambda, phi, rho);
+        galgo::GeneticAlgorithm<double> ga(ga_objective<double>::Objective,10,50,true,alpha, primer, beta, delta, lambda, phi, rho);
         ga.run();
     } catch (exception& e) {
         e.what();
