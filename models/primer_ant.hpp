@@ -20,11 +20,12 @@ using namespace std;
 
 class primer_ant: public base_ant {
 public:
-    primer_ant(t_node *first, vector<string> route_path);
+    primer_ant(t_node *first, vector<string> route_path, float i_p);
     path            next_node(int time);
 
 private:
     vector<string>  route;
+    float           primer_ph;
 };
 
 #endif /* primer_ant_hpp */

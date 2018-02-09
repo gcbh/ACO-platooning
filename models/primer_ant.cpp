@@ -11,11 +11,12 @@
 using namespace std;
 
 
-primer_ant:: primer_ant(t_node *first, vector<string> route_path) {
+primer_ant:: primer_ant(t_node *first, vector<string> route_path, float i_p) {
     counter = 0;
     current = first;
     route = route_path;
     dest = stoi(route.back());
+    primer_ph = i_p;
 }
 
 path primer_ant::next_node(int time) {
@@ -27,7 +28,7 @@ path primer_ant::next_node(int time) {
         int next_node = stoi(route.front());
         t_edge* e = current->get_edge(next_node);
 
-        e->update_pheromone(time, 0.2f);
+        e->update_pheromone(time, primer_ph);
 
         // current node included in up-to-date path
         ordered_path.push(current);
