@@ -105,35 +105,44 @@ int main(int argc, const char * argv[]) {
   
     delete gp;
 
-    
-    
-    heuristic_selector* sel = new heuristic_selector(conf.getAlpha(), conf.getBeta(), conf.getPhi(), seed, dijkstra);
-    
     cost_function* cost = new cost_function();
-
-    ACO *aco = new ACO(g, manifest_map, conf, sel, cost, std_out, cost_out, debug_log);
-    aco->init(dijkstra);
     
-    try {
-        for(int i = 1; i <= conf.ITERS(); i++) {
-            int cost = aco->iteration();
-            if (cost < 0) continue;
+    ofstream output_file;
+    output_file.open("../cost_per_trial.txt");
+    
+    for (int i = 1; i < 26; i++) {
+        heuristic_selector* sel = new heuristic_selector(conf.getAlpha(), conf.getBeta(), conf.getPhi(), seed, dijkstra);
+        
+        ACO *aco = new ACO(g, manifest_map, conf, sel, cost, std_out, cost_out, debug_log);
+        aco->init(dijkstra);
+        
+        try {
+            for(int i = 1; i <= conf.ITERS(); i++) {
+                int cost = aco->iteration();
+                if (cost < 0) continue;
+            }
+            
+            // generate final output
+            write_final_output(aco, g, manifest_map.size(), dijkstra);
+            output_file << "TRIAL " << i << endl;
+            output_file << "lowest cost: " << aco->get_lowest_cost() << endl;
+            output_file << "dijkstra cost: " << aco->get_dijkstra_cost() << endl;
+            output_file << endl;
+        
+            delete g;
+            delete dijkstra;
+            delete sel;
+            delete aco;
+            
+        } catch (const exception &e) {
+            cout << e.what() << endl;
         }
         
-        // generate final output
-        write_final_output(aco, g, manifest_map.size(), dijkstra);
-
-        delete g;
-        delete dijkstra;
-        delete sel;
-        delete aco;
+        cout << "Run " << i << " completed" << endl;
         
-    } catch (const exception &e) {
-        cout << e.what() << endl;
     }
     
-    cout << "Run completed"<< endl;
-    
+    output_file.close();
     return 0;
 }
 
