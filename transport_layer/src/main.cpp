@@ -230,7 +230,8 @@ void write_dijkstras(Dijkstra* dijkstra, string file_path, map_data map) {
 
 void write_final_output(ACO* aco, graph* g, int num_vehicles, Dijkstra *dijkstra) {
     output_extractor* extractor = new output_extractor(g, num_vehicles, dijkstra);
-    extractor->extract_output(aco->result());
+    extractor->extract_output(aco->get_dijkstra_route(), "../dijkstra_output.json", aco->get_dijkstra_cost());
+    extractor->extract_output(aco->result(), "../transport_output.json", aco->get_lowest_cost());
     
     delete extractor;
 }

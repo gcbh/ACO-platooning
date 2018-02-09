@@ -38,7 +38,7 @@ private:
     Randoms probability;
     Dijkstra* d_map;
     
-    double calculate_heuristic(int node_id, int dest_id, int e_dist, double ph, float max_pheromone);
+    double calculate_heuristic(int node_id, int dest_id, int e_dist, double ph, double max_pheromone);
     float distance(int node_id, int dest_id, int e_dist);
 };
 

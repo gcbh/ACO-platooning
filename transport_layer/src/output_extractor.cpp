@@ -123,7 +123,7 @@ void output_extractor::make_schedule(map<iPair, vector<int> > platoons) {
     }
 }
 
-void output_extractor::extract_output(vector<string>** schedule) {
+void output_extractor::extract_output(vector<string>** schedule, string output_file_name, double cost) {
     int max_ticks = schedule[0]->size();
     
     for (int tick = 0; tick < max_ticks; tick++) {
@@ -154,14 +154,21 @@ void output_extractor::extract_output(vector<string>** schedule) {
         make_schedule(platoons);
     }
     fetch_dijkstra_for_non_platooning();
-    pretty_print_json();
+    pretty_print_json(output_file_name, cost);
 }
 
-void output_extractor::pretty_print_json() {
+void output_extractor::pretty_print_json(string output_file_name, double cost) {
     ofstream output_file;
-    output_file.open("../transport_output.json");
+    output_file.open(output_file_name);
     
     output_file << "{" << endl; // open json object
+    
+    // print metadata
+    output_file << "\t \"metadata\": {" << endl; // open metadata
+    output_file << "\t \t \"cost\": " << cost << endl;
+    output_file << "\t }," << endl; // close metadata
+
+    // print schedules
     output_file << "\t \"schedules\": [" << endl; // open schedules
     
     for (int i = 0; i < num_vehicles; i++) {

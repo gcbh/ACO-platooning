@@ -16,15 +16,18 @@ ACO::ACO(graph *i_g, manifest i_manifest, config i_conf, heuristic_selector* i_s
     manifest_data = i_manifest;
     output = new vector<string>*[i_manifest.size()];
     lowest_cost_route = new vector<string>*[i_manifest.size()];
+    dijkstra_route = new vector<string>*[i_manifest.size()];
     for (int i = 0; i < i_manifest.size(); ++i) {
         output[i] = new vector<string>();
         lowest_cost_route[i] = new vector<string>();
+        dijkstra_route[i] = new vector<string>();
     }
     num_iters = 0;
     lowest_cost = DBL_MAX;
     std_out = standard;
     cost_out = cost;
     debug_log = debug;
+    is_primer_ant_iteration = false;
 }
 
 ACO::~ACO() {
@@ -49,6 +52,7 @@ void ACO:: init(Dijkstra *dijkstra) {
 }
 
 void ACO:: set_prime_ant() {
+    is_primer_ant_iteration = true;
     int               tick = -1;
     vector<string>::  iterator it;
     bool              endIteration;
@@ -80,6 +84,9 @@ void ACO:: set_prime_ant() {
     cout << setw(50) << "------------------------------------------------------------\n\n";
     
     cost = evaluation(tick);
+    dijkstra_cost = cost;
+
+    is_primer_ant_iteration = false;
 }
 
 void ACO::reset_ants() {
@@ -240,7 +247,11 @@ void ACO::evaporation(unordered_set<position, position_hash> traversed, double m
 
 void ACO::build_output(int ant_num, string act, vector<string> *actions) {
     actions->push_back(act);
-    output[ant_num]->push_back(act);
+    if (!is_primer_ant_iteration) {
+        output[ant_num]->push_back(act);
+    } else {
+        dijkstra_route[ant_num]->push_back(act);
+    }
 }
 
 double ACO::path_failure_penalty() {
@@ -283,7 +294,7 @@ void ACO::log_tick(int tick, vector<string> segments) {
 }
 
 void ACO::save_lowest_cost_route() {
-
+ 
     for(int ant = 0; ant < ants.size(); ant++) {
         delete lowest_cost_route[ant];
         vector<string>* ant_route = output[ant];
@@ -292,4 +303,7 @@ void ACO::save_lowest_cost_route() {
 
 }
 
+double ACO::get_lowest_cost() { return lowest_cost; }
+double ACO::get_dijkstra_cost() { return dijkstra_cost; }
 vector<string>** ACO::result() { return lowest_cost_route; }
+vector<string>** ACO::get_dijkstra_route() { return dijkstra_route; }

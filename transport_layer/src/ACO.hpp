@@ -57,7 +57,9 @@ public:
     void    init(Dijkstra *dijkstra);
     int     iteration();
     vector<string>** result();
-    
+    vector<string>** get_dijkstra_route();
+    double  get_dijkstra_cost();
+    double  get_lowest_cost();
 private:
     graph*                              g;
     Dijkstra*                           d_map;
@@ -69,8 +71,11 @@ private:
     list<base_ant*>                     ants;
     int                                 num_iters;
     double                              lowest_cost;
+    double                              dijkstra_cost;
     vector<string>**                    lowest_cost_route;
+    vector<string>**                    dijkstra_route;
     logger                              std_out, cost_out, debug_log;
+    bool                                is_primer_ant_iteration;
     
     void    set_prime_ant();
     void    evaporate_update_future_pheromones(int ticks);

@@ -30,7 +30,7 @@ class output_extractor {
 public:
     output_extractor(graph *i_g, int i_num_vehicles, Dijkstra *i_dijkstra);
     virtual ~output_extractor ();
-    void    extract_output(vector<string>** schedule);
+    void    extract_output(vector<string>** schedule, string output_file_name, double cost);
     
 private:
     graph*                              g;
@@ -45,7 +45,7 @@ private:
     void    update_transit_time(int vehicle_id, float time);
     float   get_transit_time(int vehicle_id);
     void    fetch_dijkstra_for_non_platooning();
-    void    pretty_print_json();
+    void    pretty_print_json(string output_file_name, double cost);
 };
 
 #endif /* output_extractor_hpp */
