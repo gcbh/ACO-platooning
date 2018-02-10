@@ -36,9 +36,8 @@ class Dijkstra {
 public:
     Dijkstra();
     virtual ~Dijkstra();
-    void            init(map_data map);
-    void            populate_from_dijkstra_file(string file_name, manifest manifest_map, map<pair<int, int>,
-     string>* gp_map);
+    void            init(map_data map, string file_path);
+    void            populate_from_dijkstra_file(string file_name, manifest manifest_map, map< pair<int, int>, string >* gp_map);
     int             get_edge_weight(int src, int dest);
     float           get_max_dj_distance();
     vector<string>  get_manifest_routes();

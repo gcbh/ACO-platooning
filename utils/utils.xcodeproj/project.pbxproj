@@ -9,6 +9,8 @@
 /* Begin PBXFileReference section */
 		F1053E3A1F17FA1C00967DC0 /* StringUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtils.cpp; sourceTree = "<group>"; };
 		F1053E3B1F17FA1C00967DC0 /* StringUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StringUtils.hpp; sourceTree = "<group>"; };
+		F14C9A37202E26E1003C66EA /* file_parser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = file_parser.cpp; sourceTree = "<group>"; };
+		F14C9A38202E26E1003C66EA /* file_parser.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = file_parser.hpp; sourceTree = "<group>"; };
 		F15F36F92008584900CBD9FE /* config_factory.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = config_factory.cpp; sourceTree = "<group>"; };
 		F15F36FA2008584900CBD9FE /* config_factory.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = config_factory.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -25,6 +27,7 @@
 		F15F36FC2008585A00CBD9FE /* src */ = {
 			isa = PBXGroup;
 			children = (
+				F14C9A37202E26E1003C66EA /* file_parser.cpp */,
 				F15F36F92008584900CBD9FE /* config_factory.cpp */,
 				F1053E3A1F17FA1C00967DC0 /* StringUtils.cpp */,
 			);
@@ -34,6 +37,7 @@
 		F15F36FD2008586D00CBD9FE /* include */ = {
 			isa = PBXGroup;
 			children = (
+				F14C9A38202E26E1003C66EA /* file_parser.hpp */,
 				F15F36FA2008584900CBD9FE /* config_factory.hpp */,
 				F1053E3B1F17FA1C00967DC0 /* StringUtils.hpp */,
 			);

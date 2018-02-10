@@ -34,25 +34,36 @@ Dijkstra::~Dijkstra() {
     if (edg) delete [] edg;
 }
 
+void Dijkstra::init(map_data map, string file_path) {
+    ifstream djfile(file_path);
+    
+    if (djfile.fail()) {
+        // create file to output from dijkstra algorithm
+        ofstream dijkstra_file;
+        dijkstra_file.open(file_path, ios_base::out);
+        // freopen to be able to write output to file directly
+        freopen(file_path.c_str(), "w", stdout);
+        
+        edg = new vector<iPair> [map.node_count()];
+        printf("%d", map.node_count());
+        for (list<graph_edge>:: iterator itr = map.begin(); itr != map.end(); itr++) {
+            add_edge(itr->src, itr->dest, itr->weight);
+        }
+        
+        nodes = map.getNodes();
+        
+        for (unordered_set<int>:: iterator it = nodes.begin(); it != nodes.end(); it++) {
+            shortest_route(*it);
+        }
+        
+        fclose(stdout);
+        dijkstra_file.close();
+    }
+}
+
 void Dijkstra::add_edge(int src, int dest, int weight) {
     edg[src].push_back(make_pair(weight, dest));
     edg[dest].push_back(make_pair(weight, src));
-}
-
-void Dijkstra::init(map_data map) {
-
-    edg = new vector<iPair> [map.node_count()];
-    printf("%d", map.node_count());
-    for (list<graph_edge>:: iterator itr = map.begin(); itr != map.end(); itr++) {
-        add_edge(itr->src, itr->dest, itr->weight);
-    }
-    
-    nodes = map.getNodes();
-    
-    for (unordered_set<int>:: iterator it = nodes.begin(); it != nodes.end(); it++) {
-        shortest_route(*it);
-    }
-
 }
 
 void Dijkstra::shortest_route (int src) {
