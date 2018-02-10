@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <map>
+#include <sstream>
 
 using namespace std;
 
@@ -22,6 +23,8 @@ public:
     int size();
     multimap< pair<int, int> , int>::iterator begin();
     multimap< pair<int, int> , int>::iterator end();
+    
+    static void data(string line, manifest* m);
 private:
     multimap< std::pair<int, int> , int> m;
 };

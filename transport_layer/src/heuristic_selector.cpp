@@ -23,7 +23,7 @@ t_edge* heuristic_selector::selected_edge(list<t_edge*> edges, int current_id, i
     for (auto it = edges.begin(); it != edges.end(); ++it) {
         t_edge* e = (*it);
         
-        total += calculate_from_edge(e, time, mp.max);
+        total += calculate_from_edge(e, dest_id, time, mp.max);
     }
     
     // add "wait" heuristic to total
@@ -35,7 +35,7 @@ t_edge* heuristic_selector::selected_edge(list<t_edge*> edges, int current_id, i
     for (auto it = edges.begin(); it != edges.end(); ++it) {
         t_edge* e = (*it);
         
-        total_prob += calculate_from_edge(e, time, mp.max);
+        total_prob += calculate_from_edge(e, dest_id, time, mp.max);
         
         if (total_prob/total >= prob) {
             return e;
@@ -62,13 +62,12 @@ max_pheromones heuristic_selector::get_max(list<t_edge*> edges, int time) {
     return mp;
 }
 
-double heuristic_selector::calculate_from_edge(t_edge* e, int time, float max_pheromone) {
+double heuristic_selector::calculate_from_edge(t_edge* e, int dest_id, int time, float max_pheromone) {
     int n_nodeid = e->get_dest()->get_id();
-    int e_id = e->get_id();
     
     pheromone p = get_pheromone(e, time);
     
-    return calculate_heuristic(n_nodeid, e_id, e->get_distance(), p.current, max_pheromone);
+    return calculate_heuristic(n_nodeid, dest_id, e->get_distance(), p.current, max_pheromone);
 }
 
 pheromone heuristic_selector::get_pheromone(t_edge* e, int time) {

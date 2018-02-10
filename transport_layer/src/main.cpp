@@ -45,8 +45,8 @@ int main(int argc, const char * argv[]) {
     config_factory conf_fac;
     config conf = conf_fac.build();
     
-    map_data cities_map = file_parser::parse<map_data>(get_data, string(MAPS) + conf.getMap());
-    manifest manifest_map = file_parser::parse<manifest>(get_manifest, string(MANIFESTS) + conf.getManifest());
+    map_data cities_map = file_parser::parse<map_data>(map_data::data, string(MAPS) + conf.getMap());
+    manifest manifest_map = file_parser::parse<manifest>(manifest::data, string(MANIFESTS) + conf.getManifest());
     
     // Creates d_maps folder if it doesn't exist
     system(("mkdir -p " + string(DJ_MAPS)).c_str());
@@ -84,7 +84,7 @@ int main(int argc, const char * argv[]) {
         } else {
             // Populate info for map
             dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map, gp_map);
-            gp_processed_map = file_parser::parse<map_data>(get_dist_data, distr_cntr_file_path);
+            gp_processed_map = file_parser::parse<map_data>(map_data::dist_data, distr_cntr_file_path);
         }
       
         cities_map = gp_processed_map;
@@ -108,36 +108,6 @@ int main(int argc, const char * argv[]) {
     return 0;
 }
 
-void get_data(string line, map_data *m) {
-    stringstream   linestream(line);
-    int            src, dest, distance;
-    string         src_name, dest_name;
-    
-    linestream >> src >> src_name >> dest >> dest_name >> distance;
-    
-    m->insert(src, dest, distance);
-}
-
-void get_dist_data(string line, map_data* m) {
-    stringstream   linestream(line);
-    int            src, dest, distance;
-    string         src_name, dest_name;
-    double         src_lat, src_long, dest_lat, dest_long;
-    
-    linestream >> src >> src_name >> src_lat >> src_long >> dest >> dest_name >> dest_lat >> dest_long >> distance;
-    
-    m->insert(src, dest, distance);
-}
-
-void get_manifest(string line, manifest* m) {
-    stringstream   linestream(line);
-    int            src, dest, duration;
-    
-    linestream >> src >> dest >> duration;
-    
-    m->insert(src, dest, duration);
-}
-
 galgo::GeneticAlgorithm<double> build_ga(config c, map_data* map, manifest* man, Dijkstra* d) {
     manifest* delete_man = ga_objective<double>::manifest_d();
     ga_objective<double>::manifest_d() = man;
@@ -155,12 +125,12 @@ galgo::GeneticAlgorithm<double> build_ga(config c, map_data* map, manifest* man,
     
     // initializing parameters lower and upper bounds
     // an initial value can be added inside the initializer list after the upper bound
-    galgo::Parameter<double> alpha({1.0, 10.0});
+    galgo::Parameter<double> alpha({1.0, 5.0});
     galgo::Parameter<double> primer({1.0, 100.0});
-    galgo::Parameter<double> beta({1.0,10.0});
+    galgo::Parameter<double> beta({1.0,5.0});
     galgo::Parameter<double> delta({0.0,10.0});
-    galgo::Parameter<double> lambda({0.0,10.0});
-    galgo::Parameter<double> phi({1.0,20.0});
+    galgo::Parameter<double> lambda({0.0,20.0});
+    galgo::Parameter<double> phi({1.0,10.0});
     galgo::Parameter<double> rho({0.0f,1.0f});
     
     galgo::GeneticAlgorithm<double> ga(ga_objective<double>::Objective,10,50,true,alpha, primer, beta, delta, lambda, phi, rho);
