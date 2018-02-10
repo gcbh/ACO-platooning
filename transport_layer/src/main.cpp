@@ -69,7 +69,6 @@ int main(int argc, const char * argv[]) {
         write_dijkstras(dijkstra, dijkstra_file_path, cities_map);
     }
 
-    graph *g = new graph();
     graph_processor *gp = new graph_processor();
     
     // process distribution center info
@@ -100,8 +99,6 @@ int main(int argc, const char * argv[]) {
         dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map, gp_map);
         gp_processed_map = get_dist_data(distr_cntr_file_path);
     }
-
-    g->construct_graph(gp_processed_map);
   
     delete gp;
 
@@ -111,6 +108,9 @@ int main(int argc, const char * argv[]) {
     output_file.open("../cost_per_trial.txt");
     
     for (int i = 1; i < 26; i++) {
+        graph *g = new graph();
+        g->construct_graph(gp_processed_map);
+
         heuristic_selector* sel = new heuristic_selector(conf.getAlpha(), conf.getBeta(), conf.getPhi(), seed, dijkstra);
         
         ACO *aco = new ACO(g, manifest_map, conf, sel, cost, std_out, cost_out, debug_log);
