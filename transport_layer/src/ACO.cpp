@@ -34,6 +34,7 @@ ACO::~ACO() {
     for (int i = 0; i < ants.size(); ++i) {
         delete output[i];
         delete lowest_cost_route[i];
+        delete dijkstra_route[i];
     }
     delete output;
     delete lowest_cost_route;
@@ -140,6 +141,7 @@ int ACO::iteration() {
     double evap_mag = conf.getLambda();
     
     if (cost < lowest_cost) {
+        lowest_cost = lowest_cost == DBL_MAX ? cost : lowest_cost;
         evap_mag = evap_mag * (lowest_cost / cost);
         lowest_cost = cost;
         save_lowest_cost_route();
