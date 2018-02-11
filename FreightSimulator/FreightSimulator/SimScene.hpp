@@ -44,16 +44,25 @@ private:
     EdgeNode* addEdgeNode(int            city_id1,
                      int            city_id2,
                      float          weight);
-    void generateStaticHeatMap();
-    void clearStaticHeatMap();
+
+    void clearStaticHeatMaps();
+    void clearTruckMaps();
+    void parseSchedule(json schedules, std::map<int, TruckNode*> &truck_map, std::map<int, float> &heat_map);
+
     void positionTrucks(UpdateState* us);
 
     void renderUI(RenderState* rs);
 
     glm::vec3 camera_position;
     std::map<int, CityNode*> city_map;
-    std::map<int, TruckNode*> truck_map;
+    std::map<int, TruckNode*> aco_truck_map;
+    std::map<int, TruckNode*> dijkstra_truck_map;
     std::map<int, EdgeNode*> edge_map;
+
+    std::map<int, float> aco_static_heatmap;
+    std::map<int, float> dijkstra_static_heatmap;
+    std::map<int, float> aco_dynamic_heatmap;
+    std::map<int, float> dijkstra_dynamic_heatmap;
 
     float sim_time_scale;
     float sim_max_time;

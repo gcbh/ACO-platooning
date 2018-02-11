@@ -33,8 +33,6 @@ int hash_pair(std::pair<int,int> p) {
     return a + b * b;
 }
 
-
-
 // for convenience
 using json = nlohmann::json;
 
@@ -105,6 +103,12 @@ void SimScene::preupdate(UpdateState *us){
 }
 
 void SimScene::prerender(RenderState* rs) {
+
+    //Setup the heatmaps
+    rs->aco_static_heatmap = &aco_static_heatmap;
+    rs->dijkstra_static_heatmap = &dijkstra_static_heatmap;
+    rs->aco_dynamic_heatmap = &aco_dynamic_heatmap;
+    rs->dijkstra_dynamic_heatmap = &dijkstra_dynamic_heatmap;
 
     renderUI(rs);
 
@@ -225,6 +229,12 @@ EdgeNode* SimScene::addEdgeNode(int city_id1, int city_id2, float weight) {
 
     //Add to our edge map
     edge_map[edge->m_id] = edge;
+
+    //Set default heat values
+    aco_static_heatmap[edge->m_id] = 0.0f;
+    dijkstra_static_heatmap[edge->m_id] = 0.0f;
+    aco_dynamic_heatmap[edge->m_id] = 0.0f;
+    dijkstra_dynamic_heatmap[edge->m_id] = 0.0f;
     return edge;
 }
 
@@ -251,53 +261,61 @@ void SimScene::loadSchedule() {
     json j;
     schedule_file >> j;
 
+    // Pull the data from the file
+    json metadata = j["metadata"];
     json schedules = j["schedules"];
+    json dijkstra_schedules = j["dijkstra_schedule"];
 
-    //Parse and create trucks
-    for (auto& schedule : schedules) {
-        TruckNode* t = new TruckNode(schedule);
-        //m_root_node->addChildNode(t);
-        truck_map[t->m_id] = t;
-    }
+    //Clear out old data
+    clearStaticHeatMaps();
+    clearTruckMaps();
 
-    clearStaticHeatMap();
-    generateStaticHeatMap();
+    parseSchedule(schedules, aco_truck_map, aco_static_heatmap);
+    parseSchedule(dijkstra_schedules, dijkstra_truck_map, dijkstra_static_heatmap);
 }
 
-void SimScene::generateStaticHeatMap() {
+void SimScene::parseSchedule(json schedules, std::map<int, TruckNode*> &truck_map, std::map<int, float> &heat_map) {
     int max_heat = 1;
-    std::map<int, int> heatMap;
+    std::map<int, int> unnormalized_heat_map;
+    for (auto& schedule : schedules) {
+        TruckNode* t = new TruckNode(schedule);
 
-    std::map<int, TruckNode*>::iterator i;
-    for (i = truck_map.begin(); i != truck_map.end(); i++) {
+        truck_map[t->m_id] = t;
+
+        //Create temporary non-normalized heat map
         std::vector<Segment*>::iterator j;
-        for (j = i->second->m_schedule.begin(); j != i->second->m_schedule.end(); j++) {
+        for (j = t->m_schedule.begin(); j != t->m_schedule.end(); j++) {
             Segment* s = *j;
             int edge_id = hash_pair(std::make_pair(s->start_node, s->end_node));
 
-            heatMap[edge_id] += 1;
-            max_heat = fmax(max_heat, heatMap[edge_id]);
+            unnormalized_heat_map[edge_id] += 1;
+            max_heat = fmax(max_heat, unnormalized_heat_map[edge_id]);
         }
+
+        //Add to master scene graph
+        //m_root_node->addChildNode(t);
     }
 
-    //Assign static heat values
+    //Assign normalized heat values
     std::map<int, int>::iterator k;
-    for (k = heatMap.begin(); k != heatMap.end(); k++) {
-        edge_map[k->first]->m_static_heat = float(k->second) / float(max_heat);
+    for (k = unnormalized_heat_map.begin(); k != unnormalized_heat_map.end(); k++) {
+        heat_map[k->first] = float(k->second) / float(max_heat);
     }
 }
 
-void SimScene::clearStaticHeatMap() {
-    //Assign static heat values
-    std::map<int, EdgeNode*>::iterator i;
-    for (i = edge_map.begin(); i != edge_map.end(); i++) {
-        i->second->m_static_heat = 0.0f;
-    }
+void SimScene::clearStaticHeatMaps() {
+    aco_static_heatmap.clear();
+    dijkstra_static_heatmap.clear();
+}
+
+void SimScene::clearTruckMaps() {
+    aco_truck_map.clear();
+    dijkstra_truck_map.clear();
 }
 
 void SimScene::positionTrucks(UpdateState* us) {
     std::map<int, TruckNode*>::iterator i;
-    for (i = truck_map.begin(); i != truck_map.end(); i++) {
+    for (i = aco_truck_map.begin(); i != aco_truck_map.end(); i++) {
 
         double time = 0.0;
         std::vector<Segment*>::iterator j;

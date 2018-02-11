@@ -12,6 +12,7 @@
 #include "imgui.h"
 #include "imgui_impl_glfw_gl3.h"
 #include <stdio.h>
+#include <map>
 #include <GLFW/glfw3.h>
 #include "glm.hpp"
 
@@ -71,6 +72,11 @@ struct RenderState {
     RoadMode roadMode;
     RoadLabelMode roadLabelMode;
     TruckMode truckMode;
+
+    std::map<int, float> *aco_static_heatmap;
+    std::map<int, float> *dijkstra_static_heatmap;
+    std::map<int, float> *aco_dynamic_heatmap;
+    std::map<int, float> *dijkstra_dynamic_heatmap;
 
     // Sim Info
     float sim_time;

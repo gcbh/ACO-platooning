@@ -32,6 +32,8 @@ public:
     float m_dynamic_heat;
 
 private:
+    ImVec4 generate_static_color(RenderState* rs);
+    ImVec4 generate_dynamic_color(RenderState* rs);
 };
 
 #endif /* EdgeNode_hpp */
