@@ -47,9 +47,14 @@ private:
 
     void clearStaticHeatMaps();
     void clearTruckMaps();
-    void parseSchedule(json schedules, std::map<int, TruckNode*> &truck_map, std::map<int, float> &heat_map);
 
-    void positionTrucks(UpdateState* us);
+    void parseSchedule(json schedules,
+                       std::map<int, TruckNode*> &truck_map,
+                       std::map<int, float> &heat_map,
+                       TruckType type);
+
+    void updateTruckMap(std::map<int, TruckNode*> &truck_map,
+                        float timecode);
 
     void renderUI(RenderState* rs);
 

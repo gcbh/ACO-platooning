@@ -49,6 +49,11 @@ enum class TruckMode : int {
     DijkstraAndACO
 };
 
+enum class TruckType : int {
+    Dijkstra,
+    ACO
+};
+
 struct InputState {
     GLFWwindow *window;
     double deltaTime;

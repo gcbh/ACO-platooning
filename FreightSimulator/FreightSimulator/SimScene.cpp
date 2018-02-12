@@ -90,16 +90,16 @@ void SimScene::postsetup() {
     //UI Setup
     show_map_window = 1;
     show_schedule_window = 1;
-    sim_time_scale = 0.1;
-    sim_max_time = 8.0;
+    sim_time_scale = 0.0;
+    sim_max_time = 100.0;
 }
 
 void SimScene::preupdate(UpdateState *us){
-    /*double new_sim_time = us->sim_time + us->deltaTime * sim_time_scale;
+    double new_sim_time = us->sim_time + us->deltaTime * sim_time_scale;
     us->sim_time = fmax(0.0, fmin(new_sim_time, sim_max_time));
 
-    //printf("Sim Time: %f", us->sim_time);
-    positionTrucks(us);*/
+    updateTruckMap(aco_truck_map, us->sim_time);
+    updateTruckMap(dijkstra_truck_map, us->sim_time);
 }
 
 void SimScene::prerender(RenderState* rs) {
@@ -270,15 +270,19 @@ void SimScene::loadSchedule() {
     clearStaticHeatMaps();
     clearTruckMaps();
 
-    parseSchedule(schedules, aco_truck_map, aco_static_heatmap);
-    parseSchedule(dijkstra_schedules, dijkstra_truck_map, dijkstra_static_heatmap);
+    parseSchedule(schedules, aco_truck_map, aco_static_heatmap, TruckType::ACO);
+    parseSchedule(dijkstra_schedules, dijkstra_truck_map, dijkstra_static_heatmap, TruckType::Dijkstra);
 }
 
-void SimScene::parseSchedule(json schedules, std::map<int, TruckNode*> &truck_map, std::map<int, float> &heat_map) {
+void SimScene::parseSchedule(json schedules,
+                             std::map<int, TruckNode*> &truck_map,
+                             std::map<int, float> &heat_map,
+                             TruckType type) {
     int max_heat = 1;
     std::map<int, int> unnormalized_heat_map;
     for (auto& schedule : schedules) {
         TruckNode* t = new TruckNode(schedule);
+        t->m_type = type;
 
         truck_map[t->m_id] = t;
 
@@ -293,7 +297,7 @@ void SimScene::parseSchedule(json schedules, std::map<int, TruckNode*> &truck_ma
         }
 
         //Add to master scene graph
-        //m_root_node->addChildNode(t);
+        m_root_node->addChildNode(t);
     }
 
     //Assign normalized heat values
@@ -313,9 +317,9 @@ void SimScene::clearTruckMaps() {
     dijkstra_truck_map.clear();
 }
 
-void SimScene::positionTrucks(UpdateState* us) {
+void SimScene::updateTruckMap(std::map<int, TruckNode*> &truck_map, float timecode) {
     std::map<int, TruckNode*>::iterator i;
-    for (i = aco_truck_map.begin(); i != aco_truck_map.end(); i++) {
+    for (i = truck_map.begin(); i != truck_map.end(); i++) {
 
         double time = 0.0;
         std::vector<Segment*>::iterator j;
@@ -325,14 +329,16 @@ void SimScene::positionTrucks(UpdateState* us) {
             double segment_end_time = time + s->time;
 
             //We are on the current segment
-            if (us->sim_time <= segment_end_time) {
-                double segment_progress = fmax(0.0, us->sim_time - time) / s->time;
+            if (timecode <= segment_end_time) {
+                double segment_progress = fmax(0.0, timecode - time) / s->time;
 
                 float x = city_map[s->start_node]->m_position.x + (city_map[s->end_node]->m_position.x - city_map[s->start_node]->m_position.x)*segment_progress;
                 float y = city_map[s->start_node]->m_position.y + (city_map[s->end_node]->m_position.y - city_map[s->start_node]->m_position.y)*segment_progress;
                 i->second->m_position = glm::vec3(x,y,0.0f);
                 break;
             }
+
+            time = segment_end_time;
         }
     }
 }
@@ -413,6 +419,38 @@ void SimScene::renderUI(RenderState* rs) {
         }
 
         //ImGui::DragFloat("Time Scale", &sim_time_scale, 0.01f, -2.0f, 2.0f, "%.06f x");
+
+        if (ImGui::CollapsingHeader("Sim")) {
+            ImGui::Text("Playback");
+            if (ImGui::Button("<<<")) {
+                sim_time_scale = -3.0;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("<<")) {
+                sim_time_scale = -2.0;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("<")) {
+                sim_time_scale = -1.0;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("o")) {
+                sim_time_scale = 0.0;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button(">")) {
+                sim_time_scale = 1.0;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button(">>")) {
+                sim_time_scale = 2.0;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button(">>>")) {
+                sim_time_scale = 3.0;
+            }
+            ImGui::Text("Timecode: %f", rs->sim_time);
+        }
 
         if (ImGui::CollapsingHeader("View")) {
             ImGui::Text("Truck Mode");

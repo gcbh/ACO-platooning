@@ -11,8 +11,8 @@
 #include "glm.hpp"
 #include "matrix_transform.hpp"
 
-static const ImVec4 col = ImVec4(1.0f,1.0f,1.0f,1.0f);
-static const ImU32 col32 = ImColor(col);
+static const ImVec4 aco_color = ImVec4(1.0f,1.0f,1.0f,1.0f);
+static const ImVec4 dijkstra_color = ImVec4(0.5f,0.5f,1.0f,1.0f);
 
 TruckNode::TruckNode(json j) {
     m_id = j.at("vehicle_id").get<int>();
@@ -40,14 +40,32 @@ void TruckNode::prerender(RenderState* rs) {
 }
 
 void TruckNode::render(RenderState* rs) {
-    ImVec2 point = getScreenSpace(rs);
+
     switch (rs->truckMode) {
-        case TruckMode::ACO:
-        case TruckMode::DijkstraAndACO:
-            ImGui::GetWindowDrawList()->AddCircleFilled(point, 2.0f, col32);
+        case TruckMode::Dijkstra:
+            if (m_type == TruckType::Dijkstra) drawTruck(rs);
             break;
+        case TruckMode::ACO:
+            if (m_type == TruckType::ACO) drawTruck(rs);
+            break;
+        case TruckMode::DijkstraAndACO:
+            drawTruck(rs);
             break;
         default:
             break;
     }
 }
+
+void TruckNode::drawTruck(RenderState* rs) {
+    ImVec2 point = getScreenSpace(rs);
+    switch(m_type) {
+        case TruckType::ACO:
+            ImGui::GetWindowDrawList()->AddCircleFilled(point, 2.0f, ImColor(aco_color));
+            break;
+        case TruckType::Dijkstra:
+            ImGui::GetWindowDrawList()->AddCircleFilled(point, 2.0f, ImColor(dijkstra_color));
+            break;
+    }
+}
+
+

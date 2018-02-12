@@ -15,6 +15,7 @@
 #include "Segment.hpp"
 #include "QuadNode.hpp"
 #include "json.hpp"
+#include "State.hpp"
 
 // for convenience
 using json = nlohmann::json;
@@ -32,7 +33,9 @@ public:
     void prerender(RenderState* rs);
     void render(RenderState* rs);
 
+    void drawTruck(RenderState* rs);
     int m_id;
+    TruckType m_type;
     std::vector<Segment*> m_schedule;
 
 private:

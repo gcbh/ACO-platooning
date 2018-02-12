@@ -136,6 +136,7 @@ void GLFWEngine::render() {
     //Render app
     rs->screen_size = ImGui::GetIO().DisplaySize;
     rs->mvp = glm::mat4(1.0f);
+    rs->sim_time = us->sim_time;
     m_appInstance->render(rs);
 }
 
