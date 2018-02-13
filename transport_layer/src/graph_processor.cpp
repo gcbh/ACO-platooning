@@ -6,10 +6,7 @@ graph_processor::graph_processor() {
 }
 
 graph_processor::~graph_processor() {
-    for (map<iPair, string>::iterator it = distribution_nodes->begin(); it != distribution_nodes->end(); it++) {
-        distribution_nodes->erase(it);
-    }
-
+    distribution_nodes->clear();
     delete distribution_nodes;
 }
 
