@@ -214,10 +214,10 @@ void write_dijkstras(Dijkstra* dijkstra, string file_path, map_data map) {
 
 void write_final_output(ACO* aco, graph* g, int num_vehicles, Dijkstra *dijkstra, config conf) {
     string file_name = "../transport_output.json";
-    output_extractor* extractor = new output_extractor(g, num_vehicles, dijkstra);
-    extractor->extract_output(aco->get_dijkstra_route(), file_name, true);
-    extractor->extract_output(aco->result(), file_name, false);
-    extractor->pretty_print_metadata(file_name, aco->get_lowest_cost(), aco->get_dijkstra_cost(), conf);
+    output_extractor* extractor = new output_extractor(g, num_vehicles, dijkstra, file_name);
+    extractor->extract_output(aco->get_dijkstra_route(), true);
+    extractor->extract_output(aco->result(), false);
+    extractor->pretty_print_metadata(aco->get_lowest_cost(), aco->get_dijkstra_cost(), conf);
     
     delete extractor;
 }

@@ -1,7 +1,7 @@
 
 #include "output_extractor.hpp"
 
-output_extractor::output_extractor(graph *i_g, int i_num_vehicles, Dijkstra *i_dijkstra) {
+output_extractor::output_extractor(graph *i_g, int i_num_vehicles, Dijkstra *i_dijkstra, string i_file_name) {
     g = i_g;
     dijkstra = i_dijkstra;
     num_vehicles = i_num_vehicles;
@@ -12,6 +12,9 @@ output_extractor::output_extractor(graph *i_g, int i_num_vehicles, Dijkstra *i_d
     for (int i = 0; i < num_vehicles; i++) {
         schedules[i] = new vector<segment>();
     }
+    
+    output_file.open(i_file_name);
+    output_file << "{" << endl; //open json object
 }
 
 output_extractor::~output_extractor() {
@@ -21,6 +24,7 @@ output_extractor::~output_extractor() {
     }
     delete is_vehicle_platooning;
     delete[] schedules;
+    output_file.close();
 }
 
 void output_extractor::reset() {
@@ -109,12 +113,12 @@ void output_extractor::vehicle_cost_change(int vehicle_num, string route) {
 }
 
 int output_extractor::fetch_vehicle_old_cost(int vehicle_num) {
-    vector<segment> segments= (*schedules)[vehicle_num];
+    vector<segment>* segments = schedules[vehicle_num];
     int cost = 0;
 
-    for (vector<segment>::iterator it = segments.begin(); it != segments.end(); it++) {
-        int src = (*it).start_node;
-        int dest = (*it).end_node;
+    for (vector<segment>::iterator it = segments->begin(); it != segments->end(); it++) {
+        int src = it->start_node;
+        int dest = it->end_node;
         int weight = dijkstra->get_edge_weight(src, dest);
         cost += weight;
     }
@@ -167,7 +171,7 @@ void output_extractor::make_schedule(map<iPair, vector<int> > platoons) {
     }
 }
 
-void output_extractor::extract_output(vector<string>** schedule, string output_file_name, bool is_dijkstra) {
+void output_extractor::extract_output(vector<string>** schedule, bool is_dijkstra) {
     reset();
     int max_ticks = schedule[0]->size();
     
@@ -199,13 +203,10 @@ void output_extractor::extract_output(vector<string>** schedule, string output_f
         make_schedule(platoons);
     }
     fetch_dijkstra_for_non_platooning();
-    pretty_print_json(output_file_name, is_dijkstra);
+    pretty_print_json(is_dijkstra);
 }
 
-void output_extractor::pretty_print_metadata(string output_file_name, double cost, double dijkstra_cost, config conf) {
-    ofstream output_file;
-    output_file.open(output_file_name, ios::out | ios::app);
-    
+void output_extractor::pretty_print_metadata(double cost, double dijkstra_cost, config conf) {
     // print metadata
     output_file << "\t \"metadata\": {" << endl; // open metadata
     output_file << "\t \t \"dijkstraCost\": " << dijkstra_cost << "," << endl;
@@ -224,16 +225,10 @@ void output_extractor::pretty_print_metadata(string output_file_name, double cos
     output_file << "\t \t \"mapName\": \"" << conf.getMap() << "\"" << endl;
     output_file << "\t }" << endl; // close metadata
     
-    output_file << "}"; // close json object
-    output_file.close();
+    output_file << "}"; //close json object
 }
 
-void output_extractor::pretty_print_json(string output_file_name, bool is_dijkstra) {
-    ofstream output_file;
-    output_file.open(output_file_name);
-    
-    output_file << "{" << endl; // open json object
-    
+void output_extractor::pretty_print_json(bool is_dijkstra) {
     string schedule_key = is_dijkstra ? "dijkstra_schedule" : "schedules";
 
     // print schedules
@@ -283,8 +278,5 @@ void output_extractor::pretty_print_json(string output_file_name, bool is_dijkst
         output_file << endl; // close vehicle
     }
     
-    output_file << "\t ],"; // close schedules
-    output_file << endl;
-    
-    output_file.close();
+    output_file << "\t ]," << endl; // close schedules
 }

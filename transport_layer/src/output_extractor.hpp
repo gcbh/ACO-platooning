@@ -29,14 +29,15 @@ struct segment {
 
 class output_extractor {
 public:
-    output_extractor(graph *i_g, int i_num_vehicles, Dijkstra *i_dijkstra);
+    output_extractor(graph *i_g, int i_num_vehicles, Dijkstra *i_dijkstra, string i_file_name);
     virtual ~output_extractor ();
-    void    extract_output(vector<string>** schedule, string output_file_name, bool is_dijkstra);
-    void    pretty_print_metadata(string output_file_name, double cost, double dijkstra_cost, config conf);
+    void    extract_output(vector<string>** schedule, bool is_dijkstra);
+    void    pretty_print_metadata(double cost, double dijkstra_cost, config conf);
 private:
     graph*                              g;
     Dijkstra*                           dijkstra;
     vector<segment>**                   schedules;
+    ofstream                            output_file;
     float*                              transit_times;
     int                                 num_vehicles;
     int                                 total_cost_change;
@@ -49,7 +50,7 @@ private:
     void    fetch_dijkstra_for_non_platooning();
     int     fetch_vehicle_old_cost(int vehicle_num);
     void    vehicle_cost_change(int vehicle_num, string route);
-    void    pretty_print_json(string output_file_name, bool is_dijkstra);
+    void    pretty_print_json(bool is_dijkstra);
     void    reset();
 };
 
