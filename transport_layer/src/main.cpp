@@ -11,6 +11,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <ctime>
 
 #include "Dijkstra.hpp"
 #include "ACO.hpp"
@@ -103,6 +104,8 @@ int main(int argc, const char * argv[]) {
     output_file.open("../cost_per_trial.txt");
   
     for (int i = 1; i <= 5; i++) {
+        int start_s=clock();
+
         graph *g = new graph();
         g->construct_graph(gp_processed_map);
         time_t seed = (long)time(nullptr);
@@ -134,6 +137,11 @@ int main(int argc, const char * argv[]) {
             output_file << "avg 20 iters " << avg_cost << endl;
             output_file << endl;
         
+            int stop_s=clock();
+            
+            output_file << "Runtime " << (stop_s-start_s)/double(CLOCKS_PER_SEC)*1000 << endl;
+            output_file << endl;
+
             delete sel;
             delete aco;
             delete g;
