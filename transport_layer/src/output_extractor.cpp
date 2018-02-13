@@ -28,7 +28,10 @@ output_extractor::~output_extractor() {
 }
 
 void output_extractor::reset() {
+    delete[] transit_times;
     transit_times = new float[num_vehicles];
+    
+    delete is_vehicle_platooning;
     is_vehicle_platooning = new vector<bool>(num_vehicles, false);
     
     for (int i = 0; i < num_vehicles; i++) {
@@ -202,7 +205,10 @@ void output_extractor::extract_output(vector<string>** schedule, bool is_dijkstr
         }
         make_schedule(platoons);
     }
-    fetch_dijkstra_for_non_platooning();
+    if (!is_dijkstra) {
+        fetch_dijkstra_for_non_platooning();
+    }
+
     pretty_print_json(is_dijkstra);
 }
 

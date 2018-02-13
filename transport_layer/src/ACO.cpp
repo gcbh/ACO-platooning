@@ -36,8 +36,9 @@ ACO::~ACO() {
         delete lowest_cost_route[i];
         delete dijkstra_route[i];
     }
-    delete output;
-    delete lowest_cost_route;
+    delete[] output;
+    delete[] lowest_cost_route;
+    delete[] dijkstra_route;
 }
 
 void ACO:: init(Dijkstra *dijkstra) {
