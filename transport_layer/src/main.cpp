@@ -38,7 +38,7 @@ map_data get_data(string file_name);
 map_data get_dist_data(string file_name);
 manifest get_manifest(string file_name);
 void write_dijkstras(Dijkstra* dijkstra, string file_path, map_data map);
-void write_final_output(ACO* aco, graph* g, int num_vehicles, Dijkstra *dijkstra);
+void write_final_output(ACO* aco, graph* g, int num_vehicles, Dijkstra *dijkstra, config conf);
 
 int main(int argc, const char * argv[]) {
 
@@ -50,8 +50,6 @@ int main(int argc, const char * argv[]) {
     logger std_out;
     logger cost_out("../logs/cost.log", false);
     logger debug_log("../logs/debug.log", false);
-    
-    time_t seed = (long)time(nullptr);
     
     map_data cities_map = get_data(conf.getMap());
     manifest manifest_map = get_manifest(conf.getManifest());
@@ -72,6 +70,7 @@ int main(int argc, const char * argv[]) {
     graph_processor *gp = new graph_processor();
     
     // process distribution center info
+    system("rm -f ../../maps/distribution_centers/comp_gp_Sams_Club_Distribution_Centers.txt");
     string distr_cntr_file_path = DISTRIBUTION_MAPS + ("comp_gp_" + conf.getDistributionCenter());
     ifstream distrFile(distr_cntr_file_path);
 
@@ -99,40 +98,47 @@ int main(int argc, const char * argv[]) {
         dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map, gp_map);
         gp_processed_map = get_dist_data(distr_cntr_file_path);
     }
-  
-    delete gp;
 
     cost_function* cost = new cost_function();
     
     ofstream output_file;
     output_file.open("../cost_per_trial.txt");
     
-    for (int i = 1; i < 26; i++) {
+    for (int i = 1; i <= 1; i++) {
         graph *g = new graph();
         g->construct_graph(gp_processed_map);
-
+        time_t seed = (long)time(nullptr);
+        
         heuristic_selector* sel = new heuristic_selector(conf.getAlpha(), conf.getBeta(), conf.getPhi(), seed, dijkstra);
         
         ACO *aco = new ACO(g, manifest_map, conf, sel, cost, std_out, cost_out, debug_log);
         aco->init(dijkstra);
         
+        double total = 0;
+        
         try {
             for(int i = 1; i <= conf.ITERS(); i++) {
                 int cost = aco->iteration();
                 if (cost < 0) continue;
+                
+                if ( i >= conf.ITERS() - 20) {
+                    total += cost;
+                }
             }
             
+            double avg_cost = total/20;
+            
             // generate final output
-            write_final_output(aco, g, manifest_map.size(), dijkstra);
+            write_final_output(aco, g, manifest_map.size(), dijkstra, conf);
             output_file << "TRIAL " << i << endl;
             output_file << "lowest cost: " << aco->get_lowest_cost() << endl;
             output_file << "dijkstra cost: " << aco->get_dijkstra_cost() << endl;
+            output_file << "avg 20 iters " << avg_cost << endl;
             output_file << endl;
         
-            delete g;
-            delete dijkstra;
             delete sel;
             delete aco;
+            delete g;
             
         } catch (const exception &e) {
             cout << e.what() << endl;
@@ -143,6 +149,8 @@ int main(int argc, const char * argv[]) {
     }
     
     output_file.close();
+    delete dijkstra;
+    delete gp;
     return 0;
 }
 
@@ -237,10 +245,12 @@ void write_dijkstras(Dijkstra* dijkstra, string file_path, map_data map) {
     dijkstra_file.close();
 }
 
-void write_final_output(ACO* aco, graph* g, int num_vehicles, Dijkstra *dijkstra) {
+void write_final_output(ACO* aco, graph* g, int num_vehicles, Dijkstra *dijkstra, config conf) {
+    string file_name = "../transport_output.json";
     output_extractor* extractor = new output_extractor(g, num_vehicles, dijkstra);
-    extractor->extract_output(aco->get_dijkstra_route(), "../dijkstra_output.json", aco->get_dijkstra_cost());
-    extractor->extract_output(aco->result(), "../transport_output.json", aco->get_lowest_cost());
+    extractor->pretty_print_metadata(file_name, aco->get_lowest_cost(), aco->get_dijkstra_cost(), conf);
+    extractor->extract_output(aco->get_dijkstra_route(), file_name, true);
+    extractor->extract_output(aco->result(), file_name, false);
     
     delete extractor;
 }

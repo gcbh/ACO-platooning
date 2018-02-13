@@ -22,6 +22,20 @@ output_extractor::~output_extractor() {
     delete[] schedules;
 }
 
+void output_extractor::reset() {
+    transit_times = new float[num_vehicles];
+    is_vehicle_platooning = new vector<bool>(num_vehicles, false);
+    
+    for (int i = 0; i < num_vehicles; i++) {
+        delete schedules[i];
+    }
+    
+    schedules = new vector<segment>*[num_vehicles];
+    for (int i = 0; i < num_vehicles; i++) {
+        schedules[i] = new vector<segment>();
+    }
+}
+
 void output_extractor::update_transit_time(int vehicle_id, float time) {
     transit_times[vehicle_id] = time;
 }
@@ -123,7 +137,8 @@ void output_extractor::make_schedule(map<iPair, vector<int> > platoons) {
     }
 }
 
-void output_extractor::extract_output(vector<string>** schedule, string output_file_name, double cost) {
+void output_extractor::extract_output(vector<string>** schedule, string output_file_name, bool is_dijkstra) {
+    reset();
     int max_ticks = schedule[0]->size();
     
     for (int tick = 0; tick < max_ticks; tick++) {
@@ -154,10 +169,10 @@ void output_extractor::extract_output(vector<string>** schedule, string output_f
         make_schedule(platoons);
     }
     fetch_dijkstra_for_non_platooning();
-    pretty_print_json(output_file_name, cost);
+    pretty_print_json(output_file_name, is_dijkstra);
 }
 
-void output_extractor::pretty_print_json(string output_file_name, double cost) {
+void output_extractor::pretty_print_metadata(string output_file_name, double cost, double dijkstra_cost, config conf) {
     ofstream output_file;
     output_file.open(output_file_name);
     
@@ -165,11 +180,30 @@ void output_extractor::pretty_print_json(string output_file_name, double cost) {
     
     // print metadata
     output_file << "\t \"metadata\": {" << endl; // open metadata
-    output_file << "\t \t \"cost\": " << cost << endl;
+    output_file << "\t \t \"dijkstraCost\": " << dijkstra_cost << "," << endl;
+    output_file << "\t \t \"cost\": " << cost << "," << endl;
+    output_file << "\t \t \"alpha\": " << conf.getAlpha() << "," << endl;
+    output_file << "\t \t \"beta\": " << conf.getBeta() << "," << endl;
+    output_file << "\t \t \"delta\": " << conf.getDelta() << "," << endl;
+    output_file << "\t \t \"lambda\": " << conf.getLambda() << "," << endl;
+    output_file << "\t \t \"primerStrength\": " << conf.getPrimer() << "," << endl;
+    output_file << "\t \t \"phi\": " << conf.getPhi() << "," << endl;
+    output_file << "\t \t \"rho\": " << conf.getRho() << "," << endl;
+    output_file << "\t \t \"iterations\": " << conf.ITERS() << "," << endl;
+    output_file << "\t \t \"distributionCenter\": \"" << conf.getDistributionCenter() << "\"," << endl;
+    output_file << "\t \t \"manifestName\": \"" << conf.getManifest() << "\"," << endl;
+    output_file << "\t \t \"mapName\": \"" << conf.getMap() << "\"" << endl;
     output_file << "\t }," << endl; // close metadata
+}
+
+void output_extractor::pretty_print_json(string output_file_name, bool is_dijkstra) {
+    ofstream output_file;
+    output_file.open(output_file_name, ios::out | ios::app);
+    
+    string schedule_key = is_dijkstra ? "dijkstra_schedule" : "schedules";
 
     // print schedules
-    output_file << "\t \"schedules\": [" << endl; // open schedules
+    output_file << "\t \"" << schedule_key << "\": [" << endl; // open schedules
     
     for (int i = 0; i < num_vehicles; i++) {
         output_file << "\t \t {" << endl; // open vehicle
@@ -215,7 +249,14 @@ void output_extractor::pretty_print_json(string output_file_name, double cost) {
         output_file << endl; // close vehicle
     }
     
-    output_file << "\t ]" << endl; // close schedules
-    output_file << "}"; // close json object
+    output_file << "\t ]"; // close schedules
+    if (is_dijkstra) {
+        output_file << ",";
+    }
+    output_file << endl;
+    
+    if (!is_dijkstra) {
+     output_file << "}"; // close json object
+    }
     output_file.close();
 }

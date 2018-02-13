@@ -13,6 +13,7 @@
 #include "Dijkstra.hpp"
 #include "../../models/graph.hpp"
 #include "../../models/t_node.hpp"
+#include "../../models/config.hpp"
 
 using namespace std;
 typedef pair<int, int> iPair;
@@ -30,8 +31,8 @@ class output_extractor {
 public:
     output_extractor(graph *i_g, int i_num_vehicles, Dijkstra *i_dijkstra);
     virtual ~output_extractor ();
-    void    extract_output(vector<string>** schedule, string output_file_name, double cost);
-    
+    void    extract_output(vector<string>** schedule, string output_file_name, bool is_dijkstra);
+    void    pretty_print_metadata(string output_file_name, double cost, double dijkstra_cost, config conf);
 private:
     graph*                              g;
     Dijkstra*                           dijkstra;
@@ -45,7 +46,8 @@ private:
     void    update_transit_time(int vehicle_id, float time);
     float   get_transit_time(int vehicle_id);
     void    fetch_dijkstra_for_non_platooning();
-    void    pretty_print_json(string output_file_name, double cost);
+    void    pretty_print_json(string output_file_name, bool is_dijkstra);
+    void    reset();
 };
 
 #endif /* output_extractor_hpp */

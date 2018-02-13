@@ -140,7 +140,7 @@ int ACO::iteration() {
     
     double evap_mag = conf.getLambda();
     
-    if (cost < lowest_cost) {
+    if (cost <= lowest_cost) {
         lowest_cost = lowest_cost == DBL_MAX ? cost : lowest_cost;
         evap_mag = evap_mag * (lowest_cost / cost);
         lowest_cost = cost;
