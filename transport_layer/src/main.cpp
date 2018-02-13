@@ -102,7 +102,7 @@ int main(int argc, const char * argv[]) {
     ofstream output_file;
     output_file.open("../cost_per_trial.txt");
   
-    for (int i = 1; i < 5; i++) {
+    for (int i = 1; i <= 5; i++) {
         graph *g = new graph();
         g->construct_graph(gp_processed_map);
         time_t seed = (long)time(nullptr);
@@ -215,9 +215,9 @@ void write_dijkstras(Dijkstra* dijkstra, string file_path, map_data map) {
 void write_final_output(ACO* aco, graph* g, int num_vehicles, Dijkstra *dijkstra, config conf) {
     string file_name = "../transport_output.json";
     output_extractor* extractor = new output_extractor(g, num_vehicles, dijkstra);
-    extractor->pretty_print_metadata(file_name, aco->get_lowest_cost(), aco->get_dijkstra_cost(), conf);
     extractor->extract_output(aco->get_dijkstra_route(), file_name, true);
     extractor->extract_output(aco->result(), file_name, false);
+    extractor->pretty_print_metadata(file_name, aco->get_lowest_cost(), aco->get_dijkstra_cost(), conf);
     
     delete extractor;
 }

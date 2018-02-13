@@ -204,14 +204,13 @@ void output_extractor::extract_output(vector<string>** schedule, string output_f
 
 void output_extractor::pretty_print_metadata(string output_file_name, double cost, double dijkstra_cost, config conf) {
     ofstream output_file;
-    output_file.open(output_file_name);
-    
-    output_file << "{" << endl; // open json object
+    output_file.open(output_file_name, ios::out | ios::app);
     
     // print metadata
     output_file << "\t \"metadata\": {" << endl; // open metadata
     output_file << "\t \t \"dijkstraCost\": " << dijkstra_cost << "," << endl;
-    output_file << "\t \t \"cost\": " << cost << "," << endl;
+    output_file << "\t \t \"old_cost\": " << cost << "," << endl;
+    output_file << "\t \t \"cost\": " << cost + total_cost_change << "," << endl;
     output_file << "\t \t \"alpha\": " << conf.getAlpha() << "," << endl;
     output_file << "\t \t \"beta\": " << conf.getBeta() << "," << endl;
     output_file << "\t \t \"delta\": " << conf.getDelta() << "," << endl;
@@ -223,12 +222,16 @@ void output_extractor::pretty_print_metadata(string output_file_name, double cos
     output_file << "\t \t \"distributionCenter\": \"" << conf.getDistributionCenter() << "\"," << endl;
     output_file << "\t \t \"manifestName\": \"" << conf.getManifest() << "\"," << endl;
     output_file << "\t \t \"mapName\": \"" << conf.getMap() << "\"" << endl;
-    output_file << "\t }," << endl; // close metadata
+    output_file << "\t }" << endl; // close metadata
+    
+    output_file << "}"; // close json object
 }
 
 void output_extractor::pretty_print_json(string output_file_name, bool is_dijkstra) {
     ofstream output_file;
-    output_file.open(output_file_name, ios::out | ios::app);
+    output_file.open(output_file_name);
+    
+    output_file << "{" << endl; // open json object
     
     string schedule_key = is_dijkstra ? "dijkstra_schedule" : "schedules";
 
@@ -279,14 +282,8 @@ void output_extractor::pretty_print_json(string output_file_name, bool is_dijkst
         output_file << endl; // close vehicle
     }
     
-    output_file << "\t ]"; // close schedules
-    if (is_dijkstra) {
-        output_file << ",";
-    }
+    output_file << "\t ],"; // close schedules
     output_file << endl;
     
-    if (!is_dijkstra) {
-     output_file << "}"; // close json object
-    }
     output_file.close();
 }
