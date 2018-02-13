@@ -225,6 +225,7 @@ void output_extractor::pretty_print_metadata(string output_file_name, double cos
     output_file << "\t }" << endl; // close metadata
     
     output_file << "}"; // close json object
+    output_file.close();
 }
 
 void output_extractor::pretty_print_json(string output_file_name, bool is_dijkstra) {
