@@ -29,7 +29,11 @@ t_node* t_edge::get_dest() {
 }
 
 pheromone t_edge::get_pheromone(int time) {
-    return pheromone_at[time];
+    if (pheromone_at.count(time) > 0)
+        return pheromone_at[time];
+
+    pheromone p = { .current = 0.0f, .future = 0.0f };
+    return p;
 }
 
 int t_edge::get_distance() {
