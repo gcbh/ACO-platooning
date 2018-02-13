@@ -30,7 +30,7 @@
 #define MANIFESTS "../../manifests/"
 #define SCRIPT "../../utils/scripts/"
 #define SCRIPT_NAME "process_cities_complete.py"
-#define COORDS_FILENAME "cities_ids_coords.txt"
+#define COORDS_FILENAME "cities_ids_coords_update.txt"
 
 using namespace std;
 
@@ -70,7 +70,6 @@ int main(int argc, const char * argv[]) {
     graph_processor *gp = new graph_processor();
     
     // process distribution center info
-    system("rm -f ../../maps/distribution_centers/comp_gp_Sams_Club_Distribution_Centers.txt");
     string distr_cntr_file_path = DISTRIBUTION_MAPS + ("comp_gp_" + conf.getDistributionCenter());
     ifstream distrFile(distr_cntr_file_path);
 
@@ -103,8 +102,8 @@ int main(int argc, const char * argv[]) {
     
     ofstream output_file;
     output_file.open("../cost_per_trial.txt");
-    
-    for (int i = 1; i <= 1; i++) {
+  
+    for (int i = 1; i < 5; i++) {
         graph *g = new graph();
         g->construct_graph(gp_processed_map);
         time_t seed = (long)time(nullptr);
