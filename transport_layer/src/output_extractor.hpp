@@ -39,6 +39,7 @@ private:
     vector<segment>**                   schedules;
     float*                              transit_times;
     int                                 num_vehicles;
+    int                                 total_cost_change;
     vector<bool>*                       is_vehicle_platooning;
     void    make_schedule(map<iPair, vector<int> > platoons);
     float   get_max_time_for_platoon(vector<int> vehicles);
@@ -46,6 +47,8 @@ private:
     void    update_transit_time(int vehicle_id, float time);
     float   get_transit_time(int vehicle_id);
     void    fetch_dijkstra_for_non_platooning();
+    int     fetch_vehicle_old_cost(int vehicle_num);
+    void    vehicle_cost_change(int vehicle_num, string route);
     void    pretty_print_json(string output_file_name, bool is_dijkstra);
     void    reset();
 };

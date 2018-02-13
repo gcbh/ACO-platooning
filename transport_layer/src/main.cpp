@@ -166,15 +166,9 @@ map_data get_data(string file_name) {
     while(getline(file, line))
     {
         stringstream   linestream(line);
-        int            src;
-        string         src_name;
-        double         src_lat;
-        double         src_long;
-        int            dest;
-        string         dest_name;
-        double         dest_lat;
-        double         dest_long;
-        int            distance;
+        int            src, dest, distance;
+        string         src_name, dest_name;
+        double         src_lat, src_long, dest_lat, dest_long;
         
         linestream >> src >> src_name >> src_lat >> src_long >> dest >> dest_name >> dest_lat >> dest_long >> distance;
         

@@ -6,6 +6,7 @@ output_extractor::output_extractor(graph *i_g, int i_num_vehicles, Dijkstra *i_d
     dijkstra = i_dijkstra;
     num_vehicles = i_num_vehicles;
     transit_times = new float[num_vehicles];
+    total_cost_change = 0;
     is_vehicle_platooning = new vector<bool>(num_vehicles, false);
     schedules = new vector<segment>*[num_vehicles];
     for (int i = 0; i < num_vehicles; i++) {
@@ -62,14 +63,18 @@ void output_extractor::put_schedule(int vehicle_id, segment seg) {
 
 void output_extractor::fetch_dijkstra_for_non_platooning() {
     vector<string> manifest_route = dijkstra->get_manifest_routes();
+    
     for (unsigned i = 0; i < num_vehicles; i++) {
         if (is_vehicle_platooning->at(i) == false) {
             string route = manifest_route.at(i);
+
+            // update cost for vehicle with dijkstra cost
+            vehicle_cost_change(i, route);
+            
             delete schedules[i];
             schedules[i] = new vector<segment>();
-            
-            vector<string> route_id = split(route, ' ');
 
+            vector<string> route_id = split(route, ' ');
             int current = stoi(route_id[0]);
             for (vector<string>::iterator it2 = route_id.begin(); ++it2 != route_id.end();) {
                 int next = stoi(*it2);
@@ -90,6 +95,31 @@ void output_extractor::fetch_dijkstra_for_non_platooning() {
             }
         }
     }
+}
+
+void output_extractor::vehicle_cost_change(int vehicle_num, string route) {
+    // cost calculation for old route
+    int old_cost = fetch_vehicle_old_cost(vehicle_num);
+
+    // cost calculation for dijkstra route
+    vector<string> route_id = split(route, ' ');
+    int dijkstra_cost = dijkstra->get_edge_weight(stoi(route_id[0]), stoi(route_id[route_id.size()-1])); 
+
+    total_cost_change += (dijkstra_cost - old_cost);
+}
+
+int output_extractor::fetch_vehicle_old_cost(int vehicle_num) {
+    vector<segment> segments= (*schedules)[vehicle_num];
+    int cost = 0;
+
+    for (vector<segment>::iterator it = segments.begin(); it != segments.end(); it++) {
+        int src = (*it).start_node;
+        int dest = (*it).end_node;
+        int weight = dijkstra->get_edge_weight(src, dest);
+        cost += weight;
+    }
+
+    return cost;
 }
 
 void output_extractor::make_schedule(map<iPair, vector<int> > platoons) {
