@@ -11,6 +11,10 @@ uniform sampler2D myTextureSampler;
 
 void main(){
 
-    // Output color = color of the texture at the specified UV
-    color.rgba = texture( myTextureSampler, UV ).rgba;
+    // Output color = color
+    color.rgb = vec3(1.0, 1.0, 1.0);
+
+    //Convert to greyscale
+    float gray = dot(texture( myTextureSampler, UV ).rgb, vec3(0.299, 0.587, 0.114));
+    color.a = gray;
 }

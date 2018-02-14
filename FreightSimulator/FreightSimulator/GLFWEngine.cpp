@@ -8,6 +8,8 @@
 //  Copyright © 2017 FYDP. All rights reserved.
 //
 
+#include "imgui.h"
+#include "imgui_impl_glfw_gl3.h"
 #include "GLFWEngine.hpp"
 #include "glm.hpp"
 #include <stdlib.h>
@@ -58,6 +60,33 @@ void GLFWEngine::setup(bool fullScreenEnable)
 
     fprintf(stdout, "Engine Setup Complete.\n");
 
+    // Setup ImGui binding
+    ImGui_ImplGlfwGL3_Init(m_window, true);
+
+    // Setup style
+    ImGui::StyleColorsClassic();
+
+    is = new InputState();
+    is->window = m_window;
+    is->deltaTime = 0.0f;
+
+    us = new UpdateState();
+    us->deltaTime = 0.0f;
+    us->sim_time = 0.0f;
+
+    rs = new RenderState();
+    rs->window = m_window;
+    rs->mvp = glm::mat4(1.0f);
+    rs->cityMode = CityMode::Default;
+    rs->cityLabelMode = CityLabelMode::None;
+    rs->roadMode = RoadMode::Default;
+    rs->roadLabelMode = RoadLabelMode::None;
+    rs->truckMode = TruckMode::ACO;
+
+    fprintf(stdout, "UI Setup Complete.\n");
+
+    
+
     // Setup our attached demo if it exists
     if(m_appInstance != NULL) {
         m_appInstance->setup();
@@ -69,12 +98,16 @@ void GLFWEngine::run() {
     fprintf(stdout, "Engine Starting.\n");
     while (!glfwWindowShouldClose(m_window))
     {
+        glfwPollEvents();
+        ImGui_ImplGlfwGL3_NewFrame();
+
         input();
         update();
         render();
 
+        ImGui::Render();
         glfwSwapBuffers(m_window);
-        glfwPollEvents();
+
     }
     cleanup();
 }
@@ -86,15 +119,12 @@ void GLFWEngine::input() {
     lastTime = currentTime;
 
     //Handle app input
-    InputState is = {m_window, deltaTime};
+    is->deltaTime = deltaTime;
     m_appInstance->input(is);
 }
 
 void GLFWEngine::update() {
-
-
-    //Update app
-    UpdateState us = {deltaTime};
+    us->deltaTime = deltaTime;
     m_appInstance->update(us);
 }
 
@@ -102,10 +132,11 @@ void GLFWEngine::render() {
     int width, height;
     glfwGetFramebufferSize(m_window, &width, &height);
     glViewport(0, 0, width, height);
-    glClear(GL_COLOR_BUFFER_BIT);
 
     //Render app
-    RenderState rs = {m_window, glm::mat4(1.0f)};
+    rs->screen_size = ImGui::GetIO().DisplaySize;
+    rs->mvp = glm::mat4(1.0f);
+    rs->sim_time = us->sim_time;
     m_appInstance->render(rs);
 }
 
