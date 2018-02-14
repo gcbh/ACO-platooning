@@ -21,7 +21,7 @@ double cost_function::evaluate(map<path, int> segments) {
         t_edge* e = get<1> (p);
         
         int edge_cost = e->get_distance();
-        j += edge_cost * cost_based_num_ants(n);
+        j += n * edge_cost * cost_based_num_ants(n);
     }
     return j;
 }
