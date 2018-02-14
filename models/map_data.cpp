@@ -51,3 +51,24 @@ list<graph_edge>::iterator map_data::begin() {
 list<graph_edge>::iterator map_data::end() {
     return edges.end();
 }
+
+void map_data::data(string line, map_data* m) {
+    stringstream   linestream(line);
+    int            src, dest, distance;
+    string         src_name, dest_name;
+    
+    linestream >> src >> src_name >> dest >> dest_name >> distance;
+    
+    m->insert(src, dest, distance);
+}
+
+void map_data::dist_data(string line, map_data* m) {
+    stringstream   linestream(line);
+    int            src, dest, distance;
+    string         src_name, dest_name;
+    double         src_lat, src_long, dest_lat, dest_long;
+    
+    linestream >> src >> src_name >> src_lat >> src_long >> dest >> dest_name >> dest_lat >> dest_long >> distance;
+    
+    m->insert(src, dest, distance);
+}

@@ -30,3 +30,12 @@ multimap< pair<int, int> , int>::iterator manifest::begin() {
 multimap< pair<int, int> , int>::iterator manifest::end() {
     return m.end();
 }
+
+void manifest::data(string line, manifest* m) {
+    stringstream   linestream(line);
+    int            src, dest, duration;
+    
+    linestream >> src >> dest >> duration;
+    
+    m->insert(src, dest, duration);
+}

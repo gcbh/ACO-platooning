@@ -14,6 +14,7 @@
 #include <unordered_set>
 #include <set>
 #include <iterator>
+#include <sstream>
 
 using namespace std;
 
@@ -29,6 +30,9 @@ public:
     list<graph_edge>::iterator begin();
     list<graph_edge>::iterator end();
     unordered_set<int> getNodes();
+    
+    static void data(string line, map_data* m);
+    static void dist_data(string line, map_data* m);
 private:
     bool edge_exists(graph_edge edge);
     unordered_set<int> nodes;

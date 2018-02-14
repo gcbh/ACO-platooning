@@ -1,5 +1,5 @@
 CC:=g++
-CFLAGS := -g -c
+CFLAGS := -std=c++11 -g -c
 
 MODELDIR := ../models
 SRCDIR := src
@@ -19,7 +19,7 @@ OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 MODELS := $(patsubst $(MODELDIR)/%,$(BUILDDIR)/%,$(MODELSRCS:.$(SRCEXT)=.o))
 UTILS := $(patsubst $(UTILDIR)/%,$(BUILDDIR)/%,$(UTILSRCS:.$(SRCEXT)=.o))
 
-INC := -I include
+INC := -I ../models/ -I ../utils/ -I src/
 
 # Build source files
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)

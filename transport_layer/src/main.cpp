@@ -19,11 +19,12 @@
 #include "output_extractor.hpp"
 #include "graph_processor.hpp"
 
-#include "../../utils/config_factory.hpp"
-#include "../../models/config.hpp"
-#include "../../models/map_data.hpp"
-#include "../../models/manifest.hpp"
-#include "../../models/graph.hpp"
+#include "config_factory.hpp"
+#include "config.hpp"
+#include "map_data.hpp"
+#include "manifest.hpp"
+#include "graph.hpp"
+#include "file_parser.hpp"
 
 #define MAPS "../../maps/"
 #define DJ_MAPS "../../maps/d_maps/"
@@ -35,8 +36,6 @@
 
 using namespace std;
 
-map_data get_data(string file_name);
-manifest get_manifest(string file_name);
 void write_dijkstras(Dijkstra* dijkstra, string file_path, map_data map);
 void write_final_output(ACO* aco, graph* g, int num_vehicles, Dijkstra *dijkstra, config conf);
 
@@ -51,8 +50,8 @@ int main(int argc, const char * argv[]) {
     logger cost_out("../logs/cost.log", false);
     logger debug_log("../logs/debug.log", false);
     
-    map_data cities_map = get_data(MAPS + conf.getMap());
-    manifest manifest_map = get_manifest(conf.getManifest());
+    map_data cities_map = file_parser::parse<map_data>(map_data::data, string(MAPS) + conf.getMap());
+    manifest manifest_map = file_parser::parse<manifest>(manifest::data, string(MANIFESTS) + conf.getManifest());
     
     // Creates d_maps folder if it doesn't exist
     system(("mkdir -p " + string(DJ_MAPS)).c_str());
@@ -95,7 +94,7 @@ int main(int argc, const char * argv[]) {
     } else {
         // Populate info for map
         dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map, gp_map);
-        gp_processed_map = get_data(distr_cntr_file_path);
+        gp_processed_map = file_parser::parse<map_data>(map_data::dist_data ,distr_cntr_file_path);
     }
 
     cost_function* cost = new cost_function();
@@ -122,7 +121,7 @@ int main(int argc, const char * argv[]) {
                 int cost = aco->iteration();
                 if (cost < 0) continue;
                 
-                if ( i >= conf.ITERS() - 20) {
+                if ( i > conf.ITERS() - 20) {
                     total += cost;
                 }
             }
@@ -158,54 +157,6 @@ int main(int argc, const char * argv[]) {
     delete dijkstra;
     delete gp;
     return 0;
-}
-
-void build_loggers() {
-    
-}
-
-map_data get_data(string file_name) {
-    // open graph file, read and pass data to Dijkstra to calculate shortest path
-    ifstream file(file_name);
-    string   line;
-    
-    map_data map;
-    
-    while(getline(file, line))
-    {
-        stringstream   linestream(line);
-        int            src, dest, distance;
-        string         src_name, dest_name;
-        double         src_lat, src_long, dest_lat, dest_long;
-        
-        linestream >> src >> src_name >> src_lat >> src_long >> dest >> dest_name >> dest_lat >> dest_long >> distance;
-        
-        map.insert(src, dest, distance);
-    }
-    
-    return map;
-}
-
-manifest get_manifest(string file_name) {
-    ifstream file(MANIFESTS + file_name);
-    string line;
-    
-    manifest manifest_data;
-
-    while(getline(file, line))
-    {
-        stringstream   linestream(line);
-        string         data;
-        int            src;
-        int            dest;
-        int            duration;
-        
-        linestream >> src >> dest >> duration;
-
-        manifest_data.insert(src, dest, duration);
-    }
-    
-    return manifest_data;
 }
 
 void write_dijkstras(Dijkstra* dijkstra, string file_path, map_data map) {
