@@ -54,6 +54,7 @@ public:
     ImVec2 getScreenSpace(RenderState* rs, glm::vec4 point);
 
     void addChildNode(SceneNode* node);
+    void insertChildNode(SceneNode* node);
 
     Scene* parentScene;
 

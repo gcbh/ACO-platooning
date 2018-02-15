@@ -28,6 +28,8 @@
 		1460A2441F1C919E002D7C30 /* sim_test_edges.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1460A2431F1C9196002D7C30 /* sim_test_edges.txt */; };
 		1460A2451F1C91A5002D7C30 /* sim_test_cities.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1460A2421F1C9188002D7C30 /* sim_test_cities.txt */; };
 		1460A2471F1C99B4002D7C30 /* edge_fs.glsl in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1460A2461F1C9808002D7C30 /* edge_fs.glsl */; };
+		146EA7E22035312F00484E7F /* colormap_jet.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 146EA7E12035311600484E7F /* colormap_jet.png */; };
+		146EA7E4203533EC00484E7F /* Heatmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 146EA7E3203533EC00484E7F /* Heatmap.cpp */; };
 		1472F4E32023F06B00392C7D /* tinyfiledialogs.c in Sources */ = {isa = PBXBuildFile; fileRef = 1472F4E12023F06900392C7D /* tinyfiledialogs.c */; };
 		14A232651EE8D5B800FB574F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14A232641EE8D5B800FB574F /* main.cpp */; };
 		14A2326D1EE8D62900FB574F /* libglfw.3.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 14A2326C1EE8D62900FB574F /* libglfw.3.2.dylib */; };
@@ -54,6 +56,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				146EA7E22035312F00484E7F /* colormap_jet.png in CopyFiles */,
 				14C065CA201696E9004246CF /* manifest_mock.json in CopyFiles */,
 				145C581E1F1EF7E40025A9DE /* text_fs.glsl in CopyFiles */,
 				145C581D1F1EF7DB0025A9DE /* sourcecodepro.png in CopyFiles */,
@@ -374,6 +377,8 @@
 		1460A2421F1C9188002D7C30 /* sim_test_cities.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = sim_test_cities.txt; path = ../../maps/simulator_test_graphs/sim_test_cities.txt; sourceTree = "<group>"; };
 		1460A2431F1C9196002D7C30 /* sim_test_edges.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = sim_test_edges.txt; path = ../../maps/simulator_test_graphs/sim_test_edges.txt; sourceTree = "<group>"; };
 		1460A2461F1C9808002D7C30 /* edge_fs.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = edge_fs.glsl; path = shaders/edge_fs.glsl; sourceTree = "<group>"; };
+		146EA7E12035311600484E7F /* colormap_jet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = colormap_jet.png; sourceTree = "<group>"; };
+		146EA7E3203533EC00484E7F /* Heatmap.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Heatmap.cpp; sourceTree = "<group>"; };
 		1472F4E12023F06900392C7D /* tinyfiledialogs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tinyfiledialogs.c; sourceTree = "<group>"; };
 		1472F4E22023F06A00392C7D /* tinyfiledialogs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyfiledialogs.h; sourceTree = "<group>"; };
 		14A232611EE8D5B800FB574F /* FreightSimulator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FreightSimulator; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -731,6 +736,7 @@
 		14304B621F16D402007AEBC6 /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				146EA7E12035311600484E7F /* colormap_jet.png */,
 				145C581C1F1EF7D20025A9DE /* sourcecodepro.png */,
 				145C58191F1ED71D0025A9DE /* heat.png */,
 				14304B671F18140C007AEBC6 /* test.png */,
@@ -763,6 +769,7 @@
 				1452D0871EE9CCBB00883286 /* StringUtils.cpp */,
 				1452D0881EE9CCBB00883286 /* StringUtils.hpp */,
 				145811AC20294CD400D1B695 /* Heatmap.hpp */,
+				146EA7E3203533EC00484E7F /* Heatmap.cpp */,
 			);
 			name = utils;
 			path = ../../utils;
@@ -1001,6 +1008,7 @@
 				14304B601F16D3DF007AEBC6 /* lodepng.cpp in Sources */,
 				14C065CD201697A0004246CF /* TruckNode.cpp in Sources */,
 				14ED4D731EEE4D42009A6A35 /* SceneNode.cpp in Sources */,
+				146EA7E4203533EC00484E7F /* Heatmap.cpp in Sources */,
 				14D214351EEA254C00D568A8 /* SimulatorApp.cpp in Sources */,
 				14DCE8C61F1EFA7700B8F938 /* QuadNode.cpp in Sources */,
 				14ED4D6B1EEE3F7A009A6A35 /* GLFWEngine.cpp in Sources */,

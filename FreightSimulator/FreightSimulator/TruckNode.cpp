@@ -11,6 +11,7 @@
 #include "glm.hpp"
 #include "matrix_transform.hpp"
 
+static const ImU32 black = ImColor(ImVec4(0.0f,0.0f,0.0f,1.0f));
 static const ImVec4 aco_color = ImVec4(1.0f,1.0f,1.0f,1.0f);
 static const ImVec4 dijkstra_color = ImVec4(0.5f,0.5f,1.0f,1.0f);
 
@@ -60,10 +61,12 @@ void TruckNode::drawTruck(RenderState* rs) {
     ImVec2 point = getScreenSpace(rs);
     switch(m_type) {
         case TruckType::ACO:
-            ImGui::GetWindowDrawList()->AddCircleFilled(point, 2.0f, ImColor(aco_color));
+            ImGui::GetWindowDrawList()->AddCircleFilled(point, 5.0f, black);
+            ImGui::GetWindowDrawList()->AddCircleFilled(point, 3.0f, ImColor(aco_color));
             break;
         case TruckType::Dijkstra:
-            ImGui::GetWindowDrawList()->AddCircleFilled(point, 2.0f, ImColor(dijkstra_color));
+            ImGui::GetWindowDrawList()->AddCircleFilled(point, 5.0f, black);
+            ImGui::GetWindowDrawList()->AddCircleFilled(point, 3.0f, ImColor(dijkstra_color));
             break;
     }
 }

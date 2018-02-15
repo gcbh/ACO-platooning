@@ -124,3 +124,9 @@ void SceneNode::addChildNode(SceneNode* node) {
     node->propagateParentScene(parentScene);
     child_nodes.push_back(node);
 }
+
+void SceneNode::insertChildNode(SceneNode* node) {
+    node->_setup();
+    node->propagateParentScene(parentScene);
+    child_nodes.insert(child_nodes.begin(), node);
+}

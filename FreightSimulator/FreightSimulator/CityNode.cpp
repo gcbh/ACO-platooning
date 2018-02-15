@@ -16,8 +16,8 @@
 #include <sstream>
 #include <string>
 
-static const ImVec4 col = ImVec4(1.0f,1.0f,1.0f,1.0f);
-static const ImU32 col32 = ImColor(col);
+static const ImU32 black = ImColor(ImVec4(0.0f,0.0f,0.0f,1.0f));
+static const ImU32 white = ImColor(ImVec4(1.0f,1.0f,1.0f,1.0f));
 
 void CityNode::postsetup() {
     m_scale = glm::vec3(0.1f, 0.1f, 0.1f);
@@ -42,7 +42,8 @@ void CityNode::render(RenderState* rs) {
     ImVec2 point = getScreenSpace(rs);
     switch (rs->cityMode) {
         case CityMode::Default:
-            ImGui::GetWindowDrawList()->AddCircleFilled(point, 3.0f, col32);
+            ImGui::GetWindowDrawList()->AddCircleFilled(point, 5.0f, black);
+            ImGui::GetWindowDrawList()->AddCircleFilled(point, 3.0f, white);
             break;
         default:
             break;
@@ -54,15 +55,15 @@ void CityNode::render(RenderState* rs) {
     switch (rs->cityLabelMode) {
         case CityLabelMode::ID:
             ss << m_id;
-            ImGui::GetWindowDrawList()->AddText(textPoint, col32, ss.str().c_str());
+            ImGui::GetWindowDrawList()->AddText(textPoint, black, ss.str().c_str());
             break;
         case CityLabelMode::Name:
             ss << m_name;
-            ImGui::GetWindowDrawList()->AddText(textPoint, col32, ss.str().c_str());
+            ImGui::GetWindowDrawList()->AddText(textPoint, black, ss.str().c_str());
             break;
         case CityLabelMode::NameAndID:
             ss << m_id << ": " << m_name;
-            ImGui::GetWindowDrawList()->AddText(textPoint, col32, ss.str().c_str());
+            ImGui::GetWindowDrawList()->AddText(textPoint, black, ss.str().c_str());
             break;
         default:
             break;

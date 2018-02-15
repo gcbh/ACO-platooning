@@ -47,7 +47,7 @@ void SimulatorApp::render(RenderState* rs) {
     glDepthFunc(GL_LESS);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.0,0.0,0.0,0.0);
+    glClearColor(1.0,1.0,1.0,1.0);
 
     m_scene->_render(rs);
 

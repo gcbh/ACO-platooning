@@ -21,6 +21,7 @@
 #include <math.h>
 #include "json.hpp"
 #include "tinyfiledialogs.h"
+#include "Heatmap.hpp"
 
 // Allow unordered hashing of pairs (for edge map)
 int hash_pair(std::pair<int,int> p) {
@@ -59,6 +60,9 @@ ImVec2 prevMouseDrag = ImVec2();
 void SimScene::postsetup() {
     SimCamera* camera = new SimCamera();
     attachSceneCamera(camera);
+
+    //Heatmaps
+    Heatmap::setup();
 
     //Quad VBO
     glGenBuffers(1, &SimScene::vbo);
@@ -196,6 +200,10 @@ void SimScene::loadGraph() {
     m_scene_camera->m_position.y = avgY;
     m_scene_camera->m_focal_point.x = avgX;
     m_scene_camera->m_focal_point.y = avgY;
+
+    for (auto& edge : edge_map) {
+        m_root_node->insertChildNode(edge.second);
+    }
 }
 
 CityNode* SimScene::addCityNode(int city_id, std::string city_name, float latitude, float longitude) {
@@ -214,7 +222,6 @@ CityNode* SimScene::addCityNode(int city_id, std::string city_name, float latitu
 EdgeNode* SimScene::addEdgeNode(int city_id1, int city_id2, float weight) {
 
     EdgeNode* edge = new EdgeNode();
-    m_root_node->addChildNode(edge);
     edge->m_id = hash_pair(std::make_pair(city_id1, city_id2));
     edge->m_weight = weight;
     edge->m_position.x = (city_map[city_id1]->m_position.x + city_map[city_id2]->m_position.x)/2;

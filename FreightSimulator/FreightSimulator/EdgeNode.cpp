@@ -12,8 +12,7 @@
 #include "matrix_transform.hpp"
 #include "Heatmap.hpp"
 
-static const ImVec4 col = ImVec4(1.0f,1.0f,1.0f,1.0f);
-static const ImU32 col32 = ImColor(col);
+static const ImU32 black = ImColor(ImVec4(0.0f,0.0f,0.0f,1.0f));
 
 void EdgeNode::postsetup() {
 }
@@ -39,13 +38,13 @@ void EdgeNode::render(RenderState* rs) {
 
     switch (rs->roadMode) {
         case RoadMode::Default:
-            ImGui::GetWindowDrawList()->AddLine(ss1, ss2, col32);
+            ImGui::GetWindowDrawList()->AddLine(ss1, ss2, black, 3.0);
             break;
         case RoadMode::StaticHeat:
-            ImGui::GetWindowDrawList()->AddLine(ss1, ss2, ImColor(staticCol));
+            ImGui::GetWindowDrawList()->AddLine(ss1, ss2, ImColor(staticCol), 3.0);
             break;
         case RoadMode::DynamicHeat:
-            ImGui::GetWindowDrawList()->AddLine(ss1, ss2, ImColor(dynamicCol));
+            ImGui::GetWindowDrawList()->AddLine(ss1, ss2, ImColor(dynamicCol), 3.0);
             break;
         default:
             break;
@@ -56,7 +55,7 @@ void EdgeNode::render(RenderState* rs) {
     switch (rs->roadLabelMode) {
         case RoadLabelMode::Distance:
             ss << m_weight;
-            ImGui::GetWindowDrawList()->AddText(textPoint, col32, ss.str().c_str());
+            ImGui::GetWindowDrawList()->AddText(textPoint, black, ss.str().c_str());
             break;
         case RoadLabelMode::StaticHeat:
             ss << m_static_heat;
@@ -81,19 +80,17 @@ ImVec4 EdgeNode::generate_static_color(RenderState* rs) {
     float r = 1.0;
     float g = 1.0;
     float b = 1.0;
-    ColorGradient heatMapGradient;    // Used to create a nice array of different colors.
-    heatMapGradient.createDefaultHeatMapGradient();
 
     // Generate the static heat value depending on the mode
     switch(rs->truckMode) {
         case TruckMode::Dijkstra:
-            heatMapGradient.getColorAtValue(dijkstra_heat,r,g,b);
+            Heatmap::getColorAtValue(dijkstra_heat,r,g,b);
             break;
         case TruckMode::ACO:
-            heatMapGradient.getColorAtValue(aco_heat,r,g,b);
+            Heatmap::getColorAtValue(aco_heat,r,g,b);
             break;
         case TruckMode::DijkstraAndACO:
-            heatMapGradient.getColorAtValue((aco_heat+dijkstra_heat)/2.0,r,g,b);
+            Heatmap::getColorAtValue((aco_heat+dijkstra_heat)/2.0,r,g,b);
             break;
         default:
             break;
@@ -111,19 +108,17 @@ ImVec4 EdgeNode::generate_dynamic_color(RenderState* rs) {
     float r = 1.0;
     float g = 1.0;
     float b = 1.0;
-    ColorGradient heatMapGradient;    // Used to create a nice array of different colors.
-    heatMapGradient.createDefaultHeatMapGradient();
 
     // Generate the static heat value depending on the mode
     switch(rs->truckMode) {
         case TruckMode::Dijkstra:
-            heatMapGradient.getColorAtValue(dijkstra_heat,r,g,b);
+            Heatmap::getColorAtValue(dijkstra_heat,r,g,b);
             break;
         case TruckMode::ACO:
-            heatMapGradient.getColorAtValue(aco_heat,r,g,b);
+            Heatmap::getColorAtValue(aco_heat,r,g,b);
             break;
         case TruckMode::DijkstraAndACO:
-            heatMapGradient.getColorAtValue((aco_heat+dijkstra_heat)/2.0,r,g,b);
+            Heatmap::getColorAtValue((aco_heat+dijkstra_heat)/2.0,r,g,b);
             break;
         default:
             break;
