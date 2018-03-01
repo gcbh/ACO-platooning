@@ -55,6 +55,11 @@ GLuint SimScene::tex = 0;
 GLuint SimScene::city_mvp_id = 0;
 GLuint SimScene::edge_mvp_id = 0;
 
+std::map<int, CityNode*> SimScene::city_map;
+std::map<int, TruckNode*> SimScene::aco_truck_map;
+std::map<int, TruckNode*> SimScene::dijkstra_truck_map;
+std::map<int, EdgeNode*> SimScene::edge_map;
+
 ImVec2 prevMouseDrag = ImVec2();
 
 void SimScene::postsetup() {
@@ -96,14 +101,13 @@ void SimScene::postsetup() {
     show_schedule_window = 1;
     sim_time_scale = 0.0;
     sim_max_time = 100.0;
+
+    ImGui::StyleColorsLight();
 }
 
 void SimScene::preupdate(UpdateState *us){
     double new_sim_time = us->sim_time + us->deltaTime * sim_time_scale;
     us->sim_time = fmax(0.0, fmin(new_sim_time, sim_max_time));
-
-    updateTruckMap(aco_truck_map, us->sim_time);
-    updateTruckMap(dijkstra_truck_map, us->sim_time);
 }
 
 void SimScene::prerender(RenderState* rs) {
@@ -297,7 +301,7 @@ void SimScene::parseSchedule(json schedules,
         std::vector<Segment*>::iterator j;
         for (j = t->m_schedule.begin(); j != t->m_schedule.end(); j++) {
             Segment* s = *j;
-            int edge_id = hash_pair(std::make_pair(s->start_node, s->end_node));
+            int edge_id = hash_pair(std::make_pair(s->start_node->m_id, s->end_node->m_id));
 
             unnormalized_heat_map[edge_id] += 1;
             max_heat = fmax(max_heat, unnormalized_heat_map[edge_id]);
@@ -322,32 +326,6 @@ void SimScene::clearStaticHeatMaps() {
 void SimScene::clearTruckMaps() {
     aco_truck_map.clear();
     dijkstra_truck_map.clear();
-}
-
-void SimScene::updateTruckMap(std::map<int, TruckNode*> &truck_map, float timecode) {
-    std::map<int, TruckNode*>::iterator i;
-    for (i = truck_map.begin(); i != truck_map.end(); i++) {
-
-        double time = 0.0;
-        std::vector<Segment*>::iterator j;
-        for (j = i->second->m_schedule.begin(); j != i->second->m_schedule.end(); j++) {
-            Segment* s = *j;
-
-            double segment_end_time = time + s->time;
-
-            //We are on the current segment
-            if (timecode <= segment_end_time) {
-                double segment_progress = fmax(0.0, timecode - time) / s->time;
-
-                float x = city_map[s->start_node]->m_position.x + (city_map[s->end_node]->m_position.x - city_map[s->start_node]->m_position.x)*segment_progress;
-                float y = city_map[s->start_node]->m_position.y + (city_map[s->end_node]->m_position.y - city_map[s->start_node]->m_position.y)*segment_progress;
-                i->second->m_position = glm::vec3(x,y,0.0f);
-                break;
-            }
-
-            time = segment_end_time;
-        }
-    }
 }
 
 void SimScene::renderUI(RenderState* rs) {
@@ -461,31 +439,49 @@ void SimScene::renderUI(RenderState* rs) {
 
         if (ImGui::CollapsingHeader("View")) {
             ImGui::Text("Truck Mode");
-            ImGui::RadioButton("None##RLM", (int*)&rs->truckMode, 0); ImGui::SameLine();
-            ImGui::RadioButton("Dijkstra##RLM", (int*)&rs->truckMode, 1); ImGui::SameLine();
-            ImGui::RadioButton("ACO##RLM", (int*)&rs->truckMode, 2); ImGui::SameLine();
+            ImGui::RadioButton("None##RLM", (int*)&rs->truckMode, 0);
+            ImGui::RadioButton("Dijkstra##RLM", (int*)&rs->truckMode, 1);
+            ImGui::RadioButton("ACO##RLM", (int*)&rs->truckMode, 2);
             ImGui::RadioButton("Dijkstra & ACO##RLM", (int*)&rs->truckMode, 3);
         }
 
         // Show node list
-//        if (ImGui::CollapsingHeader("Truck")) {
-//            if (truck_map.size() > 0) {
-//                std::map<int, TruckNode*>::iterator i;
-//                for (i = truck_map.begin(); i != truck_map.end(); i++) {
-//                    if (ImGui::TreeNode(i->second, "%d", i->second->m_id)) {
-//                        std::vector<Segment*>::iterator j;
-//                        for (j = i->second->m_schedule.begin(); j != i->second->m_schedule.end(); j++) {
-//                            Segment* s = *j;
-//                            ImGui::Text("%s -> %s", city_map[s->start_node]->m_name.c_str(), city_map[s->end_node]->m_name.c_str());
-//                        }
-//                        ImGui::TreePop();
-//                    }
-//
-//                }
-//            } else {
-//                ImGui::Text("No schedule loaded");
-//            }
-//        }
+        if (ImGui::CollapsingHeader("Truck")) {
+            if (aco_truck_map.size() > 0) {
+                ImGui::Text("ACO Trucks:");
+                ImGui::Columns(3, "TruckTableColumns"); // 4-ways, with border
+                ImGui::Separator();
+                ImGui::Text("ID"); ImGui::NextColumn();
+                ImGui::Text("Start"); ImGui::NextColumn();
+                ImGui::Text("End"); ImGui::NextColumn();
+                ImGui::Separator();
+
+                std::map<int, TruckNode*>::iterator i;
+                for (i = aco_truck_map.begin(); i != aco_truck_map.end(); i++) {
+
+                    //Truck ID
+                    char label[32];
+                    sprintf(label, "%d", i->second->m_id);
+                    ImGui::Selectable(label, false, ImGuiSelectableFlags_SpanAllColumns);
+                    i->second->m_highlighted = ImGui::IsItemHovered();
+                    ImGui::NextColumn();
+
+                    //Truck Start City
+                    Segment* s = i->second->m_schedule.front();
+                    ImGui::Text("%d: %s", s->start_node->m_id, s->start_node->m_name.c_str()); ImGui::NextColumn();
+
+                    //Truck End City
+                    Segment* e = i->second->m_schedule.back();
+                    ImGui::Text("%d: %s", e->end_node->m_id, e->end_node->m_name.c_str()); ImGui::NextColumn();
+
+                }
+
+                ImGui::Columns(1);
+                ImGui::Separator();
+            } else {
+                ImGui::Text("No schedule loaded");
+            }
+        }
         ImGui::End();
     }
 }

@@ -36,6 +36,11 @@ public:
                   city_mvp_id, edge_mvp_id,
                   vbo, vao, tex;
 
+    static std::map<int, CityNode*> city_map;
+    static std::map<int, TruckNode*> aco_truck_map;
+    static std::map<int, TruckNode*> dijkstra_truck_map;
+    static std::map<int, EdgeNode*> edge_map;
+
 private:
     CityNode* addCityNode(int            city_id,
                      std::string    city_name,
@@ -59,10 +64,6 @@ private:
     void renderUI(RenderState* rs);
 
     glm::vec3 camera_position;
-    std::map<int, CityNode*> city_map;
-    std::map<int, TruckNode*> aco_truck_map;
-    std::map<int, TruckNode*> dijkstra_truck_map;
-    std::map<int, EdgeNode*> edge_map;
 
     std::map<int, float> aco_static_heatmap;
     std::map<int, float> dijkstra_static_heatmap;

@@ -12,7 +12,8 @@
 #include "matrix_transform.hpp"
 
 static const ImU32 black = ImColor(ImVec4(0.0f,0.0f,0.0f,1.0f));
-static const ImVec4 aco_color = ImVec4(1.0f,1.0f,1.0f,1.0f);
+static const ImU32 white = ImColor(ImVec4(1.0f,1.0f,1.0f,1.0f));
+static const ImU32 aco_color = ImColor(ImVec4(0.101f, 0.576f, 1.0f,1.0f));
 static const ImVec4 dijkstra_color = ImVec4(0.5f,0.5f,1.0f,1.0f);
 
 TruckNode::TruckNode(json j) {
@@ -34,7 +35,28 @@ void TruckNode::preinput(InputState* is) {
 }
 
 void TruckNode::update(UpdateState* us) {
-    
+    float timecode = us->sim_time;
+    double time = 0.0;
+
+    //Loop through segments and position ourselves
+    std::vector<Segment*>::iterator j;
+    for (j = m_schedule.begin(); j != m_schedule.end(); j++) {
+        Segment* s = *j;
+
+        double segment_end_time = time + s->time;
+
+        //We are on the current segment
+        if (timecode <= segment_end_time) {
+            double segment_progress = fmax(0.0, timecode - time) / s->time;
+
+            float x = s->start_node->m_position.x + (s->end_node->m_position.x - s->start_node->m_position.x)*segment_progress;
+            float y = s->start_node->m_position.y + (s->end_node->m_position.y - s->start_node->m_position.y)*segment_progress;
+            m_position = glm::vec3(x,y,0.0f);
+            break;
+        }
+
+        time = segment_end_time;
+    }
 }
 
 void TruckNode::prerender(RenderState* rs) {
@@ -61,12 +83,12 @@ void TruckNode::drawTruck(RenderState* rs) {
     ImVec2 point = getScreenSpace(rs);
     switch(m_type) {
         case TruckType::ACO:
-            ImGui::GetWindowDrawList()->AddCircleFilled(point, 5.0f, black);
-            ImGui::GetWindowDrawList()->AddCircleFilled(point, 3.0f, ImColor(aco_color));
+            ImGui::GetWindowDrawList()->AddCircleFilled(point, 10.0f, white);
+            ImGui::GetWindowDrawList()->AddCircleFilled(point, 8.0f, m_highlighted ? aco_color : black);
             break;
         case TruckType::Dijkstra:
-            ImGui::GetWindowDrawList()->AddCircleFilled(point, 5.0f, black);
-            ImGui::GetWindowDrawList()->AddCircleFilled(point, 3.0f, ImColor(dijkstra_color));
+            ImGui::GetWindowDrawList()->AddCircleFilled(point, 10.0f, white);
+            ImGui::GetWindowDrawList()->AddCircleFilled(point, 8.0f, m_highlighted ? aco_color : black);
             break;
     }
 }

@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include "json.hpp"
+#include "CityNode.hpp"
 
 // for convenience
 using json = nlohmann::json;
@@ -22,8 +23,8 @@ public:
     Segment(json json);
 
     std::string type;
-    int start_node;
-    int end_node;
+    CityNode* start_node;
+    CityNode* end_node;
     double time;
     int max_wait;
     std::vector<int> platoon_members;
