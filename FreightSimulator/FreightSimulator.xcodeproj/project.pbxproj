@@ -31,6 +31,7 @@
 		146EA7E22035312F00484E7F /* colormap_jet.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 146EA7E12035311600484E7F /* colormap_jet.png */; };
 		146EA7E4203533EC00484E7F /* Heatmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 146EA7E3203533EC00484E7F /* Heatmap.cpp */; };
 		1472F4E32023F06B00392C7D /* tinyfiledialogs.c in Sources */ = {isa = PBXBuildFile; fileRef = 1472F4E12023F06900392C7D /* tinyfiledialogs.c */; };
+		14990CBA2047BBCF0089CA53 /* Menlo-Regular.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 14990CB92047BBAD0089CA53 /* Menlo-Regular.ttf */; };
 		14A232651EE8D5B800FB574F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14A232641EE8D5B800FB574F /* main.cpp */; };
 		14A2326D1EE8D62900FB574F /* libglfw.3.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 14A2326C1EE8D62900FB574F /* libglfw.3.2.dylib */; };
 		14A2326F1EE8D70A00FB574F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14A2326E1EE8D70A00FB574F /* OpenGL.framework */; };
@@ -56,6 +57,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				14990CBA2047BBCF0089CA53 /* Menlo-Regular.ttf in CopyFiles */,
 				146EA7E22035312F00484E7F /* colormap_jet.png in CopyFiles */,
 				14C065CA201696E9004246CF /* manifest_mock.json in CopyFiles */,
 				145C581E1F1EF7E40025A9DE /* text_fs.glsl in CopyFiles */,
@@ -381,6 +383,7 @@
 		146EA7E3203533EC00484E7F /* Heatmap.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Heatmap.cpp; sourceTree = "<group>"; };
 		1472F4E12023F06900392C7D /* tinyfiledialogs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tinyfiledialogs.c; sourceTree = "<group>"; };
 		1472F4E22023F06A00392C7D /* tinyfiledialogs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyfiledialogs.h; sourceTree = "<group>"; };
+		14990CB92047BBAD0089CA53 /* Menlo-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Menlo-Regular.ttf"; path = "assets/Menlo-Regular.ttf"; sourceTree = "<group>"; };
 		14A232611EE8D5B800FB574F /* FreightSimulator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FreightSimulator; sourceTree = BUILT_PRODUCTS_DIR; };
 		14A232641EE8D5B800FB574F /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		14A2326C1EE8D62900FB574F /* libglfw.3.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.2.dylib; path = ../../../../../../usr/local/Cellar/glfw/3.2.1/lib/libglfw.3.2.dylib; sourceTree = "<group>"; };
@@ -736,6 +739,7 @@
 		14304B621F16D402007AEBC6 /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				14990CB92047BBAD0089CA53 /* Menlo-Regular.ttf */,
 				146EA7E12035311600484E7F /* colormap_jet.png */,
 				145C581C1F1EF7D20025A9DE /* sourcecodepro.png */,
 				145C58191F1ED71D0025A9DE /* heat.png */,

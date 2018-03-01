@@ -36,10 +36,15 @@ public:
                   city_mvp_id, edge_mvp_id,
                   vbo, vao, tex;
 
+    //Data
     static std::map<int, CityNode*> city_map;
     static std::map<int, TruckNode*> aco_truck_map;
     static std::map<int, TruckNode*> dijkstra_truck_map;
     static std::map<int, EdgeNode*> edge_map;
+
+    //UI State
+    static TruckNode* highlighted;
+    static TruckNode* selected;
 
 private:
     CityNode* addCityNode(int            city_id,

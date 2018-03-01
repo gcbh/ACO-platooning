@@ -60,6 +60,9 @@ std::map<int, TruckNode*> SimScene::aco_truck_map;
 std::map<int, TruckNode*> SimScene::dijkstra_truck_map;
 std::map<int, EdgeNode*> SimScene::edge_map;
 
+TruckNode* SimScene::highlighted = nullptr;
+TruckNode* SimScene::selected = nullptr;
+
 ImVec2 prevMouseDrag = ImVec2();
 
 void SimScene::postsetup() {
@@ -102,7 +105,13 @@ void SimScene::postsetup() {
     sim_time_scale = 0.0;
     sim_max_time = 100.0;
 
+
     ImGui::StyleColorsLight();
+    ImGuiIO& io = ImGui::GetIO();
+    ImFont* font = io.Fonts->AddFontFromFileTTF("Menlo-Regular.ttf", 26.0);
+    font->Scale = 0.5;
+    io.FontDefault = font;
+
 }
 
 void SimScene::preupdate(UpdateState *us){
@@ -329,6 +338,19 @@ void SimScene::clearTruckMaps() {
 }
 
 void SimScene::renderUI(RenderState* rs) {
+
+    //UI Constants
+    float menuHeight = 20;
+    float widthFactor = 0.2;
+    float playbackWidth = 250;
+    float playbackHeight = 75;
+
+    float width = ImGui::GetIO().DisplaySize.x;
+    float height = ImGui::GetIO().DisplaySize.y;
+
+    //Window settings
+    ImGuiWindowFlags flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
+
     // Main Menu Bar
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
@@ -352,12 +374,19 @@ void SimScene::renderUI(RenderState* rs) {
         ImGui::EndMainMenuBar();
     }
 
+    //Set the position
+    ImGui::SetNextWindowPos(ImVec2(0, menuHeight), true);
+    ImGui::SetNextWindowSize(ImVec2(width*widthFactor, height-menuHeight), true);
+
     // Render map window UI
     if (show_map_window) {
-        if (!ImGui::Begin("Map")) {
+        if (!ImGui::Begin("Map", NULL, flags)) {
             ImGui::End();
             return;
         }
+
+        ImGuiStyle& style = ImGui::GetStyle();
+        style.WindowRounding = 0.0f;
 
         //Show map information
         if (ImGui::Button("Load Map")) {
@@ -387,101 +416,155 @@ void SimScene::renderUI(RenderState* rs) {
             ImGui::RadioButton("Distance##RLM", (int*)&rs->roadLabelMode, 1); ImGui::SameLine();
             ImGui::RadioButton("Static Heat##RLM", (int*)&rs->roadLabelMode, 2); ImGui::SameLine();
             ImGui::RadioButton("Dynamic Heat##RLM", (int*)&rs->roadLabelMode, 3);
-        }
-        ImGui::End();
-    }
 
-    // Render schedule window UI
-    if (show_schedule_window) {
-        if (!ImGui::Begin("Schedule")) {
-            ImGui::End();
-            return;
-        }
-
-        //Show map information
-        if (ImGui::Button("Load Schedule")) {
-            loadSchedule();
-        }
-
-        //ImGui::DragFloat("Time Scale", &sim_time_scale, 0.01f, -2.0f, 2.0f, "%.06f x");
-
-        if (ImGui::CollapsingHeader("Sim")) {
-            ImGui::Text("Playback");
-            if (ImGui::Button("<<<")) {
-                sim_time_scale = -3.0;
-            }
-            ImGui::SameLine();
-            if (ImGui::Button("<<")) {
-                sim_time_scale = -2.0;
-            }
-            ImGui::SameLine();
-            if (ImGui::Button("<")) {
-                sim_time_scale = -1.0;
-            }
-            ImGui::SameLine();
-            if (ImGui::Button("o")) {
-                sim_time_scale = 0.0;
-            }
-            ImGui::SameLine();
-            if (ImGui::Button(">")) {
-                sim_time_scale = 1.0;
-            }
-            ImGui::SameLine();
-            if (ImGui::Button(">>")) {
-                sim_time_scale = 2.0;
-            }
-            ImGui::SameLine();
-            if (ImGui::Button(">>>")) {
-                sim_time_scale = 3.0;
-            }
-            ImGui::Text("Timecode: %f", rs->sim_time);
-        }
-
-        if (ImGui::CollapsingHeader("View")) {
             ImGui::Text("Truck Mode");
             ImGui::RadioButton("None##RLM", (int*)&rs->truckMode, 0);
             ImGui::RadioButton("Dijkstra##RLM", (int*)&rs->truckMode, 1);
             ImGui::RadioButton("ACO##RLM", (int*)&rs->truckMode, 2);
             ImGui::RadioButton("Dijkstra & ACO##RLM", (int*)&rs->truckMode, 3);
         }
+        ImGui::End();
+    }
 
-        // Show node list
-        if (ImGui::CollapsingHeader("Truck")) {
-            if (aco_truck_map.size() > 0) {
-                ImGui::Text("ACO Trucks:");
-                ImGui::Columns(3, "TruckTableColumns"); // 4-ways, with border
-                ImGui::Separator();
-                ImGui::Text("ID"); ImGui::NextColumn();
-                ImGui::Text("Start"); ImGui::NextColumn();
-                ImGui::Text("End"); ImGui::NextColumn();
-                ImGui::Separator();
+    ImGui::SetNextWindowPos(ImVec2(width*(1-widthFactor), menuHeight), true);
+    ImGui::SetNextWindowSize(ImVec2(width*widthFactor, (height-menuHeight)/2), true);
 
-                std::map<int, TruckNode*>::iterator i;
-                for (i = aco_truck_map.begin(); i != aco_truck_map.end(); i++) {
+    // Render schedule window UI
+    if (show_schedule_window) {
+        if (!ImGui::Begin("ACO Trucks", NULL, flags)) {
+            ImGui::End();
+            return;
+        }
 
-                    //Truck ID
-                    char label[32];
-                    sprintf(label, "%d", i->second->m_id);
-                    ImGui::Selectable(label, false, ImGuiSelectableFlags_SpanAllColumns);
-                    i->second->m_highlighted = ImGui::IsItemHovered();
-                    ImGui::NextColumn();
+        ImGuiStyle& style = ImGui::GetStyle();
+        style.WindowRounding = 0.0f;
 
-                    //Truck Start City
-                    Segment* s = i->second->m_schedule.front();
-                    ImGui::Text("%d: %s", s->start_node->m_id, s->start_node->m_name.c_str()); ImGui::NextColumn();
+        if (aco_truck_map.size() > 0) {
+            ImGui::Columns(3, "TruckTableColumns"); // 4-ways, with border
+            ImGui::Separator();
+            ImGui::Text("ID"); ImGui::NextColumn();
+            ImGui::Text("Start"); ImGui::NextColumn();
+            ImGui::Text("End"); ImGui::NextColumn();
+            ImGui::Separator();
 
-                    //Truck End City
-                    Segment* e = i->second->m_schedule.back();
-                    ImGui::Text("%d: %s", e->end_node->m_id, e->end_node->m_name.c_str()); ImGui::NextColumn();
+            highlighted = nullptr;
+            std::map<int, TruckNode*>::iterator i;
+            for (i = aco_truck_map.begin(); i != aco_truck_map.end(); i++) {
 
+                //Truck ID
+                char label[32];
+                sprintf(label, "%d", i->second->m_id);
+                if (ImGui::Selectable(label, selected == i->second, ImGuiSelectableFlags_SpanAllColumns)) {
+                    selected = i->second;
                 }
 
-                ImGui::Columns(1);
-                ImGui::Separator();
-            } else {
-                ImGui::Text("No schedule loaded");
+                //Highlighting
+                if (ImGui::IsItemHovered()) {
+                    highlighted = i->second;
+                }
+                ImGui::NextColumn();
+
+                //Truck Start City
+                Segment* s = i->second->m_schedule.front();
+                ImGui::Text("%d: %s", s->start_node->m_id, s->start_node->m_name.c_str()); ImGui::NextColumn();
+
+                //Truck End City
+                Segment* e = i->second->m_schedule.back();
+                ImGui::Text("%d: %s", e->end_node->m_id, e->end_node->m_name.c_str()); ImGui::NextColumn();
             }
+
+            ImGui::Columns(1);
+            ImGui::Separator();
+        } else {
+            ImGui::Text("No schedule loaded");
+        }
+
+        ImGui::End();
+    }
+
+    ImGui::SetNextWindowPos(ImVec2(width*(1-widthFactor), menuHeight+(height-menuHeight)/2.0), true);
+    ImGui::SetNextWindowSize(ImVec2(width*widthFactor, (height-menuHeight)/2.0), true);
+
+    // Render truck schedule window
+    if (true) {
+        char window_title[64];
+        sprintf(window_title, "Truck Schedule");
+
+        if (selected != nullptr) {
+            sprintf(window_title, "Truck %d: %s -> %s", selected->m_id, selected->m_schedule.front()->start_node->m_name.c_str(), selected->m_schedule.back()->end_node->m_name.c_str());
+        }
+
+        if (!ImGui::Begin(window_title, NULL, flags)) {
+            ImGui::End();
+            return;
+        }
+
+        // Render individual truck schedule UI
+        if (selected != nullptr) {
+
+            int index = 0;
+            std::vector<Segment*>::iterator j;
+            for (j = selected->m_schedule.begin(); j != selected->m_schedule.end(); j++) {
+                Segment* s = *j;
+
+                char header_title[64];
+                sprintf(header_title, "%d: %s -> %s", index++, s->start_node->m_name.c_str(), s->end_node->m_name.c_str());
+                if (ImGui::CollapsingHeader(header_title)) {
+                    ImGui::Text("Type: %s", s->type.c_str());
+                    ImGui::Text("Time: %f", s->time);
+                    ImGui::Text("Platoon Size: %lu", s->platoon_members.size());
+                }
+            }
+        } else {
+            ImGui::Text("No truck selected");
         }
         ImGui::End();
     }
+
+    //Plaback window position
+    ImGui::SetNextWindowPos(ImVec2(width*0.5-(playbackWidth/2), height - playbackHeight), true);
+    ImGui::SetNextWindowSize(ImVec2(playbackWidth, playbackHeight), true);
+
+    // Render schedule window UI
+    if (show_schedule_window) {
+        if (!ImGui::Begin("Playback", NULL, flags)) {
+            ImGui::End();
+            return;
+        }
+
+        ImGuiStyle& style = ImGui::GetStyle();
+        style.WindowRounding = 0.0f;
+
+        if (ImGui::Button("<<<")) {
+            sim_time_scale = -3.0;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("<<")) {
+            sim_time_scale = -2.0;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("<")) {
+            sim_time_scale = -1.0;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("o")) {
+            sim_time_scale = 0.0;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button(">")) {
+            sim_time_scale = 1.0;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button(">>")) {
+            sim_time_scale = 2.0;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button(">>>")) {
+            sim_time_scale = 3.0;
+        }
+        ImGui::Text("Timecode: %f", rs->sim_time);
+        ImGui::End();
+    }
+
+
 }

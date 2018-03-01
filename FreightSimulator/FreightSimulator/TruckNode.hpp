@@ -38,9 +38,8 @@ public:
     TruckType m_type;
     std::vector<Segment*> m_schedule;
 
-    bool m_highlighted;
-
 private:
+    Segment* current_segment;
 };
 
 #endif /* TruckNode_hpp */
