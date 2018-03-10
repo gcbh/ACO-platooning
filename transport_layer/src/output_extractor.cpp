@@ -160,7 +160,7 @@ void output_extractor::make_schedule(map<iPair, vector<int> > platoons) {
                 members.erase(remove(members.begin(), members.end(), vehicle_id));
                 
                 seg.platoon_members = members;
-                seg.max_wait = ceil(max_time - get_transit_time(vehicle_id));
+                seg.max_wait = (max_time - get_transit_time(vehicle_id));
                 
                 update_transit_time(vehicle_id, max_time);
                 put_schedule(vehicle_id, seg);

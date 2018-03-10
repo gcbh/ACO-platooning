@@ -75,7 +75,7 @@ int main(int argc, const char * argv[]) {
     ofstream output_file;
     output_file.open("../cost_per_trial.txt");
   
-    for (int i = 1; i <= 5; i++) {
+    for (int i = 1; i <= 1; i++) {
         int start_s=clock();
 
         graph *g = new graph();

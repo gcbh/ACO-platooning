@@ -23,7 +23,7 @@ struct segment {
     int start_node;
     int end_node;
     float time;
-    int max_wait;
+    float max_wait;
     vector<int> platoon_members;
 };
 
