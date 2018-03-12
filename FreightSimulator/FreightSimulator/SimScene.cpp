@@ -291,7 +291,7 @@ void SimScene::loadSchedule() {
     clearTruckMaps();
 
     parseSchedule(schedules, aco_truck_map, aco_static_heatmap, TruckType::ACO);
-    parseSchedule(dijkstra_schedules, dijkstra_truck_map, dijkstra_static_heatmap, TruckType::Dijkstra);
+    //parseSchedule(dijkstra_schedules, dijkstra_truck_map, dijkstra_static_heatmap, TruckType::Dijkstra);
 }
 
 void SimScene::parseSchedule(json schedules,
@@ -511,6 +511,7 @@ void SimScene::renderUI(RenderState* rs) {
                 sprintf(header_title, "%d: %s -> %s", index++, s->start_node->m_name.c_str(), s->end_node->m_name.c_str());
                 if (ImGui::CollapsingHeader(header_title)) {
                     ImGui::Text("Type: %s", s->type.c_str());
+                    ImGui::Text("Wait: %f", s->max_wait);
                     ImGui::Text("Time: %f", s->time);
                     ImGui::Text("Platoon Size: %lu", s->platoon_members.size());
                 }

@@ -26,8 +26,10 @@ public:
     CityNode* start_node;
     CityNode* end_node;
     double time;
-    int max_wait;
+    double max_wait;
     std::vector<int> platoon_members;
+
+    bool isEqual(Segment*);
 
 private:
 };
