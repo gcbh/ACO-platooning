@@ -29,7 +29,7 @@ TruckNode::TruckNode(json j) {
         m_schedule.push_back(s);
     }
     current_segment = nullptr;
-    m_waiting = false;
+    m_state = TruckState::Waiting;
 }
 
 void TruckNode::postsetup() {
@@ -60,7 +60,7 @@ void TruckNode::update(UpdateState* us) {
             float y = s->start_node->m_position.y;
             m_position = glm::vec3(x,y,0.0f);
             current_segment = s;
-            m_waiting = true;
+            m_state = TruckState::Waiting;
             return;
         }
 
@@ -72,7 +72,7 @@ void TruckNode::update(UpdateState* us) {
             float y = s->start_node->m_position.y + (s->end_node->m_position.y - s->start_node->m_position.y)*segment_progress;
             m_position = glm::vec3(x,y,0.0f);
             current_segment = s;
-            m_waiting = false;
+            m_state = TruckState::Driving;
             return;
         }
 
@@ -83,7 +83,7 @@ void TruckNode::update(UpdateState* us) {
     float x = m_schedule.back()->end_node->m_position.x;
     float y = m_schedule.back()->end_node->m_position.y;
     m_position = glm::vec3(x,y,0.0f);
-    m_waiting = true;
+    m_state = TruckState::Complete;
     current_segment = nullptr;
 }
 
@@ -116,13 +116,13 @@ void TruckNode::drawTruck(RenderState* rs) {
 
         int platoonSize = (int)current_segment->platoon_members.size()+1;
 
-        if (m_waiting == true) {
+        if (m_state == TruckState::Waiting) {
             // We are waiting, see how many others are waiting
             for (int i = 0; i < platoonSize-1; i++) {
                 TruckNode* truck = SimScene::aco_truck_map[current_segment->platoon_members[i]];
 
-                if (truck->current_segment->isEqual(current_segment) &&
-                    truck->m_waiting == true) {
+                if (current_segment->isEqual(truck->current_segment) &&
+                    truck->m_state == TruckState::Waiting) {
                     labelSize++;
                 }
             }
@@ -137,6 +137,8 @@ void TruckNode::drawTruck(RenderState* rs) {
                 }
             }
         }
+    } else {
+        return;
     }
 
     ImU32 color = (SimScene::selected == this || SimScene::highlighted == this) ? aco_color : black;

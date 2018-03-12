@@ -20,6 +20,12 @@
 // for convenience
 using json = nlohmann::json;
 
+enum class TruckState : int {
+    Waiting,
+    Driving,
+    Complete
+};
+
 class TruckNode : public QuadNode
 {
 public:
@@ -36,7 +42,7 @@ public:
     void drawTruck(RenderState* rs);
     int m_id;
     TruckType m_type;
-    bool m_waiting;
+    TruckState m_state;
     std::vector<Segment*> m_schedule;
 
 private:

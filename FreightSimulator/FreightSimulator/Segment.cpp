@@ -19,6 +19,9 @@ Segment::Segment(json j) {
 }
 
 bool Segment::isEqual(Segment* segment) {
+    if (segment == nullptr) {
+        return false;
+    }
     return (
         type == segment->type &&
         start_node == segment->start_node &&
