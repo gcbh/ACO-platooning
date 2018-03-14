@@ -55,6 +55,8 @@ public:
 
     void addChildNode(SceneNode* node);
     void insertChildNode(SceneNode* node);
+    void removeChildNode(SceneNode* node);
+    void clearChildNodes();
 
     Scene* parentScene;
 

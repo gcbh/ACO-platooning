@@ -130,3 +130,11 @@ void SceneNode::insertChildNode(SceneNode* node) {
     node->propagateParentScene(parentScene);
     child_nodes.insert(child_nodes.begin(), node);
 }
+
+void SceneNode::removeChildNode(SceneNode* node) {
+    child_nodes.erase(std::remove(child_nodes.begin(), child_nodes.end(), node), child_nodes.end());
+}
+
+void SceneNode::clearChildNodes() {
+    child_nodes.clear();
+}

@@ -31,22 +31,7 @@ enum class CityLabelMode : int {
 enum class RoadMode : int {
     None,
     Default,
-    StaticHeat,
-    DynamicHeat
-};
-
-enum class RoadLabelMode : int {
-    None,
-    Distance,
-    StaticHeat,
-    DynamicHeat
-};
-
-enum class TruckMode : int {
-    None,
-    Dijkstra,
-    ACO,
-    DijkstraAndACO
+    StaticHeat
 };
 
 enum class TruckType : int {
@@ -75,13 +60,10 @@ struct RenderState {
     CityMode cityMode;
     CityLabelMode cityLabelMode;
     RoadMode roadMode;
-    RoadLabelMode roadLabelMode;
-    TruckMode truckMode;
+    TruckType truckMode;
 
     std::map<int, float> *aco_static_heatmap;
     std::map<int, float> *dijkstra_static_heatmap;
-    std::map<int, float> *aco_dynamic_heatmap;
-    std::map<int, float> *dijkstra_dynamic_heatmap;
 
     // Sim Info
     float sim_time;

@@ -93,19 +93,12 @@ void TruckNode::prerender(RenderState* rs) {
 
 void TruckNode::render(RenderState* rs) {
 
-
-
     switch (rs->truckMode) {
-        case TruckMode::Dijkstra:
+        case TruckType::Dijkstra:
             if (m_type == TruckType::Dijkstra) drawTruck(rs);
             break;
-        case TruckMode::ACO:
+        case TruckType::ACO:
             if (m_type == TruckType::ACO) drawTruck(rs);
-            break;
-        case TruckMode::DijkstraAndACO:
-            drawTruck(rs);
-            break;
-        default:
             break;
     }
 }

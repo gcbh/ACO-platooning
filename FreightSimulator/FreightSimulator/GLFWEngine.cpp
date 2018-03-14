@@ -80,8 +80,7 @@ void GLFWEngine::setup(bool fullScreenEnable)
     rs->cityMode = CityMode::Default;
     rs->cityLabelMode = CityLabelMode::None;
     rs->roadMode = RoadMode::Default;
-    rs->roadLabelMode = RoadLabelMode::None;
-    rs->truckMode = TruckMode::ACO;
+    rs->truckMode = TruckType::ACO;
 
     fprintf(stdout, "UI Setup Complete.\n");
 

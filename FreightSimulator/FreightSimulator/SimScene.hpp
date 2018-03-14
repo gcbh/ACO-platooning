@@ -72,8 +72,6 @@ private:
 
     std::map<int, float> aco_static_heatmap;
     std::map<int, float> dijkstra_static_heatmap;
-    std::map<int, float> aco_dynamic_heatmap;
-    std::map<int, float> dijkstra_dynamic_heatmap;
 
     json metadata;
 

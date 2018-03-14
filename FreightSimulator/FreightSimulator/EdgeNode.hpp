@@ -29,7 +29,6 @@ public:
     std::pair<glm::vec4,glm::vec4> m_position_pair;
     float m_weight;
     float m_static_heat;
-    float m_dynamic_heat;
 
 private:
     ImVec4 generate_static_color(RenderState* rs);

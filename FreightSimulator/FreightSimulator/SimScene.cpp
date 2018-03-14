@@ -128,8 +128,6 @@ void SimScene::prerender(RenderState* rs) {
     //Setup the heatmaps
     rs->aco_static_heatmap = &aco_static_heatmap;
     rs->dijkstra_static_heatmap = &dijkstra_static_heatmap;
-    rs->aco_dynamic_heatmap = &aco_dynamic_heatmap;
-    rs->dijkstra_dynamic_heatmap = &dijkstra_dynamic_heatmap;
 
     renderUI(rs);
 
@@ -249,7 +247,6 @@ EdgeNode* SimScene::addEdgeNode(int city_id1, int city_id2, float weight) {
                                            glm::vec4(city_map[city_id2]->m_position.x, city_map[city_id2]->m_position.y, 0.0f, 1.0f)
                                            );
     edge->m_static_heat = 0.0f;
-    edge->m_dynamic_heat = 0.0f;
 
     //Add to our edge map
     edge_map[edge->m_id] = edge;
@@ -257,8 +254,6 @@ EdgeNode* SimScene::addEdgeNode(int city_id1, int city_id2, float weight) {
     //Set default heat values
     aco_static_heatmap[edge->m_id] = 0.0f;
     dijkstra_static_heatmap[edge->m_id] = 0.0f;
-    aco_dynamic_heatmap[edge->m_id] = 0.0f;
-    dijkstra_dynamic_heatmap[edge->m_id] = 0.0f;
     return edge;
 }
 
@@ -291,11 +286,13 @@ void SimScene::loadSchedule() {
     json dijkstra_schedules = j["dijkstra_schedule"];
 
     //Clear out old data
+    selected = nullptr;
+    highlighted = nullptr;
     clearStaticHeatMaps();
     clearTruckMaps();
 
     parseSchedule(schedules, aco_truck_map, aco_static_heatmap, TruckType::ACO);
-    //parseSchedule(dijkstra_schedules, dijkstra_truck_map, dijkstra_static_heatmap, TruckType::Dijkstra);
+    parseSchedule(dijkstra_schedules, dijkstra_truck_map, dijkstra_static_heatmap, TruckType::Dijkstra);
 }
 
 void SimScene::parseSchedule(json schedules,
@@ -314,6 +311,13 @@ void SimScene::parseSchedule(json schedules,
         std::vector<Segment*>::iterator j;
         for (j = t->m_schedule.begin(); j != t->m_schedule.end(); j++) {
             Segment* s = *j;
+
+            if (type == TruckType::Dijkstra) {
+                s->type = "solo_travel";
+                s->max_wait = 0.0;
+                s->platoon_members = std::vector<int>();
+            }
+
             int edge_id = hash_pair(std::make_pair(s->start_node->m_id, s->end_node->m_id));
 
             unnormalized_heat_map[edge_id] += 1;
@@ -337,7 +341,17 @@ void SimScene::clearStaticHeatMaps() {
 }
 
 void SimScene::clearTruckMaps() {
+
+    std::map<int, TruckNode*>::iterator i;
+    for (i = aco_truck_map.begin(); i != aco_truck_map.end(); i++) {
+        m_root_node->removeChildNode(i->second);
+    }
     aco_truck_map.clear();
+
+    std::map<int, TruckNode*>::iterator j;
+    for (j = dijkstra_truck_map.begin(); j != dijkstra_truck_map.end(); j++) {
+        m_root_node->removeChildNode(i->second);
+    }
     dijkstra_truck_map.clear();
 }
 
@@ -410,14 +424,9 @@ void SimScene::renderUI(RenderState* rs) {
         ImGui::RadioButton("Default##RM", (int*)&rs->roadMode, 1);
         ImGui::RadioButton("Static Heat##RM", (int*)&rs->roadMode, 2);
 
-        ImGui::Text("Road Label Mode");
-        ImGui::RadioButton("None##RLM", (int*)&rs->roadLabelMode, 0);
-        ImGui::RadioButton("Distance##RLM", (int*)&rs->roadLabelMode, 1);
-        ImGui::RadioButton("Static Heat##RLM", (int*)&rs->roadLabelMode, 2);
-
         ImGui::Text("Schedule Mode");
-        ImGui::RadioButton("Dijkstra##SM", (int*)&rs->truckMode, 1);
-        ImGui::RadioButton("ACO##SM", (int*)&rs->truckMode, 2);
+        ImGui::RadioButton("Dijkstra##SM", (int*)&rs->truckMode, 0);
+        ImGui::RadioButton("ACO##SM", (int*)&rs->truckMode, 1);
 
         ImGui::End();
     }
@@ -465,7 +474,9 @@ void SimScene::renderUI(RenderState* rs) {
         ImGuiStyle& style = ImGui::GetStyle();
         style.WindowRounding = 0.0f;
 
-        if (aco_truck_map.size() > 0) {
+        std::map<int, TruckNode*> renderTrucks = (rs->truckMode == TruckType::ACO) ? aco_truck_map : dijkstra_truck_map;
+
+        if (renderTrucks.size() > 0) {
             ImGui::Columns(3, "TruckTableColumns"); // 4-ways, with border
             ImGui::Separator();
             ImGui::Text("ID"); ImGui::NextColumn();
@@ -475,7 +486,7 @@ void SimScene::renderUI(RenderState* rs) {
 
             highlighted = nullptr;
             std::map<int, TruckNode*>::iterator i;
-            for (i = aco_truck_map.begin(); i != aco_truck_map.end(); i++) {
+            for (i = renderTrucks.begin(); i != renderTrucks.end(); i++) {
 
                 //Truck ID
                 char label[32];
@@ -589,7 +600,7 @@ void SimScene::renderUI(RenderState* rs) {
         if (ImGui::Button(">>>")) {
             sim_time_scale = 3.0;
         }
-        ImGui::Text("Timecode: %f", rs->sim_time);
+        ImGui::Text("Timecode: %f hrs", rs->sim_time);
         ImGui::End();
     }
 

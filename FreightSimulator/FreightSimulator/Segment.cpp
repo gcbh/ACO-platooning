@@ -10,10 +10,11 @@
 #include "SimScene.hpp"
 
 Segment::Segment(json j) {
-    type = j.at("type").get<std::string>();
+
     start_node = SimScene::city_map[j.at("start_node").get<int>()];
     end_node = SimScene::city_map[j.at("end_node").get<int>()];
     time = j.at("time").get<double>();
+    type = j.at("type").get<std::string>();
     max_wait = j.at("max_wait").get<double>();
     platoon_members = j.at("platoon_members").get<std::vector<int>>();
 }

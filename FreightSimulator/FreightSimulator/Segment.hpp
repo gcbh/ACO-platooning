@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "json.hpp"
 #include "CityNode.hpp"
+#include "State.hpp"
 
 // for convenience
 using json = nlohmann::json;
