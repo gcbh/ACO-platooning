@@ -286,7 +286,7 @@ void SimScene::loadSchedule() {
     schedule_file >> j;
 
     // Pull the data from the file
-    json metadata = j["metadata"];
+    metadata = j["metadata"];
     json schedules = j["schedules"];
     json dijkstra_schedules = j["dijkstra_schedule"];
 
@@ -409,13 +409,11 @@ void SimScene::renderUI(RenderState* rs) {
         ImGui::RadioButton("None##RM", (int*)&rs->roadMode, 0);
         ImGui::RadioButton("Default##RM", (int*)&rs->roadMode, 1);
         ImGui::RadioButton("Static Heat##RM", (int*)&rs->roadMode, 2);
-        ImGui::RadioButton("Dynamic Heat##RM", (int*)&rs->roadMode, 3);
 
         ImGui::Text("Road Label Mode");
         ImGui::RadioButton("None##RLM", (int*)&rs->roadLabelMode, 0);
         ImGui::RadioButton("Distance##RLM", (int*)&rs->roadLabelMode, 1);
         ImGui::RadioButton("Static Heat##RLM", (int*)&rs->roadLabelMode, 2);
-        ImGui::RadioButton("Dynamic Heat##RLM", (int*)&rs->roadLabelMode, 3);
 
         ImGui::Text("Schedule Mode");
         ImGui::RadioButton("Dijkstra##SM", (int*)&rs->truckMode, 1);
@@ -438,10 +436,18 @@ void SimScene::renderUI(RenderState* rs) {
         ImGuiStyle& style = ImGui::GetStyle();
         style.WindowRounding = 0.0f;
 
-        ImGui::Text("FPS: xxxxxx");
-        ImGui::Text("Dijkstra Cost: xxxxxx");
-        ImGui::Text("ACO Cost: xxxxxx");
-        ImGui::Text("ACO Savings: xxxxxx");
+        if (aco_truck_map.size() > 0) {
+            float dCost = metadata.at("dijkstraCost").get<float>();
+            float cost = metadata.at("cost").get<float>();
+            float savings = dCost - cost;
+            float percentSavings = (savings / dCost) * 100.0;
+            ImGui::Text("FPS: %f", ImGui::GetIO().Framerate);
+            ImGui::Text("Dijkstra Cost: %f fkm", dCost);
+            ImGui::Text("ACO Cost: %f fkm", cost);
+            ImGui::Text("ACO Savings: %f fkm (%.2f%%)", savings, percentSavings);
+        } else {
+            ImGui::Text("No schedule loaded");
+        }
 
         ImGui::End();
     }

@@ -75,6 +75,8 @@ private:
     std::map<int, float> aco_dynamic_heatmap;
     std::map<int, float> dijkstra_dynamic_heatmap;
 
+    json metadata;
+
     float sim_time_scale;
     float sim_max_time;
 
