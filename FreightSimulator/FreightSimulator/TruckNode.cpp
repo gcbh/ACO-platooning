@@ -15,6 +15,7 @@
 
 static const ImU32 black = ImColor(ImVec4(0.0f,0.0f,0.0f,1.0f));
 static const ImU32 white = ImColor(ImVec4(1.0f,1.0f,1.0f,1.0f));
+static const ImU32 green = ImColor(ImVec4(0.556f, 1.0f, 0.443f,1.0f));
 static const ImU32 aco_color = ImColor(ImVec4(0.101f, 0.576f, 1.0f,1.0f));
 static const ImVec4 dijkstra_color = ImVec4(0.5f,0.5f,1.0f,1.0f);
 
@@ -137,11 +138,9 @@ void TruckNode::drawTruck(RenderState* rs) {
                 }
             }
         }
-    } else {
-        return;
     }
 
-    ImU32 color = (SimScene::selected == this || SimScene::highlighted == this) ? aco_color : black;
+    ImU32 color = (SimScene::selected == this || SimScene::highlighted == this) ? aco_color : ((m_state == TruckState::Complete) ? green : black);
     std::ostringstream ss;
     ss << labelSize;
 
@@ -153,12 +152,16 @@ void TruckNode::drawTruck(RenderState* rs) {
         case TruckType::ACO:
             ImGui::GetWindowDrawList()->AddCircleFilled(point, circle_base_size, white);
             ImGui::GetWindowDrawList()->AddCircleFilled(point, circle_base_size-circle_stroke_width, color);
-            ImGui::GetWindowDrawList()->AddText(textPoint, white, ss.str().c_str());
+            if (m_state != TruckState::Complete) {
+                ImGui::GetWindowDrawList()->AddText(textPoint, white, ss.str().c_str());
+            }
             break;
         case TruckType::Dijkstra:
             ImGui::GetWindowDrawList()->AddCircleFilled(point, circle_base_size, white);
             ImGui::GetWindowDrawList()->AddCircleFilled(point, circle_base_size-circle_stroke_width, color);
-            ImGui::GetWindowDrawList()->AddText(textPoint, white, ss.str().c_str());
+            if (m_state != TruckState::Complete) {
+                ImGui::GetWindowDrawList()->AddText(textPoint, white, ss.str().c_str());
+            }
             break;
     }
 }
