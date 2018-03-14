@@ -100,8 +100,12 @@ void SimScene::postsetup() {
     SimScene::edge_mvp_id = glGetUniformLocation(SimScene::edge_program, "MVP");
 
     //UI Setup
-    show_map_window = 1;
+    show_view_window = 1;
+    show_info_window = 1;
+    show_trucks_window = 1;
     show_schedule_window = 1;
+    show_playback_window = 1;
+
     sim_time_scale = 0.0;
     sim_max_time = 100.0;
 
@@ -367,8 +371,11 @@ void SimScene::renderUI(RenderState* rs) {
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Windows")) {
-            ImGui::MenuItem("Map", NULL, &show_map_window);
+            ImGui::MenuItem("View", NULL, &show_view_window);
+            ImGui::MenuItem("Info", NULL, &show_info_window);
+            ImGui::MenuItem("Trucks", NULL, &show_trucks_window);
             ImGui::MenuItem("Schedule", NULL, &show_schedule_window);
+            ImGui::MenuItem("Playback Controls", NULL, &show_playback_window);
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
@@ -376,11 +383,11 @@ void SimScene::renderUI(RenderState* rs) {
 
     //Set the position
     ImGui::SetNextWindowPos(ImVec2(0, menuHeight), true);
-    ImGui::SetNextWindowSize(ImVec2(width*widthFactor, height-menuHeight), true);
+    ImGui::SetNextWindowSize(ImVec2(width*widthFactor, (height-menuHeight)/2), true);
 
-    // Render map window UI
-    if (show_map_window) {
-        if (!ImGui::Begin("Map", NULL, flags)) {
+    // Render view window UI
+    if (show_view_window) {
+        if (!ImGui::Begin("View", NULL, flags)) {
             ImGui::End();
             return;
         }
@@ -388,41 +395,54 @@ void SimScene::renderUI(RenderState* rs) {
         ImGuiStyle& style = ImGui::GetStyle();
         style.WindowRounding = 0.0f;
 
-        //Show map information
-        if (ImGui::Button("Load Map")) {
-            loadGraph();
+        ImGui::Text("City Mode");
+        ImGui::RadioButton("None##CM", (int*)&rs->cityMode, 0);
+        ImGui::RadioButton("Default##CM", (int*)&rs->cityMode, 1);
+
+        ImGui::Text("City Label Mode");
+        ImGui::RadioButton("None##CLM", (int*)&rs->cityLabelMode, 0);
+        ImGui::RadioButton("Name##CLM", (int*)&rs->cityLabelMode, 1);
+        ImGui::RadioButton("ID##CLM", (int*)&rs->cityLabelMode, 2);
+        ImGui::RadioButton("Name & ID##CLM", (int*)&rs->cityLabelMode, 3);
+
+        ImGui::Text("Road Mode");
+        ImGui::RadioButton("None##RM", (int*)&rs->roadMode, 0);
+        ImGui::RadioButton("Default##RM", (int*)&rs->roadMode, 1);
+        ImGui::RadioButton("Static Heat##RM", (int*)&rs->roadMode, 2);
+        ImGui::RadioButton("Dynamic Heat##RM", (int*)&rs->roadMode, 3);
+
+        ImGui::Text("Road Label Mode");
+        ImGui::RadioButton("None##RLM", (int*)&rs->roadLabelMode, 0);
+        ImGui::RadioButton("Distance##RLM", (int*)&rs->roadLabelMode, 1);
+        ImGui::RadioButton("Static Heat##RLM", (int*)&rs->roadLabelMode, 2);
+        ImGui::RadioButton("Dynamic Heat##RLM", (int*)&rs->roadLabelMode, 3);
+
+        ImGui::Text("Schedule Mode");
+        ImGui::RadioButton("Dijkstra##SM", (int*)&rs->truckMode, 1);
+        ImGui::RadioButton("ACO##SM", (int*)&rs->truckMode, 2);
+
+        ImGui::End();
+    }
+
+    //Set the position
+    ImGui::SetNextWindowPos(ImVec2(0, menuHeight+(height-menuHeight)/2.0), true);
+    ImGui::SetNextWindowSize(ImVec2(width*widthFactor, (height-menuHeight)/2), true);
+
+    // Render info window UI
+    if (show_info_window) {
+        if (!ImGui::Begin("Info", NULL, flags)) {
+            ImGui::End();
+            return;
         }
 
-        if (ImGui::CollapsingHeader("View")) {
+        ImGuiStyle& style = ImGui::GetStyle();
+        style.WindowRounding = 0.0f;
 
-            ImGui::Text("City Mode");
-            ImGui::RadioButton("None##CM", (int*)&rs->cityMode, 0); ImGui::SameLine();
-            ImGui::RadioButton("Default##CM", (int*)&rs->cityMode, 1);
+        ImGui::Text("FPS: xxxxxx");
+        ImGui::Text("Dijkstra Cost: xxxxxx");
+        ImGui::Text("ACO Cost: xxxxxx");
+        ImGui::Text("ACO Savings: xxxxxx");
 
-            ImGui::Text("City Label Mode");
-            ImGui::RadioButton("None##CLM", (int*)&rs->cityLabelMode, 0); ImGui::SameLine();
-            ImGui::RadioButton("Name##CLM", (int*)&rs->cityLabelMode, 1); ImGui::SameLine();
-            ImGui::RadioButton("ID##CLM", (int*)&rs->cityLabelMode, 2); ImGui::SameLine();
-            ImGui::RadioButton("Name & ID##CLM", (int*)&rs->cityLabelMode, 3);
-
-            ImGui::Text("Road Mode");
-            ImGui::RadioButton("None##RM", (int*)&rs->roadMode, 0); ImGui::SameLine();
-            ImGui::RadioButton("Default##RM", (int*)&rs->roadMode, 1); ImGui::SameLine();
-            ImGui::RadioButton("Static Heat##RM", (int*)&rs->roadMode, 2); ImGui::SameLine();
-            ImGui::RadioButton("Dynamic Heat##RM", (int*)&rs->roadMode, 3);
-
-            ImGui::Text("Road Label Mode");
-            ImGui::RadioButton("None##RLM", (int*)&rs->roadLabelMode, 0); ImGui::SameLine();
-            ImGui::RadioButton("Distance##RLM", (int*)&rs->roadLabelMode, 1); ImGui::SameLine();
-            ImGui::RadioButton("Static Heat##RLM", (int*)&rs->roadLabelMode, 2); ImGui::SameLine();
-            ImGui::RadioButton("Dynamic Heat##RLM", (int*)&rs->roadLabelMode, 3);
-
-            ImGui::Text("Truck Mode");
-            ImGui::RadioButton("None##RLM", (int*)&rs->truckMode, 0);
-            ImGui::RadioButton("Dijkstra##RLM", (int*)&rs->truckMode, 1);
-            ImGui::RadioButton("ACO##RLM", (int*)&rs->truckMode, 2);
-            ImGui::RadioButton("Dijkstra & ACO##RLM", (int*)&rs->truckMode, 3);
-        }
         ImGui::End();
     }
 
@@ -430,8 +450,8 @@ void SimScene::renderUI(RenderState* rs) {
     ImGui::SetNextWindowSize(ImVec2(width*widthFactor, (height-menuHeight)/2), true);
 
     // Render schedule window UI
-    if (show_schedule_window) {
-        if (!ImGui::Begin("ACO Trucks", NULL, flags)) {
+    if (show_trucks_window) {
+        if (!ImGui::Begin("Trucks", NULL, flags)) {
             ImGui::End();
             return;
         }
@@ -486,7 +506,7 @@ void SimScene::renderUI(RenderState* rs) {
     ImGui::SetNextWindowSize(ImVec2(width*widthFactor, (height-menuHeight)/2.0), true);
 
     // Render truck schedule window
-    if (true) {
+    if (show_schedule_window) {
         char window_title[64];
         sprintf(window_title, "Truck Schedule");
 
@@ -527,7 +547,7 @@ void SimScene::renderUI(RenderState* rs) {
     ImGui::SetNextWindowSize(ImVec2(playbackWidth, playbackHeight), true);
 
     // Render schedule window UI
-    if (show_schedule_window) {
+    if (show_playback_window) {
         if (!ImGui::Begin("Playback", NULL, flags)) {
             ImGui::End();
             return;

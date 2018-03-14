@@ -78,8 +78,11 @@ private:
     float sim_time_scale;
     float sim_max_time;
 
-    bool show_map_window;
+    bool show_view_window;
+    bool show_info_window;
+    bool show_trucks_window;
     bool show_schedule_window;
+    bool show_playback_window;
 };
 
 #endif /* SimScene_hpp */
