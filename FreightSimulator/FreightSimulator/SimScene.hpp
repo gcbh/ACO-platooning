@@ -78,6 +78,7 @@ private:
 
     float sim_time_scale;
     float sim_max_time;
+    bool reset_time_flag;
 
     bool show_view_window;
     bool show_info_window;

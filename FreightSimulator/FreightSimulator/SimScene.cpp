@@ -108,6 +108,7 @@ void SimScene::postsetup() {
 
     sim_time_scale = 0.0;
     sim_max_time = 100.0;
+    reset_time_flag = false;
 
     //Layer setup
     edgeLayer = new SceneNode();
@@ -129,6 +130,12 @@ void SimScene::postsetup() {
 
 void SimScene::preupdate(UpdateState *us){
     double new_sim_time = us->sim_time + us->deltaTime * sim_time_scale;
+
+    if (reset_time_flag) {
+        new_sim_time = 0.0;
+        sim_time_scale = 0.0;
+        reset_time_flag = false;
+    }
     us->sim_time = fmax(0.0, fmin(new_sim_time, sim_max_time));
 }
 
@@ -299,6 +306,7 @@ void SimScene::loadSchedule() {
     highlighted = nullptr;
     clearStaticHeatMaps();
     clearTruckMaps();
+    reset_time_flag = true;
 
     parseSchedule(schedules, aco_truck_map, aco_static_heatmap, acoLayer, TruckType::ACO);
     parseSchedule(dijkstra_schedules, dijkstra_truck_map, dijkstra_static_heatmap, dijkstraLayer, TruckType::Dijkstra);
@@ -578,6 +586,10 @@ void SimScene::renderUI(RenderState* rs) {
         ImGuiStyle& style = ImGui::GetStyle();
         style.WindowRounding = 0.0f;
 
+        if (ImGui::Button("|<")) {
+            reset_time_flag = true;
+        }
+        ImGui::SameLine();
         if (ImGui::Button("<<<")) {
             sim_time_scale = -3.0;
         }
