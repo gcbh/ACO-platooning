@@ -36,6 +36,7 @@ void EdgeNode::render(RenderState* rs) {
 
     switch (rs->roadMode) {
         case RoadMode::Default:
+        case RoadMode::Distance:
             ImGui::GetWindowDrawList()->AddLine(ss1, ss2, black, 3.0);
             break;
         case RoadMode::StaticHeat:
@@ -43,6 +44,13 @@ void EdgeNode::render(RenderState* rs) {
             break;
         default:
             break;
+    }
+
+    if (rs->roadMode == RoadMode::Distance) {
+        ImVec2 textPoint = ImVec2(((ss1.x + ss2.x)/2.0)+2, ((ss1.y + ss2.y)/2.0)-6);
+        std::ostringstream ss;
+        ss << m_weight;
+        ImGui::GetWindowDrawList()->AddText(textPoint, black, ss.str().c_str());
     }
     rs->mvp = rs->mvp * m_model_matrix;
 }

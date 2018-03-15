@@ -423,6 +423,7 @@ void SimScene::renderUI(RenderState* rs) {
         ImGui::RadioButton("None##RM", (int*)&rs->roadMode, 0);
         ImGui::RadioButton("Default##RM", (int*)&rs->roadMode, 1);
         ImGui::RadioButton("Static Heat##RM", (int*)&rs->roadMode, 2);
+        ImGui::RadioButton("Distance##RM", (int*)&rs->roadMode, 3);
 
         ImGui::Text("Schedule Mode");
         ImGui::RadioButton("Dijkstra##SM", (int*)&rs->truckMode, 0);

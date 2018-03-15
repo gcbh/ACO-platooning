@@ -31,7 +31,8 @@ enum class CityLabelMode : int {
 enum class RoadMode : int {
     None,
     Default,
-    StaticHeat
+    StaticHeat,
+    Distance
 };
 
 enum class TruckType : int {
