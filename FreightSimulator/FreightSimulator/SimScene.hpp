@@ -61,6 +61,7 @@ private:
     void parseSchedule(json schedules,
                        std::map<int, TruckNode*> &truck_map,
                        std::map<int, float> &heat_map,
+                       SceneNode* layer,
                        TruckType type);
 
     void updateTruckMap(std::map<int, TruckNode*> &truck_map,
@@ -83,6 +84,11 @@ private:
     bool show_trucks_window;
     bool show_schedule_window;
     bool show_playback_window;
+
+    SceneNode* edgeLayer;
+    SceneNode* cityLayer;
+    SceneNode* acoLayer;
+    SceneNode* dijkstraLayer;
 };
 
 #endif /* SimScene_hpp */

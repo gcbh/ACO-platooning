@@ -109,6 +109,15 @@ void SimScene::postsetup() {
     sim_time_scale = 0.0;
     sim_max_time = 100.0;
 
+    //Layer setup
+    edgeLayer = new SceneNode();
+    m_root_node->addChildNode(edgeLayer);
+    cityLayer = new SceneNode();
+    m_root_node->addChildNode(cityLayer);
+    acoLayer = new SceneNode();
+    m_root_node->addChildNode(acoLayer);
+    dijkstraLayer = new SceneNode();
+    m_root_node->addChildNode(dijkstraLayer);
 
     ImGui::StyleColorsLight();
     ImGuiIO& io = ImGui::GetIO();
@@ -217,13 +226,13 @@ void SimScene::loadGraph() {
     m_scene_camera->m_focal_point.y = avgY;
 
     for (auto& edge : edge_map) {
-        m_root_node->insertChildNode(edge.second);
+        edgeLayer->insertChildNode(edge.second);
     }
 }
 
 CityNode* SimScene::addCityNode(int city_id, std::string city_name, float latitude, float longitude) {
     CityNode* city = new CityNode();
-    m_root_node->addChildNode(city);
+    cityLayer->addChildNode(city);
     city->m_id = city_id;
     city->m_name = city_name;
     city->m_position.x = longitude;
@@ -291,13 +300,14 @@ void SimScene::loadSchedule() {
     clearStaticHeatMaps();
     clearTruckMaps();
 
-    parseSchedule(schedules, aco_truck_map, aco_static_heatmap, TruckType::ACO);
-    parseSchedule(dijkstra_schedules, dijkstra_truck_map, dijkstra_static_heatmap, TruckType::Dijkstra);
+    parseSchedule(schedules, aco_truck_map, aco_static_heatmap, acoLayer, TruckType::ACO);
+    parseSchedule(dijkstra_schedules, dijkstra_truck_map, dijkstra_static_heatmap, dijkstraLayer, TruckType::Dijkstra);
 }
 
 void SimScene::parseSchedule(json schedules,
                              std::map<int, TruckNode*> &truck_map,
                              std::map<int, float> &heat_map,
+                             SceneNode* layer,
                              TruckType type) {
     int max_heat = 1;
     std::map<int, int> unnormalized_heat_map;
@@ -325,7 +335,7 @@ void SimScene::parseSchedule(json schedules,
         }
 
         //Add to master scene graph
-        m_root_node->addChildNode(t);
+        layer->addChildNode(t);
     }
 
     //Assign normalized heat values
@@ -342,16 +352,10 @@ void SimScene::clearStaticHeatMaps() {
 
 void SimScene::clearTruckMaps() {
 
-    std::map<int, TruckNode*>::iterator i;
-    for (i = aco_truck_map.begin(); i != aco_truck_map.end(); i++) {
-        m_root_node->removeChildNode(i->second);
-    }
+    acoLayer->clearChildNodes();
     aco_truck_map.clear();
 
-    std::map<int, TruckNode*>::iterator j;
-    for (j = dijkstra_truck_map.begin(); j != dijkstra_truck_map.end(); j++) {
-        m_root_node->removeChildNode(i->second);
-    }
+    dijkstraLayer->clearChildNodes();
     dijkstra_truck_map.clear();
 }
 
