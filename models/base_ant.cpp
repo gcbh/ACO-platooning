@@ -10,8 +10,11 @@
 
 using namespace std;
 
-base_ant::base_ant(std::queue<int> i_nodes) {
-    nodes = i_nodes;
+base_ant::base_ant() {
 }
 
-void base_ant::traverse_path() {    }
+base_ant::~base_ant() {
+    delete ordered_path;
+}
+
+void base_ant::next_node(int time) {    }

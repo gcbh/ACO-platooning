@@ -1,8 +1,7 @@
 //
 //  StringUtils.hpp
-//  
 //
-//  Created by Sean Amadio on 2017-06-06.
+//  Created by Aditi Lath on 2017-07-03.
 //
 //
 
@@ -12,9 +11,13 @@
 #include <stdio.h>
 #include <string>
 #include <sstream>
+#include <fstream>
 #include <vector>
 #include <iterator>
 
+using namespace std;
+
+vector<string> split(const string &s, char delim);
 std::string readFile(const std::string file_path);
 
 #endif /* StringUtils_hpp */

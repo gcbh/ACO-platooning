@@ -10,7 +10,8 @@
 #define CityNode_hpp
 
 #include <stdio.h>
-#include "SceneNode.hpp"
+#include <string>
+#include "QuadNode.hpp"
 
 class CityNode : public SceneNode
 {
@@ -18,10 +19,14 @@ public:
 
     CityNode() : SceneNode() {}
 
-    void setup();
-    void input();
-    void update(double deltaTime);
-    void render(RenderState rs);
+    void postsetup();
+    void preinput(InputState* is);
+    void preupdate(UpdateState* us);
+    void postupdate(UpdateState* us);
+    void render(RenderState* rs);
+
+    int m_id;
+    std::string m_name;
     
 private:
 };

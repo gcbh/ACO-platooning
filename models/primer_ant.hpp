@@ -10,11 +10,21 @@
 #define primer_ant_hpp
 
 #include <stdio.h>
+#include <queue>
 
-class primer_ant : base_ant {
+#include "t_edge.hpp"
+#include <stdio.h>
+#include <iostream>
+
+using namespace std;
+
+class primer_ant {
 public:
-    //TODO: constructor must take in destination node
-    primer_ant(std::queue<int> i_nodes);
+    primer_ant(t_node *first, vector<string> route_path);
+    void set_ant_path();
+private:
+    t_node *current;
+    vector<string> route;
 };
 
 #endif /* primer_ant_hpp */

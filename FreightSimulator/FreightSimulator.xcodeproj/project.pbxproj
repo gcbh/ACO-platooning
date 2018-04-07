@@ -15,18 +15,39 @@
 		14304B631F16D44D007AEBC6 /* circle.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 14304B611F16D3FD007AEBC6 /* circle.png */; };
 		14304B661F16D55A007AEBC6 /* TextureUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14304B641F16D55A007AEBC6 /* TextureUtils.cpp */; };
 		14304B681F181418007AEBC6 /* test.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 14304B671F18140C007AEBC6 /* test.png */; };
+		143C98E320114DE10060A965 /* imgui_impl_glfw_gl3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 143C98DB20114DE00060A965 /* imgui_impl_glfw_gl3.cpp */; };
+		143C98E420114DE10060A965 /* imgui_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 143C98DD20114DE00060A965 /* imgui_demo.cpp */; };
+		143C98E520114DE10060A965 /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 143C98DF20114DE00060A965 /* imgui.cpp */; };
+		143C98E620114DE10060A965 /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 143C98E120114DE00060A965 /* imgui_draw.cpp */; };
 		1452D0891EE9CCBB00883286 /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1452D0871EE9CCBB00883286 /* StringUtils.cpp */; };
 		1452D0901EE9D08100883286 /* Edge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1452D08B1EE9D08100883286 /* Edge.cpp */; };
+		145C581A1F1ED7280025A9DE /* heat.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 145C58191F1ED71D0025A9DE /* heat.png */; };
+		145C581D1F1EF7DB0025A9DE /* sourcecodepro.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 145C581C1F1EF7D20025A9DE /* sourcecodepro.png */; };
+		145C581E1F1EF7E40025A9DE /* text_fs.glsl in CopyFiles */ = {isa = PBXBuildFile; fileRef = 145C581B1F1EF6E80025A9DE /* text_fs.glsl */; };
+		1460A2411F1C8381002D7C30 /* EdgeNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1460A23F1F1C8381002D7C30 /* EdgeNode.cpp */; };
+		1460A2441F1C919E002D7C30 /* sim_test_edges.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1460A2431F1C9196002D7C30 /* sim_test_edges.txt */; };
+		1460A2451F1C91A5002D7C30 /* sim_test_cities.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1460A2421F1C9188002D7C30 /* sim_test_cities.txt */; };
+		1460A2471F1C99B4002D7C30 /* edge_fs.glsl in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1460A2461F1C9808002D7C30 /* edge_fs.glsl */; };
+		146EA7E22035312F00484E7F /* colormap_jet.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 146EA7E12035311600484E7F /* colormap_jet.png */; };
+		146EA7E4203533EC00484E7F /* Heatmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 146EA7E3203533EC00484E7F /* Heatmap.cpp */; };
+		1472F4E32023F06B00392C7D /* tinyfiledialogs.c in Sources */ = {isa = PBXBuildFile; fileRef = 1472F4E12023F06900392C7D /* tinyfiledialogs.c */; };
+		14990CBA2047BBCF0089CA53 /* Menlo-Regular.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 14990CB92047BBAD0089CA53 /* Menlo-Regular.ttf */; };
 		14A232651EE8D5B800FB574F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14A232641EE8D5B800FB574F /* main.cpp */; };
 		14A2326D1EE8D62900FB574F /* libglfw.3.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 14A2326C1EE8D62900FB574F /* libglfw.3.2.dylib */; };
 		14A2326F1EE8D70A00FB574F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14A2326E1EE8D70A00FB574F /* OpenGL.framework */; };
+		14C065CA201696E9004246CF /* manifest_mock.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 14C065C9201696E0004246CF /* manifest_mock.json */; };
+		14C065CD201697A0004246CF /* TruckNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14C065CB201697A0004246CF /* TruckNode.cpp */; };
+		14C065D320169C3B004246CF /* Segment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14C065D120169C3B004246CF /* Segment.cpp */; };
 		14D214351EEA254C00D568A8 /* SimulatorApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14D214331EEA254C00D568A8 /* SimulatorApp.cpp */; };
+		14DCE8C61F1EFA7700B8F938 /* QuadNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14DCE8C41F1EFA7700B8F938 /* QuadNode.cpp */; };
 		14ED4D6B1EEE3F7A009A6A35 /* GLFWEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14D214301EEA246900D568A8 /* GLFWEngine.cpp */; };
 		14ED4D701EEE4D0A009A6A35 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ED4D6E1EEE4D0A009A6A35 /* Scene.cpp */; };
 		14ED4D731EEE4D42009A6A35 /* SceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ED4D711EEE4D42009A6A35 /* SceneNode.cpp */; };
 		14ED4D771EEE4DB8009A6A35 /* ShaderUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ED4D751EEE4DB8009A6A35 /* ShaderUtils.cpp */; };
 		14ED4D7B1EEE5470009A6A35 /* basic_vs.glsl in CopyFiles */ = {isa = PBXBuildFile; fileRef = 14ED4D791EEE500E009A6A35 /* basic_vs.glsl */; };
 		14ED4D7C1EEE5470009A6A35 /* basic_fs.glsl in CopyFiles */ = {isa = PBXBuildFile; fileRef = 14ED4D7A1EEE501E009A6A35 /* basic_fs.glsl */; };
+		14FF6EC81F1894260048CA80 /* cities_ids_coords.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 14FF6EC61F1894160048CA80 /* cities_ids_coords.txt */; };
+		14FF6EC91F18942B0048CA80 /* cities_p.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 14FF6EC71F1894160048CA80 /* cities_p.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,6 +57,17 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				14990CBA2047BBCF0089CA53 /* Menlo-Regular.ttf in CopyFiles */,
+				146EA7E22035312F00484E7F /* colormap_jet.png in CopyFiles */,
+				14C065CA201696E9004246CF /* manifest_mock.json in CopyFiles */,
+				145C581E1F1EF7E40025A9DE /* text_fs.glsl in CopyFiles */,
+				145C581D1F1EF7DB0025A9DE /* sourcecodepro.png in CopyFiles */,
+				145C581A1F1ED7280025A9DE /* heat.png in CopyFiles */,
+				1460A2471F1C99B4002D7C30 /* edge_fs.glsl in CopyFiles */,
+				1460A2451F1C91A5002D7C30 /* sim_test_cities.txt in CopyFiles */,
+				1460A2441F1C919E002D7C30 /* sim_test_edges.txt in CopyFiles */,
+				14FF6EC91F18942B0048CA80 /* cities_p.txt in CopyFiles */,
+				14FF6EC81F1894260048CA80 /* cities_ids_coords.txt in CopyFiles */,
 				14304B681F181418007AEBC6 /* test.png in CopyFiles */,
 				14304B631F16D44D007AEBC6 /* circle.png in CopyFiles */,
 				14ED4D7B1EEE5470009A6A35 /* basic_vs.glsl in CopyFiles */,
@@ -323,19 +355,52 @@
 		14304B641F16D55A007AEBC6 /* TextureUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureUtils.cpp; sourceTree = "<group>"; };
 		14304B651F16D55A007AEBC6 /* TextureUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TextureUtils.hpp; sourceTree = "<group>"; };
 		14304B671F18140C007AEBC6 /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = test.png; path = assets/test.png; sourceTree = "<group>"; };
+		143C98D820114DDF0060A965 /* imgui_impl_glfw_gl3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui_impl_glfw_gl3.h; sourceTree = "<group>"; };
+		143C98D920114DDF0060A965 /* stb_textedit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_textedit.h; sourceTree = "<group>"; };
+		143C98DA20114DDF0060A965 /* stb_truetype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_truetype.h; sourceTree = "<group>"; };
+		143C98DB20114DE00060A965 /* imgui_impl_glfw_gl3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_impl_glfw_gl3.cpp; sourceTree = "<group>"; };
+		143C98DC20114DE00060A965 /* imgui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui.h; sourceTree = "<group>"; };
+		143C98DD20114DE00060A965 /* imgui_demo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_demo.cpp; sourceTree = "<group>"; };
+		143C98DE20114DE00060A965 /* imgui_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui_internal.h; sourceTree = "<group>"; };
+		143C98DF20114DE00060A965 /* imgui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui.cpp; sourceTree = "<group>"; };
+		143C98E020114DE00060A965 /* stb_rect_pack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_rect_pack.h; sourceTree = "<group>"; };
+		143C98E120114DE00060A965 /* imgui_draw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_draw.cpp; sourceTree = "<group>"; };
+		143C98E220114DE00060A965 /* imconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imconfig.h; sourceTree = "<group>"; };
 		1452D0871EE9CCBB00883286 /* StringUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtils.cpp; sourceTree = "<group>"; };
 		1452D0881EE9CCBB00883286 /* StringUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StringUtils.hpp; sourceTree = "<group>"; };
 		1452D08B1EE9D08100883286 /* Edge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Edge.cpp; sourceTree = "<group>"; };
 		1452D08C1EE9D08100883286 /* Edge.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Edge.hpp; sourceTree = "<group>"; };
+		145811AC20294CD400D1B695 /* Heatmap.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Heatmap.hpp; sourceTree = "<group>"; };
+		145C58191F1ED71D0025A9DE /* heat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = heat.png; path = assets/heat.png; sourceTree = "<group>"; };
+		145C581B1F1EF6E80025A9DE /* text_fs.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = text_fs.glsl; path = shaders/text_fs.glsl; sourceTree = "<group>"; };
+		145C581C1F1EF7D20025A9DE /* sourcecodepro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sourcecodepro.png; path = assets/sourcecodepro.png; sourceTree = "<group>"; };
+		1460A23F1F1C8381002D7C30 /* EdgeNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeNode.cpp; sourceTree = "<group>"; };
+		1460A2401F1C8381002D7C30 /* EdgeNode.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EdgeNode.hpp; sourceTree = "<group>"; };
+		1460A2421F1C9188002D7C30 /* sim_test_cities.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = sim_test_cities.txt; path = ../../maps/simulator_test_graphs/sim_test_cities.txt; sourceTree = "<group>"; };
+		1460A2431F1C9196002D7C30 /* sim_test_edges.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = sim_test_edges.txt; path = ../../maps/simulator_test_graphs/sim_test_edges.txt; sourceTree = "<group>"; };
+		1460A2461F1C9808002D7C30 /* edge_fs.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = edge_fs.glsl; path = shaders/edge_fs.glsl; sourceTree = "<group>"; };
+		146EA7E12035311600484E7F /* colormap_jet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = colormap_jet.png; sourceTree = "<group>"; };
+		146EA7E3203533EC00484E7F /* Heatmap.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Heatmap.cpp; sourceTree = "<group>"; };
+		1472F4E12023F06900392C7D /* tinyfiledialogs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tinyfiledialogs.c; sourceTree = "<group>"; };
+		1472F4E22023F06A00392C7D /* tinyfiledialogs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyfiledialogs.h; sourceTree = "<group>"; };
+		14990CB92047BBAD0089CA53 /* Menlo-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Menlo-Regular.ttf"; path = "assets/Menlo-Regular.ttf"; sourceTree = "<group>"; };
 		14A232611EE8D5B800FB574F /* FreightSimulator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FreightSimulator; sourceTree = BUILT_PRODUCTS_DIR; };
 		14A232641EE8D5B800FB574F /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		14A2326C1EE8D62900FB574F /* libglfw.3.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.2.dylib; path = ../../../../../../usr/local/Cellar/glfw/3.2.1/lib/libglfw.3.2.dylib; sourceTree = "<group>"; };
 		14A2326E1EE8D70A00FB574F /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		14C065C620169613004246CF /* json.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = json.hpp; sourceTree = "<group>"; };
+		14C065C9201696E0004246CF /* manifest_mock.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = manifest_mock.json; path = ../../manifests/manifest_mock.json; sourceTree = "<group>"; };
+		14C065CB201697A0004246CF /* TruckNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TruckNode.cpp; sourceTree = "<group>"; };
+		14C065CC201697A0004246CF /* TruckNode.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TruckNode.hpp; sourceTree = "<group>"; };
+		14C065D120169C3B004246CF /* Segment.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Segment.cpp; sourceTree = "<group>"; };
+		14C065D220169C3B004246CF /* Segment.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Segment.hpp; sourceTree = "<group>"; };
 		14D214301EEA246900D568A8 /* GLFWEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLFWEngine.cpp; sourceTree = "<group>"; };
 		14D214311EEA246900D568A8 /* GLFWEngine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GLFWEngine.hpp; sourceTree = "<group>"; };
 		14D214331EEA254C00D568A8 /* SimulatorApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimulatorApp.cpp; sourceTree = "<group>"; };
 		14D214341EEA254C00D568A8 /* App.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = App.hpp; sourceTree = "<group>"; };
 		14D214361EEA29B900D568A8 /* SimulatorApp.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SimulatorApp.hpp; sourceTree = "<group>"; };
+		14DCE8C41F1EFA7700B8F938 /* QuadNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuadNode.cpp; sourceTree = "<group>"; };
+		14DCE8C51F1EFA7700B8F938 /* QuadNode.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = QuadNode.hpp; sourceTree = "<group>"; };
 		14ED4D6E1EEE4D0A009A6A35 /* Scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
 		14ED4D6F1EEE4D0A009A6A35 /* Scene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Scene.hpp; sourceTree = "<group>"; };
 		14ED4D711EEE4D42009A6A35 /* SceneNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneNode.cpp; sourceTree = "<group>"; };
@@ -344,6 +409,8 @@
 		14ED4D761EEE4DB8009A6A35 /* ShaderUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShaderUtils.hpp; sourceTree = "<group>"; };
 		14ED4D791EEE500E009A6A35 /* basic_vs.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = basic_vs.glsl; path = shaders/basic_vs.glsl; sourceTree = "<group>"; };
 		14ED4D7A1EEE501E009A6A35 /* basic_fs.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = basic_fs.glsl; path = shaders/basic_fs.glsl; sourceTree = "<group>"; };
+		14FF6EC61F1894160048CA80 /* cities_ids_coords.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cities_ids_coords.txt; path = ../../maps/cities_ids_coords.txt; sourceTree = "<group>"; };
+		14FF6EC71F1894160048CA80 /* cities_p.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cities_p.txt; path = ../../maps/cities_p.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -672,10 +739,32 @@
 		14304B621F16D402007AEBC6 /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				14990CB92047BBAD0089CA53 /* Menlo-Regular.ttf */,
+				146EA7E12035311600484E7F /* colormap_jet.png */,
+				145C581C1F1EF7D20025A9DE /* sourcecodepro.png */,
+				145C58191F1ED71D0025A9DE /* heat.png */,
 				14304B671F18140C007AEBC6 /* test.png */,
 				14304B611F16D3FD007AEBC6 /* circle.png */,
 			);
 			name = assets;
+			sourceTree = "<group>";
+		};
+		143C98D720114D430060A965 /* imgui */ = {
+			isa = PBXGroup;
+			children = (
+				143C98E220114DE00060A965 /* imconfig.h */,
+				143C98DD20114DE00060A965 /* imgui_demo.cpp */,
+				143C98E120114DE00060A965 /* imgui_draw.cpp */,
+				143C98DB20114DE00060A965 /* imgui_impl_glfw_gl3.cpp */,
+				143C98D820114DDF0060A965 /* imgui_impl_glfw_gl3.h */,
+				143C98DE20114DE00060A965 /* imgui_internal.h */,
+				143C98DF20114DE00060A965 /* imgui.cpp */,
+				143C98DC20114DE00060A965 /* imgui.h */,
+				143C98E020114DE00060A965 /* stb_rect_pack.h */,
+				143C98D920114DDF0060A965 /* stb_textedit.h */,
+				143C98DA20114DDF0060A965 /* stb_truetype.h */,
+			);
+			path = imgui;
 			sourceTree = "<group>";
 		};
 		1452D0861EE9CCBB00883286 /* utils */ = {
@@ -683,6 +772,8 @@
 			children = (
 				1452D0871EE9CCBB00883286 /* StringUtils.cpp */,
 				1452D0881EE9CCBB00883286 /* StringUtils.hpp */,
+				145811AC20294CD400D1B695 /* Heatmap.hpp */,
+				146EA7E3203533EC00484E7F /* Heatmap.cpp */,
 			);
 			name = utils;
 			path = ../../utils;
@@ -696,6 +787,15 @@
 			);
 			name = models;
 			path = ../../models;
+			sourceTree = "<group>";
+		};
+		1472F4E42023F06E00392C7D /* tfd */ = {
+			isa = PBXGroup;
+			children = (
+				1472F4E12023F06900392C7D /* tinyfiledialogs.c */,
+				1472F4E22023F06A00392C7D /* tinyfiledialogs.h */,
+			);
+			path = tfd;
 			sourceTree = "<group>";
 		};
 		14A232581EE8D5B800FB574F = {
@@ -718,6 +818,9 @@
 		14A232631EE8D5B800FB574F /* FreightSimulator */ = {
 			isa = PBXGroup;
 			children = (
+				1472F4E42023F06E00392C7D /* tfd */,
+				14C065C5201695F2004246CF /* json */,
+				143C98D720114D430060A965 /* imgui */,
 				1400DB9D1F0DEABF002FA9B1 /* glm */,
 				14ED4D6D1EEE4CC4009A6A35 /* app */,
 				14D2142F1EEA242800D568A8 /* engine */,
@@ -735,6 +838,14 @@
 				14A2326C1EE8D62900FB574F /* libglfw.3.2.dylib */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		14C065C5201695F2004246CF /* json */ = {
+			isa = PBXGroup;
+			children = (
+				14C065C620169613004246CF /* json.hpp */,
+			);
+			path = json;
 			sourceTree = "<group>";
 		};
 		14D2142F1EEA242800D568A8 /* engine */ = {
@@ -759,6 +870,8 @@
 				1400DB981F0DE2D3002FA9B1 /* State.hpp */,
 				1400DCAF1F0E09F4002FA9B1 /* Camera.cpp */,
 				1400DCB01F0E09F4002FA9B1 /* Camera.hpp */,
+				14DCE8C41F1EFA7700B8F938 /* QuadNode.cpp */,
+				14DCE8C51F1EFA7700B8F938 /* QuadNode.hpp */,
 			);
 			name = scene;
 			sourceTree = "<group>";
@@ -766,6 +879,7 @@
 		14ED4D6D1EEE4CC4009A6A35 /* app */ = {
 			isa = PBXGroup;
 			children = (
+				14FF6EC51F1893E30048CA80 /* inputs */,
 				14304B621F16D402007AEBC6 /* assets */,
 				14D214331EEA254C00D568A8 /* SimulatorApp.cpp */,
 				14D214361EEA29B900D568A8 /* SimulatorApp.hpp */,
@@ -776,6 +890,12 @@
 				1400DCAD1F0DFB72002FA9B1 /* CityNode.hpp */,
 				1400DCB21F0E0D15002FA9B1 /* SimCamera.cpp */,
 				1400DCB31F0E0D15002FA9B1 /* SimCamera.hpp */,
+				1460A23F1F1C8381002D7C30 /* EdgeNode.cpp */,
+				1460A2401F1C8381002D7C30 /* EdgeNode.hpp */,
+				14C065CB201697A0004246CF /* TruckNode.cpp */,
+				14C065CC201697A0004246CF /* TruckNode.hpp */,
+				14C065D120169C3B004246CF /* Segment.cpp */,
+				14C065D220169C3B004246CF /* Segment.hpp */,
 			);
 			name = app;
 			sourceTree = "<group>";
@@ -797,8 +917,22 @@
 			children = (
 				14ED4D791EEE500E009A6A35 /* basic_vs.glsl */,
 				14ED4D7A1EEE501E009A6A35 /* basic_fs.glsl */,
+				1460A2461F1C9808002D7C30 /* edge_fs.glsl */,
+				145C581B1F1EF6E80025A9DE /* text_fs.glsl */,
 			);
 			name = shaders;
+			sourceTree = "<group>";
+		};
+		14FF6EC51F1893E30048CA80 /* inputs */ = {
+			isa = PBXGroup;
+			children = (
+				14C065C9201696E0004246CF /* manifest_mock.json */,
+				1460A2431F1C9196002D7C30 /* sim_test_edges.txt */,
+				1460A2421F1C9188002D7C30 /* sim_test_cities.txt */,
+				14FF6EC61F1894160048CA80 /* cities_ids_coords.txt */,
+				14FF6EC71F1894160048CA80 /* cities_p.txt */,
+			);
+			name = inputs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -827,7 +961,7 @@
 		14A232591EE8D5B800FB574F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = FYDP;
 				TargetAttributes = {
 					14A232601EE8D5B800FB574F = {
@@ -859,18 +993,28 @@
 			buildActionMask = 2147483647;
 			files = (
 				14ED4D771EEE4DB8009A6A35 /* ShaderUtils.cpp in Sources */,
+				1472F4E32023F06B00392C7D /* tinyfiledialogs.c in Sources */,
 				14ED4D701EEE4D0A009A6A35 /* Scene.cpp in Sources */,
+				14C065D320169C3B004246CF /* Segment.cpp in Sources */,
 				1400DCAE1F0DFB72002FA9B1 /* CityNode.cpp in Sources */,
+				143C98E620114DE10060A965 /* imgui_draw.cpp in Sources */,
+				143C98E320114DE10060A965 /* imgui_impl_glfw_gl3.cpp in Sources */,
 				1452D0901EE9D08100883286 /* Edge.cpp in Sources */,
 				1400DCB11F0E09F4002FA9B1 /* Camera.cpp in Sources */,
 				1452D0891EE9CCBB00883286 /* StringUtils.cpp in Sources */,
 				1400DB9C1F0DE7A9002FA9B1 /* SimScene.cpp in Sources */,
+				143C98E420114DE10060A965 /* imgui_demo.cpp in Sources */,
 				14A232651EE8D5B800FB574F /* main.cpp in Sources */,
+				1460A2411F1C8381002D7C30 /* EdgeNode.cpp in Sources */,
 				1400DCB41F0E0D15002FA9B1 /* SimCamera.cpp in Sources */,
 				14304B661F16D55A007AEBC6 /* TextureUtils.cpp in Sources */,
+				143C98E520114DE10060A965 /* imgui.cpp in Sources */,
 				14304B601F16D3DF007AEBC6 /* lodepng.cpp in Sources */,
+				14C065CD201697A0004246CF /* TruckNode.cpp in Sources */,
 				14ED4D731EEE4D42009A6A35 /* SceneNode.cpp in Sources */,
+				146EA7E4203533EC00484E7F /* Heatmap.cpp in Sources */,
 				14D214351EEA254C00D568A8 /* SimulatorApp.cpp in Sources */,
+				14DCE8C61F1EFA7700B8F938 /* QuadNode.cpp in Sources */,
 				14ED4D6B1EEE3F7A009A6A35 /* GLFWEngine.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -888,7 +1032,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -896,7 +1042,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -936,7 +1086,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -944,7 +1096,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

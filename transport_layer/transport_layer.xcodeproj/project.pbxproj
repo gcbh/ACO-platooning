@@ -7,51 +7,43 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		F195081E1EE8615400C28124 /* ACO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACO.h; sourceTree = "<group>"; };
-		F195081F1EE8615400C28124 /* Randoms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Randoms.h; sourceTree = "<group>"; };
-		F19508211EE8615400C28124 /* ACO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ACO.cpp; sourceTree = "<group>"; };
-		F19508221EE8615400C28124 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		F19508231EE8615400C28124 /* Randoms.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Randoms.cpp; sourceTree = "<group>"; };
+		187D97AF1EE9DF880061B301 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = "<group>"; };
+		187D97B01EE9E0890061B301 /* ACO_new.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ACO_new.cpp; path = src/ACO_new.cpp; sourceTree = "<group>"; };
+		C05DF7AA1EE9F4C90085DE9D /* Dijkstra.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Dijkstra.cpp; path = src/Dijkstra.cpp; sourceTree = "<group>"; };
+		F1053E251F17E50700967DC0 /* ACO_new.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ACO_new.hpp; path = src/ACO_new.hpp; sourceTree = "<group>"; };
+		F1053E261F17E50700967DC0 /* Dijkstra.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Dijkstra.hpp; path = src/Dijkstra.hpp; sourceTree = "<group>"; };
+		F1053E3C1F180CD000967DC0 /* Randoms.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Randoms.cpp; path = src/Randoms.cpp; sourceTree = "<group>"; };
+		F1053E3D1F180CD000967DC0 /* Randoms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Randoms.h; path = src/Randoms.h; sourceTree = "<group>"; };
 		F1E9F7B41EE7A8A6004511FE /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
-		F1E9F7C41EE7ABF9004511FE /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		F195081D1EE8615400C28124 /* include */ = {
+		187D97AD1EE9DEA50061B301 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				F195081E1EE8615400C28124 /* ACO.h */,
-				F195081F1EE8615400C28124 /* Randoms.h */,
-			);
-			name = include;
-			path = aco/include;
-			sourceTree = "<group>";
-		};
-		F19508201EE8615400C28124 /* src */ = {
-			isa = PBXGroup;
-			children = (
-				F19508211EE8615400C28124 /* ACO.cpp */,
-				F19508221EE8615400C28124 /* main.cpp */,
-				F19508231EE8615400C28124 /* Randoms.cpp */,
+				F1053E3C1F180CD000967DC0 /* Randoms.cpp */,
+				187D97B01EE9E0890061B301 /* ACO_new.cpp */,
+				C05DF7AA1EE9F4C90085DE9D /* Dijkstra.cpp */,
+				187D97AF1EE9DF880061B301 /* main.cpp */,
 			);
 			name = src;
-			path = aco/src;
 			sourceTree = "<group>";
 		};
-		F19508251EE8616300C28124 /* aco */ = {
+		F1053E271F17E50C00967DC0 /* include */ = {
 			isa = PBXGroup;
 			children = (
-				F195081D1EE8615400C28124 /* include */,
-				F19508201EE8615400C28124 /* src */,
+				F1053E3D1F180CD000967DC0 /* Randoms.h */,
+				F1053E251F17E50700967DC0 /* ACO_new.hpp */,
+				F1053E261F17E50700967DC0 /* Dijkstra.hpp */,
 			);
-			name = aco;
+			name = include;
 			sourceTree = "<group>";
 		};
 		F1E9F7901EE7A5E1004511FE = {
 			isa = PBXGroup;
 			children = (
-				F19508251EE8616300C28124 /* aco */,
-				F1E9F7C41EE7ABF9004511FE /* main.cpp */,
+				F1053E271F17E50C00967DC0 /* include */,
+				187D97AD1EE9DEA50061B301 /* src */,
 				F1E9F7B41EE7A8A6004511FE /* Makefile */,
 			);
 			sourceTree = "<group>";

@@ -20,8 +20,12 @@
 
 int main ( int argc, char *argv[] )
 {
+    // Window size/Resolution
+    int width = 1600;
+    int height = 900;
+
     SimulatorApp* app = new SimulatorApp();
-    GLFWEngine* engine = new GLFWEngine(800,600,3,2,app->getName());
+    GLFWEngine* engine = new GLFWEngine(width,height,3,2,app->getName());
 
     engine->attachDemo(app);
     engine->setup(false);

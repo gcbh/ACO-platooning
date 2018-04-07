@@ -11,10 +11,15 @@
 
 #include <stdio.h>
 #include <vector>
+#include "imgui.h"
+#include "imgui_impl_glfw_gl3.h"
 #include "glm.hpp"
 #include <GLFW/glfw3.h>
 #include <OpenGL/gl3.h>
 #include "State.hpp"
+#include "Scene.hpp"
+
+class Scene;
 
 class SceneNode
 {
@@ -22,26 +27,51 @@ public:
     SceneNode();
     ~SceneNode();
 
-    virtual void setup() {};
-    virtual void input(InputState is) {};
-    virtual void update(UpdateState us) {};
-    virtual void render(RenderState rs) {};
+    //Public overrideable
+    virtual void presetup() {};
+    virtual void postsetup() {};
+    virtual void preinput(InputState* is) {};
+    virtual void postinput(InputState* is) {};
+    virtual void preupdate(UpdateState* us) {};
+    virtual void postupdate(UpdateState* us) {};
+    virtual void prerender(RenderState* rs) {};
+    virtual void postrender(RenderState* rs) {};
 
+    //Internal final
     void _setup();
-    void _input(InputState is);
-    void _update(UpdateState us);
-    void _render(RenderState rs);
+    void _input(InputState* is);
+    void _update(UpdateState* us);
+    void _render(RenderState* rs);
+
+    //Internal overrideable
+    virtual void setup() {};
+    virtual void input(InputState* rs) {};
+    virtual void update(UpdateState* rs) {};
+    virtual void render(RenderState* rs) {};
+
+    //
+    ImVec2 getScreenSpace(RenderState* rs);
+    ImVec2 getScreenSpace(RenderState* rs, glm::vec4 point);
 
     void addChildNode(SceneNode* node);
+    void insertChildNode(SceneNode* node);
+    void removeChildNode(SceneNode* node);
+    void clearChildNodes();
 
+    Scene* parentScene;
+
+    float m_rotation;
+    glm::vec3 m_scale;
     glm::vec3 m_position;
     glm::vec3 m_velocity;
     glm::mat4 m_model_matrix;
     GLuint m_program, m_vertex_array, m_mvp_id;
     bool willRender;
 
-private:
 
+
+private:
+    void propagateParentScene(Scene* scene);
     std::vector<SceneNode*> child_nodes;
 };
 
