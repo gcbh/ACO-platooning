@@ -11,49 +11,44 @@
 using namespace std;
 
 
-primer_ant:: primer_ant(t_node *first, vector<string> route_path) {
+primer_ant:: primer_ant(t_node *first, vector<string> route_path, float i_p) {
+    counter = 0;
     current = first;
     route = route_path;
+    dest = stoi(route.back());
+    primer_ph = i_p;
 }
 
-// void primer_ant::next_node(int time) {
-//     int next = ordered_path->front();
-//     int time = 0;
-//     while (ordered_path.size() > 0) {
-//         ordered_path->pop();
-//         for (int i = 0; i < current->edge_number(); i++) {
-//             t_edge *cur_edge = (*current)[i];
-//             t_node *next_n = cur_edge->get_dest();
-//             if (next_n->get_id() == next) {
-//                 // TODO: set value to increase to
-//                 cur_edge->update_phermone(time, 1);
-//                 int time_to_cross = cur_edge->time_to_cross;
-//                 time = time + time_to_cross;
-//                 current = next_n;
-//                 break;
-//             }
-//         }
-//     }
-// }
+path primer_ant::next_node(int time) {
+    if (counter <= 0) {
+        
+        // Remove the first element from the vector
+        route.erase(route.begin());
 
-void primer_ant:: set_ant_path() {
+        int next_node = stoi(route.front());
+        t_edge* e = current->get_edge(next_node);
 
-    int tick = 0;
+        e->update_pheromone(time, primer_ph);
 
-    // get time to cross every edge and update phermone
-    for (int i = 1; i < route.size(); i++) {
-
-        for (int j = 0; j < current->edge_number(); j++) {
-            t_edge *cur_edge = (*current)[j];
-            t_node *next_n = cur_edge->get_dest();
-            if (next_n->get_id() == stoi(route[i])) {
-                // TODO: set value to increase to
-                cur_edge->update_phermone(tick, 1);
-                int time_to_cross = cur_edge->get_time_to_cross();
-                tick = tick + time_to_cross;
-                current = next_n;
-                break;
-            }
+        // current node included in up-to-date path
+        ordered_path.push(current);
+        // update 'current'
+        current = e->get_dest();
+        // update 'counter' for timing
+        counter = e->get_time_to_cross() - 1;
+                
+        if (has_reached_destination()) {
+            ordered_path.push(current);
         }
+
+        return make_pair(nullptr, nullptr);
+
     }
+        
+    counter--;
+    
+    if (has_reached_destination()) {
+        ordered_path.push(current);
+    }
+    return make_pair(nullptr, nullptr);
 }

@@ -7,113 +7,148 @@
 //
 
 #include <stdio.h>
-#include <list>
+#include <time.h>
 #include <iostream>
-#include <map>
 #include <fstream>
 #include <sstream>
-#include "../../models/graph.hpp"
+#include <ctime>
+
 #include "Dijkstra.hpp"
-#include "ACO_new.hpp"
-#include "../../utils/StringUtils.hpp"
+#include "ACO.hpp"
+#include "cost_function.hpp"
+#include "output_extractor.hpp"
+
+#include "config_factory.hpp"
+#include "config.hpp"
+#include "map_data.hpp"
+#include "manifest.hpp"
+#include "graph.hpp"
+#include "file_parser.hpp"
 
 #define MAPS "../../maps/"
 #define DJ_MAPS "../../maps/d_maps/"
+#define DISTRIBUTION_MAPS "../../maps/distribution_centers/"
 #define MANIFESTS "../../manifests/"
-
+#define SCRIPT "../../utils/scripts/"
+#define SCRIPT_NAME "process_cities_complete.py"
+#define COORDS_FILENAME "cities_ids_coords_update.txt"
 
 using namespace std;
 
-multimap< pair<int, int> , int>  get_manifest(string file_name);
+void write_dijkstras(Dijkstra* dijkstra, string file_path, map_data map);
+void write_final_output(ACO* aco, graph* g, int num_vehicles, Dijkstra *dijkstra, config conf);
 
-int main() {
-    cout << "hello world" << endl;
+int main(int argc, const char * argv[]) {
 
-    string file_name = "small_graph.txt";
-    string manifest_file_name = "manifest_small_graph.txt";
+    cout << "Begin optimization" << endl;
     
-    // open graph file, read and pass data to Dijkstra to calculate shortest path
-    ifstream file(MAPS + file_name);
-    string   line;
+    config_factory conf_fac;
+    config conf = conf_fac.build();
     
-    Dijkstra *dijkstra = new Dijkstra();
-    list<graph_data> pre_opt_graph;
-    set<int> nodes;
-
-    while(getline(file, line))
-    {
-        stringstream   linestream(line);
-        string         data;
-        int            src;
-        int            dest;
-        string         src_name;
-        string         dest_name;
-        double         distance;
-
-        
-        linestream >> src >> src_name >> dest >> dest_name >> distance;
-        
-        struct graph_data edge;
-        edge.src = src;
-        edge.dest = dest;
-        edge.weight = distance;
-        
-        nodes.insert(src);
-        nodes.insert(dest);
-        
-        pre_opt_graph.push_back(edge);
-    }
+    logger std_out;
+    logger cost_out("../logs/cost.log", false);
+    logger debug_log("../logs/debug.log", false);
     
-    string dijkstra_file_path = DJ_MAPS + ("dj_" + file_name);
+    map_data cities_map = file_parser::parse<map_data>(map_data::dist_data, string(MAPS) + conf.getMap());
+    manifest manifest_map = file_parser::parse<manifest>(manifest::data, string(MANIFESTS) + conf.getManifest());
+    
+    // Creates d_maps folder if it doesn't exist
+    system(("mkdir -p " + string(DJ_MAPS)).c_str());
+
+    string dijkstra_file_path = DJ_MAPS + ("dj_" + conf.getMap());
     ifstream djfile(dijkstra_file_path);
 
+    Dijkstra *dijkstra = new Dijkstra();
+    
     // check if dijkstra file exists, if not create one
     if (djfile.fail()) {
+        write_dijkstras(dijkstra, dijkstra_file_path, cities_map);
+    }
 
-        // create file to output from dijkstra algorithm
-        ofstream dijkstra_file;
-        dijkstra_file.open(dijkstra_file_path, ios_base::out);
-        
-
-        // freopen to be able to write output to file directly
-        freopen(dijkstra_file_path.c_str(), "w", stdout);
-        dijkstra->init(pre_opt_graph, nodes.size());
-        fclose(stdout);
-
-    } 
-    multimap< pair<int, int> , int>  manifest_map = get_manifest(manifest_file_name);
-    dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map);
-
-    graph *g = new graph();
-    g->construct_graph(pre_opt_graph); 
+    map< pair<int, int>, string>* gp_map = new map< pair<int, int>, string>();
     
-    ACO_new *ACO = new ACO_new(g, 10, manifest_map);
-    //ACO->init(dijkstra);
+    // Populate info for map
+    dijkstra->populate_from_dijkstra_file(dijkstra_file_path, manifest_map, gp_map);
+
+    cost_function* cost = new cost_function();
+    
+    ofstream output_file;
+    output_file.open("../cost_per_trial.txt");
+  
+    for (int i = 1; i <= 1; i++) {
+        int start_s=clock();
+
+        graph *g = new graph();
+        g->construct_graph(cities_map);
+        time_t seed = (long)time(nullptr);
+        
+        heuristic_selector* sel = new heuristic_selector(conf.getAlpha(), conf.getBeta(), conf.getPhi(), seed, dijkstra);
+        
+        ACO *aco = new ACO(g, manifest_map, conf, sel, cost, std_out, cost_out, debug_log);
+        aco->init(dijkstra);
+        
+        double total = 0;
+        
+        try {
+            for(int i = 1; i <= conf.ITERS(); i++) {
+                int cost = aco->iteration();
+                if (cost < 0) continue;
+                
+                if ( i > conf.ITERS() - 20) {
+                    total += cost;
+                }
+            }
+            
+            double avg_cost = total/20;
+            
+            // generate final output
+            write_final_output(aco, g, manifest_map.size(), dijkstra, conf);
+            output_file << "TRIAL " << i << endl;
+            output_file << "lowest cost: " << aco->get_lowest_cost() << endl;
+            output_file << "dijkstra cost: " << aco->get_dijkstra_cost() << endl;
+            output_file << "avg 20 iters " << avg_cost << endl;
+            output_file << endl;
+        
+            int stop_s=clock();
+            
+            output_file << "Runtime " << (stop_s-start_s)/double(CLOCKS_PER_SEC)*1000 << endl;
+            output_file << endl;
+
+            delete sel;
+            delete aco;
+            delete g;
+            
+        } catch (const exception &e) {
+            cout << e.what() << endl;
+        }
+        
+        cout << "Run " << i << " completed" << endl;
+        
+    }
+    
+    output_file.close();
+    delete dijkstra;
     return 0;
 }
 
-multimap< pair<int, int> , int> get_manifest(string file_name) {
-    ifstream file(MANIFESTS+ file_name);
-    string line;
-    multimap< pair<int, int>, int> manifest_data;
+void write_dijkstras(Dijkstra* dijkstra, string file_path, map_data map) {
+    // create file to output from dijkstra algorithm
+    ofstream dijkstra_file;
+    dijkstra_file.open(file_path, ios_base::out);
+    
+    // freopen to be able to write output to file directly
+    freopen(file_path.c_str(), "w", stdout);
+    dijkstra->init(map);
+    fclose(stdout);
+    dijkstra_file.close();
+}
 
-    while(getline(file, line))
-    {
-        stringstream   linestream(line);
-        string         data;
-        int            src;
-        int            dest;
-        int            duration;
-        
-        linestream >> src >> dest >> duration;
-
-        struct graph_data edge;
-        edge.src = src;
-        edge.dest = dest;
-        edge.weight = duration;
-
-        pair<int, int> key = make_pair(src, dest);
-        manifest_data.insert(make_pair(key, duration));
-    }
-    return manifest_data;
+void write_final_output(ACO* aco, graph* g, int num_vehicles, Dijkstra *dijkstra, config conf) {
+    string file_name = "../transport_output.json";
+    output_extractor* extractor = new output_extractor(g, num_vehicles, dijkstra, file_name);
+    extractor->extract_output(aco->get_dijkstra_route(), true);
+    extractor->extract_output(aco->result(), false);
+    extractor->pretty_print_metadata(aco->get_lowest_cost(), aco->get_dijkstra_cost(), conf);
+    
+    delete extractor;
 }

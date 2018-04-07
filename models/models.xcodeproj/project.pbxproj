@@ -9,8 +9,8 @@
 /* Begin PBXFileReference section */
 		187FD0921EEA51B00028001A /* graph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = graph.cpp; sourceTree = "<group>"; };
 		187FD0931EEA51B00028001A /* graph.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = graph.hpp; sourceTree = "<group>"; };
-		F144016A1EE8776300BBD888 /* base_ant.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = base_ant.cpp; sourceTree = "<group>"; };
-		F144016B1EE8776300BBD888 /* base_ant.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = base_ant.hpp; sourceTree = "<group>"; };
+		C09994A81F1D3DE400DBA1CA /* base_ant.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = base_ant.cpp; sourceTree = "<group>"; };
+		C09994A91F1D3DE400DBA1CA /* base_ant.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = base_ant.hpp; sourceTree = "<group>"; };
 		F144016C1EE877D500BBD888 /* primer_ant.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = primer_ant.cpp; sourceTree = "<group>"; };
 		F144016D1EE877D500BBD888 /* primer_ant.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = primer_ant.hpp; sourceTree = "<group>"; };
 		F144016E1EE8796A00BBD888 /* ant.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ant.cpp; sourceTree = "<group>"; };
@@ -19,24 +19,52 @@
 		F14401741EE89C9600BBD888 /* t_node.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = t_node.hpp; sourceTree = "<group>"; };
 		F14401751EE89CA600BBD888 /* t_edge.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = t_edge.cpp; sourceTree = "<group>"; };
 		F14401761EE89CA600BBD888 /* t_edge.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = t_edge.hpp; sourceTree = "<group>"; };
+		F155DC082008730100E9F9DE /* map_data.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = map_data.cpp; sourceTree = "<group>"; };
+		F155DC092008730100E9F9DE /* map_data.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = map_data.hpp; sourceTree = "<group>"; };
+		F15F36F72008310800CBD9FE /* config.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = config.cpp; sourceTree = "<group>"; };
+		F15F36F82008310800CBD9FE /* config.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = config.hpp; sourceTree = "<group>"; };
+		F15F36FE2008619900CBD9FE /* manifest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = manifest.cpp; sourceTree = "<group>"; };
+		F15F36FF2008619900CBD9FE /* manifest.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = manifest.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		F1053E3E1F182C2D00967DC0 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F155DC082008730100E9F9DE /* map_data.cpp */,
+				F15F36FE2008619900CBD9FE /* manifest.cpp */,
+				F15F36F72008310800CBD9FE /* config.cpp */,
+				187FD0921EEA51B00028001A /* graph.cpp */,
+				F14401751EE89CA600BBD888 /* t_edge.cpp */,
+				F14401731EE89C9600BBD888 /* t_node.cpp */,
+				F144016E1EE8796A00BBD888 /* ant.cpp */,
+				F144016C1EE877D500BBD888 /* primer_ant.cpp */,
+				C09994A81F1D3DE400DBA1CA /* base_ant.cpp */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		F1053E3F1F182C3300967DC0 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				F155DC092008730100E9F9DE /* map_data.hpp */,
+				F15F36FF2008619900CBD9FE /* manifest.hpp */,
+				F15F36F82008310800CBD9FE /* config.hpp */,
+				187FD0931EEA51B00028001A /* graph.hpp */,
+				F14401761EE89CA600BBD888 /* t_edge.hpp */,
+				F14401741EE89C9600BBD888 /* t_node.hpp */,
+				F144016F1EE8796A00BBD888 /* ant.hpp */,
+				F144016D1EE877D500BBD888 /* primer_ant.hpp */,
+				C09994A91F1D3DE400DBA1CA /* base_ant.hpp */,
+			);
+			name = include;
+			sourceTree = "<group>";
+		};
 		F195082E1EE872B500C28124 = {
 			isa = PBXGroup;
 			children = (
-				187FD0921EEA51B00028001A /* graph.cpp */,
-				187FD0931EEA51B00028001A /* graph.hpp */,
-				F14401751EE89CA600BBD888 /* t_edge.cpp */,
-				F14401761EE89CA600BBD888 /* t_edge.hpp */,
-				F14401731EE89C9600BBD888 /* t_node.cpp */,
-				F14401741EE89C9600BBD888 /* t_node.hpp */,
-				F144016E1EE8796A00BBD888 /* ant.cpp */,
-				F144016F1EE8796A00BBD888 /* ant.hpp */,
-				F144016C1EE877D500BBD888 /* primer_ant.cpp */,
-				F144016D1EE877D500BBD888 /* primer_ant.hpp */,
-				F144016A1EE8776300BBD888 /* base_ant.cpp */,
-				F144016B1EE8776300BBD888 /* base_ant.hpp */,
+				F1053E3F1F182C3300967DC0 /* include */,
+				F1053E3E1F182C2D00967DC0 /* src */,
 			);
 			sourceTree = "<group>";
 		};
@@ -62,7 +90,7 @@
 		F195082F1EE872B500C28124 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "University of Waterloo";
 				TargetAttributes = {
 					F19508331EE872B500C28124 = {
@@ -98,7 +126,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -106,7 +136,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -143,7 +177,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -151,7 +187,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

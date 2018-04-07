@@ -19,28 +19,33 @@ using namespace std;
 
 class t_node;
 
-struct phermone {
-    int current;
-    int future;
+struct pheromone {
+    float current;
+    float future;
 };
 
 class t_edge {
     
 public:
-    t_edge(int i_id, t_node *i_dest, double i_distance, int i_speed);
+    t_edge(int i_id, t_node *i_dest, int i_distance, int i_speed);
     ~t_edge();
-    t_node* get_dest();
-    int get_id();
-    phermone get_phermone(int time);
-    void update_phermone(int time, int value);
-    int get_time_to_cross();
+
+    t_node*     get_dest();
+    int         get_id();
+    pheromone   get_pheromone(int time);
+    bool        pheromone_exists(int time);
+    void        update_pheromone(int time, float value);
+    int         get_speed();
+    int         get_time_to_cross();
+    int         get_distance();
+    void        evaporate(int time, float rho);
+    void        update_future_pheromone(int time, float value);
+
 private:
-    t_node *dest;
-    int id;
-    int distance, speed, max_tick, time_to_cross;
-    float max_phermone;
-    map<int, phermone> phermone_at;
-    void update_future_pheromone(int time, int value);
+    t_node*             dest;
+    int                 id, distance, speed, max_tick, time_to_cross;
+    float               max_pheromone;
+    map<int, pheromone> pheromone_at;
 };
 
 #endif /* t_edge_hpp */

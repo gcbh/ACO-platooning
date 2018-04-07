@@ -10,84 +10,79 @@
 
 using namespace std;
 
-ant::ant(t_node* first, int i_dest, float i_alpha, float i_beta, Randoms* i_r) {
-    probability = i_r;
+ant::ant(t_node* first, int i_dest, float d, heuristic_selector* sel) {
     dest = i_dest;
     counter = 0;
+    DELTA = d;
     current = first;
-    alpha = i_alpha;
-    beta = i_beta;
+    v_route = false;
+    selector = sel;
+    ordered_path.push(current);
 }
 
 ant::~ant() {   }
 
-void ant::next_node(int time) {
-    // need to incorporate dijkstra data into decision
-    if (counter <= 0) {
-        double total = 0;
-        double total_prob = 0;
-        int best_wait = 0;
-        for (int i = 0; i < current->edge_number(); i++) {
-            t_edge* e = (*current)[i];
-            if (past_nodes.find(e->get_dest()->get_id()) == past_nodes.end()) {
-                phermone p = e->get_phermone(time);
-                
-                // TODO: include Dijkstra
-                total += (double)p.current * alpha;
-                
-                // determines largest future pheromone
-                if (p.future > best_wait) {
-                    best_wait = p.future;
-                }
-            }
+path ant::next_node(int time) {
+    if (counter <= 0 && !has_concluded()) {
+        
+        list<t_edge*> es = avail_edges();
+        
+        if (es.size() == 0) {
+            v_route = true;
+            return make_pair(nullptr, nullptr);
         }
         
-        // 'alpha' is the weighting of staying, may need new weight
-        total += (double)best_wait * alpha;
+        t_edge* e = selector->selected_edge(es, current->get_id(), dest, time);
         
-        double prob = probability->Uniforme();
-        for (int i = 0; i < current->edge_number(); i++) {
-            t_edge* e = (*current)[i];
-            if (past_nodes.find(e->get_dest()->get_id()) == past_nodes.end()) {
-                phermone p = e->get_phermone(time);
-                
-                // sums to find position of random variable between 0 and 1
-                total_prob += alpha * p.current / total;
-                
-                // if in range of current edge
-                if (total_prob >= prob) {
-                    int d = e->get_dest()->get_id();
-                    // ensure node travelling from cannot be reached again
-                    past_nodes.insert(ordered_path.back());
-                    // current node included in up-to-date path
-                    ordered_path.push_back(current->get_id());
-                    
-                    // update 'current'
-                    current = e->get_dest();
-                    // update 'counter' for timing
-                    counter = e->get_time_to_cross() - 1;
-                    return;
-                }
-            }
+        if (!e) {
+            ordered_path.push(current);
+            return make_pair(current, nullptr);
         }
-        ordered_path.push_back(current->get_id());
-        return;
+        
+        t_node* next = e->get_dest();
+        
+        // current node included in up-to-date path
+        ordered_path.push(next);
+        
+        e->update_pheromone(time, DELTA);
+        // ensure node travelling from cannot be reached again
+        t_node* node = e->get_dest();
+        t_edge* e2 = node->get_edge(current->get_id());
+        
+        past_edges.insert(e->get_id());
+        past_edges.insert(e2->get_id());
+        
+        path p = make_pair(current, e);
+        
+        // update 'current'
+        current = next;
+        // update 'counter' for timing
+        counter = e->get_time_to_cross() - 1;
+        
+        return p;
     }
     counter--;
+    return make_pair(nullptr, nullptr);
 }
 
-
-iPair ant::cost_node(int time) {
-    if (counter <= 0) {
+list<t_edge*> ant::avail_edges() {
+    list<t_edge*> edges;
+    for (int i = 0; i < current->edge_number(); i++) {
+        t_edge* e = (*current)[i];
+        t_node* node = e->get_dest();
+        t_edge* e2 = node->get_edge(current->get_id());
         
+        if (past_edges.find(e->get_id()) == past_edges.end() && past_edges.find(e2->get_id()) == past_edges.end()) {
+            edges.push_back(e);
+        }
     }
+    return edges;
 }
 
-
-bool ant::has_reached_destination() {
-    return current->get_id() == dest;
+bool ant::has_concluded() {
+    return v_route ^ has_reached_destination();
 }
 
-vector<int> ant::get_ordered_path() {
-    return ordered_path;
+bool ant::void_route() {
+    return v_route;
 }

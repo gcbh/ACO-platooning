@@ -10,21 +10,15 @@
 
 using namespace std;
 
-t_edge::t_edge(int i_id, t_node *i_dest, double i_distance, int i_speed) {
+t_edge::t_edge(int i_id, t_node *i_dest, int i_distance, int i_speed) {
     id = i_id;
     dest = i_dest;
     distance = i_distance;
     speed = i_speed;
-    //phermone_at = new map<int, phermone>();
     time_to_cross = round(i_distance/speed);
 }
 
-t_edge::~t_edge() {
-//    delete phermone_at;
-//    if (dest != nullptr) {
-//        delete dest;
-//    }
-}
+t_edge::~t_edge() { }
 
 int t_edge::get_id() {
     return id;
@@ -34,36 +28,66 @@ t_node* t_edge::get_dest() {
     return dest;
 }
 
-phermone t_edge::get_phermone(int time) {
-    return phermone_at[time];
+pheromone t_edge::get_pheromone(int time) {
+    if (pheromone_at.count(time) > 0)
+        return pheromone_at[time];
+
+    pheromone p = { .current = 0.0f, .future = 0.0f };
+    return p;
 }
 
-void t_edge::update_phermone(int time, int value) {
-    phermone old_p = get_phermone(time);
-    phermone new_p;
+int t_edge::get_distance() {
+    return distance;
+}
 
-    new_p.current = value;
+bool t_edge::pheromone_exists(int time) {
+    if (pheromone_at.find(time) == pheromone_at.end()) {
+        return false;
+    }
+    return true;
+}
+
+void t_edge::update_pheromone(int time, float value) {
+    pheromone old_p = get_pheromone(time);
+    pheromone new_p;
+
+    new_p.current = old_p.current + value;
+    if (new_p.current < 0.0) {
+        new_p.current = 0.0;
+    }
     new_p.future = old_p.future;
 
-    phermone_at.insert(make_pair(time, new_p));
+    pheromone_at[time] = new_p;
+}
 
-    update_future_pheromone(time, value); 
+int t_edge::get_speed() {
+    return speed;
 }
 
 int t_edge::get_time_to_cross() {
     return time_to_cross;
 }
 
-//  update all previous times' future values to reflect new changes for current time.
-//  eg. if time = 2 was updated in update_phermone to hold a value of 3
-//  future values of pheromones at time 0 and 1 should update if 3 is greater 
-//  than their current future projections.
-void t_edge::update_future_pheromone(int time, int value) {
-    phermone p;
+void t_edge::update_future_pheromone(int time, float value) {
+    pheromone p;
     for (int i = 0; i < time; i++) {
-        p = get_phermone(i);
-        if (p.future < value) {
-            p.future = value;
+        p = get_pheromone(i);
+        pheromone new_p;
+        new_p.current = p.current;
+        new_p.future = value;
+        if (new_p.future < 0.0) {
+            new_p.future = 0.0;
         }
+        pheromone_at[i] = new_p;
     }
+}
+
+void t_edge::evaporate(int time, float rho) {
+    pheromone old_p = get_pheromone(time);
+    pheromone new_p;
+    
+    new_p.current = (1-rho)*old_p.current;
+    new_p.future = old_p.future;
+    
+    pheromone_at[time] = new_p;
 }

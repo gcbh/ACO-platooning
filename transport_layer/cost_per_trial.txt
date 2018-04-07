@@ -1,0 +1,14 @@
+TRIAL 1
+lowest cost: 872355
+dijkstra cost: 40960.9
+avg 20 iters 1.61085e+06
+
+Runtime 1.25784e+06
+
+TRIAL 2
+lowest cost: 1.16225e+06
+dijkstra cost: 40960.9
+avg 20 iters 1.88866e+06
+
+Runtime 378237
+

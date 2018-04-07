@@ -2,8 +2,8 @@
 //  base_ant.hpp
 //  models
 //
-//  Created by Geoffrey Heath on 2017-06-07.
-//  Copyright © 2017. All rights reserved.
+//  Created by Aditi Lath on 2017-07-17.
+//  Copyright © 2017 University of Waterloo. All rights reserved.
 //
 
 #ifndef base_ant_hpp
@@ -16,15 +16,26 @@
 
 using namespace std;
 
+typedef pair<int, int> iPair;
+typedef pair<t_node*, t_edge*> path;
+
 class base_ant {
 public:
     base_ant();
-    virtual ~base_ant();
-    virtual void next_node(int time);
-    
+    virtual         ~base_ant();
+    virtual path    next_node(int time);
+    bool            has_reached_destination();
+    bool            in_transit();
+    virtual bool    has_concluded();
+    path            replay_route();
+    queue<t_node*>  get_ordered_path();
+    void            set_did_reach_destination(bool value);
+    bool            get_did_reach_destination();
 protected:
-    queue<int> *ordered_path;
-    t_node *current;
+    int                      counter, dest;
+    t_node*                  current;
+    queue<t_node*>           ordered_path;
+    bool                     did_reach_destination;
 };
 
 #endif /* base_ant_hpp */

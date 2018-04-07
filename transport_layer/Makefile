@@ -1,5 +1,5 @@
-CC:=g++ -g
-CFLAGS := -c
+CC:=g++
+CFLAGS := -std=c++11 -g -c
 
 MODELDIR := ../models
 SRCDIR := src
@@ -19,7 +19,7 @@ OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 MODELS := $(patsubst $(MODELDIR)/%,$(BUILDDIR)/%,$(MODELSRCS:.$(SRCEXT)=.o))
 UTILS := $(patsubst $(UTILDIR)/%,$(BUILDDIR)/%,$(UTILSRCS:.$(SRCEXT)=.o))
 
-INC := -I include
+INC := -I ../models/ -I ../utils/ -I src/
 
 # Build source files
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
@@ -38,8 +38,7 @@ $(BUILDDIR)/%.o: $(UTILDIR)/%.$(SRCEXT)
 
 maketransport: $(OBJECTS) $(MODELS) $(UTILS)
 	@mkdir -p $(TARGETDIR)
-	@echo " $(CC) $^ -o $(TARGET)";
-	$(CC) $^ -o $(TARGET)
+	@echo " $(CC) $^ -o $(TARGET)"; $(CC) $^ -o $(TARGET)
 
 clean:
 	@echo " Cleaning...";

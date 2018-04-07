@@ -23,14 +23,15 @@ class t_node {
 public:
     t_node(int i_id);
     ~t_node();
-    int get_id();
-    int edge_number();
-    void add_edge(t_edge *edge);
-    t_edge* operator[](int i);
+    int             get_id();
+    int             edge_number();
+    void            add_edge(t_edge *edge);
+    t_edge*         operator[](int i);
     vector<t_edge*> get_edges();
-    t_edge* get_edge(int dest_id); 
+    t_edge*         get_edge(int dest_id);
+    
 private:
-    int id;
+    int             id;
     vector<t_edge*> edges;
 };
 

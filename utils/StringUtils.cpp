@@ -29,3 +29,11 @@ std::string readFile(const std::string file_path) {
                     std::istreambuf_iterator<char>());
     return str;
 }
+
+std::string space(int size) {
+    string output = "";
+    for (int i = size; i > 0; --i) {
+        output += " ";
+    }
+    return output;
+}

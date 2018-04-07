@@ -16,42 +16,39 @@
 
 using namespace std;
 # define INF 0x3f3f3f3f
-typedef pair<double, int> iPair;
+typedef pair<int, int> iPair;
 
 
 Dijkstra::Dijkstra() {
-    // edg = new list<iPair> [200];
+    max_distance = 0.0f;
 }
 
 Dijkstra::~Dijkstra() {
-    // delete edg
-    delete [] edg;
-
     // deallocate edge_weight
     for (int i = 0; i < num_of_nodes; i++)
-        delete [] edge_weight[i];
+        delete edge_weight[i];
     
     delete [] edge_weight;
+
+    delete [] edg;
 }
 
-void Dijkstra::add_edge(int src, int dest, double weight) {
+void Dijkstra::add_edge(int src, int dest, int weight) {
     edg[src].push_back(make_pair(weight, dest));
     edg[dest].push_back(make_pair(weight, src));
 }
 
-void Dijkstra::init(list<graph_data> edge_list, int node_count) {
+void Dijkstra::init(map_data map) {
 
-    edg = new list<iPair> [node_count];
-    printf("%d", node_count);
-    for (list<graph_data>:: iterator itr = edge_list.begin(); itr != edge_list.end(); itr++) {
-        nodes.insert(itr->src);
-        nodes.insert(itr->dest);
+    edg = new vector<iPair> [map.node_count()];
+    printf("%d", map.node_count());
+    for (list<graph_edge>:: iterator itr = map.begin(); itr != map.end(); itr++) {
         add_edge(itr->src, itr->dest, itr->weight);
     }
-
-    num_of_nodes = nodes.size();
     
-    for (set<int>:: iterator it = nodes.begin(); it != nodes.end(); it++) {
+    nodes = map.getNodes();
+    
+    for (unordered_set<int>:: iterator it = nodes.begin(); it != nodes.end(); it++) {
         shortest_route(*it);
     }
 
@@ -62,7 +59,7 @@ void Dijkstra::shortest_route (int src) {
     priority_queue< iPair, vector <iPair> , greater<iPair> > pq;
     
     // vector for distances, initialized as infinite
-    vector<double> wght(nodes.size(), INF);
+    vector<int> wght(nodes.size(), INF);
     
     // Array to store shortest path route
     int route[nodes.size()];
@@ -80,7 +77,7 @@ void Dijkstra::shortest_route (int src) {
         int vertex = pq.top().second;
         pq.pop();
         
-        for (list< pair<double, int> >::iterator itr = edg[vertex].begin(); itr != edg[vertex].end(); itr++)
+        for (vector< pair<int, int> >::iterator itr = edg[vertex].begin(); itr != edg[vertex].end(); itr++)
         {
             int adj = itr->second;
             int weight = itr->first;
@@ -101,11 +98,11 @@ void Dijkstra::shortest_route (int src) {
     
 }
 
-void Dijkstra::print_src_data(int src, vector<double> wght, int route[]) {
+void Dijkstra::print_src_data(int src, vector<int> wght, int route[]) {
     
     for (int i = 0; i < nodes.size(); i++)
     {
-        printf("\n %d,%d; %f; %d ", src, i, wght[i], src);
+        printf("\n %d,%d; %d; %d ", src, i, wght[i], src);
         print_path(route, i);
     }
 }
@@ -120,16 +117,18 @@ void Dijkstra::print_path(int route[], int j)
     printf("%d ", j);
 }
 
-void Dijkstra:: populate_from_dijkstra_file(string file_name, multimap< pair<int, int>, int> manifest_map) {
+void Dijkstra:: populate_from_dijkstra_file(string file_name, manifest manifest_map, map<pair<int, int>, string>* gp_map) {
     ifstream file(file_name);
     string   line;
 
     // get number of unique nodes and intialize 2D array size
     getline(file, line);
     const int node_count =  stoi(line);
-    edge_weight = new double*[node_count];
+    edge_weight = new int*[node_count];
     for (int i = 0; i < node_count; i++)
-        edge_weight[i] = new double[node_count];
+        edge_weight[i] = new int[node_count];
+
+    num_of_nodes = node_count;
     
     while(getline(file, line))
     {
@@ -141,30 +140,45 @@ void Dijkstra:: populate_from_dijkstra_file(string file_name, multimap< pair<int
             edge = split(columns[0], ',');
             int src = stoi(edge[0]);
             int dest = stoi(edge[1]);
-            double distance = stod(columns[1]);
+            int distance = stod(columns[1]);
             string route = columns[2];
+
+            // Fetch maximum dijkstra distance
+            if (max_distance < distance) {
+                max_distance = distance;
+            }
 
             // populate 2D array for an edge with weight
             edge_weight[src][dest] = distance;
             edge_weight[dest][src] = distance;
 
             // populate manifest routes from dijkstra's
-            int key_count = manifest_map.count(make_pair(src, dest));
+            int key_count = manifest_map.count(src, dest);
             while (key_count > 0) {
                 manifest_route.push_back(route);
                 --key_count;
+            }
+
+            // populate distribution centre routes from dijkstra
+            int distr_key_count = gp_map->count(make_pair(src, dest));
+            if (distr_key_count > 0) {
+                (*gp_map)[make_pair(src, dest)] = route;
             }
         }
         
     }
 }
 
-double Dijkstra:: get_edge_weight(int src, int dest) {
+int Dijkstra:: get_edge_weight(int src, int dest) {
     return edge_weight[src][dest];
 }
 
-list<string> Dijkstra:: get_manifest_routes() {
+vector<string> Dijkstra:: get_manifest_routes() {
     return manifest_route;
+}
+
+float Dijkstra::get_max_dj_distance() {
+    return max_distance;
 }
 
 
